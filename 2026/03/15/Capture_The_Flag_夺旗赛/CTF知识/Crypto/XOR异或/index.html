@@ -1,0 +1,336 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>XOR异或 | 琉璃幻彩的博客</title><meta name="author" content="琉璃幻彩"><meta name="copyright" content="琉璃幻彩"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="XOR的特性（A XOR B XOR B &#x3D; A），我们可以用加密的密钥解密。由于XOR操作是可逆的，我们只需要按相反的顺序和相同的密钥进行XOR就能解密。 100 010 110 110 010 100 核心定义：什么是异或？异或，英文为 XOR 或 Exclusive OR，中文全称是“异或逻辑运算”。它是一种基本的二进制位运算。 它的核心逻辑是：“相异为真，相同为假”。 也就是说，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XOR异或">
+<meta property="og:url" content="https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Crypto/XOR%E5%BC%82%E6%88%96/index.html">
+<meta property="og:site_name" content="琉璃幻彩的博客">
+<meta property="og:description" content="XOR的特性（A XOR B XOR B &#x3D; A），我们可以用加密的密钥解密。由于XOR操作是可逆的，我们只需要按相反的顺序和相同的密钥进行XOR就能解密。 100 010 110 110 010 100 核心定义：什么是异或？异或，英文为 XOR 或 Exclusive OR，中文全称是“异或逻辑运算”。它是一种基本的二进制位运算。 它的核心逻辑是：“相异为真，相同为假”。 也就是说，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fightergodnemo.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2026-03-15T05:28:16.000Z">
+<meta property="article:modified_time" content="2026-03-18T01:42:00.000Z">
+<meta property="article:author" content="琉璃幻彩">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="CTF知识">
+<meta property="article:tag" content="Crypto">
+<meta property="article:tag" content="XOR">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fightergodnemo.github.io/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "XOR异或",
+  "url": "https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Crypto/XOR%E5%BC%82%E6%88%96/",
+  "image": "https://fightergodnemo.github.io/img/avatar.jpg",
+  "datePublished": "2026-03-15T05:28:16.000Z",
+  "dateModified": "2026-03-18T01:42:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "琉璃幻彩",
+      "url": "https://FighterGodNemo.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Crypto/XOR%E5%BC%82%E6%88%96/index.html"><link rel="preconnect" href="https://cdn.staticfile.org"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.5.2/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.20260413234739673.json","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.staticfile.org/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'XOR异或',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script src="/js/bg-firstpaint.js?v=20260402-2"></script><link rel="stylesheet" href="/css/custom.css?v=20260402-2"><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="琉璃幻彩的博客" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">112</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">130</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">26</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" data-has-custom-post-top-img="0"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">琉璃幻彩的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">XOR异或</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">XOR异或</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-15T05:28:16.000Z" title="发表于 2026-03-15 13:28:16">2026-03-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-18T01:42:00.000Z" title="更新于 2026-03-18 09:42:00">2026-03-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Capture-The-Flag-%E5%A4%BA%E6%97%97%E8%B5%9B/">Capture_The_Flag_夺旗赛</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Capture-The-Flag-%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/">CTF知识</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Capture-The-Flag-%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Crypto/">Crypto</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span></div></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>XOR的特性（A XOR B XOR B &#x3D; A），我们可以用加密的密钥解密。由于XOR操作是可逆的，我们只需要按相反的顺序和相同的密钥进行XOR就能解密。</p>
+<p>100</p>
+<p>010</p>
+<p>110</p>
+<p>110</p>
+<p>010</p>
+<p>100</p>
+<h3 id="核心定义：什么是异或？"><a href="#核心定义：什么是异或？" class="headerlink" title="核心定义：什么是异或？"></a>核心定义：什么是异或？</h3><p><strong>异或</strong>，英文为 <strong>XOR</strong> 或 <strong>Exclusive OR</strong>，中文全称是“<strong>异或逻辑运算</strong>”。它是一种基本的二进制位运算。</p>
+<p>它的核心逻辑是：<strong>“相异为真，相同为假”</strong>。</p>
+<p>也就是说，当比较的两个位（bit）<strong>不相同</strong>时，结果为 <code>1</code>（真）；当两个位<strong>相同</strong>时，结果为 <code>0</code>（假）。</p>
+<h3 id="真值表"><a href="#真值表" class="headerlink" title="真值表"></a>真值表</h3><p>我们可以用一个真值表来清晰地展示它的规则。假设有两个输入 A 和 B，一个输出 Y。</p>
+<table>
+<thead>
+<tr>
+<th>A</th>
+<th>B</th>
+<th>Y (A XOR B)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>0</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td><strong>1</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td><strong>1</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td><strong>0</strong></td>
+</tr>
+</tbody></table>
+<p>从表中可以一目了然地看到：</p>
+<ul>
+<li>当 A 和 B 都是 0（相同）时，结果是 0。</li>
+<li>当 A 和 B 一个是 0，一个是 1（相异）时，结果是 1。</li>
+<li>当 A 和 B 都是 1（相同）时，结果是 0。</li>
+</ul>
+<h3 id="常见的符号表示"><a href="#常见的符号表示" class="headerlink" title="常见的符号表示"></a>常见的符号表示</h3><p>在不同的领域，异或有不同的表示符号：</p>
+<ul>
+<li><strong>编程语言</strong>中常用： <code>^</code> （脱字符号）</li>
+<li><strong>数学&#x2F;逻辑学</strong>中常用： <code>⊕</code> （圆圈加号）</li>
+<li><strong>电子工程</strong>中常用： <code>XOR</code></li>
+</ul>
+<h3 id="一个简单的例子"><a href="#一个简单的例子" class="headerlink" title="一个简单的例子"></a>一个简单的例子</h3><p>让我们用十进制数来演示一下异或运算（实际是在二进制位上操作的）：</p>
+<p>计算 <code>5 ^ 3</code> （<code>^</code> 是编程中的异或符号）</p>
+<ol>
+<li><strong>转换为二进制</strong>：<ul>
+<li>5 的二进制是 <code>101</code></li>
+<li>3 的二进制是 <code>011</code></li>
+</ul>
+</li>
+</ol>
+<p><strong>按位进行异或运算</strong>（对齐，一位一位地比较）：</p>
+<ol start="2">
+<li>text</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1 0 1   (5)</span><br><span class="line">XOR 0 1 1   (3)</span><br><span class="line">    -----</span><br><span class="line">    1 1 0   (6)</span><br></pre></td></tr></table></figure>
+
+<pre><code>- 最右边： `1` XOR `1` = `0`
+- 中间： `0` XOR `1` = `1`
+- 最左边： `1` XOR `0` = `1`
+</code></pre>
+<ol start="3">
+<li><strong>将结果转换回十进制</strong>：二进制 <code>110</code> 等于十进制 <code>6</code>。</li>
+</ol>
+<p>所以，<code>5 ^ 3</code> 的结果是 <code>6</code>。</p>
+<hr>
+<h3 id="异或运算的重要特性"><a href="#异或运算的重要特性" class="headerlink" title="异或运算的重要特性"></a>异或运算的重要特性</h3><p>异或有一些非常独特且有用的数学特性，这些特性是它在各种算法中得以应用的基础。</p>
+<ol>
+<li><strong>交换律</strong>: <code>A ^ B = B ^ A</code></li>
+<li><strong>结合律</strong>: <code>(A ^ B) ^ C = A ^ (B ^ C)</code></li>
+<li><strong>与自身的运算</strong>: <code>**A ^ A = 0**</code> （任何数与自己异或，结果为0）</li>
+<li><strong>与 0 的运算</strong>: <code>**A ^ 0 = A**</code> （任何数与 0 异或，结果还是自己）</li>
+<li><strong>自反性</strong>: 如果 <code>A ^ B = C</code>，那么 <code>C ^ B = A</code> 且 <code>C ^ A = B</code>。<ul>
+<li>这个特性是<strong>加密和解密</strong>、<strong>交换两个变量</strong>等功能的核心。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="异或的常见应用"><a href="#异或的常见应用" class="headerlink" title="异或的常见应用"></a>异或的常见应用</h3><p>凭借上述特性，异或在计算机科学中有着广泛的应用。</p>
+<h4 id="1-交换两个变量的值（不使用临时变量）"><a href="#1-交换两个变量的值（不使用临时变量）" class="headerlink" title="1. 交换两个变量的值（不使用临时变量）"></a>1. 交换两个变量的值（不使用临时变量）</h4><p>这是一个经典的面试题。利用异或的自反性，可以不需要第三个临时变量就交换两个数。</p>
+<p>python</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">a = 5</span><br><span class="line">b = 10</span><br><span class="line"></span><br><span class="line">print(f&quot;交换前: a = &#123;a&#125;, b = &#123;b&#125;&quot;)</span><br><span class="line"></span><br><span class="line">a = a ^ b  # a 现在变成了 5 ^ 10</span><br><span class="line">b = a ^ b  # b = (5 ^ 10) ^ 10 = 5 ^ (10 ^ 10) = 5 ^ 0 = 5</span><br><span class="line">a = a ^ b  # a = (5 ^ 10) ^ 5 = (5 ^ 5) ^ 10 = 0 ^ 10 = 10</span><br><span class="line"></span><br><span class="line">print(f&quot;交换后: a = &#123;a&#125;, b = &#123;b&#125;&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<p>text</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">交换前: a = 5, b = 10</span><br><span class="line">交换后: a = 10, b = 5</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-简单的加密和解密"><a href="#2-简单的加密和解密" class="headerlink" title="2. 简单的加密和解密"></a>2. 简单的加密和解密</h4><p>利用自反性，可以使用同一个密钥对数据进行加密和解密。</p>
+<ul>
+<li><strong>加密</strong>： <code>密文 = 明文 ^ 密钥</code></li>
+<li><strong>解密</strong>： <code>明文 = 密文 ^ 密钥</code></li>
+</ul>
+<p>python</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">plain_text = 42        # 原始数据</span><br><span class="line">key = 123              # 密钥</span><br><span class="line"></span><br><span class="line"># 加密</span><br><span class="line">cipher_text = plain_text ^ key</span><br><span class="line">print(f&quot;密文: &#123;cipher_text&#125;&quot;) # 输出一个看起来是乱码的数字</span><br><span class="line"></span><br><span class="line"># 解密</span><br><span class="line">decrypted_text = cipher_text ^ key</span><br><span class="line">print(f&quot;解密后的明文: &#123;decrypted_text&#125;&quot;) # 输出 42</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-在算法题中的应用：找出“落单”的数字"><a href="#3-在算法题中的应用：找出“落单”的数字" class="headerlink" title="3. 在算法题中的应用：找出“落单”的数字"></a>3. 在算法题中的应用：找出“落单”的数字</h4><p>这是一个非常著名的算法题：</p>
+<p>一个非空整数数组中，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
+<p><strong>解决方案</strong>：利用 <code>A ^ A = 0</code> 和 <code>A ^ 0 = A</code> 的特性，将所有数字一起进行异或运算，成对出现的数字会变成 0，最后剩下的就是那个“落单”的数字。</p>
+<p>python</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">def single_number(nums):</span><br><span class="line">    result = 0</span><br><span class="line">    for num in nums:</span><br><span class="line">        result ^= num  # 等同于 result = result ^ num</span><br><span class="line">    return result</span><br><span class="line"></span><br><span class="line"># 示例</span><br><span class="line">arr = [4, 1, 2, 1, 2]</span><br><span class="line">print(single_number(arr))  # 输出：4</span><br></pre></td></tr></table></figure>
+
+<p><strong>计算过程</strong>： <code>0 ^ 4 ^ 1 ^ 2 ^ 1 ^ 2 = (1^1) ^ (2^2) ^ 4 = 0 ^ 0 ^ 4 = 4</code></p>
+<h4 id="4-图形学中的“异或”模式"><a href="#4-图形学中的“异或”模式" class="headerlink" title="4. 图形学中的“异或”模式"></a>4. 图形学中的“异或”模式</h4><p>在一些古老的绘图软件或硬件中，有一种“异或”绘图模式。当你在同一个位置用同一种颜色画两次时，第二次绘制会擦除第一次的痕迹，因为 <code>颜色 ^ 颜色 = 0</code>（背景色），从而实现了一种“橡皮擦”效果。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li><strong>异或（XOR）</strong> 是一种“<strong>相异为1，相同为0</strong>”的二进制逻辑运算。</li>
+<li>它的关键特性是 <code>**A ^ A = 0**</code> 和 <code>**A ^ 0 = A**</code>，以及强大的<strong>自反性</strong>。</li>
+<li>这些特性使其在<strong>变量交换</strong>、<strong>简单加密</strong>、<strong>算法优化</strong>（如找落单数）和<strong>底层计算</strong>等领域非常有用。</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://FighterGodNemo.github.io">琉璃幻彩</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Crypto/XOR%E5%BC%82%E6%88%96/">https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Crypto/XOR%E5%BC%82%E6%88%96/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://FighterGodNemo.github.io" target="_blank">琉璃幻彩的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/CTF/">CTF</a><a class="post-meta__tags" href="/tags/CTF%E7%9F%A5%E8%AF%86/">CTF知识</a><a class="post-meta__tags" href="/tags/Crypto/">Crypto</a><a class="post-meta__tags" href="/tags/XOR/">XOR</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Crypto/%E6%A0%85%E6%A0%8F%E5%AF%86%E7%A0%81/" title="栅栏密码"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">栅栏密码</div></div><div class="info-2"><div class="info-item-1">所谓栅栏密码，就是把明文分成N个组，然后取出每组的第一个，每组的第二个。。接着按顺序排列得出密文。若每个组里有2两个元素的话就叫2栏栅栏密码。 例一就比如明文为The girl is beautiful，按照2栏栅栏密码的步骤就需要将...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Crypto/%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86CRT/" title="中国剩余定理CRT"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">中国剩余定理CRT</div></div><div class="info-2"><div class="info-item-1">  </div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Crypto/%E5%85%B1%E6%A8%A1%E6%94%BB%E5%87%BB%E3%80%81LLL%E7%AE%97%E6%B3%95%EF%BC%88coppers/" title="共模攻击、LLL算法（coppers"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">共模攻击、LLL算法（coppers</div></div><div class="info-2"><div class="info-item-1">俩个公匙就用共模攻击 </div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Crypto/%E7%BB%B4%E5%90%89%E5%B0%BC%E4%BA%9A%E5%AF%86%E7%A0%81/" title="维吉尼亚密码"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">维吉尼亚密码</div></div><div class="info-2"><div class="info-item-1">维吉尼亚密码可看作凯撒密码强化版。它通过引入一个密钥词，成功克服了凯撒密码密钥空间小和易受词频分析攻击的主要弱点。 核心思想维吉尼亚密码的核心改进在于：使用多个不同的凯撒密码，即为明文中不同的字母****应用不同的偏移量。 这个“多个...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Crypto/%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86CRT/" title="中国剩余定理CRT"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">中国剩余定理CRT</div></div><div class="info-2"><div class="info-item-1">  </div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Crypto/%E5%87%AF%E6%92%92%E5%AF%86%E7%A0%81/" title="凯撒密码"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">凯撒密码</div></div><div class="info-2"><div class="info-item-1">凯撒密码（又名移位密码）是一种最简单、最广为人知的**替换加密技术**。 核心思想：将明文中的每一个字母按照一个固定数目在字母表上进行偏移，从而得到密文。 核心原理： 确定偏移量（密钥）：这个密钥是一个整数，代表字母要偏移的位数。  ...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Crypto/%E6%A0%85%E6%A0%8F%E5%AF%86%E7%A0%81/" title="栅栏密码"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">栅栏密码</div></div><div class="info-2"><div class="info-item-1">所谓栅栏密码，就是把明文分成N个组，然后取出每组的第一个，每组的第二个。。接着按顺序排列得出密文。若每个组里有2两个元素的话就叫2栏栅栏密码。 例一就比如明文为The girl is beautiful，按照2栏栅栏密码的步骤就需要将...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Crypto/RSA%E5%8A%A0%E8%A7%A3%E5%AF%86/" title="RSA加解密"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">RSA加解密</div></div><div class="info-2"><div class="info-item-1"> __ 1.getPrime(X) 是 PyCryptodome 库中 _Crypto.Util.number_模块提供的一个函数，用于生成一个X位****的随机素数。 2.bytes_to_long 是密码学编程中常用的一个函数，它...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">琉璃幻彩</div><div class="author-info-description">The Greatest Magician!</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">112</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">130</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">26</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FighterGodNemo"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/FighterGodNemo" title="Github" target="_blank"><i class="fab fa-github"></i></a><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="微信"><i class="fab fa-weixin"></i></a><div class="qr-code-popup"><img src="/img/qrcode/wechat-qr.png" alt="微信二维码"/ loading='lazy'></div></div><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="QQ"><i class="fab fa-qq"></i></a><div class="qr-code-popup"><img src="/img/qrcode/qq-qr.png" alt="QQ二维码"/ loading='lazy'></div></div><div class="copy-text-wrapper"><a class="social-icon" href="javascript:void(0)" title="Steam好友代码：1905706957" data-copy-text="1905706957"><i class="fab fa-steam"></i></a><div class="copy-text-popup"><h3>Steam好友代码</h3><p>1905706957</p><p class="copy-hint">点击图标复制</p></div></div><a class="social-icon" href="mailto:guliujia2233@outlook.com" title="Email" target="_blank"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">热爱 CTF 和 Forensic 的网安人一枚～
+欢迎各位大佬交流点评！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%AE%9A%E4%B9%89%EF%BC%9A%E4%BB%80%E4%B9%88%E6%98%AF%E5%BC%82%E6%88%96%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">核心定义：什么是异或？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9C%9F%E5%80%BC%E8%A1%A8"><span class="toc-number">2.</span> <span class="toc-text">真值表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E7%AC%A6%E5%8F%B7%E8%A1%A8%E7%A4%BA"><span class="toc-number">3.</span> <span class="toc-text">常见的符号表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="toc-number">4.</span> <span class="toc-text">一个简单的例子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E6%88%96%E8%BF%90%E7%AE%97%E7%9A%84%E9%87%8D%E8%A6%81%E7%89%B9%E6%80%A7"><span class="toc-number">5.</span> <span class="toc-text">异或运算的重要特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E6%88%96%E7%9A%84%E5%B8%B8%E8%A7%81%E5%BA%94%E7%94%A8"><span class="toc-number">6.</span> <span class="toc-text">异或的常见应用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E4%BA%A4%E6%8D%A2%E4%B8%A4%E4%B8%AA%E5%8F%98%E9%87%8F%E7%9A%84%E5%80%BC%EF%BC%88%E4%B8%8D%E4%BD%BF%E7%94%A8%E4%B8%B4%E6%97%B6%E5%8F%98%E9%87%8F%EF%BC%89"><span class="toc-number">6.1.</span> <span class="toc-text">1. 交换两个变量的值（不使用临时变量）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E7%AE%80%E5%8D%95%E7%9A%84%E5%8A%A0%E5%AF%86%E5%92%8C%E8%A7%A3%E5%AF%86"><span class="toc-number">6.2.</span> <span class="toc-text">2. 简单的加密和解密</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E5%9C%A8%E7%AE%97%E6%B3%95%E9%A2%98%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%EF%BC%9A%E6%89%BE%E5%87%BA%E2%80%9C%E8%90%BD%E5%8D%95%E2%80%9D%E7%9A%84%E6%95%B0%E5%AD%97"><span class="toc-number">6.3.</span> <span class="toc-text">3. 在算法题中的应用：找出“落单”的数字</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E5%9B%BE%E5%BD%A2%E5%AD%A6%E4%B8%AD%E7%9A%84%E2%80%9C%E5%BC%82%E6%88%96%E2%80%9D%E6%A8%A1%E5%BC%8F"><span class="toc-number">6.4.</span> <span class="toc-text">4. 图形学中的“异或”模式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E7%9F%A5%E8%AF%86/MT%E7%AE%A1%E7%90%86%E5%99%A8%E6%9B%BF%E6%8D%A2%E5%8C%85%E6%95%B0%E6%8D%AE/" title="MT管理器替换包数据">MT管理器替换包数据</a><time datetime="2026-04-13T23:11:42.460Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E7%9F%A5%E8%AF%86/Cache%EF%BC%88%E7%BC%93%E5%AD%98%EF%BC%89/" title="Cache（缓存）">Cache（缓存）</a><time datetime="2026-04-13T23:11:42.459Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/Volatility3/" title="Volatility3">Volatility3</a><time datetime="2026-04-13T23:11:42.452Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/Python%E5%88%87%E6%8D%A2%E6%89%80%E7%94%A8%E7%89%88%E6%9C%AC/" title="Python切换所用版本">Python切换所用版本</a><time datetime="2026-04-13T23:11:42.451Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/MT%E7%AE%A1%E7%90%86%E5%99%A8%E6%9B%BF%E6%8D%A2APK%E6%95%B0%E6%8D%AE/" title="MT管理器替换APK数据">MT管理器替换APK数据</a><time datetime="2026-04-13T23:11:42.450Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 琉璃幻彩</span><span class="framework-info"><span id="busuanzi_container_site_pv">本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span><span class="footer-separator">|</span><span id="busuanzi_container_site_uv">本站访客数 <span id="busuanzi_value_site_uv"></span> 人次</span></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"></div><script src="/js/custom.js?v=20260402-2"></script><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.staticfile.org/pjax/0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

@@ -1,0 +1,55 @@
+<hr>
+<h2 id="title-自动修复zip伪加密permalink-‘-2026-03-15-Forensic-电子取证-Forensic解题妙具-自动修复zip伪加密-‘date-“2026-03-15-13-28-28”categories-tags-电子取证-取证工具-ZIP伪加密"><a href="#title-自动修复zip伪加密permalink-‘-2026-03-15-Forensic-电子取证-Forensic解题妙具-自动修复zip伪加密-‘date-“2026-03-15-13-28-28”categories-tags-电子取证-取证工具-ZIP伪加密" class="headerlink" title="title: 自动修复zip伪加密permalink: ‘&#x2F;2026&#x2F;03&#x2F;15&#x2F;Forensic_电子取证&#x2F;Forensic解题妙具&#x2F;自动修复zip伪加密&#x2F;‘date: “2026-03-15 13:28:28”categories:tags:  - 电子取证  - 取证工具  - ZIP伪加密"></a>title: 自动修复zip伪加密<br>permalink: ‘&#x2F;2026&#x2F;03&#x2F;15&#x2F;Forensic_电子取证&#x2F;Forensic解题妙具&#x2F;自动修复zip伪加密&#x2F;‘<br>date: “2026-03-15 13:28:28”<br>categories:<br>tags:<br>  - 电子取证<br>  - 取证工具<br>  - ZIP伪加密</h2><p>ZipCenOp.jar</p>
+<p>java -jar ZipCenOp.jar r lm.zip</p>
+<p>文件格式签名（File Signature 或 Magic Number）是文件开头的特定字节序列，用于标识文件的类型。以下是一些常见文件格式的签名（十六进制表示）：</p>
+<ol>
+<li>压缩文件</li>
+</ol>
+<p>ZIP: 50 4B 03 04 (PK..)</p>
+<p>RAR: 52 61 72 21 (Rar!)</p>
+<p>7z: 37 7A BC AF 27 1C (7z¼¯’)</p>
+<p>GZIP: 1F 8B</p>
+<p>TAR: 75 73 74 61 72 (ustar)</p>
+<ol start="2">
+<li>图片文件</li>
+</ol>
+<p>JPEG&#x2F;JPG: FF D8 FF E0 或 FF D8 FF E1</p>
+<p>PNG: 89 50 4E 47 0D 0A 1A 0A (‰PNG….)</p>
+<p>GIF: 47 49 46 38 (GIF8)</p>
+<p>BMP: 42 4D (BM)</p>
+<p>WebP: 52 49 46 46 (RIFF) + 57 45 42 50 (WEBP)</p>
+<p>TIFF: 49 49 2A 00 (小端) 或 4D 4D 00 2A (大端)</p>
+<ol start="3">
+<li>文档文件</li>
+</ol>
+<p>PDF: 25 50 44 46 (%PDF)</p>
+<p>Microsoft Office (DOCX&#x2F;XLSX&#x2F;PPTX): 50 4B 03 04 (本质是ZIP格式)</p>
+<p>Word (DOC): D0 CF 11 E0 (ÐÏ.à)</p>
+<p>Excel (XLS): D0 CF 11 E0 (ÐÏ.à)</p>
+<p>PowerPoint (PPT): D0 CF 11 E0 (ÐÏ.à)</p>
+<ol start="4">
+<li>可执行文件</li>
+</ol>
+<p>Windows PE (EXE&#x2F;DLL): 4D 5A (MZ)</p>
+<p>Linux ELF: 7F 45 4C 46 (ELF)</p>
+<p>Mach-O (macOS): FE ED FA CE 或 CF FA ED FE</p>
+<ol start="5">
+<li>音频&#x2F;视频文件</li>
+</ol>
+<p>MP3: 49 44 33 (ID3) 或 FF FB</p>
+<p>WAV: 52 49 46 46 (RIFF) + 57 41 56 45 (WAVE)</p>
+<p>AVI: 52 49 46 46 (RIFF) + 41 56 49 20 (AVI )</p>
+<p>MP4: 00 00 00 20 66 74 79 70 (….ftyp)</p>
+<p>FLV: 46 4C 56 01 (FLV.)</p>
+<ol start="6">
+<li>数据库文件</li>
+</ol>
+<p>SQLite: 53 51 4C 69 74 65 (SQLite)</p>
+<p>MySQL Dump: 2D 2D 20 4D 79 53 51 4C (– MySQL)</p>
+<ol start="7">
+<li>其他常见格式</li>
+</ol>
+<p>HTML: 3C 21 44 4F 43 54 59 50 45 (&lt;!DOCTYPE)</p>
+<p>XML: 3C 3F 78 6D 6C (&lt;?xml)</p>
+<p>JSON: 7B ({) 或 5B ([)</p>
+<p>ISO (光盘镜像): 43 44 30 30 31 (CD001)</p>

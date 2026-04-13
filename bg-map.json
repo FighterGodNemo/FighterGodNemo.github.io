@@ -1,0 +1,83 @@
+{
+  "order": [
+    "背景一",
+    "背景二",
+    "背景三",
+    "背景四",
+    "背景五"
+  ],
+  "items": [
+    {
+      "key": "背景一",
+      "name": "背景一",
+      "order": 1,
+      "main": "/img/bg/%E8%83%8C%E6%99%AF%E4%B8%80.webp",
+      "post": ""
+    },
+    {
+      "key": "背景二",
+      "name": "背景二",
+      "order": 2,
+      "main": "/img/bg/%E8%83%8C%E6%99%AF%E4%BA%8C.webp",
+      "post": ""
+    },
+    {
+      "key": "背景三",
+      "name": "背景三",
+      "order": 3,
+      "main": "/img/bg/%E8%83%8C%E6%99%AF%E4%B8%89.webp",
+      "post": ""
+    },
+    {
+      "key": "背景四",
+      "name": "背景四",
+      "order": 4,
+      "main": "/img/bg/%E8%83%8C%E6%99%AF%E5%9B%9B.webp",
+      "post": ""
+    },
+    {
+      "key": "背景五",
+      "name": "背景五",
+      "order": 5,
+      "main": "/img/bg/%E8%83%8C%E6%99%AF%E4%BA%94.webp",
+      "post": ""
+    }
+  ],
+  "byKey": {
+    "背景一": {
+      "key": "背景一",
+      "name": "背景一",
+      "order": 1,
+      "main": "/img/bg/%E8%83%8C%E6%99%AF%E4%B8%80.webp",
+      "post": ""
+    },
+    "背景二": {
+      "key": "背景二",
+      "name": "背景二",
+      "order": 2,
+      "main": "/img/bg/%E8%83%8C%E6%99%AF%E4%BA%8C.webp",
+      "post": ""
+    },
+    "背景三": {
+      "key": "背景三",
+      "name": "背景三",
+      "order": 3,
+      "main": "/img/bg/%E8%83%8C%E6%99%AF%E4%B8%89.webp",
+      "post": ""
+    },
+    "背景四": {
+      "key": "背景四",
+      "name": "背景四",
+      "order": 4,
+      "main": "/img/bg/%E8%83%8C%E6%99%AF%E5%9B%9B.webp",
+      "post": ""
+    },
+    "背景五": {
+      "key": "背景五",
+      "name": "背景五",
+      "order": 5,
+      "main": "/img/bg/%E8%83%8C%E6%99%AF%E4%BA%94.webp",
+      "post": ""
+    }
+  }
+}

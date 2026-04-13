@@ -1,0 +1,218 @@
+<hr>
+<h2 id="title-linux工具permalink-‘-2026-03-15-Forensic-电子取证-Forensic解题妙具-linux工具-‘date-“2026-03-15-13-28-28”categories-tags-电子取证-取证工具-Linux"><a href="#title-linux工具permalink-‘-2026-03-15-Forensic-电子取证-Forensic解题妙具-linux工具-‘date-“2026-03-15-13-28-28”categories-tags-电子取证-取证工具-Linux" class="headerlink" title="title: linux工具permalink: ‘&#x2F;2026&#x2F;03&#x2F;15&#x2F;Forensic_电子取证&#x2F;Forensic解题妙具&#x2F;linux工具&#x2F;‘date: “2026-03-15 13:28:28”categories:tags:  - 电子取证  - 取证工具  - Linux"></a>title: linux工具<br>permalink: ‘&#x2F;2026&#x2F;03&#x2F;15&#x2F;Forensic_电子取证&#x2F;Forensic解题妙具&#x2F;linux工具&#x2F;‘<br>date: “2026-03-15 13:28:28”<br>categories:<br>tags:<br>  - 电子取证<br>  - 取证工具<br>  - Linux</h2><table>
+<thead>
+<tr>
+<th>工具名称</th>
+<th>主要功能</th>
+<th>简介</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Binwalk</strong></td>
+<td><strong>固件&#x2F;文件分析提取</strong></td>
+<td>核心工具。用于分析、逆向工程固件镜像，识别并提取内嵌的文件和代码。</td>
+</tr>
+<tr>
+<td><strong>Foremost</strong></td>
+<td><strong>文件雕刻</strong></td>
+<td>基于文件头尾（文件签名）从原始磁盘镜像或文件中恢复已删除的文件。</td>
+</tr>
+<tr>
+<td><strong>Sleuth Kit</strong></td>
+<td><strong>磁盘取证分析</strong></td>
+<td><strong>命令行</strong>套件，用于分析磁盘镜像、恢复文件、分析文件系统元数据。</td>
+</tr>
+<tr>
+<td><strong>Autopsy</strong></td>
+<td><strong>磁盘取证分析</strong></td>
+<td><strong>Sleuth Kit 的图形化界面</strong>，非常强大，是开源取证平台的标杆。</td>
+</tr>
+<tr>
+<td><strong>Guymager</strong></td>
+<td><strong>磁盘镜像采集</strong></td>
+<td>轻量、快速、开源的磁盘镜像制作工具，用于创建物理磁盘的 DD 或 E01 格式镜像。</td>
+</tr>
+<tr>
+<td><strong>Bulk Extractor</strong></td>
+<td><strong>信息提取</strong></td>
+<td>快速从镜像中扫描并提取大量信息（如电子邮件、URL、信用卡号、电话号码等）。</td>
+</tr>
+<tr>
+<td><strong>strings</strong></td>
+<td><strong>字符串提取</strong></td>
+<td>系统自带，从二进制文件中提取可读字符串，是初步分析的必备步骤。</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="二、按类别详细推荐"><a href="#二、按类别详细推荐" class="headerlink" title="二、按类别详细推荐"></a>二、按类别详细推荐</h3><h4 id="1-磁盘镜像与采集"><a href="#1-磁盘镜像与采集" class="headerlink" title="1. 磁盘镜像与采集"></a>1. 磁盘镜像与采集</h4><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>安装命令</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Guymager</strong></td>
+<td><code>sudo apt install guymager</code></td>
+<td>创建 DD&#x2F;EWF(E01) 格式镜像，图形化，速度快。</td>
+</tr>
+<tr>
+<td><strong>dcfldd</strong></td>
+<td><code>sudo apt install dcfldd</code></td>
+<td><code>dd</code><br/> 的增强版，提供哈希校验和进度显示。</td>
+</tr>
+<tr>
+<td><strong>FTK Imager</strong></td>
+<td>(需从 AccessData 官网下载 <code>.deb</code><br/> 包)</td>
+<td>经典的闭源工具，Linux 版可用，业界标准。</td>
+</tr>
+</tbody></table>
+<h4 id="2-文件系统与磁盘分析"><a href="#2-文件系统与磁盘分析" class="headerlink" title="2. 文件系统与磁盘分析"></a>2. 文件系统与磁盘分析</h4><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>安装命令</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>The Sleuth Kit (+ Autopsy)</strong></td>
+<td><code>sudo apt install sleuthkit autopsy</code></td>
+<td>分析文件系统、时间线分析、文件恢复。</td>
+</tr>
+<tr>
+<td><strong>X-Ways Forensics</strong></td>
+<td>(Windows 软件，需 Wine)</td>
+<td>顶级闭源工具，功能极其强大，可在 Linux 下通过 Wine 运行。</td>
+</tr>
+</tbody></table>
+<h4 id="3-文件雕刻与恢复"><a href="#3-文件雕刻与恢复" class="headerlink" title="3. 文件雕刻与恢复"></a>3. 文件雕刻与恢复</h4><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>安装命令</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Foremost</strong></td>
+<td><code>sudo apt install foremost</code></td>
+<td>经典的文件雕刻工具。</td>
+</tr>
+<tr>
+<td><strong>Scalpel</strong></td>
+<td><code>sudo apt install scalpel</code></td>
+<td>Foremost 的继承者，性能更好，配置文件更灵活。</td>
+</tr>
+<tr>
+<td><strong>TestDisk&#x2F;PhotoRec</strong></td>
+<td><code>sudo apt install testdisk</code></td>
+<td><strong>PhotoRec</strong> 尤其强大，能恢复多种格式的已删除文件。</td>
+</tr>
+</tbody></table>
+<h4 id="4-内存取证"><a href="#4-内存取证" class="headerlink" title="4. 内存取证"></a>4. 内存取证</h4><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>安装命令</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Volatility</strong></td>
+<td><code>sudo apt install volatility</code></td>
+<td><strong>内存取证事实上的标准</strong>。分析内存转储，提取进程、网络连接、密码哈希等。</td>
+</tr>
+<tr>
+<td><strong>Volatility 3</strong></td>
+<td>(需从 GitHub 下载)</td>
+<td>Volatility 的下一代版本，性能和分析能力更强。</td>
+</tr>
+</tbody></table>
+<h4 id="5-网络取证"><a href="#5-网络取证" class="headerlink" title="5. 网络取证"></a>5. 网络取证</h4><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>安装命令</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Wireshark&#x2F;TShark</strong></td>
+<td><code>sudo apt install wireshark</code></td>
+<td>著名的网络协议分析器，用于分析 pcap 文件。</td>
+</tr>
+<tr>
+<td><strong>Xplico</strong></td>
+<td><code>sudo apt install xplico</code></td>
+<td>从 pcap 流量中提取应用数据（如 HTTP 图片、邮件、VoIP 通话）。</td>
+</tr>
+</tbody></table>
+<h4 id="6-移动设备与数据库取证"><a href="#6-移动设备与数据库取证" class="headerlink" title="6. 移动设备与数据库取证"></a>6. 移动设备与数据库取证</h4><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>安装命令</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>DB Browser for SQLite</strong></td>
+<td><code>sudo apt install sqlitebrowser</code></td>
+<td>查看和分析 SQLite 数据库文件（大量应用使用）。</td>
+</tr>
+<tr>
+<td><strong>libimobiledevice</strong></td>
+<td><code>sudo apt install libimobiledevice-utils</code></td>
+<td>用于与 iOS 设备通信，获取基本信息。</td>
+</tr>
+</tbody></table>
+<h4 id="7-恶意软件分析"><a href="#7-恶意软件分析" class="headerlink" title="7. 恶意软件分析"></a>7. 恶意软件分析</h4><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>安装命令</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>YARA</strong></td>
+<td><code>sudo apt install yara</code></td>
+<td>模式匹配工具，用于识别和分类恶意软件。</td>
+</tr>
+<tr>
+<td><strong>ClamAV</strong></td>
+<td><code>sudo apt install clamav</code></td>
+<td>开源反病毒引擎，可用于初步扫描。</td>
+</tr>
+<tr>
+<td><strong>Radare2</strong></td>
+<td><code>sudo apt install radare2</code></td>
+<td>强大的开源逆向工程框架。</td>
+</tr>
+<tr>
+<td><strong>Ghidra</strong></td>
+<td>(需从 NSA 官网下载)</td>
+<td>美国国安局发布的强大逆向工程工具，可与 IDA Pro 媲美。</td>
+</tr>
+</tbody></table>
+<h4 id="8-图片与多媒体分析"><a href="#8-图片与多媒体分析" class="headerlink" title="8. 图片与多媒体分析"></a>8. 图片与多媒体分析</h4><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>安装命令</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ExifTool</strong></td>
+<td><code>sudo apt install libimage-exiftool-perl</code></td>
+<td>读取、写入和编辑多种文件的元信息（如 JPEG 的 GPS 坐标）。</td>
+</tr>
+<tr>
+<td><strong>Aftershot</strong> &#x2F; <strong>GIMP</strong></td>
+<td><code>sudo apt install gimp</code></td>
+<td>查看和分析图片文件。</td>
+</tr>
+</tbody></table>

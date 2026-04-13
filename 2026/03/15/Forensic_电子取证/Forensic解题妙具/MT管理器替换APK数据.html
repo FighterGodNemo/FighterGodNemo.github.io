@@ -1,0 +1,121 @@
+<hr>
+<h2 id="title-MT管理器替换APK数据permalink-‘-2026-03-15-Forensic-电子取证-Forensic解题妙具-MT管理器替换APK数据-‘date-“2026-03-15-13-28-28”categories-tags-电子取证-取证工具-MT管理器"><a href="#title-MT管理器替换APK数据permalink-‘-2026-03-15-Forensic-电子取证-Forensic解题妙具-MT管理器替换APK数据-‘date-“2026-03-15-13-28-28”categories-tags-电子取证-取证工具-MT管理器" class="headerlink" title="title: MT管理器替换APK数据permalink: ‘&#x2F;2026&#x2F;03&#x2F;15&#x2F;Forensic_电子取证&#x2F;Forensic解题妙具&#x2F;MT管理器替换APK数据&#x2F;‘date: “2026-03-15 13:28:28”categories:tags:  - 电子取证  - 取证工具  - MT管理器"></a>title: MT管理器替换APK数据<br>permalink: ‘&#x2F;2026&#x2F;03&#x2F;15&#x2F;Forensic_电子取证&#x2F;Forensic解题妙具&#x2F;MT管理器替换APK数据&#x2F;‘<br>date: “2026-03-15 13:28:28”<br>categories:<br>tags:<br>  - 电子取证<br>  - 取证工具<br>  - MT管理器</h2><p>在雷电模拟器中使用MT管理器对APK数据进行替换并仿真原应用的使用，需结合ADB工具、文件管理及模块化操作。以下是具体步骤：</p>
+<hr>
+<h3 id="一、环境准备"><a href="#一、环境准备" class="headerlink" title="一、环境准备"></a><strong>一、环境准备</strong></h3><ol>
+<li><strong>开启雷电模拟器调试模式</strong><ul>
+<li>进入模拟器设置 → 高级设置 → 启用“开启调试模式”。</li>
+<li>通过ADB连接模拟器：</li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-plain">Bash
+
+编辑
+
+
+1adb connect 127.0.0.1:5555  # 默认端口5555，多开实例端口为5555+index*2（如第二实例为5557）
+2adb devices  # 确认设备连接
+</code></pre>
+<ol start="2">
+<li><strong>安装必要工具</strong><ul>
+<li><strong>MT管理器</strong>：从官网下载安装，用于文件管理及反编译。</li>
+<li><strong>Magisk</strong>（可选）：用于模块化替换（如需系统级修改）。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="二、APK数据替换流程"><a href="#二、APK数据替换流程" class="headerlink" title="二、APK数据替换流程"></a><strong>二、APK数据替换流程</strong></h3><h4 id="1-替换APK文件（基础方法）"><a href="#1-替换APK文件（基础方法）" class="headerlink" title="1. 替换APK文件（基础方法）"></a><strong>1. 替换APK文件（基础方法）</strong></h4><ul>
+<li><strong>步骤</strong>：<ol>
+<li>将目标APK拖入雷电模拟器的“共享文件夹”（模拟器右侧栏→更多→共享文件夹）。</li>
+<li>打开MT管理器，进入共享文件夹，长按APK选择“安装”。</li>
+<li>若需修改APK内容：<ul>
+<li>反编译APK：在MT中长按APK→“功能”→“APK反编译”。</li>
+<li>编辑资源文件（如<code>assets</code>、<code>res</code>目录）或代码（<code>smali</code>文件）。</li>
+<li>保存并自动签名，重新安装。</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<h4 id="2-替换应用数据（高级仿真）"><a href="#2-替换应用数据（高级仿真）" class="headerlink" title="2. 替换应用数据（高级仿真）"></a><strong>2. 替换应用数据（高级仿真）</strong></h4><ul>
+<li><strong>场景</strong>：需修改游戏资源（如《FGO》立绘）或应用配置。</li>
+<li><strong>步骤</strong>：<ol>
+<li><strong>定位应用数据目录</strong>：<ul>
+<li>路径格式：<code>/data/data/&lt;包名&gt;/</code>（如<code>/data/data/com.bilibili.fatego/</code>）。</li>
+<li>在MT管理器中启用“Root浏览”模式，手动导航至该路径。</li>
+</ul>
+</li>
+<li><strong>替换资源文件</strong>：<ul>
+<li>下载替换文件（如<code>.chara</code>立绘文件、<code>TargetListEmulator.json</code>）。</li>
+<li>复制到共享文件夹，通过MT粘贴至应用数据目录（如<code>/data/data/com.bilibili.fatego/files/Mod/</code>）。</li>
+</ul>
+</li>
+<li><strong>权限修复</strong>：</li>
+</ol>
+</li>
+</ul>
+<pre><code class="language-plain">Bash
+
+编辑
+
+
+1adb shell chmod 660 /data/data/com.pkg/files/Mod/*  # 修复文件权限
+2adb shell chown u0_a89:u0_a89 /data/data/com.pkg/files/Mod/  # 修复属主
+</code></pre>
+<hr>
+<h3 id="三、仿真原应用的关键操作"><a href="#三、仿真原应用的关键操作" class="headerlink" title="三、仿真原应用的关键操作"></a><strong>三、仿真原应用的关键操作</strong></h3><ol>
+<li><strong>签名一致性</strong><ul>
+<li>若APK被加固（如360加固），需先脱壳再反编译：<ul>
+<li>删除<code>META-INF</code>目录下的原始签名文件（<code>CERT.RSA</code>等）。</li>
+<li>使用<code>jarsigner</code>重新签名：</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<pre><code class="language-plain">Bash
+
+编辑
+
+
+1jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore yourKeystore.keystore app.apk yourKeyName
+</code></pre>
+<ol start="2">
+<li><strong>模块化扩展（可选）</strong><ul>
+<li>安装Zygisk模块（如<code>zygisk_Plugin_FGOAssetReplace.zip</code>）实现资源动态替换：<ul>
+<li>Magisk模块→从本地安装→选择模块ZIP。</li>
+<li>重启模拟器生效。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="四、注意事项"><a href="#四、注意事项" class="headerlink" title="四、注意事项"></a><strong>四、注意事项</strong></h3><ol>
+<li><strong>操作安全</strong><ul>
+<li>修改前备份原文件（如<code>adb pull /data/data/com.pkg/ ./backup/</code>）。</li>
+<li>确保应用关闭后再替换数据，避免数据库损坏。</li>
+</ul>
+</li>
+<li><strong>兼容性</strong><ul>
+<li>雷电模拟器v9&#x2F;v10需检查共享文件夹路径（<code>mnt/shared</code>）。</li>
+<li>多实例需匹配端口（如<code>adb -s 127.0.0.1:5557</code>）。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="五、常见问题"><a href="#五、常见问题" class="headerlink" title="五、常见问题"></a><strong>五、常见问题</strong></h3><ul>
+<li><strong>提示“more than one device”</strong>：指定端口执行命令：</li>
+</ul>
+<pre><code class="language-plain">Bash
+
+编辑
+
+
+1.\adb -s 127.0.0.1:5555 install -r --abi arm64-v8a D:\FateGO.apk
+</code></pre>
+<ul>
+<li><strong>文件访问被拒</strong>：在MT中启用“Root浏览”并检查模拟器是否开启Root权限。</li>
+</ul>
+<hr>
+<p>通过以上步骤，可实现APK数据的精准替换与仿真运行。若涉及复杂逆向（如反编译Smali代码），建议结合MT管理器的“Dex编辑器”功能直接修改字节码。</p>

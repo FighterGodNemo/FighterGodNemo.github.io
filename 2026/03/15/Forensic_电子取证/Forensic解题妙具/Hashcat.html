@@ -1,0 +1,292 @@
+<hr>
+<h2 id="title-Hashcatpermalink-‘-2026-03-15-Forensic-电子取证-Forensic解题妙具-Hashcat-‘date-“2026-03-15-13-28-28”categories-tags-电子取证-取证工具-Hashcat"><a href="#title-Hashcatpermalink-‘-2026-03-15-Forensic-电子取证-Forensic解题妙具-Hashcat-‘date-“2026-03-15-13-28-28”categories-tags-电子取证-取证工具-Hashcat" class="headerlink" title="title: Hashcatpermalink: ‘&#x2F;2026&#x2F;03&#x2F;15&#x2F;Forensic_电子取证&#x2F;Forensic解题妙具&#x2F;Hashcat&#x2F;‘date: “2026-03-15 13:28:28”categories:tags:  - 电子取证  - 取证工具  - Hashcat"></a>title: Hashcat<br>permalink: ‘&#x2F;2026&#x2F;03&#x2F;15&#x2F;Forensic_电子取证&#x2F;Forensic解题妙具&#x2F;Hashcat&#x2F;‘<br>date: “2026-03-15 13:28:28”<br>categories:<br>tags:<br>  - 电子取证<br>  - 取证工具<br>  - Hashcat</h2><p>好的，<code>hashcat</code> 是世界上最强大、最流行的密码恢复工具，被誉为 <strong>“密码破解界的王者”</strong>。它支持GPU加速，能极大地提升破解速度。</p>
+<p>它的核心工作流程是：<strong>你给它一个密码的哈希值，它帮你猜出原始的明文密码。</strong></p>
+<p>下面是一个从入门到实战的完整使用指南。</p>
+<hr>
+<h3 id="一、-核心概念与准备"><a href="#一、-核心概念与准备" class="headerlink" title="一、 核心概念与准备"></a><strong>一、 核心概念与准备</strong></h3><h4 id="1-什么是哈希？"><a href="#1-什么是哈希？" class="headerlink" title="1. 什么是哈希？"></a><strong>1. 什么是哈希？</strong></h4><p>哈希是一种单向加密算法，能把任意长度的数据（如密码）变成固定长度的字符串（哈希值）。</p>
+<ul>
+<li>例如，<code>password</code> 的 MD5 哈希值是 <code>5f4dcc3b5aa765d61d8327deb882cf99</code></li>
+<li><strong>hashcat的任务</strong>：通过计算，反向找出 <code>5f4dcc3b5aa765d61d8327deb882cf99</code> 原来就是 <code>password</code>。</li>
+</ul>
+<h4 id="2-安装与基本命令"><a href="#2-安装与基本命令" class="headerlink" title="2. 安装与基本命令"></a><strong>2. 安装与基本命令</strong></h4><p>Hashcat 是一个命令行工具。在Windows下，你打开其所在文件夹，在地址栏输入 <code>cmd</code> 然后回车，即可在当前目录打开命令提示符。</p>
+<p>基本命令格式如下：</p>
+<p>bash</p>
+<p>hashcat -m &lt;哈希类型&gt; -a &lt;攻击模式&gt; &lt;哈希值或哈希文件&gt; &lt;字典或掩码&gt;</p>
+<hr>
+<h3 id="二、-实战破解流程"><a href="#二、-实战破解流程" class="headerlink" title="二、 实战破解流程"></a><strong>二、 实战破解流程</strong></h3><h4 id="步骤1：识别哈希类型"><a href="#步骤1：识别哈希类型" class="headerlink" title="步骤1：识别哈希类型"></a><strong>步骤1：识别哈希类型</strong></h4><p>这是最关键的第一步。你必须告诉 hashcat 你正在破解的是什么哈希。</p>
+<ul>
+<li><strong>方法</strong>：使用 <code>hashcat --help</code> 查看所有支持的哈希类型及其对应的 <code>-m</code> 代码。</li>
+<li><strong>常见类型</strong>：<ul>
+<li><code>-m 0</code>: MD5</li>
+<li><code>-m 1000</code>: NTLM (Windows 系统密码)</li>
+<li><code>-m 1800</code>: sha512crypt (<code>$6$</code>, Linux 影子文件)</li>
+</ul>
+</li>
+</ul>
+<p><strong>示例</strong>：如果你从Windows系统中提取出了哈希 <code>aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0</code>，你需要使用 <code>-m 1000</code> (NTLM)。</p>
+<h4 id="步骤2：选择攻击模式-a"><a href="#步骤2：选择攻击模式-a" class="headerlink" title="步骤2：选择攻击模式 (**-a**)"></a><strong>步骤2：选择攻击模式 (</strong><code>**-a**</code><strong>)</strong></h4><p>hashcat 有多种“猜密码”的策略：</p>
+<table>
+<thead>
+<tr>
+<th>攻击模式</th>
+<th>命令参数</th>
+<th>说明</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>字典攻击</strong></td>
+<td><code>-a 0</code></td>
+<td>使用一个密码字典文件，逐个尝试。</td>
+<td><strong>最常用</strong>，用现成的密码库去撞。</td>
+</tr>
+<tr>
+<td><strong>组合攻击</strong></td>
+<td><code>-a 1</code></td>
+<td>将两个字典中的词组合起来（如 <code>admin123</code><br/>）。</td>
+<td>知道密码可能由两部分组成时。</td>
+</tr>
+<tr>
+<td><strong>掩码攻击</strong></td>
+<td><code>-a 3</code></td>
+<td>按照你设定的规则（如 <code>Abc!123</code><br/>）来猜。</td>
+<td>知道密码的大致格式（如8位，以大写字母开头）。</td>
+</tr>
+<tr>
+<td><strong>混合攻击</strong></td>
+<td><code>-a 6</code><br/> &#x2F; <code>-a 7</code></td>
+<td><strong>字典 + 掩码</strong>（如 <code>password2024</code><br/>）。</td>
+<td>非常强大，结合了字典和规则。</td>
+</tr>
+</tbody></table>
+<p>对于初学者，<strong>从字典攻击 (</strong><code>**-a 0**</code><strong>) 开始</strong>。</p>
+<h4 id="步骤3：准备你的“武器”"><a href="#步骤3：准备你的“武器”" class="headerlink" title="步骤3：准备你的“武器”"></a><strong>步骤3：准备你的“武器”</strong></h4><p><strong>哈希值文件</strong>** **<code>**hashes.txt**</code>：<br>创建一个文本文件（如 <code>hashes.txt</code>），将你要破解的哈希值放进去，每行一个。</p>
+<ol>
+<li>text</li>
+</ol>
+<pre><code class="language-plain">5f4dcc3b5aa765d61d8327deb882cf99
+e10adc3949ba59abbe56e057f20f883e
+</code></pre>
+<p><strong>密码字典</strong>** **<code>**wordlist.txt**</code>：<br>这是一个包含成千上万常用密码的文本文件。你可以在网上下载著名的字典，如 <code>**rockyou.txt**</code>、<code>**weakpass_2a**</code> 等。自己创建一个简单的字典文件内容如下：</p>
+<ol start="2">
+<li>text</li>
+</ol>
+<pre><code class="language-plain">123456
+password
+admin
+qwerty
+letmein
+</code></pre>
+<h4 id="步骤4：开始破解！"><a href="#步骤4：开始破解！" class="headerlink" title="步骤4：开始破解！"></a><strong>步骤4：开始破解！</strong></h4><p>假设你已准备好：</p>
+<ul>
+<li>哈希文件：<code>hashes.txt</code></li>
+<li>字典文件：<code>rockyou.txt</code></li>
+<li>哈希类型：MD5 (<code>-m 0</code>)</li>
+<li>攻击模式：字典攻击 (<code>-a 0</code>)</li>
+</ul>
+<p><strong>在cmd中执行命令：</strong></p>
+<p>bash</p>
+<p>hashcat -m 0 -a 0 hashes.txt rockyou.txt</p>
+<ul>
+<li><code>-m 0</code>： 指定哈希类型为 MD5。</li>
+<li><code>-a 0</code>： 指定攻击模式为字典攻击。</li>
+<li><code>hashes.txt</code>： 包含目标哈希值的文件。</li>
+<li><code>rockyou.txt</code>： 你的密码字典文件。</li>
+</ul>
+<p>按下回车后，hashcat 会开始疯狂工作，屏幕上会显示当前的破解状态、速度和解密的密码。</p>
+<hr>
+<h3 id="三、-高级技巧与常用参数"><a href="#三、-高级技巧与常用参数" class="headerlink" title="三、 高级技巧与常用参数"></a><strong>三、 高级技巧与常用参数</strong></h3><p>为了让破解更高效，你可以添加一些参数：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>作用</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>--force</code></td>
+<td>忽略一些警告（如驱动问题）。</td>
+<td><code>hashcat -m 0 ... --force</code></td>
+</tr>
+<tr>
+<td><code>-O</code></td>
+<td>优化，启用优化内核，提升速度。</td>
+<td><code>hashcat -m 0 -O ...</code></td>
+</tr>
+<tr>
+<td><code>-w 3</code></td>
+<td>设置工作负载，<code>3</code><br/> 是“重度”，让GPU满负荷运行。</td>
+<td><code>hashcat -m 0 -w 3 ...</code></td>
+</tr>
+<tr>
+<td><code>--show</code></td>
+<td><strong>破解完成后</strong>，用此命令查看结果。</td>
+<td><code>hashcat --show hashes.txt</code></td>
+</tr>
+<tr>
+<td><code>-o</code></td>
+<td>将破解出的密码保存到指定文件。</td>
+<td><code>hashcat ... -o cracked_passwords.txt</code></td>
+</tr>
+</tbody></table>
+<p><strong>一个完整的、高效的命令示例：</strong></p>
+<p>bash</p>
+<p>hashcat -m 1000 -a 0 -O -w 3 hashes.txt rockyou.txt -o cracked_passwords.txt</p>
+<hr>
+<h3 id="四、-总结：hashcat-核心工作流"><a href="#四、-总结：hashcat-核心工作流" class="headerlink" title="四、 总结：hashcat 核心工作流"></a><strong>四、 总结：hashcat 核心工作流</strong></h3><ol>
+<li><strong>识别哈希</strong>：确定哈希类型，找到对应的 <code>-m</code> 值。</li>
+<li><strong>准备文件</strong>：创建包含目标哈希的 <code>hashes.txt</code> 文件，准备强大的密码字典。</li>
+<li><strong>选择模式</strong>：根据情况选择攻击模式（首选 <code>-a 0</code> 字典攻击）。</li>
+<li><strong>执行命令</strong>：在命令行中输入完整的 hashcat 命令。</li>
+<li><strong>查看结果</strong>：使用 <code>--show</code> 参数或查看输出文件获取破解出的密码。在 Ubuntu 中使用 Hashcat 破解加盐哈希是标准操作，但比破解普通哈希要多一些注意事项。下面我为你提供完整的流程和指导。</li>
+</ol>
+<hr>
+<h2 id="加盐哈希破解的核心概念"><a href="#加盐哈希破解的核心概念" class="headerlink" title="加盐哈希破解的核心概念"></a>加盐哈希破解的核心概念</h2><p><strong>加盐</strong> 就是在密码哈希之前，在密码前面或后面添加一个随机字符串（盐值）。</p>
+<ul>
+<li>目的：防止彩虹表攻击，确保即使两个用户密码相同，其哈希值也不同。</li>
+<li>格式：通常存储为 <code>$hash$salt</code> 或 <code>salt$hash</code> 等形式。</li>
+</ul>
+<hr>
+<h2 id="步骤-1：识别哈希类型"><a href="#步骤-1：识别哈希类型" class="headerlink" title="步骤 1：识别哈希类型"></a>步骤 1：识别哈希类型</h2><p>这是最关键的一步！你需要知道：</p>
+<ol>
+<li><strong>哈希算法</strong>（如 MD5, SHA1, SHA256, SHA512 等）</li>
+<li><strong>盐值的位置和格式</strong></li>
+<li><strong>对应的 Hashcat 模式代码</strong></li>
+</ol>
+<h3 id="常见加盐哈希格式示例："><a href="#常见加盐哈希格式示例：" class="headerlink" title="常见加盐哈希格式示例："></a>常见加盐哈希格式示例：</h3><table>
+<thead>
+<tr>
+<th>哈希格式</th>
+<th>示例</th>
+<th>Hashcat 模式代码</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>MD5($pass.$salt)</strong></td>
+<td><code>5f4dcc3b5aa765d61d8327deb882cf99:1234</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td><strong>MD5($salt.$pass)</strong></td>
+<td><code>12345f4dcc3b5aa765d61d8327deb882cf99</code></td>
+<td><code>20</code></td>
+</tr>
+<tr>
+<td><strong>SHA1($pass.$salt)</strong></td>
+<td><code>5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8:admin</code></td>
+<td><code>110</code></td>
+</tr>
+<tr>
+<td><strong>SHA1($salt.$pass)</strong></td>
+<td><code>admin5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8</code></td>
+<td><code>120</code></td>
+</tr>
+<tr>
+<td><strong>SHA256($pass.$salt)</strong></td>
+<td><code>5e884898da28047151d0e56f8dc629...:salt123</code></td>
+<td><code>1410</code></td>
+</tr>
+<tr>
+<td><strong>SHA256($salt.$pass)</strong></td>
+<td><code>salt1235e884898da28047151d0e56f8dc629...</code></td>
+<td><code>1420</code></td>
+</tr>
+<tr>
+<td><strong>Linux shadow</strong> (<code>$id$salt$hash</code><br/>)</td>
+<td><code>$6$salt$hash</code></td>
+<td><code>1800</code><br/> (SHA512)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="步骤-2：准备-Hashcat-和文件"><a href="#步骤-2：准备-Hashcat-和文件" class="headerlink" title="步骤 2：准备 Hashcat 和文件"></a>步骤 2：准备 Hashcat 和文件</h2><h3 id="安装-Hashcat"><a href="#安装-Hashcat" class="headerlink" title="安装 Hashcat"></a>安装 Hashcat</h3><p>bash</p>
+<pre><code class="language-plain">sudo apt update
+sudo apt install hashcat hashcat-utils
+</code></pre>
+<h3 id="准备你的文件"><a href="#准备你的文件" class="headerlink" title="准备你的文件"></a>准备你的文件</h3><p><strong>创建哈希文件</strong> (<code>hashes_with_salt.txt</code>)：<br>每行一个哈希，格式为 <code>hash:salt</code> 或根据具体格式要求</p>
+<ol>
+<li>text</li>
+</ol>
+<pre><code class="language-plain">5f4dcc3b5aa765d61d8327deb882cf99:1234
+5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8:admin
+</code></pre>
+<p><strong>准备密码字典</strong> (<code>wordlist.txt</code>)：</p>
+<ol start="2">
+<li>bash</li>
+</ol>
+<pre><code class="language-plain"># 可以使用系统字典或自己创建
+cat /usr/share/wordlists/rockyou.txt &gt; wordlist.txt
+# 或者创建自定义字典
+echo -e &quot;password\n123456\nadmin\nletmein&quot; &gt; wordlist.txt
+</code></pre>
+<hr>
+<h2 id="步骤-3：运行-Hashcat-破解"><a href="#步骤-3：运行-Hashcat-破解" class="headerlink" title="步骤 3：运行 Hashcat 破解"></a>步骤 3：运行 Hashcat 破解</h2><h3 id="基本命令语法："><a href="#基本命令语法：" class="headerlink" title="基本命令语法："></a>基本命令语法：</h3><p>bash</p>
+<p>hashcat -m &lt;模式代码&gt; -a &lt;攻击模式&gt; &lt;哈希文件&gt; &lt;字典或掩码&gt;</p>
+<h3 id="实战示例："><a href="#实战示例：" class="headerlink" title="实战示例："></a>实战示例：</h3><h4 id="示例-1：破解-MD5-pass-salt-模式-10"><a href="#示例-1：破解-MD5-pass-salt-模式-10" class="headerlink" title="示例 1：破解 MD5($pass.$salt) - 模式 10"></a>示例 1：破解 MD5($pass.$salt) - 模式 10</h4><p>bash</p>
+<pre><code class="language-plain"># 使用字典攻击
+hashcat -m 10 -a 0 hashes_with_salt.txt wordlist.txt
+
+# 使用掩码攻击（假设知道密码是6位数字）
+hashcat -m 10 -a 3 hashes_with_salt.txt ?d?d?d?d?d?d
+</code></pre>
+<h4 id="示例-2：破解-SHA1-salt-pass-模式-120"><a href="#示例-2：破解-SHA1-salt-pass-模式-120" class="headerlink" title="示例 2：破解 SHA1($salt.$pass) - 模式 120"></a>示例 2：破解 SHA1($salt.$pass) - 模式 120</h4><p>bash</p>
+<p>hashcat -m 120 -a 0 hashes_with_salt.txt wordlist.txt</p>
+<h4 id="示例-3：破解-Linux-Shadow-密码（-etc-shadow）-模式-1800"><a href="#示例-3：破解-Linux-Shadow-密码（-etc-shadow）-模式-1800" class="headerlink" title="示例 3：破解 Linux Shadow 密码（&#x2F;etc&#x2F;shadow） - 模式 1800"></a>示例 3：破解 Linux Shadow 密码（&#x2F;etc&#x2F;shadow） - 模式 1800</h4><p>bash</p>
+<pre><code class="language-plain"># 提取shadow文件中的哈希行，如：$6$salt$hash
+hashcat -m 1800 -a 0 shadow_hashes.txt wordlist.txt
+</code></pre>
+<hr>
+<h2 id="步骤-4：高级技巧和优化"><a href="#步骤-4：高级技巧和优化" class="headerlink" title="步骤 4：高级技巧和优化"></a>步骤 4：高级技巧和优化</h2><h3 id="1-使用规则增强字典攻击"><a href="#1-使用规则增强字典攻击" class="headerlink" title="1. 使用规则增强字典攻击"></a>1. 使用规则增强字典攻击</h3><p>bash</p>
+<p>hashcat -m 10 -a 0 hashes_with_salt.txt wordlist.txt -r &#x2F;usr&#x2F;share&#x2F;hashcat&#x2F;rules&#x2F;best64.rule</p>
+<h3 id="2-组合攻击（字典-掩码）"><a href="#2-组合攻击（字典-掩码）" class="headerlink" title="2. 组合攻击（字典+掩码）"></a>2. 组合攻击（字典+掩码）</h3><p>bash</p>
+<pre><code class="language-plain"># 在字典中每个密码后面添加2位数字
+hashcat -m 10 -a 1 hashes_with_salt.txt wordlist.txt ?d?d
+</code></pre>
+<h3 id="3-使用-GPU-优化"><a href="#3-使用-GPU-优化" class="headerlink" title="3. 使用 GPU 优化"></a>3. 使用 GPU 优化</h3><p>bash</p>
+<pre><code class="language-plain"># 强制使用GPU（通常默认启用）
+hashcat -m 10 -a 0 -D 2 hashes_with_salt.txt wordlist.txt
+
+# 查看GPU状态
+hashcat -I
+</code></pre>
+<h3 id="4-恢复会话和显示结果"><a href="#4-恢复会话和显示结果" class="headerlink" title="4. 恢复会话和显示结果"></a>4. 恢复会话和显示结果</h3><p>bash</p>
+<pre><code class="language-plain"># 如果中断，可以恢复会话
+hashcat --session mysession --restore
+
+# 显示破解结果
+hashcat -m 10 --show hashes_with_salt.txt
+</code></pre>
+<hr>
+<h2 id="完整实战演示"><a href="#完整实战演示" class="headerlink" title="完整实战演示"></a>完整实战演示</h2><p>假设我们有文件 <code>my_hashes.txt</code>：</p>
+<p>text</p>
+<pre><code class="language-plain">5f4dcc3b5aa765d61d8327deb882cf99:1234
+5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8:admin
+</code></pre>
+<h3 id="步骤："><a href="#步骤：" class="headerlink" title="步骤："></a>步骤：</h3><ol>
+<li><strong>识别哈希</strong>：第一个是 MD5($pass.$salt)，第二个是 SHA1($pass.$salt)</li>
+</ol>
+<p><strong>准备字典</strong>：</p>
+<ol start="2">
+<li>bashecho -e “password\nadmin\n123456\nletmein” &gt; my_wordlist.txt</li>
+</ol>
+<p><strong>运行破解</strong>：</p>
+<ol start="3">
+<li>bash</li>
+</ol>
+<pre><code class="language-plain"># 先破解MD5
+hashcat -m 10 -a 0 my_hashes.txt my_wordlist.txt
+
+# 显示结果
+hashcat -m 10 --show my_hashes.txt
+
+# 然后破解SHA1  
+hashcat -m 110 -a 0 my_hashes.txt my_wordlist.txt
+hashcat -m 110 --show my_hashes.txt
+</code></pre>
+<p>D:</p>
+<p>cd D:\CaptureTheFlag\CTFTool\hashcat-7.1.2</p>
+<p>hashcat -m 0 -a 0 C:\Users\glj07\Desktop\hash.txt D:\Forensic\ForensicTool\Decrypt\rockyou\rockyou.txt -d 1 -O</p>
+<p><img src="/Hashcat/1763818241816-45a15e17-eab4-4a68-8b79-3e53b1a94a1f.png"><img src="/Hashcat/1763818313205-5c2fb803-8fff-4911-a83d-8c9621556604.png"></p>
+<pre><code class="language-plain">hashcat -m 0 --show C:\Users\glj07\Desktop\hash.txt
+</code></pre>
+<p><img src="/Hashcat/1763820315969-4dd993cb-5205-4f60-a8f4-69ff313d292d.png"></p>

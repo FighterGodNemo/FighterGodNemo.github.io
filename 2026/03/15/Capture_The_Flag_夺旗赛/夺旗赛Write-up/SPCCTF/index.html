@@ -1,0 +1,699 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>SPCCTF | 琉璃幻彩的博客</title><meta name="author" content="琉璃幻彩"><meta name="copyright" content="琉璃幻彩"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="哈基米南北绿豆            猜测是和汉信和DM有关。 曼波曼波曼波 直接扫二维码  666我是个不信邪的小伙（  smn.txt开头有等号猜测和base64编码相关：Base64 编码时需要将二进制数据按 3 个字节（24 位）为一组，转换成 4 个 6 位的 Base64 字符，所以有时会在结尾填充&#x3D;。 而这个文件&#x3D;在最开头非常扎眼，推测文本被倒置。同时考虑到文本量">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SPCCTF">
+<meta property="og:url" content="https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/index.html">
+<meta property="og:site_name" content="琉璃幻彩的博客">
+<meta property="og:description" content="哈基米南北绿豆            猜测是和汉信和DM有关。 曼波曼波曼波 直接扫二维码  666我是个不信邪的小伙（  smn.txt开头有等号猜测和base64编码相关：Base64 编码时需要将二进制数据按 3 个字节（24 位）为一组，转换成 4 个 6 位的 Base64 字符，所以有时会在结尾填充&#x3D;。 而这个文件&#x3D;在最开头非常扎眼，推测文本被倒置。同时考虑到文本量">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fightergodnemo.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2026-03-15T05:28:16.000Z">
+<meta property="article:modified_time" content="2026-04-13T12:08:00.000Z">
+<meta property="article:author" content="琉璃幻彩">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="SPCCTF">
+<meta property="article:tag" content="WriteUp">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fightergodnemo.github.io/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "SPCCTF",
+  "url": "https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/",
+  "image": "https://fightergodnemo.github.io/img/avatar.jpg",
+  "datePublished": "2026-03-15T05:28:16.000Z",
+  "dateModified": "2026-04-13T12:08:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "琉璃幻彩",
+      "url": "https://FighterGodNemo.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/index.html"><link rel="preconnect" href="https://cdn.staticfile.org"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.5.2/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.20260413234739673.json","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.staticfile.org/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'SPCCTF',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script src="/js/bg-firstpaint.js?v=20260402-2"></script><link rel="stylesheet" href="/css/custom.css?v=20260402-2"><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="琉璃幻彩的博客" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">112</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">130</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">26</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" data-has-custom-post-top-img="0"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">琉璃幻彩的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">SPCCTF</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">SPCCTF</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-15T05:28:16.000Z" title="发表于 2026-03-15 13:28:16">2026-03-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-04-13T12:08:00.000Z" title="更新于 2026-04-13 20:08:00">2026-04-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Capture-The-Flag-%E5%A4%BA%E6%97%97%E8%B5%9B/">Capture_The_Flag_夺旗赛</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Capture-The-Flag-%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/">夺旗赛Write-up</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Capture-The-Flag-%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/">SPCCTF</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">4.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>16分钟</span></span></div></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="哈基米南北绿豆"><a href="#哈基米南北绿豆" class="headerlink" title="哈基米南北绿豆"></a>哈基米南北绿豆</h2><p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229120.png" loading='lazy'></p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229111.png" loading='lazy'></p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229057.png" loading='lazy'></p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229102.png" loading='lazy'></p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229074.png" loading='lazy'></p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229066.png" loading='lazy'></p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229049.png" loading='lazy'></p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229031.png" loading='lazy'></p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229040.png" loading='lazy'></p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130228975.png" loading='lazy'></p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130228956.png" loading='lazy'></p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130228938.png" loading='lazy'></p>
+<p>猜测是和汉信和DM有关。</p>
+<h2 id="曼波曼波曼波"><a href="#曼波曼波曼波" class="headerlink" title="曼波曼波曼波"></a>曼波曼波曼波</h2><p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229279.png" loading='lazy'></p>
+<p>直接扫二维码</p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229261.png" loading='lazy'></p>
+<p>666我是个不信邪的小伙（</p>
+<ul>
+<li>smn.txt开头有等号猜测和base64编码相关：<strong><u>Base64 编码时需要将二进制数据按 3 个字节（24 位）为一组，转换成 4 个 6 位的 Base64 字符，所以有时会在结尾填充&#x3D;。</u></strong></li>
+<li>而这个文件&#x3D;在最开头非常扎眼，推测文本被倒置。同时考虑到文本量过于庞大，大概率是图片转换过来的数据。</li>
+</ul>
+<p>使用SRK（CyberChef的汉化版）反转、解码、渲染图像</p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229252.png" loading='lazy'></p>
+<ul>
+<li>用<strong>foremost</strong>提取得到压缩包（Foremost 是一款常用于文件提取和数据恢复的工具，尤其在Misc（杂项）、Forensics（取证）和Steganography（隐写术）类题目中经常使用。它的核心功能是从磁盘镜像、二进制文件或存储设备中提取隐藏或删除的文件，基于文件的头部（Header）和尾部（Footer）签名进行识别。）</li>
+<li>根据提示，内层压缩包xixi.zip的密码是XYCTF2025</li>
+<li>外层的图片和内层压缩包的图片一样，怀疑是双图盲水印，使用**<u>随波逐流双图盲水印解密</u>**即可<br><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229241.jpeg" loading='lazy'></li>
+</ul>
+<p>得到flag。</p>
+<h2 id="明日方舟寻访模拟器"><a href="#明日方舟寻访模拟器" class="headerlink" title="明日方舟寻访模拟器"></a>明日方舟寻访模拟器</h2><p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229136.png" loading='lazy'></p>
+<p>chmod +x arknights</p>
+<p>.&#x2F;arknights</p>
+<h2 id="逐项解释："><a href="#逐项解释：" class="headerlink" title="逐项解释："></a>逐项解释：</h2><h3 id="ELF-64-bit-LSB-executable"><a href="#ELF-64-bit-LSB-executable" class="headerlink" title="ELF 64-bit LSB executable"></a><code>ELF 64-bit LSB executable</code></h3><ul>
+<li><strong>ELF</strong>: Executable and Linkable Format，Linux 标准可执行文件格式</li>
+<li><strong>64-bit</strong>: 64位程序</li>
+<li><strong>LSB</strong>: Least Significant Byte，小端序（数据存储方式）</li>
+<li><strong>executable</strong>: 可执行文件（不是库文件或对象文件）</li>
+</ul>
+<h3 id="x86-64-version-1-SYSV"><a href="#x86-64-version-1-SYSV" class="headerlink" title="x86-64, version 1 (SYSV)"></a><code>x86-64, version 1 (SYSV)</code></h3><ul>
+<li><strong>x86-64</strong>: AMD64&#x2F;Intel 64 架构（64位x86处理器）</li>
+<li><strong>SYSV</strong>: System V ABI，Unix 系统调用规范</li>
+</ul>
+<h3 id="dynamically-linked"><a href="#dynamically-linked" class="headerlink" title="dynamically linked"></a><code>dynamically linked</code></h3><ul>
+<li><strong>动态链接</strong>：运行时需要外部库文件（如 <a target="_blank" rel="noopener" href="https://libc.so/">libc.so</a>）</li>
+<li>与之相对的是 <code>statically linked</code>（静态链接）</li>
+</ul>
+<h3 id="interpreter-lib64-ld-linux-x86-64-so-2"><a href="#interpreter-lib64-ld-linux-x86-64-so-2" class="headerlink" title="interpreter /lib64/ld-linux-x86-64.so.2"></a><code>interpreter /lib64/ld-linux-x86-64.so.2</code></h3><ul>
+<li><strong>解释器</strong>：程序加载器，负责加载和运行程序</li>
+<li>这是 Linux 的动态链接器路径</li>
+</ul>
+<h3 id="BuildID-sha1-8f2e3eca448ea1ef8b61d0aa67c15818bf597b9c"><a href="#BuildID-sha1-8f2e3eca448ea1ef8b61d0aa67c15818bf597b9c" class="headerlink" title="BuildID[sha1]=8f2e3eca448ea1ef8b61d0aa67c15818bf597b9c"></a><code>BuildID[sha1]=8f2e3eca448ea1ef8b61d0aa67c15818bf597b9c</code></h3><ul>
+<li><strong>构建ID</strong>：文件的唯一标识符，用于调试和版本管理</li>
+</ul>
+<h3 id="for-GNU-Linux-3-2-0"><a href="#for-GNU-Linux-3-2-0" class="headerlink" title="for GNU/Linux 3.2.0"></a><code>for GNU/Linux 3.2.0</code></h3><ul>
+<li><strong>目标系统</strong>：为 GNU&#x2F;Linux 3.2.0 系统编译</li>
+</ul>
+<h3 id="not-stripped"><a href="#not-stripped" class="headerlink" title="not stripped"></a><code>not stripped</code></h3><ul>
+<li><strong>未剥离</strong>：包含调试符号信息（函数名、变量名等）</li>
+<li>这对逆向分析和调试很有帮助</li>
+<li>如果是 <code>stripped</code> 则移除了这些信息</li>
+</ul>
+<hr>
+<h2 id="这对-CTF-Pwn-的意义："><a href="#这对-CTF-Pwn-的意义：" class="headerlink" title="这对 CTF Pwn 的意义："></a>这对 CTF Pwn 的意义：</h2><ol>
+<li><strong>64位程序</strong> → 使用 64 位 ROP gadgets，参数通过寄存器传递</li>
+<li><strong>动态链接</strong> → 可能需要泄露 libc 地址</li>
+<li><strong>未剥离</strong> → 逆向分析更容易，可以直接看到函数名</li>
+<li><strong>ELF 格式</strong> → 标准 Linux 可执行文件</li>
+</ol>
+<hr>
+<h2 id="下一步分析建议："><a href="#下一步分析建议：" class="headerlink" title="下一步分析建议："></a>下一步分析建议：</h2><p>bash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># 检查安全机制</span><br><span class="line">checksec arknights</span><br><span class="line"></span><br><span class="line"># 查看引用的库</span><br><span class="line">ldd arknights</span><br><span class="line"></span><br><span class="line"># 查看符号表（函数名）</span><br><span class="line">nm arknights</span><br><span class="line"></span><br><span class="line"># 或者用 objdump</span><br><span class="line">objdump -t arknights | head -20</span><br><span class="line"></span><br><span class="line"># 用 strings 查看字符串</span><br><span class="line">strings arknights | grep -i flag</span><br></pre></td></tr></table></figure>
+
+<p>这是一个标准的 <strong>64位 Linux Pwn 题目</strong>，你可以开始分析漏洞了！</p>
+<h2 id="“无标题文档”"><a href="#“无标题文档”" class="headerlink" title="“无标题文档”"></a>“无标题文档”</h2><h2 id="为什么是-127-0-0-1？"><a href="#为什么是-127-0-0-1？" class="headerlink" title="为什么是 127.0.0.1？"></a>为什么是 127.0.0.1？</h2><h3 id="1-本地回环地址"><a href="#1-本地回环地址" class="headerlink" title="1. 本地回环地址"></a>1. <strong>本地回环地址</strong></h3><ul>
+<li><code>127.0.0.1</code> 是标准的本地回环地址（localhost）</li>
+<li>任何计算机上，<code>127.0.0.1</code> 都指向自己</li>
+</ul>
+<p>33060 8080 端口常用</p>
+<p>nmap -</p>
+<p>若-p-扫描所有，太慢</p>
+<p>可以针对性</p>
+<p>如果扫的慢，可以后面加一个-pn 用pin扫描</p>
+<p>CVE</p>
+<p>nday永恒之蓝</p>
+<p>无影-图形化解密</p>
+<p>1day</p>
+<p>service</p>
+<p>wordpress</p>
+<p>博客搭建hexo</p>
+<p>apache cve</p>
+<p>.dockerfile</p>
+<?php 标签
+
+## "掩码爆破"
+
+题目：好像总共6位。看到密码的第三个是字母a
+
+解答：使用Advanced Archive Password Recovery掩码破解压缩包密码：
+![](1759976948254-36f282b5-c02c-45a6-a97a-6bcda3753872.png)
+
+![](1759977009504-3c094d20-235f-43a2-8bef-a680e9620aaf.png)
+
+仅耗八秒解得flag{zxcdascdqw1wsascq1wdwdsq}
+
+（ps：我试验了一下，不选择掩码直接爆破需要花17分钟）
+
+## 幽清晨成员大头照解密
+
+题目：
+
+![](1759013922480-ec05e8c8-1adc-41d1-9e34-719404fab01e.png)
+
+思路：
+
+enc 文件 通常表示 加密文件（Encrypted File），并没有统一的标准格式，而是由加密软件或工具自定义生成的加密后文件。
+
+解得密码后，**使用原加密软件的解密功能（如“文件加密器.app”），输入密码解密成原始文件。**
+
+**破解这个幽清晨.zip.enc 密码的大致方向：**
+
+**1. 判断加密类型**
+
+查看文件头（用 WinHex 或 CyberChef 看前几十字节）：
+
++ <u> 如果开头有 Salted__ 等字符串，可能是 OpenSSL 格式的加密（AES-256-CBC 等）。</u>
++ <u>如果开头 8 字节类似魔数（如 53 61 6C 74 65 64 是"Salted"），说明有 salt。</u>
++ <u>如果完全随机高熵，可能是 AES 或流加密。</u>
++ <u>如果熵较低，可能是简单 XOR 或异或加密。</u>
+
+2. 手动猜密码，试试可能撞大运
+
+**3.**** 使用 CyberChef 进行算法+密码测试**
+
+如果知道或猜测算法，可在 CyberChef 用以下流程：
+
+示例：AES 解密测试
+
+[AES Decrypt]
+
+- Key: 幽清晨 （UTF8 或 Hex）
+
+- IV: 000000...（或同 Key）
+
+- Mode: CBC（常见）
+
+然后看输出是否出现 PK 头。
+
+**4. 暴力破解/字典攻击**
+
+如果简单密码不对，需用工具做字典攻击或暴力破解。
+
+工具推荐：
+
+·<u> John the Ripper（支持加密 ZIP 破解）</u>
+
+<u>· hashcat（需知道加密算法，性能强大）</u>
+
+· 如果是自制加密器，可能要自己写脚本。
+
+**5. 已知明文攻击（如果加密前是 ZIP）**
+
+如果加密算法是流加密（如 XOR、RC4）或块加密但模式是流模式，可以利用 ZIP 文件头固定字节（50 4B 03 04…）进行已知明文攻击，恢复密钥。
+
+**在 CyberChef 用 XOR Brute Force 并设置 Crib = PK 就是一种已知明文攻击。**
+
+**6. 分析“文件加密器.app”**
+
+如果这个 app 是你或认识的人写的，可以：
+
+· 反编译或查看其源代码（如果是 Python 等脚本）。
+
+· 分析加密逻辑（是否使用固定密钥、固定 IV、简单 XOR 等）。
+
+
+
+**解答过程：**
+
++ 尝试用winhex打开，选择工具—磁盘工具—通过文件类型恢复，勾选Archive，显示未成功识别文件。
++ 将幽清晨拖入CyberChef，用Magic尝试自动识别加密/编码方式，输出了乱码
+
+
+**Entropy: 8.00** → 熵值很高
+![](1759030781379-583f22ec-83c9-4e7b-9942-46f1f11a4d2f.png)
+
+**<u>如果熵值 ≈ 7.8~8.0，基本确定是加密数据。</u>**
+
+**<u>如果熵值 ≈ 6.0~7.0，可能是压缩数据（ZIP 本身熵高，但不会接近 8）。</u>**
+
+### **用 CyberChef 尝试 XOR 解密**
++ 使用 **XOR Brute Force**，Key length 从 1 到 8，**Crib** 填 `PK`。
++ 观察是否有密钥能解出 `PK` 开头的数据。
+
+## ✅ 正确参数设置
+| 参数 | 推荐值 | 说明 |
+| --- | --- | --- |
+| **Key length** | `1`→ `4`<br/>（先试 1，再试 2） | 密钥太长会导致结果太多，先从短的开始 |
+| **Sample length** | `10` | 不需要 100，只要检查前几个字节是否出现 `PK`即可 |
+| **Scheme** | `Standard` | ✅ |
+| **Null preserving** | □ 不勾选 | ✅ |
+| **Print key** | ✅ **必须勾选** | 这样才会显示是哪个密钥解出的 |
+| **Output as hex** | □ 不勾选 | 我们要看原始字节或文本结果 |
+| **Crib** | `PK` | ✅ 正确 |
+
+
+**Sample offset** 是指从文件开头跳过多少字节后开始取样（用于密钥测试），
+
++ 大多数情况用 0，因为加密通常从文件头开始。
+
+**需要调整 offset 的情况**
+
++ 如果加密时**跳过了文件头**（比如前 100 字节是明文元数据，之后才是加密内容），就要把 offset 设为 100，这样 Brute Force 会从偏移 100 处开始测试密钥。
++ 或者已知 ZIP 文件头在原文件中的偏移量（比如加密后 `PK` 出现在偏移 2753 处），但这里我们是要找密钥，所以 offset 应设为 0。
+
+  
+ 得：
+![](1759030474317-8996c64f-b8eb-4206-bf03-535202031a13.png)
+
+<u>真正有效的密钥是那些解密后 </u>`<u>PK</u>`<u> 以正常大写字母形式出现的</u>
+
++ 然鹅，输入key输出依旧乱码
+
+分析：
+
+1. **加密算法不是 XOR**
+2. **XOR 密钥长度 > 2**
+3. **加密算法是 AES/DES/RC4 等对称加密**
+4. **加密前有自定义文件头或压缩**
+
+
+
++ 找到site.pyc
++ 考虑使用decompyle3或**uncompyle6 **反编译
++ **反编译**`**site.pyc**`**时遭遇了解析错误**，错误核心是无法识别偏移量 418 处的`END_FINALLY`指令对应的控制流结构。这种问题通常源于 Pyc 文件损坏、Python 版本不匹配、反编译工具兼容性不足，或 Pyc 文件被故意混淆。
++ **目标**`**site.pyc**`**大概率被混淆过**
+
+| **工具** | **优势** | **劣势** |
+| :--- | :--- | :--- |
+| **uncompyle6** | - 直接反编译`.pyc`<br/>为 Python 代码，支持多版本（2.7-3.12）- 命令行工具，简单易用 | - 对高度混淆的字节码可能失败- 反编译结果需人工调整格式 |
+| **pycdc** | - 轻量级，反编译速度快- 对部分混淆代码有更好的兼容性 | - 对最新 Python 版本（如 3.12+）支持有限- 反编译结果可读性略逊于 uncompyle6 |
+| **IDA Pro** | - 强大的二进制分析能力- 支持动态调试和插件扩展 | - 需复杂工具链，反编译效果差- 商业授权，成本高 |
+
+
++ <u>想试试</u><u>用</u>`<u>pycdc</u>`<u>反编译 </u>但是没下载到（哭）
+
+
+
+**<u>思路：要解出 flag，首先得分析 “文件加密器.app” 的加密逻辑，再对加密后的 “1.zip.enc” 进行解密。</u>**
+
+### 1. 分析 “文件加密器.app” 的加密方式
+“文件加密器.app” 是 macOS 应用，从其 `Contents/Resources` 里的文件（如 `__boot__.py`、`gui_wrapper.py` 等 Python 相关文件）来看，它大概率是用 Python 开发并通过打包工具（如 py2app）生成的。
+
++ 找到核心加密代码：重点查看 `gui_wrapper.py` 或 `__boot__.py` 等文件，寻找与加密相关的函数，比如涉及密钥生成、加密算法（如 AES、DES 等对称加密，或 RSA 等非对称加密）调用的部分。
++ 确定加密参数：像密钥长度、加密模式（ECB、CBC 等）、初始向量（IV，如果有）、填充方式等。
+
+### 2. 对 “1.zip.enc” 进行解密
+根据第一步分析出的加密方式，进行逆向解密操作。
+
++ 如果是对称加密（如 AES）：需要获取正确的密钥和 IV（若加密模式需要），然后使用相应的解密函数对 “1.zip.enc” 进行解密，得到原始的 “1.zip” 文件。
++ 如果是非对称加密：则需要对应的私钥来解密。
++ 解密工具选择：可以使用 Python 编写解密脚本（调用 `cryptography` 等第三方库），或者使用专业的加密 / 解密工具（如 OpenSSL 等），根据加密算法和参数进行操作。
+
+### 3. 提取 flag
+解密得到 “1.zip” 后，解压该文件，查看其中的内容，flag 通常会以文本形式存在于解压后的文件中（如某个 txt 文件里）。
+
+需要注意的是，实际操作中可能会遇到各种问题，比如加密逻辑复杂、需要动态调试 “文件加密器.app” 来获取运行时的密钥等，这就需要结合更专业的逆向工程工具（如 GDB、IDA Pro 等）来进一步分析。
+
+**编辑****分享**
+
+如何使用Python编写解密脚本？
+
+怎样获取“文件加密器.app”中的密钥？
+
+有哪些工具可以辅助分析“文件加密器.app”的加密逻辑？
+
+
+
+先压缩再加密，我应当先解密再解压。
+
+没招了，超详细问ai  
+![](1759922825414-de8421cb-978f-4871-814d-014084ba7929.png)
+ 
+
+  
+ 前16字节 AES
+
+bkcrack解明文更好
+
+## "这羽毛球怎么只有一半啊（恼_）"
+
+题目：所以下半身是什么呢（ww
+
++ 解压得可爱的小草神.png
+![](1758346105799-9cc01e51-3120-4632-b6b1-69b1a025ce2d.png)
++ 题目提示图片缺少下半部分，故使用[随波逐流]CTF编码工具修复高宽
++ 拖入得羽毛球-修复高宽.png，得到flag。
+![](1758346226687-c5742520-e620-4796-8f7a-26b40d02fe36.png)
+
+## "baby_eval"
+
+题目：
+
+<?php  
+highlight_file(__FILE__);  
+// flag还是在/flag  
+if(isset($_POST['code'])){  
+$code = $_POST['code'];  
+if (preg_match('/[b-zA-Z]/', $code)) {  
+die('Detected forbidden characters!');  
+}  
+system($code);  
+}  
+?>
+
+
+
+<p>要解决这道 Web 题目，核心是突破**<u>字母过滤限制</u>** 并执行系统命令读取 <code>/flag</code> 文件</p>
+<p>核心矛盾：<code>system()</code> 支持执行 Linux 系统命令，但<code>code</code>参数<strong>不能包含任何字母</strong>，需用「无字母命令」读取 <code>/flag</code>。</p>
+<h3 id="二、关键技术：Linux-无字母命令构造"><a href="#二、关键技术：Linux-无字母命令构造" class="headerlink" title="二、关键技术：Linux 无字母命令构造"></a>二、关键技术：Linux 无字母命令构造</h3><p>Linux 系统中，命令和文件路径可通过 <strong>ASCII 码（十进制 &#x2F; 八进制）转义</strong> 表示，无需直接写字母。例如：</p>
+<ul>
+<li>命令 <code>cat</code>（用于读取文件）的 ASCII 码：<code>c(99)、a(97)、t(116)</code></li>
+<li>文件路径 <code>/flag</code> 的 ASCII 码：<code>/(47)、f(102)、l(108)、a(97)、g(103)</code></li>
+</ul>
+<p>在 Bash 终端中，<code>$&#39;\xXX&#39;</code> 或 <code>$&#39;XXX&#39;</code>（XXX 为八进制）可将 ASCII 码转义为对应字符，例如：</p>
+<ul>
+<li><code>$&#39;\x63\x61\x74&#39;</code> 等价于 <code>cat</code>（63 是 c 的十六进制 ASCII 码，61 是 a，74 是 t）</li>
+<li><code>$&#39;\x2f\x66\x6c\x61\x67&#39;</code> 等价于 <code>/flag</code>（2f 是 &#x2F; 的十六进制 ASCII 码）</li>
+<li>目标命令是 <code>cat /flag</code>（读取 &#x2F;flag 文件），将其转为 <strong>纯 ASCII 码转义格式</strong>（无任何字母）：最终可执行的<code>code</code>参数为：</li>
+</ul>
+<p><strong>bash</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">code=$<span class="string">&#x27;\143\141\164&#x27;</span> /??a?</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-发送-POST-请求"><a href="#2-发送-POST-请求" class="headerlink" title="2. 发送 POST 请求"></a>2. 发送 POST 请求</h4><p>通过工具（如 Burp Suite、Postman）或脚本向目标 URL <code>http://152.32.191.198:33387/</code> 发送 POST 请求，携带上述<code>code</code>参数。</p>
+<p>以 <strong>Burp Suite</strong> 为例：</p>
+<ol>
+<li>打开 Burp，配置浏览器代理，访问目标 URL；</li>
+<li>拦截请求，将请求方法从 <code>GET</code> 改为 <code>POST</code>；</li>
+<li>在请求体中添加参数：code&#x3D;$’\143\141\164’ &#x2F;??a?</li>
+<li>发送请求，查看响应，即可看到 <code>/flag</code> 文件的内容（即 flag 值）。</li>
+</ol>
+<h2 id="1-原理解读"><a href="#1-原理解读" class="headerlink" title="1. 原理解读"></a>1. 原理解读</h2><p>sh</p>
+<p>code&#x3D;$’\143\141\164’ &#x2F;??a?</p>
+<p>这里分为两部分：</p>
+<ol>
+<li><code>**$&#39;\143\141\164&#39;**</code><br>这是 Bash 的 ANSI-C 引号语法，<code>$&#39;...&#39;</code> 里面的反斜杠后跟八进制数字会被转换成对应的 ASCII 字符。<ul>
+<li><code>\143</code> 八进制 → 十进制 99 → ASCII 字符 <code>&#39;c&#39;</code></li>
+<li><code>\141</code> 八进制 → 十进制 97 → ASCII 字符 <code>&#39;a&#39;</code></li>
+<li><code>\164</code> 八进制 → 十进制 116 → ASCII 字符 <code>&#39;t&#39;</code><br>所以 <code>$&#39;\143\141\164&#39;</code> 在展开后就是 <code>cat</code>。</li>
+</ul>
+</li>
+<li><code>**/??a?**</code><br>这是通配符匹配文件名：<ul>
+<li><code>/</code> 根目录开始</li>
+<li><code>??a?</code> 表示：第1个字符任意，第2个字符任意，第3个字符是 <code>a</code>，第4个字符任意。<br>在根目录下，符合这个模式的文件名可能是 <code>flag</code>（<code>fl</code> 任意吗？不是，这里 <code>/??a?</code> 在根目录下匹配，比如 <code>/bin</code> 是 4 个字符，但第三个字符不是 <code>a</code>）。<br>实际上，更可能是用来匹配 <code>/flag</code> 吗？不，<code>/flag</code> 是 5 个字符 <code>/ f l a g</code>，不符合 4 个字符的模式。<br>所以 <code>/??a?</code> 可能匹配到 <code>/bin/bash</code> 吗？不，那是 8 个字符。<br>其实这里 <code>/??a?</code> 可能是笔误或者需要具体环境测试，更常见的是用 <code>/??a?</code> 匹配 <code>/bin/cat</code> 吗？也不对，<code>/bin/cat</code> 是 8 个字符。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="2-为什么这样能绕过过滤"><a href="#2-为什么这样能绕过过滤" class="headerlink" title="2. 为什么这样能绕过过滤"></a>2. 为什么这样能绕过过滤</h2><p>原题的过滤是：</p>
+<p>php</p>
+<p>preg_match(‘&#x2F;[b-zA-Z]&#x2F;‘, $code)</p>
+<p>它禁止 <code>b-z</code> 和 <code>A-Z</code>，但允许：</p>
+<ul>
+<li>小写字母 <code>a</code></li>
+<li>数字、符号、通配符、空格、<code>$</code>、反斜杠、单引号等</li>
+</ul>
+<p><code>$&#39;\143\141\164&#39;</code> 这个字符串里，字面上只有 <code>$ \ 1 4 3 1 4 1 1 6 4 &#39;</code> 这些字符，没有任何 <code>b-zA-Z</code>，所以能通过过滤。</p>
+<p>但是在 <code>system($code)</code> 执行时，Shell 会先进行 ANSI-C 转义，把 <code>$&#39;\143\141\164&#39;</code> 变成 <code>cat</code>，然后执行。</p>
+<hr>
+<h2 id="3-后半部分-a-的作用"><a href="#3-后半部分-a-的作用" class="headerlink" title="3. 后半部分 /??a? 的作用"></a>3. 后半部分 <code>/??a?</code> 的作用</h2><p>如果直接 <code>$&#39;\143\141\164&#39; /????</code> 就是 <code>cat /flag</code>（假设 flag 文件在根目录且名为 4 字符）。<br>但这里你写的是 <code>/??a?</code>，这是 4 个字符，第三个字符必须是 <code>a</code>。<br>在根目录下，常见 4 字符文件名且第三个字符是 <code>a</code> 的有：</p>
+<ul>
+<li>可能没有 <code>flag</code>（因为第三个字符是 <code>l</code> 不是 <code>a</code>）</li>
+<li>可能是 <code>/data</code>、<code>/var?</code> 等，但一般根目录下没有这样的文件。</li>
+</ul>
+<p>所以 <code>/??a?</code> 可能匹配不到 <code>/flag</code>，除非文件名第三个字母是 <code>a</code>。<br>如果题目环境根目录下有一个文件名为 <code>f?ag</code> 之类的，或者 <code>/etc/passwd</code> 是 11 个字符，不匹配。</p>
+<hr>
+<h2 id="4-更合理的-payload"><a href="#4-更合理的-payload" class="headerlink" title="4. 更合理的 payload"></a>4. 更合理的 payload</h2><p>为了读 <code>/flag</code>，应该用：</p>
+<p>sh</p>
+<p>code&#x3D;$’\143\141\164’ &#x2F;????    # 匹配 &#x2F;flag</p>
+<p>或者</p>
+<p>sh</p>
+<p>code&#x3D;$’\143\141\164’ &#x2F;???a?   # 如果 flag 是 5 个字符且第三个是 a</p>
+<p>但 <code>/flag</code> 是 5 个字符 <code>/ f l a g</code>，所以用 <code>/?????</code> 匹配。</p>
+<hr>
+<h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. 总结</h2><p>你给出的 <code>code=$&#39;\143\141\164&#39; /??a?</code> 是一个<strong>用八进制转义绕过字母过滤</strong>的方法</p>
+<h2 id="“Basic-Number-theory”"><a href="#“Basic-Number-theory”" class="headerlink" title="“Basic_Number_theory”"></a>“Basic_Number_theory”</h2><p>数论并非那么简单…答案用SPCCTF{}包裹</p>
+<p>tips：试着了解一下费马小定理、同余运算的规则</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Cryptodome.Util.number <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">flag=<span class="string">b&#x27;SPCCTF&#123;********&#125;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">gift</span>(<span class="params">m, prime</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    计算模素数下的平方根</span></span><br><span class="line"><span class="string">    参数:</span></span><br><span class="line"><span class="string">        m: 被开方数</span></span><br><span class="line"><span class="string">        prime: 模数，必须是一个素数</span></span><br><span class="line"><span class="string">    返回:</span></span><br><span class="line"><span class="string">        m 在模 prime 下的平方根，即满足 x^2 ≡ m (mod prime) 的 x 值</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">pow</span>(m, (prime + <span class="number">1</span>) // <span class="number">2</span>, prime)</span><br><span class="line"></span><br><span class="line">m = bytes_to_long(flag)</span><br><span class="line">p = getPrime(<span class="number">256</span>)</span><br><span class="line">q = getPrime(<span class="number">256</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;p = <span class="subst">&#123;p&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;q = <span class="subst">&#123;q&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;gift1 = <span class="subst">&#123;gift(m, p)&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;gift2 = <span class="subst">&#123;gift(m, q)&#125;</span>&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">p = 105567001902149483225233801278030547652749833525571608392930512645364400245999</span></span><br><span class="line"><span class="string">q = 81511997683966846473333390828680375856568631631277717336250575831122994340471</span></span><br><span class="line"><span class="string">gift1 = 105419799642658114984760815640014033297217363704585842609128111376906603236722</span></span><br><span class="line"><span class="string">gift2 = 81364795424475478232860405190663861501036161810291951552448174562665197331194</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>解密：</p>
+<p>通过中国剩余定理（CRT），从给定的素数 p、q 以及模平方根值还原出原始 flag：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> long_to_bytes</span><br><span class="line">p = <span class="number">105567001902149483225233801278030547652749833525571608392930512645364400245999</span></span><br><span class="line">q = <span class="number">81511997683966846473333390828680375856568631631277717336250575831122994340471</span></span><br><span class="line">gift1 = <span class="number">105419799642658114984760815640014033297217363704585842609128111376906603236722</span></span><br><span class="line">gift2 = <span class="number">81364795424475478232860405190663861501036161810291951552448174562665197331194</span></span><br><span class="line"><span class="comment"># 计算所有可能的平方根组合（每个模数有两个可能的平方根）</span></span><br><span class="line">x_p_candidates = [gift1, p - gift1]</span><br><span class="line">x_q_candidates = [gift2, q - gift2]</span><br><span class="line"><span class="comment"># 使用中国剩余定理寻找满足条件的m</span></span><br><span class="line">n = p * q</span><br><span class="line"><span class="keyword">for</span> x_p <span class="keyword">in</span> x_p_candidates:</span><br><span class="line">    <span class="keyword">for</span> x_q <span class="keyword">in</span> x_q_candidates:</span><br><span class="line">        <span class="comment"># 计算满足以下条件的m:</span></span><br><span class="line">        <span class="comment"># m ≡ x_p (mod p)</span></span><br><span class="line">        <span class="comment"># m ≡ x_q (mod q)</span></span><br><span class="line">        <span class="comment"># 利用扩展欧几里得算法计算模逆</span></span><br><span class="line">        inv_p = <span class="built_in">pow</span>(p, -<span class="number">1</span>, q)  <span class="comment"># p在模q下的逆元</span></span><br><span class="line">        k = (x_q - x_p) * inv_p % q</span><br><span class="line">        m = x_p + k * p </span><br><span class="line">        <span class="comment"># 将结果转换为字节并尝试解析flag</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            flag = long_to_bytes(m)</span><br><span class="line">            <span class="keyword">if</span> flag.startswith(<span class="string">b&#x27;SPCCTF&#123;&#x27;</span>) <span class="keyword">and</span> flag.endswith(<span class="string">b&#x27;&#125;&#x27;</span>):</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;Found flag:&quot;</span>, flag.decode())</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229314.png" loading='lazy'></p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229337.png" loading='lazy'></p>
+<h2 id="“basics”"><a href="#“basics”" class="headerlink" title="“basics”"></a>“basics”</h2><p>基础，答案用utflag{}包裹<a href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/basics/1763080711015-a6595b2e-cc67-4734-8140-49a1cfd054c7.txt">binary.txt</a></p>
+<p>排除零宽隐写<br><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130228984.png" loading='lazy'></p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229020.png" loading='lazy'></p>
+<p>只有 A-Z, a-z, 0-9, 以及 <code>/</code> 和 <code>+</code> 出现</p>
+<p>猜测base64编码方式<br><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130228993.png" loading='lazy'></p>
+<p>罗马人。明显是凯撒密码</p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229011.png" loading='lazy'></p>
+<p>信息中的每一个字母都被另一个独特的字母替换了</p>
+<p>工具：<a target="_blank" rel="noopener" href="https://quipqiup.com/">https://quipqiup.com/</a></p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130228966.png" loading='lazy'></p>
+<p>utflag{n0w_th4ts_wh4t_i_c4ll_crypt0}</p>
+<h2 id="“CTF决赛”"><a href="#“CTF决赛”" class="headerlink" title="“CTF决赛”"></a>“CTF决赛”</h2><h2 id="OA入侵分析"><a href="#OA入侵分析" class="headerlink" title="OA入侵分析"></a>OA入侵分析</h2><h3 id="hacker-对目标系统进行用户爆破，成功登陆后台的帐号密码是？格式如test-123456。"><a href="#hacker-对目标系统进行用户爆破，成功登陆后台的帐号密码是？格式如test-123456。" class="headerlink" title="hacker 对目标系统进行用户爆破，成功登陆后台的帐号密码是？格式如test&#x2F;123456。"></a>hacker 对目标系统进行用户爆破，成功登陆后台的帐号密码是？格式如test&#x2F;123456。</h3><p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130228948.png" loading='lazy'></p>
+<p>按大小排序，发现两个比较特殊的logincheck.php，打开看看。</p>
+<h2 id="F12"><a href="#F12" class="headerlink" title="F12_"></a>F12_</h2><p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229346.png" loading='lazy'></p>
+<p>直接<br><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229355.png" loading='lazy'></p>
+<p><strong>Ctrl+Shift+C</strong> 打开元素选择器</p>
+<p><strong>Ctrl+Shift+J</strong> 打开控制台<br><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229325.png" loading='lazy'></p>
+<h2 id="“ida使用”"><a href="#“ida使用”" class="headerlink" title="“ida使用”"></a>“ida使用”</h2><p>NSSCTF{IDA_1s_4_VeRy_ImporTant_t0ol_iN_rever5e_en8ine3ring}<br><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229410.png" loading='lazy'></p>
+<h2 id="PNG-Master"><a href="#PNG-Master" class="headerlink" title="PNG_Master"></a>PNG_Master</h2><p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229179.png" loading='lazy'></p>
+<ul>
+<li>让你难过的事情，有一天，你一定会笑着说出来flag1:4c494c4354467b</li>
+<li>第二段，LSB隐写，RGB最低位,打开Stegsolve：<br><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229162.png" loading='lazy'></li>
+</ul>
+<p>放入SRK，使用magic</p>
+<p>在我们心里，有一块地方是无法锁住的，那块地方叫做希望flag2:5930755f3472335f4d</p>
+<ul>
+<li>第三段，pngcheck</li>
+</ul>
+<p>pngcheck -v <a href="mailto:&#x31;&#x35;&#x30;&#48;&#52;&#x31;&#x5f;&#x6d;&#x69;&#x73;&#x63;&#45;&#80;&#78;&#x47;&#x5f;&#x4d;&#64;&#115;&#x74;&#51;&#x72;&#x2e;&#112;&#x6e;&#x67;">150041_misc-PNG_M@st3r.png</a></p>
+<p>chunk IDAT at offset 0x6f7bb, length 270</p>
+<p>这一块异常，提取出来，然后zlib解压，得到压缩包</p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229153.png" loading='lazy'></p>
+<p>hint是零宽隐写，提示secret与文件名异或</p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229171.png" loading='lazy'></p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229144.png" loading='lazy'></p>
+<p>得到flag3:61733765725f696e5f504e477d</p>
+<p>三段值十六进制解码得到最终flag</p>
+<p>LILCTF{Y0u_4r3_Mas7er_in_PNG}</p>
+<h2 id="twoEs1"><a href="#twoEs1" class="headerlink" title="twoEs1"></a>twoEs1</h2><p>two Es, too Ez! 用SPCCTF{}包裹</p>
+<p>试着了解一下扩展欧几里得算法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">import gmpy2</span><br><span class="line"></span><br><span class="line"># 已知参数</span><br><span class="line">n = 77653027019410283582708662091841984922043011758121679079881183020813164663803315218162399044305258074482737579924642303624296916990420038267507847806411365847770079739424288020008734096352715536212355610499244337263033620679172659903396470522388964976403280440005666750783772493205491694203801534799771603973</span><br><span class="line">e1 = 1550550838</span><br><span class="line">e2 = 4196113069</span><br><span class="line">c1 = 10879882027555312937608696756143487708492509877667613620249639748606727334006539946052668627697088875994270713711095280209616987454727654075073679556671706894288288425066016765935927179268631914629763649753266424293357163466575462028472324055698901991171526421270840161635556574472647431065514324250656887711</span><br><span class="line">c2 = 3011958986718808526365150648555525977083765700624932707761381505508399298854491454270664897732491521128964864382168158216240628717617068568110917894811504799962807736416471284350198523924590448858301736435406723758509936349838419125901147351088181623044341056413457153562300106346324761118425649126782967195</span><br><span class="line"></span><br><span class="line"># 计算扩展欧几里得系数</span><br><span class="line">s, s1, s2 = gmpy2.gcdext(e1, e2)</span><br><span class="line"></span><br><span class="line"># 处理负指数（如果有的话）</span><br><span class="line">if s1 &lt; 0:</span><br><span class="line">    s1 = -s1</span><br><span class="line">    c1 = gmpy2.invert(c1, n)  # 求模逆</span><br><span class="line">if s2 &lt; 0:</span><br><span class="line">    s2 = -s2</span><br><span class="line">    c2 = gmpy2.invert(c2, n)  # 求模逆</span><br><span class="line"></span><br><span class="line"># 计算明文</span><br><span class="line">m = (pow(c1, s1, n) * pow(c2, s2, n)) % n</span><br><span class="line"></span><br><span class="line"># 转换为字节并输出</span><br><span class="line">from Crypto.Util.number import long_to_bytes</span><br><span class="line">print(long_to_bytes(m).decode())</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">import gmpy2</span><br><span class="line"></span><br><span class="line"># 已知参数</span><br><span class="line">n = 77653027019410283582708662091841984922043011758121679079881183020813164663803315218162399044305258074482737579924642303624296916990420038267507847806411365847770079739424288020008734096352715536212355610499244337263033620679172659903396470522388964976403280440005666750783772493205491694203801534799771603973</span><br><span class="line">e1 = 1550550838</span><br><span class="line">e2 = 4196113069</span><br><span class="line">c1 = 10879882027555312937608696756143487708492509877667613620249639748606727334006539946052668627697088875994270713711095280209616987454727654075073679556671706894288288425066016765935927179268631914629763649753266424293357163466575462028472324055698901991171526421270840161635556574472647431065514324250656887711</span><br><span class="line">c2 = 3011958986718808526365150648555525977083765700624932707761381505508399298854491454270664897732491521128964864382168158216240628717617068568110917894811504799962807736416471284350198523924590448858301736435406723758509936349838419125901147351088181623044341056413457153562300106346324761118425649126782967195</span><br><span class="line"></span><br><span class="line"># 计算扩展欧几里得系数</span><br><span class="line">s, s1, s2 = gmpy2.gcdext(e1, e2)</span><br><span class="line"></span><br><span class="line"># 处理负指数（如果有的话）</span><br><span class="line">if s1 &lt; 0:</span><br><span class="line">    s1 = -s1</span><br><span class="line">    c1 = gmpy2.invert(c1, n)  # 求模逆</span><br><span class="line">if s2 &lt; 0:</span><br><span class="line">    s2 = -s2</span><br><span class="line">    c2 = gmpy2.invert(c2, n)  # 求模逆</span><br><span class="line"></span><br><span class="line"># 计算明文</span><br><span class="line">m = (pow(c1, s1, n) * pow(c2, s2, n)) % n</span><br><span class="line"></span><br><span class="line"># 转换为字节并输出</span><br><span class="line">from Crypto.Util.number import long_to_bytes</span><br><span class="line">print(long_to_bytes(m).decode())</span><br></pre></td></tr></table></figure>
+
+<h2 id="twoEs2"><a href="#twoEs2" class="headerlink" title="twoEs2"></a>twoEs2</h2><p>好像。。比刚刚twoEs1难一点？答案用SPCCTF{}包裹</p>
+<p>两个e咋不互素？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Cryptodome.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line">flag=<span class="string">b&quot;SPCCTF&#123;********&#125;&quot;</span></span><br><span class="line"></span><br><span class="line">p, q = getPrime(<span class="number">512</span>), getPrime(<span class="number">512</span>)</span><br><span class="line">n = p * q</span><br><span class="line"></span><br><span class="line">e1 = random.getrandbits(<span class="number">32</span>)</span><br><span class="line">e2 = random.getrandbits(<span class="number">32</span>)</span><br><span class="line"></span><br><span class="line">m = bytes_to_long(flag)</span><br><span class="line">c1 = <span class="built_in">pow</span>(m, e1, n)</span><br><span class="line">c2 = <span class="built_in">pow</span>(m, e2, n)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;n = &#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;e1 = &#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;e2 = &#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;c1 = &#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;c2 = &#125;</span>&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">n = 97600241525101615748091592571664660926639880623676630098513390980179339048294452878617774530804846547759693682625720452045482941031433063601264167464483345140203593650062234011147495096867025786848883396312986373098722431552517575960894385653813275110519118159478403718867113163144951756435064109978693850991</span></span><br><span class="line"><span class="string">e1 = 3739335288</span></span><br><span class="line"><span class="string">e2 = 3124897683</span></span><br><span class="line"><span class="string">c1 = 33002001040793361121205743705051566694083960204437803400110996553874970546459769940895274538944142911035661180721041433582055055901827086366079458238180515982882281159369335115689197909674012289803866694817803339799332165760217770985620911446230237865457225365735286754884597360255964535103536362788889343153</span></span><br><span class="line"><span class="string">c2 = 28612632923221914052449458260170537094022260373135401108346955487860713981145320349945832078855063911329616383875004373295934310132767249858424266864981319085969453037587482565982836138763906635775429377847559657878241052164215585546465219419202751784070881845017799754069244601020027997406547478196338470880</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> long_to_bytes</span><br><span class="line"></span><br><span class="line">n = <span class="number">97600241525101615748091592571664660926639880623676630098513390980179339048294452878617774530804846547759693682625720452045482941031433063601264167464483345140203593650062234011147495096867025786848883396312986373098722431552517575960894385653813275110519118159478403718867113163144951756435064109978693850991</span></span><br><span class="line">e1 = <span class="number">3739335288</span></span><br><span class="line">e2 = <span class="number">3124897683</span></span><br><span class="line">c1 = <span class="number">33002001040793361121205743705051566694083960204437803400110996553874970546459769940895274538944142911035661180721041433582055055901827086366079458238180515982882281159369335115689197909674012289803866694817803339799332165760217770985620911446230237865457225365735286754884597360255964535103536362788889343153</span></span><br><span class="line">c2 = <span class="number">28612632923221914052449458260170537094022260373135401108346955487860713981145320349945832078855063911329616383875004373295934310132767249858424266864981319085969453037587482565982836138763906635775429377847559657878241052164215585546465219419202751784070881845017799754069244601020027997406547478196338470880</span></span><br><span class="line"></span><br><span class="line">g = gmpy2.gcd(e1, e2)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;gcd(e1, e2) =&quot;</span>, g)</span><br><span class="line"></span><br><span class="line">e1p = e1 // g</span><br><span class="line">e2p = e2 // g</span><br><span class="line"></span><br><span class="line"><span class="comment"># 扩展欧几里得</span></span><br><span class="line">gcd, s, t = gmpy2.gcdext(e1p, e2p)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;gcd(e1&#x27;, e2&#x27;) =&quot;</span>, gcd)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;s, t =&quot;</span>, s, t)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 注意 s 或 t 可能是负数</span></span><br><span class="line"><span class="keyword">if</span> s &lt; <span class="number">0</span>:</span><br><span class="line">    c1_inv = gmpy2.invert(c1, n)</span><br><span class="line">    part1 = <span class="built_in">pow</span>(c1_inv, -s, n)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    part1 = <span class="built_in">pow</span>(c1, s, n)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> t &lt; <span class="number">0</span>:</span><br><span class="line">    c2_inv = gmpy2.invert(c2, n)</span><br><span class="line">    part2 = <span class="built_in">pow</span>(c2_inv, -t, n)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    part2 = <span class="built_in">pow</span>(c2, t, n)</span><br><span class="line"></span><br><span class="line">M = (part1 * part2) % n</span><br><span class="line"></span><br><span class="line"><span class="comment"># 现在 M = m^3</span></span><br><span class="line"><span class="comment"># 开三次方</span></span><br><span class="line">m, exact = gmpy2.iroot(M, <span class="number">3</span>)</span><br><span class="line"><span class="keyword">if</span> exact:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Found m:&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(long_to_bytes(<span class="built_in">int</span>(m)).decode())</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Cube root not exact, need to check padding etc.&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>gcd(e1, e2) &#x3D; 3</p>
+<p>gcd(e1’, e2’) &#x3D; 1</p>
+<p>s, t &#x3D; 263546427 -315366631</p>
+<p>Found m:</p>
+<p>SPCCTF{3z_C0mm0n_M0du1u5_4774ck}</p>
+<h2 id="“word-3”"><a href="#“word-3”" class="headerlink" title="“word-3”"></a>“word-3”</h2><p>文件是个伪加密。<br><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229189.png" loading='lazy'></p>
+<p>将09 00改成00 00（奇数是伪加密）</p>
+<p>解压得到word.docx</p>
+<p>放入ctf随波逐流工具得文件内含zip标志<br><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229398.png" loading='lazy'></p>
+<ul>
+<li>更改后缀解压：<br><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229367.png" loading='lazy'></li>
+</ul>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229376.png" loading='lazy'></p>
+<h2 id="X0r"><a href="#X0r" class="headerlink" title="X0r"></a>X0r</h2><p>题目内容：</p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229444.png" loading='lazy'></p>
+<p>解答：</p>
+<p>● 用IDA打开：<br><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229428.png" loading='lazy'></p>
+<ul>
+<li>按F5反编译成c语言代码：</li>
+</ul>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229436.png" loading='lazy'></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">for ( i = 0; i &lt;= 27; ++i )</span><br><span class="line">&#123;</span><br><span class="line">    if ( ((unsigned __int8)v4[i] ^ 0x7A) != enc_0[i] )</span><br><span class="line">    &#123;</span><br><span class="line">        printf(&quot;FLAG is wrong!\n&quot;);</span><br><span class="line">        system(&quot;pause&quot;);</span><br><span class="line">        exit(0);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>意思是：</p>
+<ul>
+<li>用户输入的 <code>v4[i]</code> 与 <code>0x7A</code> 异或。</li>
+<li>结果必须等于 <code>enc_0[i]</code>（<code>enc_0</code> 是程序里已有的数组，存放加密后的数据）。</li>
+<li>循环长度是 28（<code>i</code> 从 0 到 27）。</li>
+</ul>
+<h2 id="2-解密方法"><a href="#2-解密方法" class="headerlink" title="2. 解密方法"></a>2. 解密方法</h2><ul>
+<li>由于XOR操作是可逆的，我们只需要按相反的顺序和相同的密钥进行XOR就能解密。</li>
+</ul>
+<p>所以只要在 IDA 里找到 <code>enc_0</code> 数组的内容（应该是 28 个字节），然后每个字节与 <code>0x7A</code> 异或，就能得到 flag。</p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/file-20260331130229419.png" loading='lazy'></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">decrypt_flag</span>(<span class="params">enc_data, xor_key=<span class="number">0x7A</span></span>):</span><br><span class="line">    flag = <span class="string">&#x27;&#x27;</span>.join([<span class="built_in">chr</span>(byte ^ xor_key) <span class="keyword">for</span> byte <span class="keyword">in</span> enc_data])</span><br><span class="line">    <span class="keyword">return</span> flag</span><br><span class="line">enc_0 = [</span><br><span class="line">    <span class="number">0x34</span>, <span class="number">0x29</span>, <span class="number">0x29</span>, <span class="number">0x39</span>, <span class="number">0x2E</span>, <span class="number">0x3C</span>, <span class="number">0x01</span>, <span class="number">0x22</span>, <span class="number">0x15</span>, <span class="number">0x08</span>, <span class="number">0x25</span>,</span><br><span class="line">    <span class="number">0x13</span>, <span class="number">0x09</span>, <span class="number">0x25</span>, <span class="number">0x18</span>, <span class="number">0x18</span>, <span class="number">0x09</span>, <span class="number">0x13</span>, <span class="number">0x19</span>, <span class="number">0x25</span>, <span class="number">0x08</span>, <span class="number">0x1F</span>, <span class="number">0x0C</span>,</span><br><span class="line">    <span class="number">0x1F</span>, <span class="number">0x08</span>, <span class="number">0x09</span>, <span class="number">0x1F</span>, <span class="number">0x07</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span></span><br><span class="line">]</span><br><span class="line">flag = decrypt_flag(enc_0)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;解密后的 flag: <span class="subst">&#123;flag&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>NSSCTF{Xor_is_basic_reverse}</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://FighterGodNemo.github.io">琉璃幻彩</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/">https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/SPCCTF/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://FighterGodNemo.github.io" target="_blank">琉璃幻彩的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/CTF/">CTF</a><a class="post-meta__tags" href="/tags/WriteUp/">WriteUp</a><a class="post-meta__tags" href="/tags/SPCCTF/">SPCCTF</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/%E3%80%8ACTF%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B%E5%85%A5%E9%97%A8%E3%80%8B/" title="《CTF安全竞赛入门》"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">《CTF安全竞赛入门》</div></div><div class="info-2"><div class="info-item-1">Web信息收集题目2-2 where is the logo考察点：robots.txt文件附件：”C:\Users\glj07\Desktop\题目2-2-Where is logo\index.html”  第一步：搭建本地Web...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20MoeCTF/" title="ez_square"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">ez_square</div></div><div class="info-2"><div class="info-item-1"> 解压得2048_master.exe 运行后显示： 退出，发现layout.dat，内含程序数据 用010editor分别打开2048_master.exe和layout.dat得到：   修改layout数据如下： 运行得flag...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20MoeCTF/" title="ez_square"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">ez_square</div></div><div class="info-2"><div class="info-item-1"> 解压得2048_master.exe 运行后显示： 退出，发现layout.dat，内含程序数据 用010editor分别打开2048_master.exe和layout.dat得到：   修改layout数据如下： 运行得flag...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/CTFshow/Web%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E4%B8%8E%E9%98%B2%E6%8A%A4/" title="Base64编码隐藏"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">Base64编码隐藏</div></div><div class="info-2"><div class="info-item-1">Base64编码隐藏CTF{easy_base64} HTTP头注入</div></div></div></a><a class="pagination-related" href="/2026/03/19/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/CTFshow/Web/" title=""><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-19</div><div class="info-item-2"></div></div><div class="info-2"><div class="info-item-1">Web 1Ctrl+U 查看源代码base64解码 Web 2</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/%E5%AD%A6%E9%95%BF%E7%9A%84%E6%8C%91%E6%88%98%E9%A2%98/%E6%96%B0%E7%94%9F%E7%A4%BC%E7%89%A9%E5%A4%A7%E6%8C%91%E6%88%98%E7%AC%AC%E4%BA%8C%E9%A2%98/" title="新生礼物大挑战第二题"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">新生礼物大挑战第二题</div></div><div class="info-2"><div class="info-item-1"> 解压缩得Do_you_really_know_what_RSA_Is? .py  12345678910111213141516171819202122232425262728from Crypto.Util.number impo...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/%E5%AD%A6%E9%95%BF%E7%9A%84%E6%8C%91%E6%88%98%E9%A2%98/%E5%93%88%E5%9F%BA%E7%B1%B3/" title="哈基米"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">哈基米</div></div><div class="info-2"><div class="info-item-1">‌‌‌‌‍‬‍‬fakeflag‌‌‌‌‍‬‌{‌‌‌‌‍‬‌‍ni‌‌‌‌‍‬‍‌‌‌‌‍‬‌‌‌‌‍‬‍‌‌‌‌‌‌‌‌‌‌‌‌‍_‌‌‌‌‍‍‌‌‌‌‍‬‍‌‌‌‌‌‌‌zhi‌‌‌‌‍‍‍‌‌‌‌‍‍‌‌‌‌‍‌‍_‌‌‌‌‌...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/%E7%9C%8B%E9%9B%AA%E8%AE%BA%E5%9D%9B/Game%E9%80%9A%E5%85%B3/" title="Game通关"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">Game通关</div></div><div class="info-2"><div class="info-item-1">第一关 摩斯密码，去掉斜杠  YOUWIN 第二关 flag{62d0cbb2c69133b52f386701726f29c1} 第三关 看到&#x3D; 想到base64编码  这里SRK一把梭 flag{b9768a37b47be...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">琉璃幻彩</div><div class="author-info-description">The Greatest Magician!</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">112</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">130</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">26</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FighterGodNemo"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/FighterGodNemo" title="Github" target="_blank"><i class="fab fa-github"></i></a><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="微信"><i class="fab fa-weixin"></i></a><div class="qr-code-popup"><img src="/img/qrcode/wechat-qr.png" alt="微信二维码"/ loading='lazy'></div></div><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="QQ"><i class="fab fa-qq"></i></a><div class="qr-code-popup"><img src="/img/qrcode/qq-qr.png" alt="QQ二维码"/ loading='lazy'></div></div><div class="copy-text-wrapper"><a class="social-icon" href="javascript:void(0)" title="Steam好友代码：1905706957" data-copy-text="1905706957"><i class="fab fa-steam"></i></a><div class="copy-text-popup"><h3>Steam好友代码</h3><p>1905706957</p><p class="copy-hint">点击图标复制</p></div></div><a class="social-icon" href="mailto:guliujia2233@outlook.com" title="Email" target="_blank"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">热爱 CTF 和 Forensic 的网安人一枚～
+欢迎各位大佬交流点评！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%93%88%E5%9F%BA%E7%B1%B3%E5%8D%97%E5%8C%97%E7%BB%BF%E8%B1%86"><span class="toc-number">1.</span> <span class="toc-text">哈基米南北绿豆</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%BC%E6%B3%A2%E6%9B%BC%E6%B3%A2%E6%9B%BC%E6%B3%A2"><span class="toc-number">2.</span> <span class="toc-text">曼波曼波曼波</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%98%8E%E6%97%A5%E6%96%B9%E8%88%9F%E5%AF%BB%E8%AE%BF%E6%A8%A1%E6%8B%9F%E5%99%A8"><span class="toc-number">3.</span> <span class="toc-text">明日方舟寻访模拟器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%90%E9%A1%B9%E8%A7%A3%E9%87%8A%EF%BC%9A"><span class="toc-number">4.</span> <span class="toc-text">逐项解释：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ELF-64-bit-LSB-executable"><span class="toc-number">4.1.</span> <span class="toc-text">ELF 64-bit LSB executable</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#x86-64-version-1-SYSV"><span class="toc-number">4.2.</span> <span class="toc-text">x86-64, version 1 (SYSV)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dynamically-linked"><span class="toc-number">4.3.</span> <span class="toc-text">dynamically linked</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#interpreter-lib64-ld-linux-x86-64-so-2"><span class="toc-number">4.4.</span> <span class="toc-text">interpreter &#x2F;lib64&#x2F;ld-linux-x86-64.so.2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BuildID-sha1-8f2e3eca448ea1ef8b61d0aa67c15818bf597b9c"><span class="toc-number">4.5.</span> <span class="toc-text">BuildID[sha1]&#x3D;8f2e3eca448ea1ef8b61d0aa67c15818bf597b9c</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#for-GNU-Linux-3-2-0"><span class="toc-number">4.6.</span> <span class="toc-text">for GNU&#x2F;Linux 3.2.0</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#not-stripped"><span class="toc-number">4.7.</span> <span class="toc-text">not stripped</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%99%E5%AF%B9-CTF-Pwn-%E7%9A%84%E6%84%8F%E4%B9%89%EF%BC%9A"><span class="toc-number">5.</span> <span class="toc-text">这对 CTF Pwn 的意义：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E4%B8%80%E6%AD%A5%E5%88%86%E6%9E%90%E5%BB%BA%E8%AE%AE%EF%BC%9A"><span class="toc-number">6.</span> <span class="toc-text">下一步分析建议：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%9C%E6%97%A0%E6%A0%87%E9%A2%98%E6%96%87%E6%A1%A3%E2%80%9D"><span class="toc-number">7.</span> <span class="toc-text">“无标题文档”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AF-127-0-0-1%EF%BC%9F"><span class="toc-number">8.</span> <span class="toc-text">为什么是 127.0.0.1？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%9C%AC%E5%9C%B0%E5%9B%9E%E7%8E%AF%E5%9C%B0%E5%9D%80"><span class="toc-number">8.1.</span> <span class="toc-text">1. 本地回环地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%85%B3%E9%94%AE%E6%8A%80%E6%9C%AF%EF%BC%9ALinux-%E6%97%A0%E5%AD%97%E6%AF%8D%E5%91%BD%E4%BB%A4%E6%9E%84%E9%80%A0"><span class="toc-number">8.2.</span> <span class="toc-text">二、关键技术：Linux 无字母命令构造</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%8F%91%E9%80%81-POST-%E8%AF%B7%E6%B1%82"><span class="toc-number">8.2.1.</span> <span class="toc-text">2. 发送 POST 请求</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%8E%9F%E7%90%86%E8%A7%A3%E8%AF%BB"><span class="toc-number">9.</span> <span class="toc-text">1. 原理解读</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E6%A0%B7%E8%83%BD%E7%BB%95%E8%BF%87%E8%BF%87%E6%BB%A4"><span class="toc-number">10.</span> <span class="toc-text">2. 为什么这样能绕过过滤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86-a-%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">11.</span> <span class="toc-text">3. 后半部分 &#x2F;??a? 的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%9B%B4%E5%90%88%E7%90%86%E7%9A%84-payload"><span class="toc-number">12.</span> <span class="toc-text">4. 更合理的 payload</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%80%BB%E7%BB%93"><span class="toc-number">13.</span> <span class="toc-text">5. 总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%9CBasic-Number-theory%E2%80%9D"><span class="toc-number">14.</span> <span class="toc-text">“Basic_Number_theory”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%9Cbasics%E2%80%9D"><span class="toc-number">15.</span> <span class="toc-text">“basics”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%9CCTF%E5%86%B3%E8%B5%9B%E2%80%9D"><span class="toc-number">16.</span> <span class="toc-text">“CTF决赛”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OA%E5%85%A5%E4%BE%B5%E5%88%86%E6%9E%90"><span class="toc-number">17.</span> <span class="toc-text">OA入侵分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#hacker-%E5%AF%B9%E7%9B%AE%E6%A0%87%E7%B3%BB%E7%BB%9F%E8%BF%9B%E8%A1%8C%E7%94%A8%E6%88%B7%E7%88%86%E7%A0%B4%EF%BC%8C%E6%88%90%E5%8A%9F%E7%99%BB%E9%99%86%E5%90%8E%E5%8F%B0%E7%9A%84%E5%B8%90%E5%8F%B7%E5%AF%86%E7%A0%81%E6%98%AF%EF%BC%9F%E6%A0%BC%E5%BC%8F%E5%A6%82test-123456%E3%80%82"><span class="toc-number">17.1.</span> <span class="toc-text">hacker 对目标系统进行用户爆破，成功登陆后台的帐号密码是？格式如test&#x2F;123456。</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#F12"><span class="toc-number">18.</span> <span class="toc-text">F12_</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%9Cida%E4%BD%BF%E7%94%A8%E2%80%9D"><span class="toc-number">19.</span> <span class="toc-text">“ida使用”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PNG-Master"><span class="toc-number">20.</span> <span class="toc-text">PNG_Master</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#twoEs1"><span class="toc-number">21.</span> <span class="toc-text">twoEs1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#twoEs2"><span class="toc-number">22.</span> <span class="toc-text">twoEs2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%9Cword-3%E2%80%9D"><span class="toc-number">23.</span> <span class="toc-text">“word-3”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#X0r"><span class="toc-number">24.</span> <span class="toc-text">X0r</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E8%A7%A3%E5%AF%86%E6%96%B9%E6%B3%95"><span class="toc-number">25.</span> <span class="toc-text">2. 解密方法</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E7%9F%A5%E8%AF%86/MT%E7%AE%A1%E7%90%86%E5%99%A8%E6%9B%BF%E6%8D%A2%E5%8C%85%E6%95%B0%E6%8D%AE/" title="MT管理器替换包数据">MT管理器替换包数据</a><time datetime="2026-04-13T23:11:42.460Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E7%9F%A5%E8%AF%86/Cache%EF%BC%88%E7%BC%93%E5%AD%98%EF%BC%89/" title="Cache（缓存）">Cache（缓存）</a><time datetime="2026-04-13T23:11:42.459Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/Volatility3/" title="Volatility3">Volatility3</a><time datetime="2026-04-13T23:11:42.452Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/Python%E5%88%87%E6%8D%A2%E6%89%80%E7%94%A8%E7%89%88%E6%9C%AC/" title="Python切换所用版本">Python切换所用版本</a><time datetime="2026-04-13T23:11:42.451Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/MT%E7%AE%A1%E7%90%86%E5%99%A8%E6%9B%BF%E6%8D%A2APK%E6%95%B0%E6%8D%AE/" title="MT管理器替换APK数据">MT管理器替换APK数据</a><time datetime="2026-04-13T23:11:42.450Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 琉璃幻彩</span><span class="framework-info"><span id="busuanzi_container_site_pv">本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span><span class="footer-separator">|</span><span id="busuanzi_container_site_uv">本站访客数 <span id="busuanzi_value_site_uv"></span> 人次</span></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"></div><script src="/js/custom.js?v=20260402-2"></script><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.staticfile.org/pjax/0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

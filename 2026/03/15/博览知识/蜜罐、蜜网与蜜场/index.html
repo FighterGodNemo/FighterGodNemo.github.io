@@ -1,0 +1,231 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>蜜罐、蜜网与蜜场 | 琉璃幻彩的博客</title><meta name="author" content="琉璃幻彩"><meta name="copyright" content="琉璃幻彩"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="一、蜜罐蜜罐（honey pot）是一种信息收集系统。狭义上的蜜罐指网络防御措施的一种，可以是刻意设置的目标，其存在的价值就在于被攻击甚至攻陷。同时，它必须能记录下被攻击的方式、手段和入侵者寻找到的系统漏洞等，以方便网络维护人员提前找到相应的对策。而广义上的蜜罐也可以是一种攻击手段，用来替代正常的服务提供者，诱捕普通网络用户前来使用，从而获取敏感信息或者不正当利益的方式，下面主要讲述狭义上的蜜罐系">
+<meta property="og:type" content="article">
+<meta property="og:title" content="蜜罐、蜜网与蜜场">
+<meta property="og:url" content="https://fightergodnemo.github.io/2026/03/15/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E8%9C%9C%E7%BD%90%E3%80%81%E8%9C%9C%E7%BD%91%E4%B8%8E%E8%9C%9C%E5%9C%BA/index.html">
+<meta property="og:site_name" content="琉璃幻彩的博客">
+<meta property="og:description" content="一、蜜罐蜜罐（honey pot）是一种信息收集系统。狭义上的蜜罐指网络防御措施的一种，可以是刻意设置的目标，其存在的价值就在于被攻击甚至攻陷。同时，它必须能记录下被攻击的方式、手段和入侵者寻找到的系统漏洞等，以方便网络维护人员提前找到相应的对策。而广义上的蜜罐也可以是一种攻击手段，用来替代正常的服务提供者，诱捕普通网络用户前来使用，从而获取敏感信息或者不正当利益的方式，下面主要讲述狭义上的蜜罐系">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fightergodnemo.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2026-03-15T05:28:20.000Z">
+<meta property="article:modified_time" content="2026-03-21T01:14:00.000Z">
+<meta property="article:author" content="琉璃幻彩">
+<meta property="article:tag" content="博览知识">
+<meta property="article:tag" content="蜜罐">
+<meta property="article:tag" content="蜜网">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fightergodnemo.github.io/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "蜜罐、蜜网与蜜场",
+  "url": "https://fightergodnemo.github.io/2026/03/15/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E8%9C%9C%E7%BD%90%E3%80%81%E8%9C%9C%E7%BD%91%E4%B8%8E%E8%9C%9C%E5%9C%BA/",
+  "image": "https://fightergodnemo.github.io/img/avatar.jpg",
+  "datePublished": "2026-03-15T05:28:20.000Z",
+  "dateModified": "2026-03-21T01:14:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "琉璃幻彩",
+      "url": "https://FighterGodNemo.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="https://fightergodnemo.github.io/2026/03/15/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E8%9C%9C%E7%BD%90%E3%80%81%E8%9C%9C%E7%BD%91%E4%B8%8E%E8%9C%9C%E5%9C%BA/index.html"><link rel="preconnect" href="https://cdn.staticfile.org"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.5.2/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.20260413234739673.json","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.staticfile.org/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '蜜罐、蜜网与蜜场',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script src="/js/bg-firstpaint.js?v=20260402-2"></script><link rel="stylesheet" href="/css/custom.css?v=20260402-2"><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="琉璃幻彩的博客" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">112</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">130</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">26</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" data-has-custom-post-top-img="0"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">琉璃幻彩的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">蜜罐、蜜网与蜜场</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">蜜罐、蜜网与蜜场</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-15T05:28:20.000Z" title="发表于 2026-03-15 13:28:20">2026-03-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-21T01:14:00.000Z" title="更新于 2026-03-21 09:14:00">2026-03-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/">博览知识</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">2.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span></div></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="一、蜜罐"><a href="#一、蜜罐" class="headerlink" title="一、蜜罐"></a>一、蜜罐</h2><p>蜜罐（honey pot）是一种信息收集系统。狭义上的蜜罐指网络防御措施的一种，可以是刻意设置的目标，其存在的价值就在于被攻击甚至攻陷。同时，它必须能记录下被攻击的方式、手段和入侵者寻找到的系统漏洞等，以方便网络维护人员提前找到相应的对策。而广义上的蜜罐也可以是一种攻击手段，用来替代正常的服务提供者，诱捕普通网络用户前来使用，从而获取敏感信息或者不正当利益的方式，下面主要讲述狭义上的蜜罐系统。</p>
+<p>蜜罐作为一种软件应用系统，用来充当入侵诱饵，它通常伪装成看似有利用价值的网络、数据、计算系统，用来吸引黑客攻击。由于蜜罐事实上并不需要对网络提供任何有价值的服务，所以任何对蜜罐的尝试都是可疑的，这些尝试会被记录、监测与分析，从而可能了解攻击方的入侵方式和入侵手段等，也可以因此随时了解针对组织服务器发动的最新的攻击和漏洞，甚至可以通过窃听数据包之间的联系，收集入侵者所用的种种工具，并且进而侵彻对方的社交网络。另外，蜜罐在拖延入侵者对真正目标的攻击上也有一定作用，可以作为第一道防线，承担迷惑和误导入侵者的功能。</p>
+<p>蜜罐技术主要分为低交互蜜罐和高交互蜜罐，交互度直接体现着入侵者可以在蜜罐上进行攻击活动的自由度。</p>
+<p>低交互蜜罐又称伪系统蜜罐，该系统依然以真实系统为基础，切割出部分功能和区域，用于模拟出实系统的部分功能和弱点，引诱入侵者对其发动试探或者攻击。但是整个区域对于真实的入侵者之间的交互极其有限，因为它提供的所有服务都是模拟的行为，只能对攻击行为做出简单的应答，并对攻击行为做记录和分析。</p>
+<p>多数低蜜罐一般都作为端口预警使用，承担监控一个或者多个端口的监测工作。如果这些特定的端口被触发，则发出警告并记录其行为。但是蜜罐本身不会构造完整的合法服务，所以它引入系统的风险最小，不会被入侵者入侵并作为其下一步攻击的跳板。但是通过低交互蜜罐能够收集的信息也相对有限，同时由于低交互蜜罐通常是切割出的虚拟功能或系统，在这些虚拟的功能上通常都会遗留一些独有的指纹信息，入侵者可以通过这些信息来判断和绕过蜜罐系统。</p>
+<p>高交互蜜罐又称实系统蜜罐，它是完全真实的蜜罐：运行着真实的系统，有真实的服务响应，带着真实的漏洞。它甚至模拟每个模拟操作系统的网络堆栈，从而实现对 Nmap 和 Xprobe 之类指纹扫描程序的欺骗。</p>
+<p>高交互蜜罐的优点体现在对入侵者提供真实的系统。当入侵者获得 root 权限后，受系统、数据真实性的迷惑，更多活动和行为将被记录下来。缺点是被入侵的可能性很高，并且被成功攻破后的危害性也很大。入侵者每一个动作都会引起系统真实的反应，例如被溢出、渗透，甚至夺取 root 权限等。如果整个蜜罐被入侵，那么它就会成为入侵者下一步攻击的跳板。通常应另有一套系统用于检测高交互蜜罐的异常情况，如果出现高交互蜜罐被侵入的情况，那么后备系统会立即对蜜罐予以脱机。高蜜罐在提升入侵者的活动自由度、获取更加真实和可靠的第一手材料的同时，也相应地加大了部署和维护的复杂度，扩大了入侵风险。</p>
+<h2 id="二、蜜网"><a href="#二、蜜网" class="headerlink" title="二、蜜网"></a>二、蜜网</h2><p>蜜网（honey network）是在蜜罐技术上逐渐发展起来的一种高交互性的蜜罐，在一台或多台蜜罐主机基础上，结合防火墙、路由器、入侵检测等组成的网络系统。这一网络系统是隐藏在防火墙后面的，所有进出的资料都会受到监控、捕获及控制。与传统蜜罐技术的差异在于，蜜网构成了一个黑客诱捕网络体系架构，在这个架构中，可以包含一个或多个蜜罐，同时保证网络的高度可控性，以及提供多种工具以方便对攻击信息的采集和分析。另外，蜜网架构注重整合资源，将真实的系统、蜜罐系统、各种服务、防火墙及入侵检测等资源有机结合在一起，具有多层次的数据控制机制，全面的数据捕获机制，并能够辅助研究人员对捕获的数据进行深入分析。因此，蜜网也可理解为一个集防火墙、入侵检测、数据分析软件、各类蜜罐等于一体的综合体。</p>
+<p>整个蜜网体系主要由蜜网网关、虚拟蜜罐、物理蜜罐和监控机等组成。蜜网体系结构解决了三大核心功能：数据控制、数据捕获和数据分析。蜜罐与蜜网的研究主要涉及的关键技术有：网络欺骗、数据捕获、数据控制、数据分析等。</p>
+<h3 id="1-网络欺骗"><a href="#1-网络欺骗" class="headerlink" title="1. 网络欺骗"></a>1. 网络欺骗</h3><p>由于蜜罐与蜜网的价值是在其被探测、攻击或者攻陷的时候才得到体现。网络欺骗技术是使蜜网系统在网络上与真实的主机系统难以区分。所以没有网络欺骗功能的蜜罐是没有价值的，网络欺骗技术因此也是蜜网技术体系中最为关键的核心技术和难题。网络欺骗技术的强与弱从一个侧面也反映了蜜罐本身的价值。目前，蜜罐主要的网络欺骗技术有如下几种：模拟服务端口、模拟系统漏洞和应用服务、IP 空间欺骗、流量仿真、网络动态配置、组织信息欺骗、网络服务等。</p>
+<h3 id="2-数据捕获"><a href="#2-数据捕获" class="headerlink" title="2. 数据捕获"></a>2. 数据捕获</h3><p>数据捕获就是在网络入侵者无察觉的情况下，完整地记录所有进入蜜网系统的连接行为及其活动。蜜网系统通常采用 3 种层次捕获数据，分别是防火墙、IDS 和蜜罐主机。防火墙位于蜜网系统的前面，数据捕获是蜜网的重要功能，只有捕获了攻击者的入侵数据，才能对其进行分析整理，才能对防火墙和入侵检测等系统进行规则调整。蜜网的主动防御功能能否得以充分的体现关键在于捕获的数据是否真实、是否详实、是否丰富，所以要从不同方面、不同角度去进行数据的搜集，同时还要考虑数据的真实性。</p>
+<h3 id="3-数据控制"><a href="#3-数据控制" class="headerlink" title="3. 数据控制"></a>3. 数据控制</h3><p>数据控制就是通过设置策略限制攻击者的活动进行网络防护。如果攻击者进入蜜网，既要给攻击者一定的活动自由，也要对攻击者的活动进行限制，不能让攻击者危害蜜网之外的系统，更不能让攻击者发现数据控制的活动。限制攻击者的方法可以采取限制其从蜜罐向外的连接数量和在蜜网中的活动能力。为了防止因单个机制被攻破而导致系统沦陷，通常采用多层次的数据控制机制。</p>
+<h3 id="4-数据分析"><a href="#4-数据分析" class="headerlink" title="4. 数据分析"></a>4. 数据分析</h3><p>数据分析就是把蜜网系统所捕获到的数据记录进行分析处理，提取入侵规则，从中分析是否有新的入侵特征。数据分析包括网络协议分析、网络行为分析和攻击特征分析等。分析的主要目的有两个：一个是分析攻击者在蜜网系统中的活动、扫描击键行为、非法访问系统所使用工具、攻击目的何在以及提取攻击特征；另一个是对攻击者的行为建立数据统计模型，看其是否具有攻击特征，若有则发出预警，保护其他正常网络，避免受到相同攻击。</p>
+<h2 id="三、蜜场"><a href="#三、蜜场" class="headerlink" title="三、蜜场"></a>三、蜜场</h2><p>蜜场（honey farm）是在蜜罐技术的基础上发展起来的，它的优点是“逻辑上分散部署，物理上集中部署”，这就使得在分布式网络中部署蜜罐成为一件相对容易的事。蜜场系统主要由具有诱骗服务模块的受保护子网和集中部署的蜜罐群组成。蜜场系统的体系结构如图 7-26 所示，它由重定向器、前端处理器、控制中心及集中部署的蜜罐群组成。<br><img src="/2026/03/15/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E8%9C%9C%E7%BD%90%E3%80%81%E8%9C%9C%E7%BD%91%E4%B8%8E%E8%9C%9C%E5%9C%BA/file-20260321091440046.png" loading='lazy'><br>蜜场的工作原理比较简单：将所有的蜜罐都集中部署在一个独立的网络中，这个网络成为蜜场的中心；在每个需要进行监控的子网中布置一个重定向器（redirector），重定向器以软件形式存在，它监听对未用地址或端口的非法访问，但它们不直接响应，而是把这些非法访问通过某种保密的方式重定向到被严密监控的蜜场中心；蜜场中心选择某台蜜罐对攻击信息进行响应，然后把响应传回到具有非法访问的子网中去，并且利用一些手段对攻击信息进行收集和分析。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://FighterGodNemo.github.io">琉璃幻彩</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://fightergodnemo.github.io/2026/03/15/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E8%9C%9C%E7%BD%90%E3%80%81%E8%9C%9C%E7%BD%91%E4%B8%8E%E8%9C%9C%E5%9C%BA/">https://fightergodnemo.github.io/2026/03/15/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E8%9C%9C%E7%BD%90%E3%80%81%E8%9C%9C%E7%BD%91%E4%B8%8E%E8%9C%9C%E5%9C%BA/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://FighterGodNemo.github.io" target="_blank">琉璃幻彩的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/">博览知识</a><a class="post-meta__tags" href="/tags/%E8%9C%9C%E7%BD%90/">蜜罐</a><a class="post-meta__tags" href="/tags/%E8%9C%9C%E7%BD%91/">蜜网</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20%E8%AD%A6%E9%93%AE%E6%9D%AF/" title="25警铮杯"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">25警铮杯</div></div><div class="info-2"><div class="info-item-1">一、MISC1.签个到吧别告诉我你连签到题都不会 flag{xxxxxxxx} flag{qiandaotizhenjiandan} 2.一眼盯帧什么东西一闪而过了？cdusec{xxxxx} cdusec{dwa_bjsh_cwnj...</div></div></div></a><a class="pagination-related" href="/2026/03/15/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/exp%E6%98%AF%E4%BB%80%E4%B9%88/" title="exp是什么"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">exp是什么</div></div><div class="info-2"><div class="info-item-1">在PWN里，exp是“exploit”的缩写，意思是漏洞利用**。 EXP脚本就是利用程序漏洞来获取系统权限或执行恶意操作的代码。 </div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/03/15/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E5%B8%B8%E8%A7%81%E7%BC%96%E7%A0%81%E5%8F%8A%E5%8A%A0%E8%A7%A3%E5%AF%86/" title="常见编码及加解密"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">常见编码及加解密</div></div><div class="info-2"><div class="info-item-1">计算机中的数据都是按字节存储。一个字节(Byte)由 8 个二进制位(bit)组成，因此共有 2^8 &#x3D; 256 种状态，从 00000000 到 11111111。 位、字节与表示方式 bit 只有两种状态：0 或 1 B...</div></div></div></a><a class="pagination-related" href="/2026/03/15/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E/" title="溢出漏洞"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">溢出漏洞</div></div><div class="info-2"><div class="info-item-1">一、缓冲区溢出漏洞缓冲区是一块连续的内存区域，用于存放程序运行时加载到内存的运行代码和数据。缓冲区溢出是指程序运行时，向固定大小的缓冲区写入超过其容量的数据，多余的数据会越过缓冲区的边界覆盖相邻内存空间，从而造成溢出。  栈溢出漏洞检...</div></div></div></a><a class="pagination-related" href="/2026/03/25/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/NCRE%E4%B8%89%E7%BA%A7%E7%BD%91%E7%BB%9C%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="NCRE三级网络技术学习笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-25</div><div class="info-item-2">NCRE三级网络技术学习笔记</div></div><div class="info-2"><div class="info-item-1">题型 选择题停机时间与系统可用性 IP地址块转子网掩码   二进制和十进制的转换 BGP（边界网关协议）高频：约出现24 次  边界网关协议（Border Gateway Protocol），是外部而不是内部网关协议(是不同自治系统(...</div></div></div></a><a class="pagination-related" href="/2026/03/15/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E6%97%B6%E9%97%B4%E6%88%B3%E4%BF%A1%E6%81%AF/" title="时间戳信息"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">时间戳信息</div></div><div class="info-2"><div class="info-item-1">Unix 时间戳：苹果和安卓都可以用，基准都是 1970-01-01 00:00:00 UTC。 常见时间基准与单位  Unix &#x2F; POSIX：1970-01-01 00:00:00 UTC 起算，秒或毫秒。 iOS 原生...</div></div></div></a><a class="pagination-related" href="/2026/03/15/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E6%8F%90%E9%97%AE%E7%9A%84%E6%99%BA%E6%85%A7/" title="提问的智慧"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">提问的智慧</div></div><div class="info-2"><div class="info-item-1">书摘观点1 你不必在技术上很在行才能吸引我们的注意，****但你必须表现出能引导你变得在行的特质** —— ****机敏、有想法、善于观察、乐于主动参与解决问题。**  观点2 提出技术问题前，请先做到以下事情：  尝试在你准备提问的...</div></div></div></a><a class="pagination-related" href="/2026/04/12/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E7%90%89%E7%92%83%E5%98%89%E7%9A%84skill/" title="琉璃嘉的skill"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-04-12</div><div class="info-item-2">琉璃嘉的skill</div></div><div class="info-2"><div class="info-item-1">离开一个地方的时候检查自己或他人是否有物品遗留避免潜在麻烦：走了很远才想起来。东西拿不回或拿回成本过高。 当口袋有身份证、学生证等证件时，若需从口袋抽取物品，应当在抽取时扶住证件，并在抽取后亲手确认证件是否仍在。避免潜在麻烦：证件丢失 </div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">琉璃幻彩</div><div class="author-info-description">The Greatest Magician!</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">112</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">130</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">26</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FighterGodNemo"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/FighterGodNemo" title="Github" target="_blank"><i class="fab fa-github"></i></a><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="微信"><i class="fab fa-weixin"></i></a><div class="qr-code-popup"><img src="/img/qrcode/wechat-qr.png" alt="微信二维码"/ loading='lazy'></div></div><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="QQ"><i class="fab fa-qq"></i></a><div class="qr-code-popup"><img src="/img/qrcode/qq-qr.png" alt="QQ二维码"/ loading='lazy'></div></div><div class="copy-text-wrapper"><a class="social-icon" href="javascript:void(0)" title="Steam好友代码：1905706957" data-copy-text="1905706957"><i class="fab fa-steam"></i></a><div class="copy-text-popup"><h3>Steam好友代码</h3><p>1905706957</p><p class="copy-hint">点击图标复制</p></div></div><a class="social-icon" href="mailto:guliujia2233@outlook.com" title="Email" target="_blank"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">热爱 CTF 和 Forensic 的网安人一枚～
+欢迎各位大佬交流点评！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E8%9C%9C%E7%BD%90"><span class="toc-number">1.</span> <span class="toc-text">一、蜜罐</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E8%9C%9C%E7%BD%91"><span class="toc-number">2.</span> <span class="toc-text">二、蜜网</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%BD%91%E7%BB%9C%E6%AC%BA%E9%AA%97"><span class="toc-number">2.1.</span> <span class="toc-text">1. 网络欺骗</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%95%B0%E6%8D%AE%E6%8D%95%E8%8E%B7"><span class="toc-number">2.2.</span> <span class="toc-text">2. 数据捕获</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%95%B0%E6%8D%AE%E6%8E%A7%E5%88%B6"><span class="toc-number">2.3.</span> <span class="toc-text">3. 数据控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90"><span class="toc-number">2.4.</span> <span class="toc-text">4. 数据分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E8%9C%9C%E5%9C%BA"><span class="toc-number">3.</span> <span class="toc-text">三、蜜场</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E7%9F%A5%E8%AF%86/MT%E7%AE%A1%E7%90%86%E5%99%A8%E6%9B%BF%E6%8D%A2%E5%8C%85%E6%95%B0%E6%8D%AE/" title="MT管理器替换包数据">MT管理器替换包数据</a><time datetime="2026-04-13T23:11:42.460Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E7%9F%A5%E8%AF%86/Cache%EF%BC%88%E7%BC%93%E5%AD%98%EF%BC%89/" title="Cache（缓存）">Cache（缓存）</a><time datetime="2026-04-13T23:11:42.459Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/Volatility3/" title="Volatility3">Volatility3</a><time datetime="2026-04-13T23:11:42.452Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/Python%E5%88%87%E6%8D%A2%E6%89%80%E7%94%A8%E7%89%88%E6%9C%AC/" title="Python切换所用版本">Python切换所用版本</a><time datetime="2026-04-13T23:11:42.451Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/MT%E7%AE%A1%E7%90%86%E5%99%A8%E6%9B%BF%E6%8D%A2APK%E6%95%B0%E6%8D%AE/" title="MT管理器替换APK数据">MT管理器替换APK数据</a><time datetime="2026-04-13T23:11:42.450Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 琉璃幻彩</span><span class="framework-info"><span id="busuanzi_container_site_pv">本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span><span class="footer-separator">|</span><span id="busuanzi_container_site_uv">本站访客数 <span id="busuanzi_value_site_uv"></span> 人次</span></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"></div><script src="/js/custom.js?v=20260402-2"></script><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.staticfile.org/pjax/0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

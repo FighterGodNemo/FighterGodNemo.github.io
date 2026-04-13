@@ -1,0 +1,84 @@
+<hr>
+<h2 id="title-Ollamapermalink-‘-2026-03-15-Forensic-电子取证-Forensic解题妙具-Ollama-‘date-“2026-03-15-13-28-28”categories-tags-电子取证-取证工具-Ollama"><a href="#title-Ollamapermalink-‘-2026-03-15-Forensic-电子取证-Forensic解题妙具-Ollama-‘date-“2026-03-15-13-28-28”categories-tags-电子取证-取证工具-Ollama" class="headerlink" title="title: Ollamapermalink: ‘&#x2F;2026&#x2F;03&#x2F;15&#x2F;Forensic_电子取证&#x2F;Forensic解题妙具&#x2F;Ollama&#x2F;‘date: “2026-03-15 13:28:28”categories:tags:  - 电子取证  - 取证工具  - Ollama"></a>title: Ollama<br>permalink: ‘&#x2F;2026&#x2F;03&#x2F;15&#x2F;Forensic_电子取证&#x2F;Forensic解题妙具&#x2F;Ollama&#x2F;‘<br>date: “2026-03-15 13:28:28”<br>categories:<br>tags:<br>  - 电子取证<br>  - 取证工具<br>  - Ollama</h2><p><img src="/Ollama/1761118786294-d746b81f-778c-485f-ba77-b1cd9da7fb96.png"></p>
+<pre><code>- **qwen2.5:3b**（通义千问3B版本）
+    * **优势**：模型较小，推理速度快，内存占用低。对中文支持非常好（由阿里开发），适合处理中文任务。对于一般的问答、文本分析等任务，如果对质量要求不是极高，这个模型可以快速给出结果。
+    * **劣势**：由于参数较少，在复杂推理、逻辑性要求高的任务上可能表现不如更大模型。
+- **deepseek-r1:14b**（深度求索14B版本）
+    * **优势**：参数规模较大，具有更强的理解和推理能力，尤其在数学、代码、逻辑推理等方面表现突出。对中英文支持都很好。
+    * **劣势**：需要更多的内存和显存，推理速度较慢。
+- **gemma3:12b**（谷歌Gemma 12B版本）
+    * **优势**：由谷歌开发，基于Gemini技术，在英文任务上表现优秀，同时也在多语言任务上有不错的表现。在代码生成、数学推理和常识推理方面有较好的能力。
+</code></pre>
+<ul>
+<li></li>
+</ul>
+<h3 id="实战选择指南：什么情况用什么模型"><a href="#实战选择指南：什么情况用什么模型" class="headerlink" title="实战选择指南：什么情况用什么模型"></a><strong>实战选择指南：什么情况用什么模型</strong></h3><h4 id="1-选择-【qwen2-5-3b】的情况-“快速响应与日常任务”"><a href="#1-选择-【qwen2-5-3b】的情况-“快速响应与日常任务”" class="headerlink" title="1. 选择 【qwen2.5:3b】的情况 - “快速响应与日常任务”"></a><strong>1. 选择 【qwen2.5:3b】的情况 - “快速响应与日常任务”</strong></h4><p><strong>使用时机：</strong></p>
+<ul>
+<li><strong>初步证据筛查</strong>：需要快速扫描大量文本，找出初步线索。</li>
+<li><strong>实时交互对话</strong>：当你需要与AI进行多轮、快速的问答时。</li>
+<li><strong>资源紧张时</strong>：同时运行多个大型程序，电脑内存&#x2F;显存压力大。</li>
+<li><strong>处理简单查询</strong>：如格式转换、基础信息提取、简单摘要。</li>
+</ul>
+<p><strong>举例：</strong></p>
+<p>“从这段聊天记录里快速找出所有提到‘转账’的句子。”<br>“把这份日志里所有的时间戳提取出来，整理成表格。”<br>“用一句话概括这篇文档的核心内容。”</p>
+<h4 id="2-选择-【deepseek-r1-14b】的情况-“复杂分析与专业任务”"><a href="#2-选择-【deepseek-r1-14b】的情况-“复杂分析与专业任务”" class="headerlink" title="2. 选择 【deepseek-r1:14b】的情况 - “复杂分析与专业任务”"></a><strong>2. 选择 【deepseek-r1:14b】的情况 - “复杂分析与专业任务”</strong></h4><p><strong>使用时机：</strong></p>
+<ul>
+<li><strong>深度逻辑推理</strong>：需要理解复杂案情、推断作案手法或动机。</li>
+<li><strong>代码分析与逆向</strong>：分析恶意软件代码、解密算法或复杂脚本。</li>
+<li><strong>数学计算与统计</strong>：处理加密数据、进行概率分析或数据统计。</li>
+<li><strong>综合性报告撰写</strong>：需要结构严谨、逻辑清晰的长篇分析报告。</li>
+</ul>
+<p><strong>举例：</strong></p>
+<p>“分析这个网络攻击的完整攻击链，推断攻击者的下一步可能行动。”<br>“解释这段加密算法的原理，并给出破解思路。”<br>“根据这些财务数据，找出异常交易并分析其模式。”</p>
+<h4 id="3-选择-【gemma2-9b】的情况-“平衡性能与创意任务”"><a href="#3-选择-【gemma2-9b】的情况-“平衡性能与创意任务”" class="headerlink" title="3. 选择 【gemma2:9b】的情况 - “平衡性能与创意任务”"></a><strong>3. 选择 【gemma2:9b】的情况 - “平衡性能与创意任务”</strong></h4><p><strong>使用时机：</strong></p>
+<ul>
+<li><strong>需要兼顾速度与质量</strong>：当任务比简单查询复杂，但又不需要deepseek那样的深度时。</li>
+<li><strong>创意性任务</strong>：生成调查假设、模拟嫌疑人心理画像、构思调查方向。</li>
+<li><strong>多语言任务</strong>：处理混合中英文的检材内容。</li>
+<li><strong>作为备选</strong>：当deepseek负载过高或响应太慢时的优质替代。</li>
+</ul>
+<p><strong>举例：</strong></p>
+<p>“基于目前的线索，生成三个可能的调查方向。”<br>“为这份证据清单创建一个分类体系。”<br>“将这段中文技术文档的关键部分翻译成英文摘要。”</p>
+<hr>
+<h3 id="高级策略与工作流建议"><a href="#高级策略与工作流建议" class="headerlink" title="高级策略与工作流建议"></a><strong>高级策略与工作流建议</strong></h3><h4 id="“侦察→分析→验证”三级工作流"><a href="#“侦察→分析→验证”三级工作流" class="headerlink" title="“侦察→分析→验证”三级工作流"></a><strong>“侦察→分析→验证”三级工作流</strong></h4><p>对于重要任务，可以采用组合拳：</p>
+<ol>
+<li><strong>第一波：qwen2.5:3b 快速侦察</strong><ul>
+<li>用qwen快速处理原始数据，提取关键信息和初步模式。</li>
+<li><strong>目标</strong>：快速了解全局，缩小焦点。</li>
+</ul>
+</li>
+<li><strong>第二波：deepseek-r1:14b 深度分析</strong><ul>
+<li>将qwen提炼出的关键信息交给deepseek进行深度推理和复杂分析。</li>
+<li><strong>目标</strong>：获得深度洞察和专业结论。</li>
+</ul>
+</li>
+<li><strong>第三波：gemma2:9b 交叉验证</strong><ul>
+<li>用gemma对deepseek的结论进行二次验证或提供不同角度的解读。</li>
+<li><strong>目标</strong>：确保结论的稳健性。</li>
+</ul>
+</li>
+</ol>
+<h4 id="硬件资源监控策略"><a href="#硬件资源监控策略" class="headerlink" title="硬件资源监控策略"></a><strong>硬件资源监控策略</strong></h4><ul>
+<li><strong>开任务管理器</strong>，实时监控GPU显存使用情况。</li>
+<li><strong>规则</strong>：选择模型时，确保其所需显存 &lt; <strong>可用显存的80%</strong>。</li>
+<li><strong>如果显存告急</strong>：立即降级到更小的模型（如从deepseek降到gemma或qwen）。</li>
+</ul>
+<h4 id="给你的具体操作指令"><a href="#给你的具体操作指令" class="headerlink" title="给你的具体操作指令"></a><strong>给你的具体操作指令</strong></h4><p>在你的Ollama中，使用以下命令调用不同模型：</p>
+<p>bash</p>
+<pre><code class="language-plain"># 快速任务 - 使用 qwen
+ollama run qwen2.5:3b &quot;快速总结这份文档的要点：[文档内容]&quot;
+
+# 深度分析 - 使用 deepseek  
+ollama run deepseek-r1:14b &quot;详细分析这个攻击代码的工作原理：[代码片段]&quot;
+
+# 平衡任务 - 使用 gemma
+ollama run gemma2:9b &quot;为这些证据创建一个调查时间线：[证据列表]&quot;
+</code></pre>
+<h3 id="总结：你的AI特遣队"><a href="#总结：你的AI特遣队" class="headerlink" title="总结：你的AI特遣队"></a><strong>总结：你的AI特遣队</strong></h3><p>把这三个模型想象成你的专属调查团队：</p>
+<ul>
+<li><strong>qwen2.5:3b</strong> 是你的<strong>现场侦察员</strong> - 反应最快，负责初步排查。</li>
+<li><strong>deepseek-r1:14b</strong> 是你的<strong>首席分析师</strong> - 能力最强，攻坚复杂问题。</li>
+<li><strong>gemma2:9b</strong> 是你的<strong>全能特工</strong> - 平衡性好，什么任务都能胜任。</li>
+</ul>
+<p>cd C:\Users\glj07\AppData\Local\Programs\Ollama</p>
+<p>ollama serve</p>

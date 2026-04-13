@@ -1,0 +1,220 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>哈基米 | 琉璃幻彩的博客</title><meta name="author" content="琉璃幻彩"><meta name="copyright" content="琉璃幻彩"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="‌‌‌‌‍‬‍‬fakeflag‌‌‌‌‍‬‌{‌‌‌‌‍‬‌‍ni‌‌‌‌‍‬‍‌‌‌‌‍‬‌‌‌‌‍‬‍‌‌‌‌‌‌‌‌‌‌‌‌‍_‌‌‌‌‍‍‌‌‌‌‍‬‍‌‌‌‌‌‌‌zhi‌‌‌‌‍‍‍‌‌‌‌‍‍‌‌‌‌‍‌‍_‌‌‌‌‌‌‍‌‌‌‌‌‍‌‌‌‌‌‍‬‬‌‌‌‌‍‍‌‌‌‌‍‬‬‌‌‌‌‌‌dao_‌‌‌‌‍‍‌‌‌‌‌‍‌wen_‌‌‌‌‌‌‍‌‌‌‌‍‍‌‌‌‌‍‬‍‌‌‌‌‌‌‍">
+<meta property="og:type" content="article">
+<meta property="og:title" content="哈基米">
+<meta property="og:url" content="https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/%E5%AD%A6%E9%95%BF%E7%9A%84%E6%8C%91%E6%88%98%E9%A2%98/%E5%93%88%E5%9F%BA%E7%B1%B3/index.html">
+<meta property="og:site_name" content="琉璃幻彩的博客">
+<meta property="og:description" content="‌‌‌‌‍‬‍‬fakeflag‌‌‌‌‍‬‌{‌‌‌‌‍‬‌‍ni‌‌‌‌‍‬‍‌‌‌‌‍‬‌‌‌‌‍‬‍‌‌‌‌‌‌‌‌‌‌‌‌‍_‌‌‌‌‍‍‌‌‌‌‍‬‍‌‌‌‌‌‌‌zhi‌‌‌‌‍‍‍‌‌‌‌‍‍‌‌‌‌‍‌‍_‌‌‌‌‌‌‍‌‌‌‌‌‍‌‌‌‌‌‍‬‬‌‌‌‌‍‍‌‌‌‌‍‬‬‌‌‌‌‌‌dao_‌‌‌‌‍‍‌‌‌‌‌‍‌wen_‌‌‌‌‌‌‍‌‌‌‌‍‍‌‌‌‌‍‬‍‌‌‌‌‌‌‍">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fightergodnemo.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2026-03-15T05:28:20.000Z">
+<meta property="article:modified_time" content="2026-04-13T23:11:42.412Z">
+<meta property="article:author" content="琉璃幻彩">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="WriteUp">
+<meta property="article:tag" content="哈基米">
+<meta property="article:tag" content="学长挑战题">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fightergodnemo.github.io/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "哈基米",
+  "url": "https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/%E5%AD%A6%E9%95%BF%E7%9A%84%E6%8C%91%E6%88%98%E9%A2%98/%E5%93%88%E5%9F%BA%E7%B1%B3/",
+  "image": "https://fightergodnemo.github.io/img/avatar.jpg",
+  "datePublished": "2026-03-15T05:28:20.000Z",
+  "dateModified": "2026-04-13T23:11:42.412Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "琉璃幻彩",
+      "url": "https://FighterGodNemo.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/%E5%AD%A6%E9%95%BF%E7%9A%84%E6%8C%91%E6%88%98%E9%A2%98/%E5%93%88%E5%9F%BA%E7%B1%B3/index.html"><link rel="preconnect" href="https://cdn.staticfile.org"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.5.2/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.20260413234739673.json","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.staticfile.org/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '哈基米',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'post'
+}</script><script src="/js/bg-firstpaint.js?v=20260402-2"></script><link rel="stylesheet" href="/css/custom.css?v=20260402-2"><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="琉璃幻彩的博客" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">112</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">130</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">26</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" data-has-custom-post-top-img="0"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">琉璃幻彩的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">哈基米</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">哈基米</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-15T05:28:20.000Z" title="发表于 2026-03-15 13:28:20">2026-03-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-04-13T23:11:42.412Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">14</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>1分钟</span></span></div></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>‌‌‌‌‍‬‍‬fakeflag‌‌‌‌‍‬‌{‌‌‌‌‍‬‌‍ni‌‌‌‌‍‬‍‌‌‌‌‍‬‌‌‌‌‍‬‍‌‌‌‌‌‌‌‌‌‌‌‌‍_‌‌‌‌‍‍‌‌‌‌‍‬‍‌‌‌‌‌‌‌zhi‌‌‌‌‍‍‍‌‌‌‌‍‍‌‌‌‌‍‌‍_‌‌‌‌‌‌‍‌‌‌‌‌‍‌‌‌‌‌‍‬‬‌‌‌‌‍‍‌‌‌‌‍‬‬‌‌‌‌‌‌dao_‌‌‌‌‍‍‌‌‌‌‌‍‌wen_‌‌‌‌‌‌‍‌‌‌‌‍‍‌‌‌‌‍‬‍‌‌‌‌‌‌‍ben‌‌‌‌‌‍‌_‌‌‌‌‌‌‌‌‌‌‌‍‍yin_xie_ma}</p>
+<p>文本隐写</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://FighterGodNemo.github.io">琉璃幻彩</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/%E5%AD%A6%E9%95%BF%E7%9A%84%E6%8C%91%E6%88%98%E9%A2%98/%E5%93%88%E5%9F%BA%E7%B1%B3/">https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/%E5%AD%A6%E9%95%BF%E7%9A%84%E6%8C%91%E6%88%98%E9%A2%98/%E5%93%88%E5%9F%BA%E7%B1%B3/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://FighterGodNemo.github.io" target="_blank">琉璃幻彩的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/CTF/">CTF</a><a class="post-meta__tags" href="/tags/WriteUp/">WriteUp</a><a class="post-meta__tags" href="/tags/%E5%AD%A6%E9%95%BF%E6%8C%91%E6%88%98%E9%A2%98/">学长挑战题</a><a class="post-meta__tags" href="/tags/%E5%93%88%E5%9F%BA%E7%B1%B3/">哈基米</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/%E5%AD%A6%E9%95%BF%E7%9A%84%E6%8C%91%E6%88%98%E9%A2%98/%E6%96%B0%E7%94%9F%E7%A4%BC%E7%89%A9%E5%A4%A7%E6%8C%91%E6%88%98%E7%AC%AC%E4%B8%80%E9%A2%98/" title="新生礼物大挑战第一题"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">新生礼物大挑战第一题</div></div><div class="info-2"><div class="info-item-1">pdf  先搜索文档内隐藏flag，无收获。 放入010editor，Ctrl＋F搜索文字“flag”等，没有线索。 拉到最后发现“1.png”字样，猜测文档含zip压缩包。 搜索找到zip文件头：50 4B 03 04 和文件尾：5...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/%E3%80%8AKali_Linux%E9%AB%98%E7%BA%A7%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E3%80%8B/" title="《Kali_Linux高级渗透测试》"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">《Kali_Linux高级渗透测试》</div></div><div class="info-2"><div class="info-item-1">第一章 基于目标的渗透测试 动态主机配置协议（Dynamic Host Configuration Protocol，DHCP）  Kali默认不启用DHCP服务。启用会在全网广播新的IP地址。从而可能让管理员意识到测试者的存在。 安...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/%E5%AD%A6%E9%95%BF%E7%9A%84%E6%8C%91%E6%88%98%E9%A2%98/%E6%96%B0%E7%94%9F%E7%A4%BC%E7%89%A9%E5%A4%A7%E6%8C%91%E6%88%98%E7%AC%AC%E4%B8%80%E9%A2%98/" title="新生礼物大挑战第一题"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">新生礼物大挑战第一题</div></div><div class="info-2"><div class="info-item-1">pdf  先搜索文档内隐藏flag，无收获。 放入010editor，Ctrl＋F搜索文字“flag”等，没有线索。 拉到最后发现“1.png”字样，猜测文档含zip压缩包。 搜索找到zip文件头：50 4B 03 04 和文件尾：5...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/%E5%AD%A6%E9%95%BF%E7%9A%84%E6%8C%91%E6%88%98%E9%A2%98/%E6%96%B0%E7%94%9F%E7%A4%BC%E7%89%A9%E5%A4%A7%E6%8C%91%E6%88%98%E7%AC%AC%E4%BA%8C%E9%A2%98/" title="新生礼物大挑战第二题"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">新生礼物大挑战第二题</div></div><div class="info-2"><div class="info-item-1"> 解压缩得Do_you_really_know_what_RSA_Is? .py  12345678910111213141516171819202122232425262728from Crypto.Util.number impo...</div></div></div></a><a class="pagination-related" href="/2026/03/19/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/CTFshow/Web/" title=""><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-19</div><div class="info-item-2"></div></div><div class="info-2"><div class="info-item-1">Web 1Ctrl+U 查看源代码base64解码 Web 2</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/" title="NewstarCTF_2025"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">NewstarCTF_2025</div></div><div class="info-2"><div class="info-item-1">F12_直接 Ctrl+Shift+C 打开元素选择器 Ctrl+Shift+J 打开控制台 GNU_Debugger题目内容： 进入pwn的世界之后的第一关，了解你的好伙伴gdb 题目的流程为：  启动靶机获得端口和ip  启动程序...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/CTFshow/Web%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E4%B8%8E%E9%98%B2%E6%8A%A4/" title="Base64编码隐藏"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">Base64编码隐藏</div></div><div class="info-2"><div class="info-item-1">Base64编码隐藏CTF{easy_base64} HTTP头注入</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NSSCTF/" title="NSSCTF_2025"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">NSSCTF_2025</div></div><div class="info-2"><div class="info-item-1">[BJDCTF_2020]Easy附件：easy.exe 无壳程序，直接分析即可  [CryptoCTF_2020]One_Line_Crypto 1234567from Crypto.Util.number import *from...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">琉璃幻彩</div><div class="author-info-description">The Greatest Magician!</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">112</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">130</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">26</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FighterGodNemo"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/FighterGodNemo" title="Github" target="_blank"><i class="fab fa-github"></i></a><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="微信"><i class="fab fa-weixin"></i></a><div class="qr-code-popup"><img src="/img/qrcode/wechat-qr.png" alt="微信二维码"/ loading='lazy'></div></div><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="QQ"><i class="fab fa-qq"></i></a><div class="qr-code-popup"><img src="/img/qrcode/qq-qr.png" alt="QQ二维码"/ loading='lazy'></div></div><div class="copy-text-wrapper"><a class="social-icon" href="javascript:void(0)" title="Steam好友代码：1905706957" data-copy-text="1905706957"><i class="fab fa-steam"></i></a><div class="copy-text-popup"><h3>Steam好友代码</h3><p>1905706957</p><p class="copy-hint">点击图标复制</p></div></div><a class="social-icon" href="mailto:guliujia2233@outlook.com" title="Email" target="_blank"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">热爱 CTF 和 Forensic 的网安人一枚～
+欢迎各位大佬交流点评！</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E7%9F%A5%E8%AF%86/MT%E7%AE%A1%E7%90%86%E5%99%A8%E6%9B%BF%E6%8D%A2%E5%8C%85%E6%95%B0%E6%8D%AE/" title="MT管理器替换包数据">MT管理器替换包数据</a><time datetime="2026-04-13T23:11:42.460Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E7%9F%A5%E8%AF%86/Cache%EF%BC%88%E7%BC%93%E5%AD%98%EF%BC%89/" title="Cache（缓存）">Cache（缓存）</a><time datetime="2026-04-13T23:11:42.459Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/Volatility3/" title="Volatility3">Volatility3</a><time datetime="2026-04-13T23:11:42.452Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/Python%E5%88%87%E6%8D%A2%E6%89%80%E7%94%A8%E7%89%88%E6%9C%AC/" title="Python切换所用版本">Python切换所用版本</a><time datetime="2026-04-13T23:11:42.451Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/MT%E7%AE%A1%E7%90%86%E5%99%A8%E6%9B%BF%E6%8D%A2APK%E6%95%B0%E6%8D%AE/" title="MT管理器替换APK数据">MT管理器替换APK数据</a><time datetime="2026-04-13T23:11:42.450Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 琉璃幻彩</span><span class="framework-info"><span id="busuanzi_container_site_pv">本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span><span class="footer-separator">|</span><span id="busuanzi_container_site_uv">本站访客数 <span id="busuanzi_value_site_uv"></span> 人次</span></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"></div><script src="/js/custom.js?v=20260402-2"></script><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.staticfile.org/pjax/0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

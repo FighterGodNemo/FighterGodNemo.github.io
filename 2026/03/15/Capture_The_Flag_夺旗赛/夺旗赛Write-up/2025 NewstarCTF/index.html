@@ -1,0 +1,636 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>NewstarCTF_2025 | 琉璃幻彩的博客</title><meta name="author" content="琉璃幻彩"><meta name="copyright" content="琉璃幻彩"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="F12_直接 Ctrl+Shift+C 打开元素选择器 Ctrl+Shift+J 打开控制台 GNU_Debugger题目内容： 进入pwn的世界之后的第一关，了解你的好伙伴gdb 题目的流程为：  启动靶机获得端口和ip  启动程序： .&#x2F;gdb_challenge (假设你已经在这个程序所在的目录)  进行一系列的gdb挑战  完成所有挑战，得到flag   ps: 这题暂时用不到i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NewstarCTF_2025">
+<meta property="og:url" content="https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/index.html">
+<meta property="og:site_name" content="琉璃幻彩的博客">
+<meta property="og:description" content="F12_直接 Ctrl+Shift+C 打开元素选择器 Ctrl+Shift+J 打开控制台 GNU_Debugger题目内容： 进入pwn的世界之后的第一关，了解你的好伙伴gdb 题目的流程为：  启动靶机获得端口和ip  启动程序： .&#x2F;gdb_challenge (假设你已经在这个程序所在的目录)  进行一系列的gdb挑战  完成所有挑战，得到flag   ps: 这题暂时用不到i">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fightergodnemo.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2026-03-15T05:28:20.000Z">
+<meta property="article:modified_time" content="2026-04-13T12:08:00.000Z">
+<meta property="article:author" content="琉璃幻彩">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="NewstarCTF">
+<meta property="article:tag" content="WriteUp">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fightergodnemo.github.io/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "NewstarCTF_2025",
+  "url": "https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/",
+  "image": "https://fightergodnemo.github.io/img/avatar.jpg",
+  "datePublished": "2026-03-15T05:28:20.000Z",
+  "dateModified": "2026-04-13T12:08:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "琉璃幻彩",
+      "url": "https://FighterGodNemo.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/index.html"><link rel="preconnect" href="https://cdn.staticfile.org"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.5.2/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.20260413234739673.json","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.staticfile.org/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'NewstarCTF_2025',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script src="/js/bg-firstpaint.js?v=20260402-2"></script><link rel="stylesheet" href="/css/custom.css?v=20260402-2"><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="琉璃幻彩的博客" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">112</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">130</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">26</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" data-has-custom-post-top-img="0"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">琉璃幻彩的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">NewstarCTF_2025</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">NewstarCTF_2025</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-15T05:28:20.000Z" title="发表于 2026-03-15 13:28:20">2026-03-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-04-13T12:08:00.000Z" title="更新于 2026-04-13 20:08:00">2026-04-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Capture-The-Flag-%E5%A4%BA%E6%97%97%E8%B5%9B/">Capture_The_Flag_夺旗赛</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Capture-The-Flag-%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/">夺旗赛Write-up</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Capture-The-Flag-%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/NewstarCTF-2025/">NewstarCTF_2025</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">6.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>28分钟</span></span></div></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="F12"><a href="#F12" class="headerlink" title="F12_"></a>F12_</h2><p>直接<br><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/file-20260331130229346.png" loading='lazy'><br><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/file-20260331130229355.png" loading='lazy'></p>
+<p><strong>Ctrl+Shift+C</strong> 打开元素选择器</p>
+<p><strong>Ctrl+Shift+J</strong> 打开控制台<br><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/file-20260331130229325.png" loading='lazy'></p>
+<h2 id="GNU-Debugger"><a href="#GNU-Debugger" class="headerlink" title="GNU_Debugger"></a>GNU_Debugger</h2><p>题目内容：</p>
+<p>进入pwn的世界之后的第一关，了解你的好伙伴gdb</p>
+<p>题目的流程为：</p>
+<ol>
+<li><p>启动靶机获得端口和ip</p>
+</li>
+<li><p>启动程序： .&#x2F;gdb_challenge (假设你已经在这个程序所在的目录)</p>
+</li>
+<li><p>进行一系列的gdb挑战</p>
+</li>
+<li><p>完成所有挑战，得到flag</p>
+</li>
+</ol>
+<p>ps: 这题暂时用不到ida哦，推荐直接执行程序，跟着流程来就好啦。不过也可以通过逆向工程来得到flag ^^</p>
+<p>解答：</p>
+<h2 id="multi-headach3"><a href="#multi-headach3" class="headerlink" title="multi-headach3"></a>multi-headach3</h2><p>题目内容：</p>
+<p>什么叫机器人控制了我的头？</p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/file-20260331130230451.png" loading='lazy'></p>
+<p>解答：</p>
+<p>这提示我们查看 <code>/robots.txt</code> 文件，这是网站用来与搜索引擎爬虫（机器人）通信的标准文件。</p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/file-20260331130230478.png" loading='lazy'></p>
+<p>这明确告诉我们有一个隐藏页面：<code>/hidden.php</code>。</p>
+<p>网页说：<strong>But… Why my head is so painful???!!!</strong></p>
+<p>“头” &#x3D; HTTP 头（Headers），</p>
+<ul>
+<li>可能要求修改 <code>User-Agent</code>、<code>Referer</code>、<code>X-Forwarded-For</code> 等请求头</li>
+<li>先尝试直接访问&#x2F;hidden.php<br><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/file-20260331130230495.png" loading='lazy'></li>
+<li>没那么简单。。。意味着单一条件可能不够，需要组合多个头部，正如题目的multi所提示</li>
+</ul>
+<h3 id="组合头部"><a href="#组合头部" class="headerlink" title="组合头部"></a>组合头部</h3><p>常见需要组合的头部：</p>
+<ul>
+<li><code>User-Agent: Robot</code>（伪装成机器人）</li>
+<li><code>Referer: &lt;目标网站&gt;</code>（表明来源）</li>
+<li><code>X-Forwarded-For: 127.0.0.1</code>（伪装成本地访问）</li>
+<li>可能还需要 <code>X-CTF: true</code> 等自定义头</li>
+</ul>
+<h3 id="使用-HEAD-方法"><a href="#使用-HEAD-方法" class="headerlink" title="使用 HEAD 方法"></a>使用 HEAD 方法</h3><ul>
+<li>“头很痛”可能暗示使用 <code>HEAD</code> 请求</li>
+<li>响应头里可能包含 flag</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">target = <span class="string">&quot;https://eci-2zeiz5c9arq9crpj8d1x.cloudeci1.ichunqiu.com:80&quot;</span></span><br><span class="line">hidden_url = target + <span class="string">&quot;/hidden.php&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试各种头部组合</span></span><br><span class="line">tests = [</span><br><span class="line">    &#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;1. 普通访问&quot;</span>, <span class="string">&quot;headers&quot;</span>: &#123;&amp;<span class="comment">#125;&amp;#125;,</span></span><br><span class="line">    &#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;2. Robot UA&quot;</span>, <span class="string">&quot;headers&quot;</span>: &#123;<span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Robot&quot;</span>&amp;<span class="comment">#125;&amp;#125;,</span></span><br><span class="line">    &#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;3. Robot + Referer&quot;</span>, <span class="string">&quot;headers&quot;</span>: &#123;<span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Robot&quot;</span>, <span class="string">&quot;Referer&quot;</span>: target&amp;<span class="comment">#125;&amp;#125;,</span></span><br><span class="line">    &#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;4. Robot + X-Forwarded-For&quot;</span>, <span class="string">&quot;headers&quot;</span>: &#123;<span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Robot&quot;</span>, <span class="string">&quot;X-Forwarded-For&quot;</span>: <span class="string">&quot;127.0.0.1&quot;</span>&amp;<span class="comment">#125;&amp;#125;,</span></span><br><span class="line">    &#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;5. Robot + X-CTF&quot;</span>, <span class="string">&quot;headers&quot;</span>: &#123;<span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Robot&quot;</span>, <span class="string">&quot;X-CTF&quot;</span>: <span class="string">&quot;true&quot;</span>&amp;<span class="comment">#125;&amp;#125;,</span></span><br><span class="line">    &#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;6. 全部组合&quot;</span>, <span class="string">&quot;headers&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Robot&quot;</span>,</span><br><span class="line">        <span class="string">&quot;Referer&quot;</span>: target,</span><br><span class="line">        <span class="string">&quot;X-Forwarded-For&quot;</span>: <span class="string">&quot;127.0.0.1&quot;</span>,</span><br><span class="line">        <span class="string">&quot;X-CTF&quot;</span>: <span class="string">&quot;true&quot;</span></span><br><span class="line">    &amp;<span class="comment">#125;&amp;#125;,</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> test <span class="keyword">in</span> tests:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;\n=== <span class="subst">&#123;test[<span class="string">&#x27;name&#x27;</span>]&#125;</span> ===&quot;</span>)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        r = requests.get(hidden_url, headers=test[<span class="string">&#x27;headers&#x27;</span>], verify=<span class="literal">False</span>, timeout=<span class="number">5</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;flag&quot;</span> <span class="keyword">in</span> r.text.lower() <span class="keyword">or</span> <span class="string">&quot;ctf&quot;</span> <span class="keyword">in</span> r.text.lower():</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;&gt;&gt;&gt; 🚩 Possible flag here!&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(r.text)</span><br><span class="line">        <span class="comment"># 检查响应头</span></span><br><span class="line">        <span class="keyword">for</span> h, v <span class="keyword">in</span> r.headers.items():</span><br><span class="line">            <span class="keyword">if</span> <span class="string">&#x27;flag&#x27;</span> <span class="keyword">in</span> h.lower() <span class="keyword">or</span> <span class="string">&#x27;ctf&#x27;</span> <span class="keyword">in</span> h.lower():</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;&gt;&gt;&gt; 🚩 Header <span class="subst">&#123;h&#125;</span>: <span class="subst">&#123;v&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Error:&quot;</span>, e)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试 HEAD 方法</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;\n=== 7. HEAD + Robot ===&quot;</span>)</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    r = requests.head(hidden_url, headers=&#123;<span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Robot&quot;</span>&#125;, verify=<span class="literal">False</span>, timeout=<span class="number">5</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;HEAD response headers:&quot;</span>)</span><br><span class="line">    <span class="keyword">for</span> h, v <span class="keyword">in</span> r.headers.items():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;h&#125;</span>: <span class="subst">&#123;v&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;flag&#x27;</span> <span class="keyword">in</span> h.lower() <span class="keyword">or</span> <span class="string">&#x27;ctf&#x27;</span> <span class="keyword">in</span> h.lower():</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;&gt;&gt;&gt; 🚩 Header <span class="subst">&#123;h&#125;</span>: <span class="subst">&#123;v&#125;</span>&quot;</span>)</span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Error:&quot;</span>, e) </span><br></pre></td></tr></table></figure>
+
+<p>flag{e6c421da-4941-447c-a22a-6f09984bdd21}</p>
+<h2 id="解题成功的关键"><a href="#解题成功的关键" class="headerlink" title="解题成功的关键"></a>解题成功的关键</h2><ol>
+<li><strong>使用 HEAD 方法</strong>而不是 GET</li>
+<li><strong>正确的 HTTP 头部组合</strong>：User-Agent + Referer + X-Forwarded-For<ul>
+<li><code>User-Agent: Robot</code></li>
+<li><code>Referer: https://eci-2zeiz5c9arq9crpj8d1x.cloudeci1.ichunqiu.com</code></li>
+<li><code>X-Forwarded-For: 127.0.0.1</code></li>
+</ul>
+</li>
+</ol>
+<h2 id="NewstarCTF-2025"><a href="#NewstarCTF-2025" class="headerlink" title="NewstarCTF 2025"></a>NewstarCTF 2025</h2><h2 id="Puzzle"><a href="#Puzzle" class="headerlink" title="Puzzle"></a>Puzzle</h2><p>题目内容：</p>
+<p>咦？存在于这个程序中的flag貌似被人打碎了。你能找到flag的碎片并拼凑出完整的flag吗？</p>
+<p>解答：</p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/file-20260331130230570.png" loading='lazy'><br><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/file-20260331130230579.png" loading='lazy'></p>
+<h2 id="pwn’s-door"><a href="#pwn’s-door" class="headerlink" title="pwn’s_door"></a>pwn’s_door</h2><p>题目内容：</p>
+<p>Key 已经为进入 pwn 的世界做好了充分准备。他找到了可靠的伙伴，猫猫 NetCat 和蟒蛇 Python，还为 Python 配备了强大的工具 pwntools。有了这些，他相信自己一定能顺利通过考验。</p>
+<p>容器地址： nc 47.94.87.199 29217</p>
+<p>附件：<br><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/file-20260331130230397.png" loading='lazy'></p>
+<p>解答：这是一个典型的 <strong>pwn 签到题</strong>，通常需要你通过 <code>netcat</code> 连接给定的服务器，然后与程序交互来获取 flag。</p>
+<p>1.连接</p>
+<ul>
+<li>python</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">r = remote(<span class="string">&#x27;47.94.87.199&#x27;</span>, <span class="number">29217</span>)</span><br><span class="line"><span class="comment">#IP地址: 47.94.87.199</span></span><br><span class="line"><span class="comment">#端口号: 29217</span></span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>或<br><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/file-20260331130230389.png" loading='lazy'></p>
+<p>二者均可</p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/file-20260331130230434.png" loading='lazy'></p>
+<ul>
+<li>随意输入，enter：</li>
+</ul>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/file-20260331130230406.png" loading='lazy'></p>
+<ul>
+<li><p>用IDA打开door文件，按F5</p>
+</li>
+<li><p>发现密码7038329。输入：<br><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/file-20260331130230415.png" loading='lazy'></p>
+</li>
+<li><p>执行cat flag命令得flag：<br><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/file-20260331130230443.png" loading='lazy'></p>
+</li>
+</ul>
+<h2 id="Sagemath使用指哪"><a href="#Sagemath使用指哪" class="headerlink" title="Sagemath使用指哪_"></a>Sagemath使用指哪_</h2><p>题目内容：</p>
+<p>使用Sagemath运行程序以获得flag</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Sage 9.3</span></span><br><span class="line"></span><br><span class="line">key=<span class="number">1</span></span><br><span class="line">G = PSL(<span class="number">2</span>, <span class="number">11</span>)</span><br><span class="line">key*=G.order()</span><br><span class="line">G = CyclicPermutationGroup(<span class="number">11</span>)</span><br><span class="line">key*=G.order()</span><br><span class="line">G = AlternatingGroup(<span class="number">114</span>)</span><br><span class="line">key*=G.order()</span><br><span class="line">G = PSL(<span class="number">4</span>, <span class="number">7</span>)</span><br><span class="line">key*=G.order()</span><br><span class="line">G = PSU(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line">key*=G.order()</span><br><span class="line">G = MathieuGroup(<span class="number">12</span>)</span><br><span class="line">key*=G.order()</span><br><span class="line"></span><br><span class="line">c=<span class="number">91550542840025722520458836108112308924742424464072171170891749838108012046397534151231852770095499011</span></span><br><span class="line"></span><br><span class="line">key=(<span class="built_in">int</span>(<span class="built_in">str</span>(<span class="built_in">bin</span>(key))[<span class="number">2</span>:][<span class="number">0</span>:<span class="number">42</span>*<span class="number">8</span>],<span class="number">2</span>))</span><br><span class="line">m=c^^key</span><br><span class="line">f=[]</span><br><span class="line"><span class="keyword">while</span> m&gt;<span class="number">0</span>:</span><br><span class="line">    x=m%<span class="number">256</span></span><br><span class="line">    f.append(<span class="built_in">chr</span>(x))</span><br><span class="line">    m//=<span class="number">256</span></span><br><span class="line">f.reverse()</span><br><span class="line">flag=<span class="string">&quot;&quot;</span>.join(i <span class="keyword">for</span> i <span class="keyword">in</span> f )</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure>
+
+<p>解答：这是一个群论计算题，需要计算几个群的阶（order）然后解密。</p>
+<p>用sagemath运行：</p>
+<p>key &#x3D; 1</p>
+<p>key *&#x3D; PSL(2, 11).order()</p>
+<p>key *&#x3D; CyclicPermutationGroup(11).order() </p>
+<p>key *&#x3D; AlternatingGroup(114).order()</p>
+<p>key *&#x3D; PSL(4, 7).order()</p>
+<p>key *&#x3D; PSU(3, 4).order()</p>
+<p>key *&#x3D; MathieuGroup(12).order()</p>
+<p>key_bin &#x3D; bin(key)[2:][:336]</p>
+<p>key_int &#x3D; int(key_bin, 2)</p>
+<p>c &#x3D; 91550542840025722520458836108112308924742424464072171170891749838108012046397534151231852770095499011</p>
+<p>m &#x3D; c ^^ key_int</p>
+<p>import binascii</p>
+<p>flag &#x3D; binascii.unhexlify(hex(m)[2:]).decode()</p>
+<p>print(flag)</p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/file-20260331130230559.png" loading='lazy'></p>
+<h2 id="strange-login"><a href="#strange-login" class="headerlink" title="strange_login"></a>strange_login</h2><p>题目内容：</p>
+<p>我当然知道1&#x3D;1了！？</p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/file-20260331130230333.png" loading='lazy'></p>
+<p>解题：这很可能是在暗示可以利用 SQL 注入的方式进行登录。</p>
+<p>SQL 注入是一种常见的网络攻击手段，<strong><u>通过在输入框（如用户名或密码框）中输入特定的 SQL 语句，来绕过正常的登录验证逻辑</u></strong>。<strong><u>“1&#x3D;1” 是一个恒成立的条件，在 SQL 语句中可以用于构造永真的查询条件。</u></strong></p>
+<p>假设后台的登录验证 SQL 语句类似 <code>SELECT * FROM users WHERE username = &#39;$username&#39; AND password = &#39;$password&#39;</code>，当我们在用户名或密码输入框中输入包含 SQL 注入的内容时，就可能改变这个查询的逻辑。</p>
+<p>比如，在用户名输入框输入 <code>admin&#39; OR &#39;1&#39;=&#39;1</code>，密码输入框随意输入（或者也构造类似的注入语句），这样拼接后的 SQL 语句可能变成 <code>SELECT * FROM users WHERE username = &#39;admin&#39; OR &#39;1&#39;=&#39;1&#39; AND password = &#39;$password&#39;</code>。由于 <code>&#39;1&#39;=&#39;1&#39;</code> 恒成立，可能就会绕过密码验证，以 <code>admin</code>（管理员）身份登录，从而查看特殊内容。</p>
+<h3 id="核心思路：利用-SQL-逻辑漏洞绕过登录验证"><a href="#核心思路：利用-SQL-逻辑漏洞绕过登录验证" class="headerlink" title="核心思路：利用 SQL 逻辑漏洞绕过登录验证"></a>核心思路：利用 SQL 逻辑漏洞绕过登录验证</h3><p>假设登录表单的后端 SQL 查询逻辑大致为：</p>
+<p><strong>sql</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username <span class="operator">=</span> <span class="string">&#x27;[输入的用户名]&#x27;</span> <span class="keyword">AND</span> password <span class="operator">=</span> <span class="string">&#x27;[输入的密码]&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>当查询结果不为空时，登录成功。我们需要构造特殊输入，让这个查询恒为真，从而绕过验证。</p>
+<h3 id="具体注入方法（分场景尝试）"><a href="#具体注入方法（分场景尝试）" class="headerlink" title="具体注入方法（分场景尝试）"></a>具体注入方法（分场景尝试）</h3><h4 id="1-最简单的万能密码（针对用户名-密码任意一方）"><a href="#1-最简单的万能密码（针对用户名-密码任意一方）" class="headerlink" title="1. 最简单的万能密码（针对用户名 &#x2F; 密码任意一方）"></a>1. 最简单的万能密码（针对用户名 &#x2F; 密码任意一方）</h4><ul>
+<li><strong>用户名输入</strong>：<code>admin&#39; OR 1=1#</code>密码任意输入（如 123）拼接后 SQL 变为：<strong>sql</strong></li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username <span class="operator">=</span> <span class="string">&#x27;admin&#x27;</span> <span class="keyword">OR</span> <span class="number">1</span><span class="operator">=</span><span class="number">1</span>#<span class="string">&#x27; AND password = &#x27;</span><span class="number">123</span><span class="string">&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>- `OR 1=1` 使条件恒成立
+- `#` 注释掉后面的密码判断部分（MySQL 中`#`是注释符，也可用`-- `代替，注意后面有空格）
+</code></pre>
+<ul>
+<li><strong>如果用户名固定为 admin，也可只注入密码</strong>：用户名输入<code>admin</code>，密码输入<code>&#39; OR 1=1#</code></li>
+</ul>
+<h4 id="2-处理引号被转义的情况（单引号被过滤）"><a href="#2-处理引号被转义的情况（单引号被过滤）" class="headerlink" title="2. 处理引号被转义的情况（单引号被过滤）"></a>2. 处理引号被转义的情况（单引号被过滤）</h4><p>如果输入的<code>&#39;</code>被转义为<code>\&#39;</code>，可尝试：</p>
+<ul>
+<li>用双引号<code>&quot;</code>代替单引号（若后端用双引号包裹参数）：用户名：<code>admin&quot; OR 1=1#</code></li>
+<li>利用 SQL 语句的其他逻辑（如数字型注入，若参数未用引号包裹）：用户名：<code>admin OR 1=1#</code></li>
+</ul>
+<h4 id="3-进阶：获取管理员真实信息（若需要正确用户名-密码）"><a href="#3-进阶：获取管理员真实信息（若需要正确用户名-密码）" class="headerlink" title="3. 进阶：获取管理员真实信息（若需要正确用户名 &#x2F; 密码）"></a>3. 进阶：获取管理员真实信息（若需要正确用户名 &#x2F; 密码）</h4><p>如果题目需要实际的管理员账号密码（而非单纯绕过），可尝试：</p>
+<ul>
+<li><strong>猜解用户名长度</strong>：用户名输入<code>&#39; AND LENGTH(username)=5#</code>（通过返回结果判断长度是否为 5）</li>
+<li><strong>逐字符猜解用户名</strong>：用户名输入<code>&#39; AND SUBSTR(username,1,1)=&#39;a&#39;#</code>（判断用户名第 1 个字符是否为 a）（类似方法可猜解密码）</li>
+</ul>
+<h3 id="关键原理"><a href="#关键原理" class="headerlink" title="关键原理"></a>关键原理</h3><ul>
+<li><strong>逻辑恒真</strong>：<code>OR 1=1</code> 让 WHERE 条件永远成立，无论用户名密码是否正确</li>
+<li><strong>注释截断</strong>：<code>#</code>或<code>-- </code>忽略后续 SQL 语句，消除原始查询的密码验证部分</li>
+<li><strong>闭合引号</strong>：注入的<code>&#39;</code>用于闭合 SQL 语句中原本的引号，使注入的逻辑生效</li>
+</ul>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ol>
+<li>不同数据库的注释符可能不同（如 MySQL 用<code>#</code>，Oracle 用<code>-- </code>）</li>
+<li>若遇到过滤（如过滤<code>OR</code>、<code>=</code>），可尝试大小写变形（<code>Or</code>、<code>1=1</code>→<code>1 Like 1</code>）或编码绕过</li>
+</ol>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/file-20260331130230352.png" loading='lazy'></p>
+<h2 id="X0r"><a href="#X0r" class="headerlink" title="X0r"></a>X0r</h2><p>题目内容：</p>
+<p>no xor，no encrypt.</p>
+<p>【难度：签到】</p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/file-20260331130229444.png" loading='lazy'></p>
+<p>解答：</p>
+<p>● 用IDA打开</p>
+<ul>
+<li><p>按F5反编译成c语言代码</p>
+</li>
+<li><p><strong>anu&#96;ym7wKLl$P]v3q%D]lHpi</strong> 试着解密</p>
+</li>
+<li><p>由于XOR操作是可逆的，我们只需要按相反的顺序和相同的密钥进行XOR就能解密。</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 已知的加密后字符串</span></span><br><span class="line">encrypted_str = <span class="string">&quot;anu`ym7wKLl$P]v3q%D]lHpi&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># v5数组</span></span><br><span class="line">v5 = [<span class="number">19</span>, <span class="number">19</span>, <span class="number">81</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第一步：逆向第二轮XOR（与v5的XOR）</span></span><br><span class="line">step1 = []</span><br><span class="line"><span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(encrypted_str)):</span><br><span class="line">    <span class="comment"># 与v5[j%3]再次XOR，抵消原来的操作</span></span><br><span class="line">    step1.append(<span class="built_in">ord</span>(encrypted_str[j]) ^ v5[j % <span class="number">3</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第二步：逆向第一轮XOR（根据索引的不同进行不同的XOR）</span></span><br><span class="line">original_flag = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(step1)):</span><br><span class="line">    <span class="keyword">if</span> i % <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">if</span> i % <span class="number">3</span> == <span class="number">1</span>:</span><br><span class="line">            <span class="comment"># 逆向i%3==1的情况，原来的操作为XOR 0x11</span></span><br><span class="line">            original_char = step1[i] ^ <span class="number">0x11</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 逆向i%3==2的情况，原来的操作为XOR 0x45</span></span><br><span class="line">            original_char = step1[i] ^ <span class="number">0x45</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="comment"># 逆向i%3==0的情况，原来的操作为XOR 0x14</span></span><br><span class="line">        original_char = step1[i] ^ <span class="number">0x14</span></span><br><span class="line">    original_flag.append(<span class="built_in">chr</span>(original_char))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 组合结果并输出</span></span><br><span class="line">flag = <span class="string">&#x27;&#x27;</span>.join(original_flag)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;解密得到的flag:&quot;</span>, flag)</span><br></pre></td></tr></table></figure>
+
+<p>解密过程说明：</p>
+<ol>
+<li>代码首先对输入的 flag 进行了第一轮 XOR 加密：<ul>
+<li>当索引 i%3&#x3D;&#x3D;0 时，与 0x14 进行 XOR</li>
+<li>当索引 i%3&#x3D;&#x3D;1 时，与 0x11 进行 XOR</li>
+<li>当索引 i%3&#x3D;&#x3D;2 时，与 0x45 进行 XOR</li>
+</ul>
+</li>
+<li>然后进行了第二轮 XOR 加密，使用 v5 数组 [19, 19, 81]，根据索引 j%3 循环使用数组元素</li>
+<li>解密时需要逆向这个过程：<ul>
+<li>先对加密字符串与 v5 数组进行 XOR，还原到第一轮加密后的状态</li>
+<li>再根据索引位置，使用对应的密钥进行 XOR，完全还原原始 flag</li>
+</ul>
+</li>
+</ol>
+<h3 id="1-先明确代码里的-v5-原始定义（回顾上下文）"><a href="#1-先明确代码里的-v5-原始定义（回顾上下文）" class="headerlink" title="1. 先明确代码里的 v5 原始定义（回顾上下文）"></a>1. 先明确代码里的 <code>v5</code> 原始定义（回顾上下文）</h3><p>在你之前提供的 <code>main</code> 函数代码中，<code>v5</code> 的定义和使用是这样的：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> v5[<span class="number">16</span>]; <span class="comment">// [rsp+40h] [rbp-40h]  // 定义一个16字节的字符数组v5</span></span><br><span class="line"><span class="comment">// ... 中间代码省略 ...</span></span><br><span class="line">v5[<span class="number">0</span>] = <span class="number">19</span>;   <span class="comment">// 给v5第1个元素赋值19</span></span><br><span class="line">v5[<span class="number">1</span>] = <span class="number">19</span>;   <span class="comment">// 给v5第2个元素赋值19</span></span><br><span class="line">v5[<span class="number">2</span>] = <span class="number">81</span>;   <span class="comment">// 给v5第3个元素赋值81</span></span><br><span class="line"><span class="comment">// ... 后续使用 ...</span></span><br><span class="line"><span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; v7; ++j)</span><br><span class="line">  Str[j] ^= v5[j % <span class="number">3</span>];  <span class="comment">// 用v5[j%3]作为密钥，对Str进行XOR加密</span></span><br></pre></td></tr></table></figure>
+
+<p>你说的 <code>v5 = [19, 19, 81]</code>，本质是对这段代码的简化描述 —— 即 <code>v5</code> 数组的前 3 个有效元素是 <code>19、19、81</code>，后续元素未赋值（不影响加密逻辑）。</p>
+<h3 id="2-v5-的核心作用：第二轮-XOR-加密的-“循环密钥”"><a href="#2-v5-的核心作用：第二轮-XOR-加密的-“循环密钥”" class="headerlink" title="2. v5 的核心作用：第二轮 XOR 加密的 “循环密钥”"></a>2. <code>v5</code> 的核心作用：第二轮 XOR 加密的 “循环密钥”</h3><p>在整个 flag 验证流程中，<code>v5</code> 是<strong>第二轮加密的关键</strong>，具体逻辑如下：</p>
+<h4 id="（1）先明确加密流程（回顾）"><a href="#（1）先明确加密流程（回顾）" class="headerlink" title="（1）先明确加密流程（回顾）"></a>（1）先明确加密流程（回顾）</h4><p>用户输入的原始 flag（存在 <code>Str</code> 中），会经过 <strong>两轮 XOR 加密</strong>，最终与预设的目标字符串 <code>Str2</code>（<code>&quot;anu</code>ym7wKLl$P]v3q%D]lHpi”<code>）比较——若相等则验证通过。 而 </code>v5&#96; 负责 <strong>第二轮加密</strong>：</p>
+<h4 id="（2）v5-的-“循环使用”-逻辑"><a href="#（2）v5-的-“循环使用”-逻辑" class="headerlink" title="（2）v5 的 “循环使用” 逻辑"></a>（2）<code>v5</code> 的 “循环使用” 逻辑</h4><p>第二轮加密的核心代码是：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; v7; ++j)  <span class="comment">// v7是flag长度（固定24）</span></span><br><span class="line">  Str[j] ^= v5[j % <span class="number">3</span>];    <span class="comment">// 关键：v5[j%3]</span></span><br></pre></td></tr></table></figure>
+
+<p>这里的 <code>j % 3</code>（取余运算）决定了 <code>v5</code> 的<strong>循环使用规则</strong>：</p>
+<ul>
+<li>当 <code>j=0</code> 时：<code>0%3=0</code> → 用 <code>v5[0] = 19</code> 作为密钥；</li>
+<li>当 <code>j=1</code> 时：<code>1%3=1</code> → 用 <code>v5[1] = 19</code> 作为密钥；</li>
+<li>当 <code>j=2</code> 时：<code>2%3=2</code> → 用 <code>v5[2] = 81</code> 作为密钥；</li>
+<li>当 <code>j=3</code> 时：<code>3%3=0</code> → 再次用 <code>v5[0] = 19</code>；</li>
+<li>以此类推，直到遍历完整个 24 位的 flag。</li>
+</ul>
+<p>简单说：<code>v5</code> 的 3 个元素 <code>[19,19,81]</code> 会按 “19→19→81→19→19→81…” 的顺序，循环对每一位 flag 进行 XOR 加密。</p>
+<h3 id="3-为什么用-XOR-加密？为什么用-“循环密钥”？"><a href="#3-为什么用-XOR-加密？为什么用-“循环密钥”？" class="headerlink" title="3. 为什么用 XOR 加密？为什么用 “循环密钥”？"></a>3. 为什么用 XOR 加密？为什么用 “循环密钥”？</h3><h4 id="（1）XOR-加密的特性（决定-v5-可逆向）"><a href="#（1）XOR-加密的特性（决定-v5-可逆向）" class="headerlink" title="（1）XOR 加密的特性（决定 v5 可逆向）"></a>（1）XOR 加密的特性（决定 <code>v5</code> 可逆向）</h4><p>XOR（异或）运算有个关键特性：<strong>对同一个数据用同一个密钥做两次 XOR，会还原原始数据</strong>（即 <code>a ^ key ^ key = a</code>）。这也是我们之前能 “解密” 的核心 —— 只要知道 <code>v5</code> 的值，就能反向对 <code>Str2</code> 做 XOR，还原出第一轮加密后的 flag，再进一步还原原始 flag。</p>
+<h4 id="（2）循环密钥的作用（简单加密，增加破解难度）"><a href="#（2）循环密钥的作用（简单加密，增加破解难度）" class="headerlink" title="（2）循环密钥的作用（简单加密，增加破解难度）"></a>（2）循环密钥的作用（简单加密，增加破解难度）</h4><p>如果直接用一个固定密钥（比如只用 19）对所有位加密，破解难度很低；而用 <code>[19,19,81]</code> 循环，相当于每 3 位用不同的密钥组合，既实现了简单的加密逻辑，又比 “单密钥” 更难直接猜测（必须知道循环规律和 3 个密钥值才能破解）。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p><code>v5 = [19, 19, 81]</code> 不是随机的数字，而是 flag 验证代码中 <strong>第二轮 XOR 加密的 “循环密钥数组”</strong>：</p>
+<ul>
+<li>功能：按 “19→19→81” 的循环顺序，对第一轮加密后的 flag 做二次加密；</li>
+<li>关键：由于 XOR 特性，它既是加密的 “钥匙”，也是解密的 “钥匙”—— 知道这 3 个值，才能反向还原出用户输入的原始正确 flag。</li>
+</ul>
+<h2 id="别笑，你也过不了第二关"><a href="#别笑，你也过不了第二关" class="headerlink" title="别笑，你也过不了第二关"></a>别笑，你也过不了第二关</h2><p>题目内容：</p>
+<p>不是哥们，说白了你有啥实力啊，</p>
+<p>过关不是简简单单。</p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/file-20260331130230487.png" loading='lazy'></p>
+<ul>
+<li>应该要改数字</li>
+<li>尝试F12控制台改数字，但是没用。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">score = 1000000;</span><br><span class="line">currentLevel = 1;</span><br><span class="line">gameEnded = false;</span><br><span class="line">finishSpawned = true;</span><br><span class="line">endLevel();</span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>回顾：为什么直接在元素里修改分数不行，一定要输这个代码才能判定过关呢？</li>
+</ul>
+<h2 id="1-前端显示-vs-程序变量"><a href="#1-前端显示-vs-程序变量" class="headerlink" title="1. 前端显示 vs 程序变量"></a>1. 前端显示 vs 程序变量</h2><ul>
+<li><strong>你在元素里修改的</strong>：只是 HTML 页面上显示的文字</li>
+<li><strong>游戏实际使用的</strong>：JavaScript 内存中的变量 <code>score</code></li>
+</ul>
+<p>比如：</p>
+<p>比如：</p>
+<p>html</p>
+<p id="score">分数: 0</p>  <!-- 这只是显示 -->
+
+<p>和</p>
+<p>javascript</p>
+<p>let score &#x3D; 0;  &#x2F;&#x2F; 这是程序实际使用的值</p>
+<p>当时改的只是“分数牌”，不是“实际分数”！</p>
+<h2 id="初识RSA"><a href="#初识RSA" class="headerlink" title="初识RSA"></a>初识RSA</h2><p>题目内容：</p>
+<p>好像很标准，又好像不太标准（md5码怎么解呢？好像有在线工具）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"></span><br><span class="line">key=<span class="string">b&#x27;??????&#x27;</span>   </span><br><span class="line"><span class="keyword">assert</span> <span class="built_in">len</span>(key)==<span class="number">6</span></span><br><span class="line">KEY = hashlib.md5(key).hexdigest().encode()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;KEY=&#x27;</span>,KEY)</span><br><span class="line"></span><br><span class="line">flag=<span class="string">b&#x27;flag&#123;?????????????&#125;&#x27;</span></span><br><span class="line"></span><br><span class="line">m=bytes_to_long(flag)</span><br><span class="line"></span><br><span class="line">e=<span class="number">65537</span></span><br><span class="line">p=getPrime(<span class="number">512</span>)</span><br><span class="line">q=getPrime(<span class="number">512</span>)</span><br><span class="line">n=<span class="built_in">pow</span>(p,<span class="number">3</span>)* <span class="built_in">pow</span>(q,<span class="number">2</span>)</span><br><span class="line">c=<span class="built_in">pow</span>(m,e,n)</span><br><span class="line"></span><br><span class="line">P=p^(bytes_to_long(key))</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;P=&quot;</span>,P)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;n=&quot;</span>,n)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;c=&quot;</span>,c)</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">KEY = b&#x27;5ae9b7f211e23aac3df5f2b8f3b8eada&#x27;</span></span><br><span class="line"><span class="string">P= 8950704257708450266553505566662195919814660677796969745141332884563215887576312397012443714881729945084204600427983533462340628158820681332200645787691506</span></span><br><span class="line"><span class="string">n= 44446616188218819786207128669544260200786245231084315865332960254466674511396013452706960167237712984131574242297631824608996400521594802041774252109118569706894250996931000927100268277762882754652796291883967540656284636140320080424646971672065901724016868601110447608443973020392152580956168514740954659431174557221037876268055284535861917524270777789465109449562493757855709667594266126482042307573551713967456278514060120085808631486752297737122542989222157016105822237703651230721732928806660755347805734140734412060262304703945060273095463889784812104712104670060859740991896998661852639384506489736605859678660859641869193937584995837021541846286340552602342167842171089327681673432201518271389316638905030292484631032669474635442148203414558029464840768382970333</span></span><br><span class="line"><span class="string">c= 42481263623445394280231262620086584153533063717448365833463226221868120488285951050193025217363839722803025158955005926008972866584222969940058732766011030882489151801438753030989861560817833544742490630377584951708209970467576914455924941590147893518967800282895563353672016111485919944929116082425633214088603366618022110688943219824625736102047862782981661923567377952054731667935736545461204871636455479900964960932386422126739648242748169170002728992333044486415920542098358305720024908051943748019208098026882781236570466259348897847759538822450491169806820787193008018522291685488876743242619977085369161240842263956004215038707275256809199564441801377497312252051117441861760886176100719291068180295195677144938101948329274751595514805340601788344134469750781845</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>要解出这个 RSA 问题的 flag，我们可以按照以下步骤进行：</p>
+<ol>
+<li>已知 KEY 的 MD5 哈希值，可反推出 key（6 字节）</li>
+<li>利用 P 和 key 求出素数 p</li>
+<li>从 n 分解出 q</li>
+<li>计算私钥解密得到 flag</li>
+</ol>
+<p>这是一个更简单高效的代码，使用 <code>itertools</code> 快速爆破：</p>
+<p>python</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"></span><br><span class="line">KEY = <span class="string">b&#x27;5ae9b7f211e23aac3df5f2b8f3b8eada&#x27;</span></span><br><span class="line">P = <span class="number">8950704257708450266553505566662195919814660677796969745141332884563215887576312397012443714881729945084204600427983533462340628158820681332200645787691506</span></span><br><span class="line">n = <span class="number">44446616188218819786207128669544260200786245231084315865332960254466674511396013452706960167237712984131574242297631824608996400521594802041774252109118569706894250996931000927100268277762882754652796291883967540656284636140320080424646971672065901724016868601110447608443973020392152580956168514740954659431174557221037876268055284535861917524270777789465109449562493757855709667594266126482042307573551713967456278514060120085808631486752297737122542989222157016105822237703651230721732928806660755347805734140734412060262304703945060273095463889784812104712104670060859740991896998661852639384506489736605859678660859641869193937584995837021541846286340552602342167842171089327681673432201518271389316638905030292484631032669474635442148203414558029464840768382970333</span></span><br><span class="line">c = <span class="number">42481263623445394280231262620086584153533063717448365833463226221868120488285951050193025217363839722803025158955005926008972866584222969940058732766011030882489151801438753030989861560817833544742490630377584951708209970467576914455924941590147893518967800282895563353672016111485919944929116082425633214088603366618022110688943219824625736102047862782981661923567377952054731667935736545461204871636455479900964960932386422126739648242748169170002728992333044486415920542098358305720024908051943748019208098026882781236570466259348897847759538822450491169806820787193008018522291685488876743242619977085369161240842263956004215038707275256809199564441801377497312252051117441861760886176100719291068180295195677144938101948329274751595514805340601788344134469750781845</span></span><br><span class="line">e = <span class="number">65537</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 爆破所有6字节key</span></span><br><span class="line"><span class="keyword">for</span> key_bytes <span class="keyword">in</span> itertools.product(<span class="built_in">range</span>(<span class="number">256</span>), repeat=<span class="number">6</span>):</span><br><span class="line">    key = <span class="built_in">bytes</span>(key_bytes)</span><br><span class="line">    <span class="keyword">if</span> hashlib.md5(key).hexdigest().encode() == KEY:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Found key:&quot;</span>, key)</span><br><span class="line">        key_int = bytes_to_long(key)</span><br><span class="line">        p = P ^ key_int  <span class="comment"># 普通 XOR</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 检查 p 是否整除 n</span></span><br><span class="line">        <span class="keyword">if</span> n % (p**<span class="number">3</span>) == <span class="number">0</span>:</span><br><span class="line">            q2 = n // (p**<span class="number">3</span>)</span><br><span class="line">            q = isqrt(q2)</span><br><span class="line">            <span class="keyword">if</span> q * q == q2:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;p =&quot;</span>, p)</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;q =&quot;</span>, q)</span><br><span class="line"></span><br><span class="line">                <span class="comment"># 计算 phi(n) = p^2*(p-1) * q*(q-1)</span></span><br><span class="line">                phi = p**<span class="number">2</span> * (p-<span class="number">1</span>) * q * (q-<span class="number">1</span>)</span><br><span class="line">                d = <span class="built_in">pow</span>(e, -<span class="number">1</span>, phi)  <span class="comment"># Python 3.8+ 逆元</span></span><br><span class="line">                m = <span class="built_in">pow</span>(c, d, n)</span><br><span class="line">                flag = long_to_bytes(m)</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;Flag:&quot;</span>, flag.decode())</span><br><span class="line">                exit(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>解题思路说明：</p>
+<ol>
+<li><strong>获取 key</strong>：通过已知的 MD5 哈希值<code>5ae9b7f211e23aac3df5f2b8f3b8eada</code>，可以爆破出 6 字节的 key </li>
+<li><strong>计算 p</strong>：根据代码中的<code>P = p ^ bytes_to_long(key)</code>，利用异或的可逆性，得到<code>p = P ^ bytes_to_long(key)</code></li>
+<li><strong>分解 n</strong>：已知<code>n = p^3 * q^2</code>，有了 p 之后可以很容易计算出 q</li>
+<li><strong>解密过程</strong>：计算欧拉函数 φ(n) &#x3D; (p³-p²)(q²-q)，然后求 e 的逆元 d，最后用私钥 d 解密得到 flag</li>
+</ol>
+<h2 id="随机数之旅1"><a href="#随机数之旅1" class="headerlink" title="随机数之旅1"></a>随机数之旅1</h2><p>题目内容：</p>
+<p>真正的大中衔接belike:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> uuid</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> getPrime, bytes_to_long</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成随机 flag 并转换为整数</span></span><br><span class="line">flag = <span class="string">&quot;flag&#123;&quot;</span> + <span class="built_in">str</span>(uuid.uuid4()) + <span class="string">&quot;&#125;&quot;</span></span><br><span class="line">message_int = bytes_to_long(flag.encode())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成两个素数：</span></span><br><span class="line"><span class="comment"># p 的比特长度比 message_int 略大</span></span><br><span class="line"><span class="comment"># a 的比特长度和 p 相同</span></span><br><span class="line">p = getPrime(message_int.bit_length() + <span class="number">3</span>)</span><br><span class="line">a = getPrime(p.bit_length())</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;a = <span class="subst">&#123;a&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;p = <span class="subst">&#123;p&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># hint 序列：以随机数为起点，按递推关系生成 5 次</span></span><br><span class="line"><span class="comment"># hint[i+1] = (a * hint[i] + message_int) mod p</span></span><br><span class="line">hint_values = [random.randint(<span class="number">1</span>, p - <span class="number">1</span>)]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">    next_value = (a * hint_values[-<span class="number">1</span>] + message_int) % p</span><br><span class="line">    hint_values.append(next_value)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;hint =&quot;</span>, hint_values)</span><br><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">a = 295789025762601408173828135835543120874436321839537374211067344874253837225114998888279895650663245853</span></span><br><span class="line"><span class="string">p = 516429062949786265253932153679325182722096129240841519231893318711291039781759818315309383807387756431</span></span><br><span class="line"><span class="string">hint = [184903644789477348923205958932800932778350668414212847594553173870661019334816268921010695722276438808, 289189387531555679675902459817169546843094450548753333994152067745494929208355954578346190342131249104, 511308006207171169525638257022520734897714346965062712839542056097960669854911764257355038593653419751, 166071289874864336172698289575695453201748407996626084705840173384834203981438122602851131719180238215, 147110858646297801442262599376129381380715215676113653296571296956264538908861108990498641428275853815, 414834276462759739846090124494902935141631458647045274550722758670850152829207904420646985446140292244]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>解答：这是一个 <strong>线性同余生成器 (LCG)</strong> 的题目，已知：</p>
+<p>text</p>
+<p>hint[i+1] &#x3D; (a * hint[i] + m) mod p</p>
+<p>其中 <code>m</code> 就是 flag 的整数形式。</p>
+<p>我们有 6 个连续的 hint 值，可以解出 <code>m</code>。</p>
+<hr>
+<h2 id="1-推导公式"><a href="#1-推导公式" class="headerlink" title="1. 推导公式"></a>1. 推导公式</h2><p>从两个相邻的方程：</p>
+<p>text</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hint[1] = (a * hint[0] + m) mod p</span><br><span class="line">hint[2] = (a * hint[1] + m) mod p</span><br></pre></td></tr></table></figure>
+
+<p>相减：</p>
+<p>text</p>
+<p>hint[2] - hint[1] &#x3D; a * (hint[1] - hint[0]) mod p</p>
+<p>所以：</p>
+<p>text</p>
+<p>a &#x3D; (hint[2] - hint[1]) * (hint[1] - hint[0])^(-1) mod p</p>
+<p>然后求 <code>m</code>：</p>
+<p>text</p>
+<p>m &#x3D; hint[1] - a * hint[0] mod p</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> long_to_bytes</span><br><span class="line"></span><br><span class="line">a = <span class="number">295789025762601408173828135835543120874436321839537374211067344874253837225114998888279895650663245853</span></span><br><span class="line">p = <span class="number">516429062949786265253932153679325182722096129240841519231893318711291039781759818315309383807387756431</span></span><br><span class="line">hint = [<span class="number">184903644789477348923205958932800932778350668414212847594553173870661019334816268921010695722276438808</span>, <span class="number">289189387531555679675902459817169546843094450548753333994152067745494929208355954578346190342131249104</span>, <span class="number">511308006207171169525638257022520734897714346965062712839542056097960669854911764257355038593653419751</span>, <span class="number">166071289874864336172698289575695453201748407996626084705840173384834203981438122602851131719180238215</span>, <span class="number">147110858646297801442262599376129381380715215676113653296571296956264538908861108990498641428275853815</span>, <span class="number">414834276462759739846090124494902935141631458647045274550722758670850152829207904420646985446140292244</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 验证 a 是否正确（题目给了 a，但我们可以验证）</span></span><br><span class="line">diff1 = (hint[<span class="number">1</span>] - hint[<span class="number">0</span>]) % p</span><br><span class="line">diff2 = (hint[<span class="number">2</span>] - hint[<span class="number">1</span>]) % p</span><br><span class="line">a_calc = (diff2 * <span class="built_in">pow</span>(diff1, -<span class="number">1</span>, p)) % p</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;验证 a:&quot;</span>, a == a_calc)  <span class="comment"># 应该为 True</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算 m</span></span><br><span class="line">m = (hint[<span class="number">1</span>] - a * hint[<span class="number">0</span>]) % p</span><br><span class="line"></span><br><span class="line"><span class="comment"># 转为字节</span></span><br><span class="line">flag_bytes = long_to_bytes(m)</span><br><span class="line">flag = flag_bytes.decode()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Flag:&quot;</span>, flag)</span><br></pre></td></tr></table></figure>
+
+<p>flag{c3bc3ead-01e3-491b-aa2d-d2f042449fd6}</p>
+<h2 id="唯一表示"><a href="#唯一表示" class="headerlink" title="唯一表示"></a>唯一表示</h2><p>题目：不要把鸡蛋放在同一个篮子里</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sympy.ntheory.modular <span class="keyword">import</span> crt</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> bytes_to_long</span><br><span class="line"><span class="keyword">from</span> sympy <span class="keyword">import</span> primerange</span><br><span class="line"><span class="keyword">import</span> uuid</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成素数列表</span></span><br><span class="line">primes = <span class="built_in">list</span>(primerange(<span class="number">2</span>, <span class="number">114514</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成随机 flag，并转换为整数</span></span><br><span class="line">flag = <span class="string">&quot;flag&#123;&quot;</span> + <span class="built_in">str</span>(uuid.uuid4()) + <span class="string">&quot;&#125;&quot;</span></span><br><span class="line">message_int = bytes_to_long(flag.encode())</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fun</span>(<span class="params">n: <span class="built_in">int</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    给定整数 n，返回它对若干个素数模的余数列表，</span></span><br><span class="line"><span class="string">    直到用这些余数和模数 CRT 重建出的值恰好等于 n。</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    used_primes = [<span class="number">2</span>]          <span class="comment"># 当前使用的素数列表，先用 2 开始</span></span><br><span class="line">    prime_index = <span class="number">1</span>            <span class="comment"># primes[0] 已用，从 primes[1] 开始</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="comment"># 计算 n 对当前所有模数的余数</span></span><br><span class="line">        remainders = [n % p <span class="keyword">for</span> p <span class="keyword">in</span> used_primes]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 用 CRT 尝试重建 n</span></span><br><span class="line">        reconstructed, _ = crt(used_primes, remainders)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 如果重建成功，返回余数列表</span></span><br><span class="line">        <span class="keyword">if</span> reconstructed == n:</span><br><span class="line">            <span class="keyword">return</span> remainders</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 否则继续添加新的素数，扩大模数集合</span></span><br><span class="line">        used_primes.append(primes[prime_index])</span><br><span class="line">        prime_index += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算 message_int 的余数表示</span></span><br><span class="line">c = fun(message_int)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(c)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">[1, 2, 2, 4, 0, 2, 11, 11, 8, 23, 1, 30, 35, 0, 18, 30, 55, 60, 29, 42, 8, 13, 49, 11, 69, 26, 8, 73, 84, 67, 100, 9, 77, 72, 127, 49, 57, 74, 70, 129, 146, 45, 35, 180, 196, 101, 100, 146, 100, 194, 2, 161, 35, 155]</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>解答：这是一个 <strong>中国剩余定理（CRT）</strong> 的逆向问题。给你余数列表，需要恢复原始的消息。</p>
+<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>已知：</p>
+<ul>
+<li>余数列表 <code>c</code></li>
+<li>使用的素数是从小到大依次选取的（从2开始）</li>
+<li>需要找到对应的素数列表，然后用CRT恢复 <code>message_int</code></li>
+<li>最后将整数转换回字符串得到flag</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sympy.ntheory.modular <span class="keyword">import</span> crt</span><br><span class="line"><span class="keyword">from</span> sympy <span class="keyword">import</span> primerange</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> long_to_bytes</span><br><span class="line"><span class="comment"># 生成与加密时相同的素数列表</span></span><br><span class="line">primes = <span class="built_in">list</span>(primerange(<span class="number">2</span>, <span class="number">114514</span>))</span><br><span class="line"><span class="comment"># 给定的余数列表</span></span><br><span class="line">c = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">11</span>, <span class="number">11</span>, <span class="number">8</span>, <span class="number">23</span>, <span class="number">1</span>, <span class="number">30</span>, <span class="number">35</span>, <span class="number">0</span>, <span class="number">18</span>, <span class="number">30</span>, <span class="number">55</span>, <span class="number">60</span>, <span class="number">29</span>, <span class="number">42</span>, <span class="number">8</span>, <span class="number">13</span>, <span class="number">49</span>, <span class="number">11</span>, <span class="number">69</span>, <span class="number">26</span>, <span class="number">8</span>, <span class="number">73</span>, <span class="number">84</span>, <span class="number">67</span>, <span class="number">100</span>, <span class="number">9</span>, <span class="number">77</span>, <span class="number">72</span>, <span class="number">127</span>, <span class="number">49</span>, <span class="number">57</span>, <span class="number">74</span>, <span class="number">70</span>, <span class="number">129</span>, <span class="number">146</span>, <span class="number">45</span>, <span class="number">35</span>, <span class="number">180</span>, <span class="number">196</span>, <span class="number">101</span>, <span class="number">100</span>, <span class="number">146</span>, <span class="number">100</span>, <span class="number">194</span>, <span class="number">2</span>, <span class="number">161</span>, <span class="number">35</span>, <span class="number">155</span>]</span><br><span class="line"><span class="comment"># 确定使用的素数数量与余数数量相同</span></span><br><span class="line">used_primes = primes[:<span class="built_in">len</span>(c)]</span><br><span class="line"><span class="comment"># 应用中国剩余定理重建原始整数</span></span><br><span class="line">reconstructed, _ = crt(used_primes, c)</span><br><span class="line"><span class="comment"># 将整数转换回字节，再解码为字符串</span></span><br><span class="line">flag = long_to_bytes(<span class="built_in">int</span>(reconstructed)).decode()</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure>
+
+<h2 id="我不要革命失败"><a href="#我不要革命失败" class="headerlink" title="我不要革命失败"></a>我不要革命失败</h2><p>题目内容：</p>
+<p>小吉的机械革命笔记本又双叒叕蓝屏了！这次他不想再坐以待毙！他发来了他在C:\Windows\Minidump\的蓝屏文件，请你帮忙分析一下，让机革摆脱舍友的歧视。听说大伙看蓝屏日志都用的是WinDbg，操作也很简单，好像要敲什么!analyze -v?</p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/file-20260331130230361.png" loading='lazy'></p>
+<p>flag{崩溃类型(即蓝屏显示的终止代码)_故障进程}</p>
+<p>解答：</p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/file-20260331130230371.png" loading='lazy'></p>
+<ul>
+<li>输入analyze -v得到</li>
+</ul>
+<p>这里的关键信息：<br><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/file-20260331130230380.png" loading='lazy'></p>
+<ul>
+<li><code>**0xEF**</code> - <strong>蓝屏终止代码</strong>（STOP CODE）</li>
+</ul>
+<p><code>CRITICAL_PROCESS_DIED</code> (对应十六进制 0xEF)</p>
+<ul>
+<li><code>**svchost.exe**</code> - 故障进程</li>
+<li><code>**CRITICAL_PROCESS**</code> - 崩溃类型描述</li>
+</ul>
+<h2 id="正确的flag格式："><a href="#正确的flag格式：" class="headerlink" title="正确的flag格式："></a>正确的flag格式：</h2><p><strong>flag{CRITICAL_PROCESS_DIED_svchost.exe}</strong></p>
+<h2 id="我真得控制你了"><a href="#我真得控制你了" class="headerlink" title="我真得控制你了"></a>我真得控制你了</h2><p>题目内容：</p>
+<p>小小web还不是简简单单？什么？你拿不下来？那我得好好控制控制你了哈</p>
+<p>解题：这是一个前端 JavaScript 题目，关键障碍是：<br><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/file-20260331130230550.png" loading='lazy'></p>
+<ol>
+<li><strong>开发者工具被禁用</strong>（无法直接 F12）</li>
+<li><strong>启动按钮点不了</strong>（可能被 CSS 或 JS 禁用）</li>
+</ol>
+<ul>
+<li>查看页面源代码（尝试绕开禁用）</li>
+</ul>
+<p>虽然开发者工具被禁用，但可以尝试在浏览器地址栏输入 <code>view-source:https://[你的网址]</code>（将<code>[你的网址]</code>替换为目标页面的实际网址），查看页面的 HTML 源代码。在源代码中寻找与 “启动” 按钮相关的代码，比如按钮的<code>onclick</code>事件绑定的函数、表单提交的目标等，分析其逻辑，看是否能找到触发功能的关键代码，进而通过其他方式（如手动构造表单提交、调用相关 JS 函数等，如果 JS 函数可访问的话）来触发 “启动” 操作。</p>
+<ul>
+<li>抓包分析</li>
+</ul>
+<p>使用抓包工具（如 Fiddler、Wireshark 或者浏览器自带的网络抓包功能，虽然开发者工具被禁用，但部分浏览器的网络抓包入口可能仍可访问），捕获页面的请求和响应。查看页面加载时的请求，特别是与 “启动” 按钮相关的接口请求。如果能找到触发 “启动” 功能的 API 接口，就可以直接构造请求，模拟点击 “启动” 按钮的操作，与服务器进行交互，从而推进解题。</p>
+<p>**view-source:**<a target="_blank" rel="noopener" href="https://eci-2ze7zpyuszwuqs81atoc.cloudeci1.ichunqiu.com:80/">https://eci-2ze7zpyuszwuqs81atoc.cloudeci1.ichunqiu.com:80</a></p>
+<ul>
+<li>ctrl＋U</li>
+</ul>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/file-20260331130230540.png" loading='lazy'></p>
+<h2 id="小跳蛙"><a href="#小跳蛙" class="headerlink" title="小跳蛙"></a>小跳蛙</h2><p>题目内容：</p>
+<p>青蛙会跳到哪里去呢？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">banner = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Welcome to Cathylin&#x27;s cryptography learning platform, where we learn an algorithm through an interesting problem.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">There is a frog on the grid point (a, b). When a &gt; b, it will jump to (a-b, b); when a &lt; b, it will jump to (a, b-a); and when a = b, it will stay where it is.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Next, I will provide five sets of (a, b), and please submit the final position (x, y) of the frog in sequence</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">If you succeed, I will give you a mysterious flag.</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="built_in">print</span>(banner)</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">from</span> secret <span class="keyword">import</span> flag</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">cnt = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> cnt &lt; <span class="number">5</span>:</span><br><span class="line">    a = random.randint(<span class="number">1</span>, <span class="number">10</span>**(cnt+<span class="number">1</span>))</span><br><span class="line">    b = random.randint(<span class="number">1</span>, <span class="number">10</span>**(cnt+<span class="number">1</span>))</span><br><span class="line">    <span class="built_in">print</span>(  <span class="built_in">str</span>(cnt+<span class="number">1</span>) + <span class="string">&quot;.(a,b) is: (&quot;</span> + <span class="built_in">str</span>(a) + <span class="string">&quot;,&quot;</span> + <span class="built_in">str</span>(b) + <span class="string">&quot;)&quot;</span>)</span><br><span class="line">    user_input = <span class="built_in">input</span>(<span class="string">&quot;Please input the final position of the frog (x,y) :&quot;</span>)</span><br><span class="line">    pattern = <span class="string">r&#x27;[()]?(\d+)[,\s]+(\d+)[)]?&#x27;</span></span><br><span class="line">    <span class="keyword">match</span> = re.<span class="keyword">match</span>(pattern, user_input.strip())</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">match</span>:</span><br><span class="line">        x, y = <span class="built_in">map</span>(<span class="built_in">int</span>, <span class="keyword">match</span>.groups())</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Unable to parse the input. Please check the format and re-enter&quot;</span>)</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">    original_a, original_b = a, b</span><br><span class="line">    <span class="keyword">while</span> a != b:</span><br><span class="line">        <span class="keyword">if</span> a &gt; b:</span><br><span class="line">            a = a - b</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            b = b - a</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> x == a <span class="keyword">and</span> y == b:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Congratulations, you answered correctly! Keep going for &quot;</span> + <span class="built_in">str</span>(<span class="number">4</span>-cnt) + <span class="string">&quot; more times and you will get the mysterious flag!&quot;</span>)</span><br><span class="line">        cnt += <span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Unfortunately, you answered incorrectly. The correct answer is(&#123;&#125;, &#123;&#125;). Please start learning again&quot;</span>.<span class="built_in">format</span>(a, b))</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> cnt == <span class="number">5</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Congratulations, you answered all the questions correctly!&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Mysterious Flag:&quot;</span> + flag)</span><br></pre></td></tr></table></figure>
+
+<p>Welcome to Cathylin’s cryptography learning platform, where we learn an algorithm through an interesting problem.</p>
+<p>There is a frog on the grid point (a, b). When a &gt; b, it will jump to (a-b, b); when a &lt; b, it will jump to (a, b-a); and when a &#x3D; b, it will stay where it is.</p>
+<p>Next, I will provide five sets of (a, b), and please submit the final position (x, y) of the frog in sequence</p>
+<p>If you succeed, I will give you a mysterious flag.</p>
+<p>解答：</p>
+<p>题目 <code>jump_frog.py</code> 是一个交互程序，它模拟一只青蛙在坐标 <code>(a, b)</code> 上，按照规则跳跃：</p>
+<ul>
+<li>如果 <code>a &gt; b</code>，则跳到 <code>(a-b, b)</code></li>
+<li>如果 <code>a &lt; b</code>，则跳到 <code>(a, b-a)</code></li>
+<li>如果 <code>a == b</code>，则停止</li>
+</ul>
+<p>这其实就是 <strong>辗转相减法</strong>（Euclidean algorithm 的减法版本），最终青蛙会停在 <code>(g, g)</code>，其中 <code>g = gcd(a, b)</code>。</p>
+<p>程序会生成 5 组 <code>(a, b)</code>，数字范围逐渐变大（<code>10^(cnt+1)</code>），每次你要输入最终位置 <code>(x, y)</code>，其实就是 <code>(gcd(a,b), gcd(a,b))</code>。</p>
+<p>其核心是计算两个数经过多次相减（直到两数相等）后的结果，这其实就是求两个数的最大公约数（GCD）的过程（欧几里得算法的简化形式）。</p>
+<ul>
+<li>由于程序中 a 和 b 是随机生成的，且 flag 存储在 secret.py 中，无法直接通过代码静态分析获取。</li>
+</ul>
+<h2 id="宇宙的中心是php"><a href="#宇宙的中心是php" class="headerlink" title="宇宙的中心是php"></a>宇宙的中心是php</h2><p>题目内容：</p>
+<p>所有光线都逃不出去……但我知道这不会难倒你的</p>
+<p>（本题下发后，请通过 http 访问相应的 ip 和 port，例如 <code>nc ip port</code>，改为 <code>http://ip:port/</code>）</p>
+<p>容器地址： nc 47.94.87.199 33001</p>
+<p>解答：</p>
+<ul>
+<li>访问方式：<code>http://47.94.87.199:33001/</code></li>
+</ul>
+<p>html<br><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/file-20260331130230505.png" loading='lazy'><br><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/file-20260331130230469.png" loading='lazy'></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 你还是找到了......这片黑暗的秘密 --&gt;</span><br><span class="line">&lt;!-- s3kret.php --&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这说明存在一个隐藏文件：<code>s3kret.php</code>。</p>
+<p>访问：<a target="_blank" rel="noopener" href="http://47.94.87.199:33001/s3kret.php">http://47.94.87.199:33001/s3kret.php</a></p>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/file-20260331130230460.png" loading='lazy'></p>
+<h3 id="分析代码逻辑"><a href="#分析代码逻辑" class="headerlink" title="分析代码逻辑"></a>分析代码逻辑</h3><p>代码首先包含了 <code>flag.php</code> 文件（里面应该存放着我们需要的 <code>flag</code>），然后判断是否通过 <code>POST</code> 方法提交了名为 <code>newstar2025</code> 的参数。如果提交了，就将该参数的值赋给 <code>$answer</code>，接着进行关键判断：</p>
+<ul>
+<li><code>intval($answer) != 47</code>：要求 <code>$answer</code> 转换为整数后不等于 47。</li>
+<li><code>intval($answer, 0) == 47</code>：<code>intval</code> 函数第二个参数为 <code>0</code> 时，会根据字符串的格式自动判断进制。这里要求 <code>$answer</code> 转换为整数后等于 47。</li>
+</ul>
+<p>执行：</p>
+<ul>
+<li>curl -X POST <a target="_blank" rel="noopener" href="http://47.94.87.199:33001/s3kret.php">http://47.94.87.199:33001/s3kret.php</a> -d “newstar2025&#x3D;057”</li>
+</ul>
+<p>得到flag{a64a70f1-1435-4e2d-832b-c1d7e678d4e7}</p>
+<p>接下来解释绕过原理：</p>
+<h2 id="1-PHP-intval-函数的行为"><a href="#1-PHP-intval-函数的行为" class="headerlink" title="1. PHP intval() 函数的行为"></a>1. PHP <code>intval()</code> 函数的行为</h2><p><code>intval($var, $base)</code> 的第二个参数是<strong>进制基数</strong>：</p>
+<ul>
+<li><code>intval($answer)</code> 默认 <code>$base = 10</code>（十进制）</li>
+<li><code>intval($answer, 0)</code> 中 <code>$base = 0</code> 表示<strong>自动检测进制</strong></li>
+</ul>
+<hr>
+<h2 id="2-自动检测进制规则（base-0）"><a href="#2-自动检测进制规则（base-0）" class="headerlink" title="2. 自动检测进制规则（base&#x3D;0）"></a>2. 自动检测进制规则（base&#x3D;0）</h2><ul>
+<li>如果字符串以 <code>0x</code> 或 <code>0X</code> 开头 → 当作<strong>十六进制</strong></li>
+<li>如果字符串以 <code>0</code> 开头 → 当作<strong>八进制</strong></li>
+<li>否则 → 当作<strong>十进制</strong></li>
+</ul>
+<hr>
+<h2 id="3-我们的绕过-payload：057"><a href="#3-我们的绕过-payload：057" class="headerlink" title="3. 我们的绕过 payload：057"></a>3. 我们的绕过 payload：<code>057</code></h2><h3 id="intval-057-0-（自动检测进制）"><a href="#intval-057-0-（自动检测进制）" class="headerlink" title="intval(&quot;057&quot;, 0)（自动检测进制）"></a><code>intval(&quot;057&quot;, 0)</code>（自动检测进制）</h3><ul>
+<li>字符串以 <code>0</code> 开头 → 按<strong>八进制</strong>解析</li>
+<li>八进制 <code>057</code> &#x3D; <code>5*8 + 7 = 40 + 7 = 47</code></li>
+<li><strong>所以</strong>** **<code>**intval(&quot;057&quot;, 0) = 47**</code></li>
+</ul>
+<p><code>47 == 47</code> ✅ 成立</p>
+<hr>
+<h2 id="4-条件满足"><a href="#4-条件满足" class="headerlink" title="4. 条件满足"></a>4. 条件满足</h2><p>php</p>
+<p>if(intval($answer) !&#x3D; 47 &amp;&amp; intval($answer, 0) &#x3D;&#x3D; 47)</p>
+<p>代入 <code>$answer = &quot;057&quot;</code>：</p>
+<ul>
+<li><code>intval(&quot;057&quot;) = 57</code> → <code>57 != 47</code> ✅ true</li>
+<li><code>intval(&quot;057&quot;, 0) = 47</code> → <code>47 == 47</code> ✅ true</li>
+<li><code>true &amp;&amp; true</code> → 条件成立，输出 flag</li>
+</ul>
+<hr>
+<h2 id="5-另一个-payload：0x2f-的原理"><a href="#5-另一个-payload：0x2f-的原理" class="headerlink" title="5. 另一个 payload：0x2f 的原理"></a>5. 另一个 payload：<code>0x2f</code> 的原理</h2><ul>
+<li><code>intval(&quot;0x2f&quot;)</code> 十进制解析，遇到 <code>0</code> 后遇到 <code>x</code> 不是数字，停止 → 返回 <code>0</code></li>
+<li><code>0 != 47</code> ✅ true</li>
+<li><code>intval(&quot;0x2f&quot;, 0)</code> 十六进制解析 → <code>0x2f = 47</code></li>
+<li><code>47 == 47</code> ✅ true</li>
+</ul>
+<hr>
+<h2 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h2><p>这个漏洞利用的是**<u> PHP 在不同进制下对同一字符串解析结果不同</u>** 的特性，通过八进制&#x2F;十六进制与十进制的转换差异来满足矛盾条件。</p>
+<p>这就是 CTF 中常见的 <strong><u>PHP 类型混淆&#x2F;进制混淆 漏洞</u></strong>。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://FighterGodNemo.github.io">琉璃幻彩</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/">https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NewstarCTF/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://FighterGodNemo.github.io" target="_blank">琉璃幻彩的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/CTF/">CTF</a><a class="post-meta__tags" href="/tags/WriteUp/">WriteUp</a><a class="post-meta__tags" href="/tags/NewstarCTF/">NewstarCTF</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/%E3%80%8AKali_Linux%E9%AB%98%E7%BA%A7%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E3%80%8B/" title="《Kali_Linux高级渗透测试》"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">《Kali_Linux高级渗透测试》</div></div><div class="info-2"><div class="info-item-1">第一章 基于目标的渗透测试 动态主机配置协议（Dynamic Host Configuration Protocol，DHCP）  Kali默认不启用DHCP服务。启用会在全网广播新的IP地址。从而可能让管理员意识到测试者的存在。 安...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20NSSCTF/" title="NSSCTF_2025"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">NSSCTF_2025</div></div><div class="info-2"><div class="info-item-1">[BJDCTF_2020]Easy附件：easy.exe 无壳程序，直接分析即可  [CryptoCTF_2020]One_Line_Crypto 1234567from Crypto.Util.number import *from...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/%E5%AD%A6%E9%95%BF%E7%9A%84%E6%8C%91%E6%88%98%E9%A2%98/%E5%93%88%E5%9F%BA%E7%B1%B3/" title="哈基米"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">哈基米</div></div><div class="info-2"><div class="info-item-1">‌‌‌‌‍‬‍‬fakeflag‌‌‌‌‍‬‌{‌‌‌‌‍‬‌‍ni‌‌‌‌‍‬‍‌‌‌‌‍‬‌‌‌‌‍‬‍‌‌‌‌‌‌‌‌‌‌‌‌‍_‌‌‌‌‍‍‌‌‌‌‍‬‍‌‌‌‌‌‌‌zhi‌‌‌‌‍‍‍‌‌‌‌‍‍‌‌‌‌‍‌‍_‌‌‌‌‌...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/%E3%80%8ACTF%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B%E5%85%A5%E9%97%A8%E3%80%8B/" title="《CTF安全竞赛入门》"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">《CTF安全竞赛入门》</div></div><div class="info-2"><div class="info-item-1">Web信息收集题目2-2 where is the logo考察点：robots.txt文件附件：”C:\Users\glj07\Desktop\题目2-2-Where is logo\index.html”  第一步：搭建本地Web...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/%E7%9C%8B%E9%9B%AA%E8%AE%BA%E5%9D%9B/Game%E9%80%9A%E5%85%B3/" title="Game通关"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">Game通关</div></div><div class="info-2"><div class="info-item-1">第一关 摩斯密码，去掉斜杠  YOUWIN 第二关 flag{62d0cbb2c69133b52f386701726f29c1} 第三关 看到&#x3D; 想到base64编码  这里SRK一把梭 flag{b9768a37b47be...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/CTFshow/Web%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8%E4%B8%8E%E9%98%B2%E6%8A%A4/" title="Base64编码隐藏"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">Base64编码隐藏</div></div><div class="info-2"><div class="info-item-1">Base64编码隐藏CTF{easy_base64} HTTP头注入</div></div></div></a><a class="pagination-related" href="/2026/03/19/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/CTFshow/Web/" title=""><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-19</div><div class="info-item-2"></div></div><div class="info-2"><div class="info-item-1">Web 1Ctrl+U 查看源代码base64解码 Web 2</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/%E3%80%8AKali_Linux%E9%AB%98%E7%BA%A7%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E3%80%8B/" title="《Kali_Linux高级渗透测试》"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">《Kali_Linux高级渗透测试》</div></div><div class="info-2"><div class="info-item-1">第一章 基于目标的渗透测试 动态主机配置协议（Dynamic Host Configuration Protocol，DHCP）  Kali默认不启用DHCP服务。启用会在全网广播新的IP地址。从而可能让管理员意识到测试者的存在。 安...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">琉璃幻彩</div><div class="author-info-description">The Greatest Magician!</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">112</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">130</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">26</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FighterGodNemo"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/FighterGodNemo" title="Github" target="_blank"><i class="fab fa-github"></i></a><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="微信"><i class="fab fa-weixin"></i></a><div class="qr-code-popup"><img src="/img/qrcode/wechat-qr.png" alt="微信二维码"/ loading='lazy'></div></div><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="QQ"><i class="fab fa-qq"></i></a><div class="qr-code-popup"><img src="/img/qrcode/qq-qr.png" alt="QQ二维码"/ loading='lazy'></div></div><div class="copy-text-wrapper"><a class="social-icon" href="javascript:void(0)" title="Steam好友代码：1905706957" data-copy-text="1905706957"><i class="fab fa-steam"></i></a><div class="copy-text-popup"><h3>Steam好友代码</h3><p>1905706957</p><p class="copy-hint">点击图标复制</p></div></div><a class="social-icon" href="mailto:guliujia2233@outlook.com" title="Email" target="_blank"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">热爱 CTF 和 Forensic 的网安人一枚～
+欢迎各位大佬交流点评！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#F12"><span class="toc-number">1.</span> <span class="toc-text">F12_</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GNU-Debugger"><span class="toc-number">2.</span> <span class="toc-text">GNU_Debugger</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#multi-headach3"><span class="toc-number">3.</span> <span class="toc-text">multi-headach3</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%84%E5%90%88%E5%A4%B4%E9%83%A8"><span class="toc-number">3.1.</span> <span class="toc-text">组合头部</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-HEAD-%E6%96%B9%E6%B3%95"><span class="toc-number">3.2.</span> <span class="toc-text">使用 HEAD 方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E9%A2%98%E6%88%90%E5%8A%9F%E7%9A%84%E5%85%B3%E9%94%AE"><span class="toc-number">4.</span> <span class="toc-text">解题成功的关键</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NewstarCTF-2025"><span class="toc-number">5.</span> <span class="toc-text">NewstarCTF 2025</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Puzzle"><span class="toc-number">6.</span> <span class="toc-text">Puzzle</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pwn%E2%80%99s-door"><span class="toc-number">7.</span> <span class="toc-text">pwn’s_door</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sagemath%E4%BD%BF%E7%94%A8%E6%8C%87%E5%93%AA"><span class="toc-number">8.</span> <span class="toc-text">Sagemath使用指哪_</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#strange-login"><span class="toc-number">9.</span> <span class="toc-text">strange_login</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E6%80%9D%E8%B7%AF%EF%BC%9A%E5%88%A9%E7%94%A8-SQL-%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E7%BB%95%E8%BF%87%E7%99%BB%E5%BD%95%E9%AA%8C%E8%AF%81"><span class="toc-number">9.1.</span> <span class="toc-text">核心思路：利用 SQL 逻辑漏洞绕过登录验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B7%E4%BD%93%E6%B3%A8%E5%85%A5%E6%96%B9%E6%B3%95%EF%BC%88%E5%88%86%E5%9C%BA%E6%99%AF%E5%B0%9D%E8%AF%95%EF%BC%89"><span class="toc-number">9.2.</span> <span class="toc-text">具体注入方法（分场景尝试）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84%E4%B8%87%E8%83%BD%E5%AF%86%E7%A0%81%EF%BC%88%E9%92%88%E5%AF%B9%E7%94%A8%E6%88%B7%E5%90%8D-%E5%AF%86%E7%A0%81%E4%BB%BB%E6%84%8F%E4%B8%80%E6%96%B9%EF%BC%89"><span class="toc-number">9.2.1.</span> <span class="toc-text">1. 最简单的万能密码（针对用户名 &#x2F; 密码任意一方）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%A4%84%E7%90%86%E5%BC%95%E5%8F%B7%E8%A2%AB%E8%BD%AC%E4%B9%89%E7%9A%84%E6%83%85%E5%86%B5%EF%BC%88%E5%8D%95%E5%BC%95%E5%8F%B7%E8%A2%AB%E8%BF%87%E6%BB%A4%EF%BC%89"><span class="toc-number">9.2.2.</span> <span class="toc-text">2. 处理引号被转义的情况（单引号被过滤）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E8%BF%9B%E9%98%B6%EF%BC%9A%E8%8E%B7%E5%8F%96%E7%AE%A1%E7%90%86%E5%91%98%E7%9C%9F%E5%AE%9E%E4%BF%A1%E6%81%AF%EF%BC%88%E8%8B%A5%E9%9C%80%E8%A6%81%E6%AD%A3%E7%A1%AE%E7%94%A8%E6%88%B7%E5%90%8D-%E5%AF%86%E7%A0%81%EF%BC%89"><span class="toc-number">9.2.3.</span> <span class="toc-text">3. 进阶：获取管理员真实信息（若需要正确用户名 &#x2F; 密码）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E5%8E%9F%E7%90%86"><span class="toc-number">9.3.</span> <span class="toc-text">关键原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">9.4.</span> <span class="toc-text">注意事项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#X0r"><span class="toc-number">10.</span> <span class="toc-text">X0r</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%85%88%E6%98%8E%E7%A1%AE%E4%BB%A3%E7%A0%81%E9%87%8C%E7%9A%84-v5-%E5%8E%9F%E5%A7%8B%E5%AE%9A%E4%B9%89%EF%BC%88%E5%9B%9E%E9%A1%BE%E4%B8%8A%E4%B8%8B%E6%96%87%EF%BC%89"><span class="toc-number">10.1.</span> <span class="toc-text">1. 先明确代码里的 v5 原始定义（回顾上下文）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-v5-%E7%9A%84%E6%A0%B8%E5%BF%83%E4%BD%9C%E7%94%A8%EF%BC%9A%E7%AC%AC%E4%BA%8C%E8%BD%AE-XOR-%E5%8A%A0%E5%AF%86%E7%9A%84-%E2%80%9C%E5%BE%AA%E7%8E%AF%E5%AF%86%E9%92%A5%E2%80%9D"><span class="toc-number">10.2.</span> <span class="toc-text">2. v5 的核心作用：第二轮 XOR 加密的 “循环密钥”</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E5%85%88%E6%98%8E%E7%A1%AE%E5%8A%A0%E5%AF%86%E6%B5%81%E7%A8%8B%EF%BC%88%E5%9B%9E%E9%A1%BE%EF%BC%89"><span class="toc-number">10.2.1.</span> <span class="toc-text">（1）先明确加密流程（回顾）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%882%EF%BC%89v5-%E7%9A%84-%E2%80%9C%E5%BE%AA%E7%8E%AF%E4%BD%BF%E7%94%A8%E2%80%9D-%E9%80%BB%E8%BE%91"><span class="toc-number">10.2.2.</span> <span class="toc-text">（2）v5 的 “循环使用” 逻辑</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8-XOR-%E5%8A%A0%E5%AF%86%EF%BC%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8-%E2%80%9C%E5%BE%AA%E7%8E%AF%E5%AF%86%E9%92%A5%E2%80%9D%EF%BC%9F"><span class="toc-number">10.3.</span> <span class="toc-text">3. 为什么用 XOR 加密？为什么用 “循环密钥”？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%881%EF%BC%89XOR-%E5%8A%A0%E5%AF%86%E7%9A%84%E7%89%B9%E6%80%A7%EF%BC%88%E5%86%B3%E5%AE%9A-v5-%E5%8F%AF%E9%80%86%E5%90%91%EF%BC%89"><span class="toc-number">10.3.1.</span> <span class="toc-text">（1）XOR 加密的特性（决定 v5 可逆向）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E5%BE%AA%E7%8E%AF%E5%AF%86%E9%92%A5%E7%9A%84%E4%BD%9C%E7%94%A8%EF%BC%88%E7%AE%80%E5%8D%95%E5%8A%A0%E5%AF%86%EF%BC%8C%E5%A2%9E%E5%8A%A0%E7%A0%B4%E8%A7%A3%E9%9A%BE%E5%BA%A6%EF%BC%89"><span class="toc-number">10.3.2.</span> <span class="toc-text">（2）循环密钥的作用（简单加密，增加破解难度）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">10.4.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%AB%E7%AC%91%EF%BC%8C%E4%BD%A0%E4%B9%9F%E8%BF%87%E4%B8%8D%E4%BA%86%E7%AC%AC%E4%BA%8C%E5%85%B3"><span class="toc-number">11.</span> <span class="toc-text">别笑，你也过不了第二关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%89%8D%E7%AB%AF%E6%98%BE%E7%A4%BA-vs-%E7%A8%8B%E5%BA%8F%E5%8F%98%E9%87%8F"><span class="toc-number">12.</span> <span class="toc-text">1. 前端显示 vs 程序变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E8%AF%86RSA"><span class="toc-number">13.</span> <span class="toc-text">初识RSA</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BA%E6%95%B0%E4%B9%8B%E6%97%851"><span class="toc-number">14.</span> <span class="toc-text">随机数之旅1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%8E%A8%E5%AF%BC%E5%85%AC%E5%BC%8F"><span class="toc-number">15.</span> <span class="toc-text">1. 推导公式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%94%AF%E4%B8%80%E8%A1%A8%E7%A4%BA"><span class="toc-number">16.</span> <span class="toc-text">唯一表示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90"><span class="toc-number">17.</span> <span class="toc-text">问题分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E4%B8%8D%E8%A6%81%E9%9D%A9%E5%91%BD%E5%A4%B1%E8%B4%A5"><span class="toc-number">18.</span> <span class="toc-text">我不要革命失败</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E7%A1%AE%E7%9A%84flag%E6%A0%BC%E5%BC%8F%EF%BC%9A"><span class="toc-number">19.</span> <span class="toc-text">正确的flag格式：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E7%9C%9F%E5%BE%97%E6%8E%A7%E5%88%B6%E4%BD%A0%E4%BA%86"><span class="toc-number">20.</span> <span class="toc-text">我真得控制你了</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E8%B7%B3%E8%9B%99"><span class="toc-number">21.</span> <span class="toc-text">小跳蛙</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%87%E5%AE%99%E7%9A%84%E4%B8%AD%E5%BF%83%E6%98%AFphp"><span class="toc-number">22.</span> <span class="toc-text">宇宙的中心是php</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%9E%90%E4%BB%A3%E7%A0%81%E9%80%BB%E8%BE%91"><span class="toc-number">22.1.</span> <span class="toc-text">分析代码逻辑</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-PHP-intval-%E5%87%BD%E6%95%B0%E7%9A%84%E8%A1%8C%E4%B8%BA"><span class="toc-number">23.</span> <span class="toc-text">1. PHP intval() 函数的行为</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E8%87%AA%E5%8A%A8%E6%A3%80%E6%B5%8B%E8%BF%9B%E5%88%B6%E8%A7%84%E5%88%99%EF%BC%88base-0%EF%BC%89"><span class="toc-number">24.</span> <span class="toc-text">2. 自动检测进制规则（base&#x3D;0）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%88%91%E4%BB%AC%E7%9A%84%E7%BB%95%E8%BF%87-payload%EF%BC%9A057"><span class="toc-number">25.</span> <span class="toc-text">3. 我们的绕过 payload：057</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#intval-057-0-%EF%BC%88%E8%87%AA%E5%8A%A8%E6%A3%80%E6%B5%8B%E8%BF%9B%E5%88%B6%EF%BC%89"><span class="toc-number">25.1.</span> <span class="toc-text">intval(&quot;057&quot;, 0)（自动检测进制）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%9D%A1%E4%BB%B6%E6%BB%A1%E8%B6%B3"><span class="toc-number">26.</span> <span class="toc-text">4. 条件满足</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%8F%A6%E4%B8%80%E4%B8%AA-payload%EF%BC%9A0x2f-%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-number">27.</span> <span class="toc-text">5. 另一个 payload：0x2f 的原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-1"><span class="toc-number">28.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E7%9F%A5%E8%AF%86/MT%E7%AE%A1%E7%90%86%E5%99%A8%E6%9B%BF%E6%8D%A2%E5%8C%85%E6%95%B0%E6%8D%AE/" title="MT管理器替换包数据">MT管理器替换包数据</a><time datetime="2026-04-13T23:11:42.460Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E7%9F%A5%E8%AF%86/Cache%EF%BC%88%E7%BC%93%E5%AD%98%EF%BC%89/" title="Cache（缓存）">Cache（缓存）</a><time datetime="2026-04-13T23:11:42.459Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/Volatility3/" title="Volatility3">Volatility3</a><time datetime="2026-04-13T23:11:42.452Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/Python%E5%88%87%E6%8D%A2%E6%89%80%E7%94%A8%E7%89%88%E6%9C%AC/" title="Python切换所用版本">Python切换所用版本</a><time datetime="2026-04-13T23:11:42.451Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/MT%E7%AE%A1%E7%90%86%E5%99%A8%E6%9B%BF%E6%8D%A2APK%E6%95%B0%E6%8D%AE/" title="MT管理器替换APK数据">MT管理器替换APK数据</a><time datetime="2026-04-13T23:11:42.450Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 琉璃幻彩</span><span class="framework-info"><span id="busuanzi_container_site_pv">本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span><span class="footer-separator">|</span><span id="busuanzi_container_site_uv">本站访客数 <span id="busuanzi_value_site_uv"></span> 人次</span></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"></div><script src="/js/custom.js?v=20260402-2"></script><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.staticfile.org/pjax/0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

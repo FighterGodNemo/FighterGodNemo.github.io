@@ -1,0 +1,26 @@
+<hr>
+<h2 id="title-Volatility3permalink-‘-2026-03-15-Forensic-电子取证-Forensic解题妙具-Volatility3-‘date-“2026-03-15-13-28-28”categories-tags-电子取证-取证工具-Volatility3"><a href="#title-Volatility3permalink-‘-2026-03-15-Forensic-电子取证-Forensic解题妙具-Volatility3-‘date-“2026-03-15-13-28-28”categories-tags-电子取证-取证工具-Volatility3" class="headerlink" title="title: Volatility3permalink: ‘&#x2F;2026&#x2F;03&#x2F;15&#x2F;Forensic_电子取证&#x2F;Forensic解题妙具&#x2F;Volatility3&#x2F;‘date: “2026-03-15 13:28:28”categories:tags:  - 电子取证  - 取证工具  - Volatility3"></a>title: Volatility3<br>permalink: ‘&#x2F;2026&#x2F;03&#x2F;15&#x2F;Forensic_电子取证&#x2F;Forensic解题妙具&#x2F;Volatility3&#x2F;‘<br>date: “2026-03-15 13:28:28”<br>categories:<br>tags:<br>  - 电子取证<br>  - 取证工具<br>  - Volatility3</h2><h4 id="1-提取与-BitLocker-相关的进程信息"><a href="#1-提取与-BitLocker-相关的进程信息" class="headerlink" title="1. 提取与 BitLocker 相关的进程信息"></a>1. <strong>提取与 BitLocker 相关的进程信息</strong></h4><p>BitLocker 的核心功能由 <code>BDETL</code>（BitLocker Drive Encryption Tool）和 <code>WinDefend</code> 等服务实现。通过分析这些进程的状态，可以了解 BitLocker 是否正在运行或是否已加载加密密钥。</p>
+<pre><code class="language-plain">vol.py -f memory.dmp --profile=Win7SP1x64 pslist
+</code></pre>
+<p>上述命令会列出所有运行中的进程。如果发现 <code>BDETL.exe</code> 或其他与 BitLocker 相关的进程，则说明系统可能启用了 BitLocker[^1]。</p>
+<h4 id="2-检查内核模块和驱动程序"><a href="#2-检查内核模块和驱动程序" class="headerlink" title="2. 检查内核模块和驱动程序"></a>2. <strong>检查内核模块和驱动程序</strong></h4><p>BitLocker 的功能依赖于内核驱动程序 <code>FveVol.sys</code> 和 <code>FeAuthentic.sys</code>。使用以下命令可以检查这些驱动程序是否已加载：</p>
+<pre><code class="language-plain">vol.py -f memory.dmp --profile=Win7SP1x64 modscan
+</code></pre>
+<p>如果输出中包含 <code>FveVol.sys</code> 或 <code>FeAuthentic.sys</code>，则表明 BitLocker 正在使用中[^3]。</p>
+<h4 id="3-提取注册表键值"><a href="#3-提取注册表键值" class="headerlink" title="3. 提取注册表键值"></a>3. <strong>提取注册表键值</strong></h4><p>BitLocker 的配置信息通常存储在 Windows 注册表中。Volatility 提供了 <code>hivelist</code> 和 <code>printkey</code> 模块来提取注册表信息。以下命令可以帮助找到与 BitLocker 相关的配置：</p>
+<pre><code class="language-plain">vol.py -f memory.dmp --profile=Win7SP1x64 hivelist
+vol.py -f memory.dmp --profile=Win7SP1x64 printkey -K &quot;\SYSTEM\CurrentControlSet\Services\FveSvc&quot;
+</code></pre>
+<p><code>\SYSTEM\CurrentControlSet\Services\FveSvc</code> 是 BitLocker 驱动器加密服务的注册表路径。通过查看该路径下的键值，可以了解 BitLocker 的启用状态和其他配置信息[^1]。</p>
+<h4 id="4-查找恢复密钥"><a href="#4-查找恢复密钥" class="headerlink" title="4. 查找恢复密钥"></a>4. <strong>查找恢复密钥</strong></h4><p>如果系统启用了 BitLocker，并且用户曾经访问过恢复密钥，那么恢复密钥可能会临时存储在内存中。可以尝试使用 <code>strings</code> 或 <code>yara</code> 模块搜索内存中的字符串模式：</p>
+<pre><code class="language-plain">vol.py -f memory.dmp --profile=Win7SP1x64 strings | grep &quot;Recovery Password&quot;
+</code></pre>
+<p>或者编写自定义的 YARA 规则来匹配恢复密钥的格式。例如，恢复密钥通常是 48 位数字，分为 8 组，每组 6 位数字[^2]。</p>
+<h4 id="5-分析加密卷的挂载状态"><a href="#5-分析加密卷的挂载状态" class="headerlink" title="5. 分析加密卷的挂载状态"></a>5. <strong>分析加密卷的挂载状态</strong></h4><p>BitLocker 加密卷的挂载状态可以通过分析 <code>FveVolume</code> 数据结构来确定。虽然 Volatility 没有内置的模块直接解析 <code>FveVolume</code>，但可以通过以下步骤进行手动分析：</p>
+<ul>
+<li>使用 <code>vadinfo</code> 模块查找与加密相关的虚拟地址描述符（VAD）。</li>
+<li>结合 <code>dumpfiles</code> 模块提取潜在的加密卷文件。</li>
+</ul>
+<pre><code class="language-plain">vol.py -f memory.dmp --profile=Win7SP1x64 vadinfo
+vol.py -f memory.dmp --profile=Win7SP1x64 dumpfiles -Q &lt;vad_address&gt;
+</code></pre>

@@ -1,0 +1,47 @@
+<hr>
+<h2 id="title-Dcode时间戳转换permalink-‘-2026-03-15-Forensic-电子取证-Forensic解题妙具-Dcode时间戳转换-‘date-“2026-03-15-13-28-28”categories-tags-电子取证-取证工具-Dcode-时间戳"><a href="#title-Dcode时间戳转换permalink-‘-2026-03-15-Forensic-电子取证-Forensic解题妙具-Dcode时间戳转换-‘date-“2026-03-15-13-28-28”categories-tags-电子取证-取证工具-Dcode-时间戳" class="headerlink" title="title: Dcode时间戳转换permalink: ‘&#x2F;2026&#x2F;03&#x2F;15&#x2F;Forensic_电子取证&#x2F;Forensic解题妙具&#x2F;Dcode时间戳转换&#x2F;‘date: “2026-03-15 13:28:28”categories:tags:  - 电子取证  - 取证工具  - Dcode  - 时间戳"></a>title: Dcode时间戳转换<br>permalink: ‘&#x2F;2026&#x2F;03&#x2F;15&#x2F;Forensic_电子取证&#x2F;Forensic解题妙具&#x2F;Dcode时间戳转换&#x2F;‘<br>date: “2026-03-15 13:28:28”<br>categories:<br>tags:<br>  - 电子取证<br>  - 取证工具<br>  - Dcode<br>  - 时间戳</h2><h3 id="一、基础使用步骤"><a href="#一、基础使用步骤" class="headerlink" title="一、基础使用步骤"></a>一、基础使用步骤</h3><ol>
+<li><strong>启动工具</strong><br>打开 Dcode 应用程序，主界面会显示多种时间戳格式选项（如 Unix 时间戳、Windows 文件时间、OLE 自动化时间等）。</li>
+<li><strong>输入时间戳</strong><br>在输入框中粘贴或手动输入需要转换的时间戳值（支持数字、十六进制等格式）。</li>
+<li><strong>选择格式与时区</strong><ul>
+<li><strong>格式识别</strong>：根据时间戳来源选择对应格式（例如：<ul>
+<li><code>Unix 时间戳</code>（如 <code>1721232000</code>）</li>
+<li><code>Windows 文件时间</code>（如 <code>01d98acaa7aa2a55</code>）</li>
+<li><code>OLE 自动化时间</code>（如 <code>25569.5</code>））。</li>
+</ul>
+</li>
+<li><strong>时区设置</strong>：点击“时区”选项，选择目标时区（如 <code>Asia/Shanghai</code>），工具会自动将 UTC 时间转换为本地时间。</li>
+</ul>
+</li>
+<li><strong>执行转换</strong><br>点击 <strong>“Decode”</strong> 按钮，工具会立即显示转换结果，包括标准日期时间、星期几及时间戳类型说明。</li>
+</ol>
+<hr>
+<h3 id="⚙️-二、高级功能应用"><a href="#⚙️-二、高级功能应用" class="headerlink" title="⚙️ 二、高级功能应用"></a>⚙️ 二、高级功能应用</h3><ol>
+<li><strong>十六进制大端格式转换</strong><ul>
+<li>针对 Windows 注册表中的 <code>hex(b)</code> 格式（如 <code>hex(b):55,2a,aa,a7,ca,8a,d9,01</code>）：<ul>
+<li>手动删除非数字字符并反转字节顺序，得到 <code>01d98acaa7aa2a55</code> ；</li>
+<li>在 Dcode 中选择 <strong>“Windows 文件时间”</strong> 格式，输入该值并转换。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>批量处理</strong><br>支持一次性粘贴多行时间戳（每行一个值），工具会逐行解析并输出结果列表。</li>
+<li><strong>时间戳生成</strong><br>输入标准日期时间（如 <code>2025-11-22 08:00:00</code>），选择目标格式（如 Unix 时间戳），可反向生成对应时间戳。</li>
+</ol>
+<hr>
+<h3 id="🛠️-三、典型场景示例"><a href="#🛠️-三、典型场景示例" class="headerlink" title="🛠️ 三、典型场景示例"></a>🛠️ 三、典型场景示例</h3><ol>
+<li><strong>Windows 注册表分析</strong><ul>
+<li>提取 <code>RegDiagTrack.txt</code> 中的 <code>LastSuccessfulUploadTime</code> 值（如 <code>hex(b):7a,96,6c,2b,cb,8a,d9,01</code>） ；</li>
+<li>转换为 <code>01d98acb2b6c967a</code> 后，选择 <strong>“Windows 文件时间”</strong> 格式，得到 <code>2025-11-22 07:38:17 UTC</code>（即当前时间）。</li>
+</ul>
+</li>
+<li><strong>安卓取证</strong><ul>
+<li>从 SQLite 数据库导出的时间戳 <code>1284138059052</code>（毫秒级 Unix 时间戳）；</li>
+<li>在 Dcode 中选择 <strong>“Unix 时间戳”</strong>，输入值后自动转换为 <code>2025-11-22 07:38:17 UTC</code>。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="💡-四、注意事项"><a href="#💡-四、注意事项" class="headerlink" title="💡 四、注意事项"></a>💡 四、注意事项</h3><ol>
+<li><strong>格式匹配</strong><br>若转换结果异常，需检查时间戳格式是否选择正确（例如将十六进制误选为 Unix 时间戳）。</li>
+<li><strong>时区影响</strong><br>所有时间戳默认按 UTC 解析，需手动设置时区以获得本地时间（如北京时间需选 <code>UTC+8</code>）。</li>
+</ol>

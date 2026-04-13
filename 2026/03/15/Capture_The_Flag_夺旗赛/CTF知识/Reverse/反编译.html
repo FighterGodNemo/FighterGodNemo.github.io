@@ -1,0 +1,25 @@
+<hr>
+<h2 id="title-反编译permalink-‘-2026-03-15-Capture-The-Flag-夺旗赛-CTF知识-Reverse-反编译-‘date-“2026-03-15-13-28-16”categories-tags-CTF-CTF知识-Reverse-反编译"><a href="#title-反编译permalink-‘-2026-03-15-Capture-The-Flag-夺旗赛-CTF知识-Reverse-反编译-‘date-“2026-03-15-13-28-16”categories-tags-CTF-CTF知识-Reverse-反编译" class="headerlink" title="title: 反编译permalink: ‘&#x2F;2026&#x2F;03&#x2F;15&#x2F;Capture_The_Flag_夺旗赛&#x2F;CTF知识&#x2F;Reverse&#x2F;反编译&#x2F;‘date: “2026-03-15 13:28:16”categories:tags:  - CTF  - CTF知识  - Reverse  - 反编译"></a>title: 反编译<br>permalink: ‘&#x2F;2026&#x2F;03&#x2F;15&#x2F;Capture_The_Flag_夺旗赛&#x2F;CTF知识&#x2F;Reverse&#x2F;反编译&#x2F;‘<br>date: “2026-03-15 13:28:16”<br>categories:<br>tags:<br>  - CTF<br>  - CTF知识<br>  - Reverse<br>  - 反编译</h2><table>
+<thead>
+<tr>
+<th align="left"><strong>工具</strong></th>
+<th align="left"><strong>优势</strong></th>
+<th align="left"><strong>劣势</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>uncompyle6</strong></td>
+<td align="left">- 直接反编译<code>.pyc</code><br/>为 Python 代码，支持多版本（2.7-3.12）- 命令行工具，简单易用</td>
+<td align="left">- 对高度混淆的字节码可能失败- 反编译结果需人工调整格式</td>
+</tr>
+<tr>
+<td align="left"><strong>pycdc</strong></td>
+<td align="left">- 轻量级，反编译速度快- 对部分混淆代码有更好的兼容性</td>
+<td align="left">- 对最新 Python 版本（如 3.12+）支持有限- 反编译结果可读性略逊于 uncompyle6</td>
+</tr>
+<tr>
+<td align="left"><strong>IDA Pro</strong></td>
+<td align="left">- 强大的二进制分析能力- 支持动态调试和插件扩展</td>
+<td align="left">- 需复杂工具链，反编译效果差- 商业授权，成本高</td>
+</tr>
+</tbody></table>

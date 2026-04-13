@@ -1,0 +1,66 @@
+<hr>
+<h2 id="title-Python切换所用版本permalink-‘-2026-03-15-Forensic-电子取证-Forensic解题妙具-Python切换所用版本-‘date-“2026-03-15-13-28-28”categories-tags-电子取证-取证工具-Python切换所用版本"><a href="#title-Python切换所用版本permalink-‘-2026-03-15-Forensic-电子取证-Forensic解题妙具-Python切换所用版本-‘date-“2026-03-15-13-28-28”categories-tags-电子取证-取证工具-Python切换所用版本" class="headerlink" title="title: Python切换所用版本permalink: ‘&#x2F;2026&#x2F;03&#x2F;15&#x2F;Forensic_电子取证&#x2F;Forensic解题妙具&#x2F;Python切换所用版本&#x2F;‘date: “2026-03-15 13:28:28”categories:tags:  - 电子取证  - 取证工具  - Python切换所用版本"></a>title: Python切换所用版本<br>permalink: ‘&#x2F;2026&#x2F;03&#x2F;15&#x2F;Forensic_电子取证&#x2F;Forensic解题妙具&#x2F;Python切换所用版本&#x2F;‘<br>date: “2026-03-15 13:28:28”<br>categories:<br>tags:<br>  - 电子取证<br>  - 取证工具<br>  - Python切换所用版本</h2><h2 id="1-使用-pyenv（推荐）"><a href="#1-使用-pyenv（推荐）" class="headerlink" title="1. 使用 pyenv（推荐）"></a>1. 使用 pyenv（推荐）</h2><pre><code class="language-bash"># Windows (通过 WSL 或 git bash)
+git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+</code></pre>
+<p><img src="/Python%E5%88%87%E6%8D%A2%E6%89%80%E7%94%A8%E7%89%88%E6%9C%AC/1763552722428-d816be08-58c9-40e7-be6a-9b680db33e1d.png"></p>
+<pre><code class="language-bash"># 查看可安装的版本
+pyenv install --list
+
+# 安装特定版本
+pyenv install 3.8.0
+
+# 查看已安装的版本
+pyenv versions
+
+# 全局切换版本
+pyenv global 3.9.7
+
+# 为特定项目切换版本
+pyenv local 3.11.2
+
+# 查看当前使用的版本
+pyenv version
+</code></pre>
+<p>安装经常超时。<img src="/Python%E5%88%87%E6%8D%A2%E6%89%80%E7%94%A8%E7%89%88%E6%9C%AC/1763556229540-bfc8cc9e-bfae-454f-9f07-72a4c7d6cd14.png"></p>
+<pre><code class="language-bash">set PYTHON_BUILD_MIRROR_URL=https://mirrors.tuna.tsinghua.edu.cn/python/
+set PYTHON_BUILD_MIRROR_URL_SKIP_CHECKSUM=1
+pyenv install 3.8.0
+</code></pre>
+<pre><code class="language-bash"># 使用pyenv切换到3.8.0
+pyenv shell 3.8.0
+
+# 创建虚拟环境
+python -m venv myenv_38
+
+# 激活虚拟环境
+myenv_38\Scripts\activate
+
+# 现在使用的就是3.8.0，完全独立
+python --version
+pip list
+
+# 停用虚拟环境
+deactivate
+</code></pre>
+<h2 id="2-使用-conda（适合数据科学）"><a href="#2-使用-conda（适合数据科学）" class="headerlink" title="2. 使用 conda（适合数据科学）"></a>2. 使用 conda（适合数据科学）</h2><pre><code class="language-bash"># 创建新环境并指定Python版本
+conda create -n myenv python=3.8
+
+# 激活环境
+conda activate myenv
+
+# 查看所有环境
+conda env list
+
+# 在当前环境中更改Python版本
+conda install python=3.9
+</code></pre>
+<h2 id="3-使用-venv（Python内置）"><a href="#3-使用-venv（Python内置）" class="headerlink" title="3. 使用 venv（Python内置）"></a>3. 使用 venv（Python内置）</h2><pre><code class="language-bash"># 创建虚拟环境（使用系统默认Python）
+python -m venv myenv
+
+# 激活环境
+# Windows
+myenv\Scripts\activate
+
+# 停用环境
+deactivate
+</code></pre>

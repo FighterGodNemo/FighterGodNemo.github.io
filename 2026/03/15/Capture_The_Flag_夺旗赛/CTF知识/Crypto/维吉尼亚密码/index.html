@@ -1,0 +1,332 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>维吉尼亚密码 | 琉璃幻彩的博客</title><meta name="author" content="琉璃幻彩"><meta name="copyright" content="琉璃幻彩"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="维吉尼亚密码可看作凯撒密码强化版。它通过引入一个密钥词，成功克服了凯撒密码密钥空间小和易受词频分析攻击的主要弱点。 核心思想维吉尼亚密码的核心改进在于：使用多个不同的凯撒密码，即为明文中不同的字母****应用不同的偏移量。 这个“多个不同的偏移量”的序列，就是由一个密钥词来决定的。 加密过程1. 准备密钥：  选择一个密钥词。 将这个密钥词重复书写，直到它的长度与明文一致。  2. 建立对应关系：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="维吉尼亚密码">
+<meta property="og:url" content="https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Crypto/%E7%BB%B4%E5%90%89%E5%B0%BC%E4%BA%9A%E5%AF%86%E7%A0%81/index.html">
+<meta property="og:site_name" content="琉璃幻彩的博客">
+<meta property="og:description" content="维吉尼亚密码可看作凯撒密码强化版。它通过引入一个密钥词，成功克服了凯撒密码密钥空间小和易受词频分析攻击的主要弱点。 核心思想维吉尼亚密码的核心改进在于：使用多个不同的凯撒密码，即为明文中不同的字母****应用不同的偏移量。 这个“多个不同的偏移量”的序列，就是由一个密钥词来决定的。 加密过程1. 准备密钥：  选择一个密钥词。 将这个密钥词重复书写，直到它的长度与明文一致。  2. 建立对应关系：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fightergodnemo.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2026-03-15T05:28:16.000Z">
+<meta property="article:modified_time" content="2026-04-13T10:33:00.000Z">
+<meta property="article:author" content="琉璃幻彩">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="CTF知识">
+<meta property="article:tag" content="Crypto">
+<meta property="article:tag" content="维吉尼亚密码">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fightergodnemo.github.io/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "维吉尼亚密码",
+  "url": "https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Crypto/%E7%BB%B4%E5%90%89%E5%B0%BC%E4%BA%9A%E5%AF%86%E7%A0%81/",
+  "image": "https://fightergodnemo.github.io/img/avatar.jpg",
+  "datePublished": "2026-03-15T05:28:16.000Z",
+  "dateModified": "2026-04-13T10:33:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "琉璃幻彩",
+      "url": "https://FighterGodNemo.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Crypto/%E7%BB%B4%E5%90%89%E5%B0%BC%E4%BA%9A%E5%AF%86%E7%A0%81/index.html"><link rel="preconnect" href="https://cdn.staticfile.org"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.5.2/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.20260413234739673.json","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.staticfile.org/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '维吉尼亚密码',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script src="/js/bg-firstpaint.js?v=20260402-2"></script><link rel="stylesheet" href="/css/custom.css?v=20260402-2"><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="琉璃幻彩的博客" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">112</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">130</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">26</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" data-has-custom-post-top-img="0"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">琉璃幻彩的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">维吉尼亚密码</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">维吉尼亚密码</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-15T05:28:16.000Z" title="发表于 2026-03-15 13:28:16">2026-03-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-04-13T10:33:00.000Z" title="更新于 2026-04-13 18:33:00">2026-04-13</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span></div></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>维吉尼亚密码可看作凯撒密码强化版。它通过<strong>引入一个密钥词</strong>，成功<strong>克服了凯撒密码密钥空间小和易受词频分析攻击的主要弱点</strong>。</p>
+<h3 id="核心思想"><a href="#核心思想" class="headerlink" title="核心思想"></a>核心思想</h3><p>维吉尼亚密码的核心改进在于：<strong><u>使用多个不同的凯撒密码，即为明文中不同的字母</u>****<u>应用不同的偏移量。</u></strong></p>
+<p>这个“多个不同的偏移量”的序列，就是由<u>一个密钥词</u>来决定的。</p>
+<h3 id="加密过程"><a href="#加密过程" class="headerlink" title="加密过程"></a>加密过程</h3><p><strong>1.</strong> <strong>准备密钥</strong>：</p>
+<ul>
+<li>选择一个密钥词。</li>
+<li><strong><u>将这个密钥词重复书写，直到它的长度与明文一致</u></strong>。</li>
+</ul>
+<p><strong>2.</strong> <strong>建立对应关系</strong>：</p>
+<ul>
+<li>通常我们建立一个表格，将字母 A-Z 对应数字 0-25。</li>
+</ul>
+<p><strong>3.</strong> <strong>加密运算</strong>：</p>
+<ul>
+<li><p>对于明文的每一个字母，找到其上方对应的密钥字母。</p>
+</li>
+<li><p>将明文字母和密钥字母都转换为数字（A&#x3D;0, B&#x3D;1, …, Z&#x3D;25）。</p>
+</li>
+<li><p>使用公式计算密文： <strong><u>C_i &#x3D; (P_i + K_i) mod 26</u></strong></p>
+<p>C_i：第 i 个密文字母的数字</p>
+<p>P_i：第 i 个明文字母的数字</p>
+<p>K_i：第 i 个密钥字母的数字</p>
+</li>
+<li><p><strong><u>再将得到的数字转换回字母</u></strong></p>
+</li>
+</ul>
+<p>举个栗子：</p>
+<p>明文: ATTACKATDAWN</p>
+<p>密钥词:KEY</p>
+<p>第一步：对齐明文和密钥</p>
+<p>明文: A T T A C K A T D A W N</p>
+<p>密钥: K E Y K E Y K E Y K E Y</p>
+<p>第二步：逐个字母加密</p>
+<ol>
+<li><p>明文字母 A (0)，密钥字母 K (10)</p>
+<p>· 加密：(0 + 10) &#x3D; 10 -&gt; K</p>
+</li>
+<li><p>明文字母 T (19)，密钥字母 E (4)</p>
+<p>· 加密：(19 + 4) &#x3D; 23 -&gt; X</p>
+</li>
+<li><p>明文字母 T (19)，密钥字母 Y (24)</p>
+<p>· 加密：(19 + 24) &#x3D; 43 -&gt; 43 mod 26 &#x3D; 17 -&gt; R</p>
+</li>
+<li><p>明文字母 A (0)，密钥字母 K (10)</p>
+<p>· 加密：(0 + 10) &#x3D; 10 -&gt; K</p>
+</li>
+<li><p>明文字母 C (2)，密钥字母 E (4)</p>
+<p>· 加密：(2 + 4) &#x3D; 6 -&gt; G</p>
+</li>
+<li><p>明文字母 K (10)，密钥字母 Y (24)</p>
+<p>· 加密：(10 + 24) &#x3D; 34 -&gt; 34 mod 26 &#x3D; 8 -&gt; I</p>
+</li>
+<li><p>…（以此类推）</p>
+</li>
+</ol>
+<p>最终密文: KXRKGIKXPRKB</p>
+<h3 id="解密："><a href="#解密：" class="headerlink" title="解密："></a>解密：</h3><p>解密是加密的逆过程，<strong><u>使用相同的密钥词</u></strong>。</p>
+<ol>
+<li><p>对齐密文和密钥（与加密时相同）：</p>
+<p>密文: K X R K G I K X P R K B</p>
+<p>密钥: K E Y K E Y K E Y K E Y</p>
+</li>
+<li><p>使用解密公式：</p>
+</li>
+</ol>
+<ul>
+<li>P_i &#x3D; (C_i - K_i) mod 26</li>
+<li>注意：如果 C_i - K_i 是负数，加上 26 后再取模。</li>
+</ul>
+<p>解密示例：</p>
+<ol>
+<li>密文字母 K (10)，密钥字母 K (10)</li>
+</ol>
+<ul>
+<li>解密：(10 - 10) &#x3D; 0 -&gt; A</li>
+</ul>
+<ol start="2">
+<li>密文字母 X (23)，密钥字母 E (4)</li>
+</ol>
+<ul>
+<li>****解密：(23 - 4) &#x3D; 19 -&gt; T</li>
+</ul>
+<ol start="3">
+<li>…（以此类推）</li>
+</ol>
+<p>即可恢复出原始明文 ATTACKATDAWN。</p>
+<p>为何比凯撒密码更安全？</p>
+<ol>
+<li><strong>多表替代</strong>：这是最关键的一点。同一个明文字母在不同位置可能被加密成不同的密文字母。</li>
+</ol>
+<p>在上面的例子中，明文字母 A 在第一个位置被加密成了 K，在第四个位置也被加密成了 K，但在第十个位置却被加密成了 R。</p>
+<p>同样，密文字母 K 可能对应明文 A（当密钥是K时），也可能对应明文 Q（当密钥是A时）等。</p>
+<p>这打破了原始明文的单字母频率分布，使得简单的词频分析失效。</p>
+<ol start="2">
+<li>更大的密钥空间：密钥不再是 1-25 的一个数字，而是一个任意长度的单词。可能的密钥数量巨大，使得暴力破解变得不现实（尽管对于现代计算机来说，如果密钥较短，仍然可以破解）。</li>
+</ol>
+<p>维吉尼亚密码的破译：</p>
+<p>尽管很强大，但维吉尼亚密码最终还是被破译了。主要方法是：</p>
+<ol>
+<li>卡西斯基试验：</li>
+</ol>
+<ul>
+<li>在密文中寻找重复的片段。</li>
+<li>这些重复片段之间的距离很可能是密钥长度的倍数。</li>
+<li>通过计算这些距离的最大公约数，可以推测出密钥的可能长度。</li>
+</ul>
+<ol start="2">
+<li>重合指数法：</li>
+</ol>
+<ul>
+<li>这是一种更可靠的方法。通过计算密文与自身偏移后的重合指数，来推测密钥长度。</li>
+<li>一旦知道了密钥长度，就可以将密文分成若干组（第1、第6、第11…个字母为一组，这些字母都是用同一个凯撒密码加密的）。</li>
+<li>然后对每一组使用词频分析（因为每一组内部都是一个简单的单表替换密码），分别解出密钥的每一个字母。</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://FighterGodNemo.github.io">琉璃幻彩</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Crypto/%E7%BB%B4%E5%90%89%E5%B0%BC%E4%BA%9A%E5%AF%86%E7%A0%81/">https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Crypto/%E7%BB%B4%E5%90%89%E5%B0%BC%E4%BA%9A%E5%AF%86%E7%A0%81/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://FighterGodNemo.github.io" target="_blank">琉璃幻彩的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/CTF/">CTF</a><a class="post-meta__tags" href="/tags/CTF%E7%9F%A5%E8%AF%86/">CTF知识</a><a class="post-meta__tags" href="/tags/Crypto/">Crypto</a><a class="post-meta__tags" href="/tags/%E7%BB%B4%E5%90%89%E5%B0%BC%E4%BA%9A%E5%AF%86%E7%A0%81/">维吉尼亚密码</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Misc/CRC/" title="CRC"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">CRC</div></div><div class="info-2"><div class="info-item-1">CRC（Cyclic Redundancy Check，循环冗余校验）用于检测数据在传输或存储过程中是否出现差错。 核心原理 生成校验码： 发送方：将需要传输的数据（看作一个二进制多项式）与一个预先确定的生成多项式（如常见的 CRC ...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Crypto/%E6%A8%A1%E5%8F%8D/" title="模反"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">模反</div></div><div class="info-2"><div class="info-item-1"> 直观理解：钟表算术  想象一下一个只有 12 个小时的钟表（这就是一个 模 12 的系统）。 · 如果现在是早上 10 点，那么 6 小时后 是几点？   · 10 + 6 &#x3D; 16。   · 但钟面上没有 16 点，所以...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Crypto/%E4%B8%AD%E5%9B%BD%E5%89%A9%E4%BD%99%E5%AE%9A%E7%90%86CRT/" title="中国剩余定理CRT"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">中国剩余定理CRT</div></div><div class="info-2"><div class="info-item-1">  </div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Crypto/RSA%E5%8A%A0%E8%A7%A3%E5%AF%86/" title="RSA加解密"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">RSA加解密</div></div><div class="info-2"><div class="info-item-1"> __ 1.getPrime(X) 是 PyCryptodome 库中 _Crypto.Util.number_模块提供的一个函数，用于生成一个X位****的随机素数。 2.bytes_to_long 是密码学编程中常用的一个函数，它...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Crypto/%E5%85%B1%E6%A8%A1%E6%94%BB%E5%87%BB%E3%80%81LLL%E7%AE%97%E6%B3%95%EF%BC%88coppers/" title="共模攻击、LLL算法（coppers"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">共模攻击、LLL算法（coppers</div></div><div class="info-2"><div class="info-item-1">俩个公匙就用共模攻击 </div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Crypto/%E5%87%AF%E6%92%92%E5%AF%86%E7%A0%81/" title="凯撒密码"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">凯撒密码</div></div><div class="info-2"><div class="info-item-1">凯撒密码（又名移位密码）是一种最简单、最广为人知的**替换加密技术**。 核心思想：将明文中的每一个字母按照一个固定数目在字母表上进行偏移，从而得到密文。 核心原理： 确定偏移量（密钥）：这个密钥是一个整数，代表字母要偏移的位数。  ...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Crypto/%E6%A8%A1%E5%8F%8D/" title="模反"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">模反</div></div><div class="info-2"><div class="info-item-1"> 直观理解：钟表算术  想象一下一个只有 12 个小时的钟表（这就是一个 模 12 的系统）。 · 如果现在是早上 10 点，那么 6 小时后 是几点？   · 10 + 6 &#x3D; 16。   · 但钟面上没有 16 点，所以...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Crypto/XOR%E5%BC%82%E6%88%96/" title="XOR异或"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">XOR异或</div></div><div class="info-2"><div class="info-item-1">XOR的特性（A XOR B XOR B &#x3D; A），我们可以用加密的密钥解密。由于XOR操作是可逆的，我们只需要按相反的顺序和相同的密钥进行XOR就能解密。 100 010 110 110 010 100 核心定义：什么是异...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">琉璃幻彩</div><div class="author-info-description">The Greatest Magician!</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">112</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">130</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">26</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FighterGodNemo"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/FighterGodNemo" title="Github" target="_blank"><i class="fab fa-github"></i></a><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="微信"><i class="fab fa-weixin"></i></a><div class="qr-code-popup"><img src="/img/qrcode/wechat-qr.png" alt="微信二维码"/ loading='lazy'></div></div><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="QQ"><i class="fab fa-qq"></i></a><div class="qr-code-popup"><img src="/img/qrcode/qq-qr.png" alt="QQ二维码"/ loading='lazy'></div></div><div class="copy-text-wrapper"><a class="social-icon" href="javascript:void(0)" title="Steam好友代码：1905706957" data-copy-text="1905706957"><i class="fab fa-steam"></i></a><div class="copy-text-popup"><h3>Steam好友代码</h3><p>1905706957</p><p class="copy-hint">点击图标复制</p></div></div><a class="social-icon" href="mailto:guliujia2233@outlook.com" title="Email" target="_blank"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">热爱 CTF 和 Forensic 的网安人一枚～
+欢迎各位大佬交流点评！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3"><span class="toc-number">1.</span> <span class="toc-text">核心思想</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E5%AF%86%E8%BF%87%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">加密过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%AF%86%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">解密：</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E7%9F%A5%E8%AF%86/MT%E7%AE%A1%E7%90%86%E5%99%A8%E6%9B%BF%E6%8D%A2%E5%8C%85%E6%95%B0%E6%8D%AE/" title="MT管理器替换包数据">MT管理器替换包数据</a><time datetime="2026-04-13T23:11:42.460Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E7%9F%A5%E8%AF%86/Cache%EF%BC%88%E7%BC%93%E5%AD%98%EF%BC%89/" title="Cache（缓存）">Cache（缓存）</a><time datetime="2026-04-13T23:11:42.459Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/Volatility3/" title="Volatility3">Volatility3</a><time datetime="2026-04-13T23:11:42.452Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/Python%E5%88%87%E6%8D%A2%E6%89%80%E7%94%A8%E7%89%88%E6%9C%AC/" title="Python切换所用版本">Python切换所用版本</a><time datetime="2026-04-13T23:11:42.451Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/MT%E7%AE%A1%E7%90%86%E5%99%A8%E6%9B%BF%E6%8D%A2APK%E6%95%B0%E6%8D%AE/" title="MT管理器替换APK数据">MT管理器替换APK数据</a><time datetime="2026-04-13T23:11:42.450Z" title="更新于 2026-04-14 07:11:42">2026-04-14</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 琉璃幻彩</span><span class="framework-info"><span id="busuanzi_container_site_pv">本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span><span class="footer-separator">|</span><span id="busuanzi_container_site_uv">本站访客数 <span id="busuanzi_value_site_uv"></span> 人次</span></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"></div><script src="/js/custom.js?v=20260402-2"></script><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.staticfile.org/pjax/0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>
