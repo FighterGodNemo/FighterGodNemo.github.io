@@ -1,0 +1,298 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Capture_The_Flag 夺旗赛 | 琉璃幻彩的博客</title><meta name="author" content="琉璃幻彩"><meta name="copyright" content="琉璃幻彩"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="CTF 全称 Capture the Flag，译为「夺旗赛」，起源于 1996 年 DEFCON 全球黑客大会。比赛中，选手会得到一个题面，可能是一段话、一个压缩包、一张图片、一个网站、一个链接、一份源码、一个程序等；选手需要根据题面，通过各种手法找到诸如 flag{xxx} 的内容，这便是题目的答案。 Jeopardy-解题参赛队伍可以通过互联网或者现场网络参与，通过与在线环境交互或对文件进行">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Capture_The_Flag 夺旗赛">
+<meta property="og:url" content="https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/index.html">
+<meta property="og:site_name" content="琉璃幻彩的博客">
+<meta property="og:description" content="CTF 全称 Capture the Flag，译为「夺旗赛」，起源于 1996 年 DEFCON 全球黑客大会。比赛中，选手会得到一个题面，可能是一段话、一个压缩包、一张图片、一个网站、一个链接、一份源码、一个程序等；选手需要根据题面，通过各种手法找到诸如 flag{xxx} 的内容，这便是题目的答案。 Jeopardy-解题参赛队伍可以通过互联网或者现场网络参与，通过与在线环境交互或对文件进行">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fightergodnemo.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2026-03-15T05:28:22.000Z">
+<meta property="article:modified_time" content="2026-04-03T23:34:00.000Z">
+<meta property="article:author" content="琉璃幻彩">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="网络安全竞赛">
+<meta property="article:tag" content="赛制介绍">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fightergodnemo.github.io/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Capture_The_Flag 夺旗赛",
+  "url": "https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/",
+  "image": "https://fightergodnemo.github.io/img/avatar.jpg",
+  "datePublished": "2026-03-15T05:28:22.000Z",
+  "dateModified": "2026-04-03T23:34:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "琉璃幻彩",
+      "url": "https://FighterGodNemo.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/index.html"><link rel="preconnect" href="https://cdn.staticfile.org"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.5.2/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.20260415053714619.json","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.staticfile.org/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Capture_The_Flag 夺旗赛',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script src="/js/bg-firstpaint.js?v=20260402-2"></script><link rel="stylesheet" href="/css/custom.css?v=20260402-2"><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="琉璃幻彩的博客" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">112</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">130</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">28</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" data-has-custom-post-top-img="0"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">琉璃幻彩的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">Capture_The_Flag 夺旗赛</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Capture_The_Flag 夺旗赛</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-15T05:28:22.000Z" title="发表于 2026-03-15 13:28:22">2026-03-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-04-03T23:34:00.000Z" title="更新于 2026-04-04 07:34:00">2026-04-04</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Capture-The-Flag-%E5%A4%BA%E6%97%97%E8%B5%9B/">Capture_The_Flag_夺旗赛</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">2.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span></div></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p><strong>CTF 全称 Capture the Flag，译为「夺旗赛」，起源于 1996 年 DEFCON 全球黑客大会。比赛中，选手会得到一个题面，可能是一段话、一个压缩包、一张图片、一个网站、一个链接、一份源码、一个程序等；选手需要根据题面，通过各种手法找到诸如 <code>flag{xxx}</code> 的内容，这便是题目的答案。</strong></p>
+<h3 id="Jeopardy-解题"><a href="#Jeopardy-解题" class="headerlink" title="Jeopardy-解题"></a>Jeopardy-解题</h3><p>参赛队伍可以通过互联网或者现场网络参与，通过与在线环境交互或对文件进行离线分析，解决网络安全技术挑战并获取相应分值，类似于 ACM 编程竞赛、信息学奥林匹克赛，根据总分和时间进行排名。</p>
+<p>不同的是，这个解题模式一般会设置一血（First Blood）、二血（Second Blood）、三血（Third Blood），也即最先完成的前三支队伍会获得额外分值。这不仅是对率先解出题目的队伍进行鼓励，也是一种团队能力的间接体现。</p>
+<p>当然，还有一种流行的计分规则是：设置每道题目的初始分数后，根据该题的成功解答队伍数，逐渐降低该题的分值。也就是说，如果解出这道题的人数越多，那么这道题的分值就越低；最后会下降到一个保底分值后便不再下降，一般称之为 <code>动态积分</code>。</p>
+<p>题目类型主要包含 Web 网络攻防、RE 逆向工程、Pwn 二进制漏洞利用、Crypto 密码攻击以及 Misc 安全杂项这五个类别，个别比赛会根据题目类型继续扩展。</p>
+<h3 id="AwD-攻防模式"><a href="#AwD-攻防模式" class="headerlink" title="AwD-攻防模式"></a>AwD-攻防模式</h3><p><strong>A</strong>ttack <strong>w</strong>ith <strong>D</strong>efense（AwD）全称攻防模式。在攻防模式 CTF 赛制中，参赛队伍连接到同一个网络空间。主办方会预先为每个参赛队分配要防守的主机，该主机称之为 <code>GameBox</code>。每个队伍之间的 <code>GameBox</code> 配置及漏洞通常是完全一致的，选手需要在防护自己 <code>GameBox</code> 不被攻击的同时，挖掘漏洞并攻击对手服务来得分。</p>
+<p>在 AwD 中，主办方会运行一个名为 <code>Checker</code> 的程序，定时检测选手 <code>GameBox</code> 的运行状态。若检测到状态不对，则判定该 <code>GameBox</code> 宕机，并按照规则扣除一定分数。攻防模式 CTF 赛制可以实时通过得分反映比赛情况，最终也以得分直接分出胜负，是一种竞争激烈、观赏性强、透明度高的网络安全赛制。</p>
+<p>这种赛制不仅比拼参赛队员的智力和技术，也比拼体力，因为比赛一般都会持续 24 至 48 小时左右，同时也考验团队之间的分工配合与合作。</p>
+<p>AwD 通常仅包含 <code>Web</code> 及 <code>Pwn</code> 两种类型的题目。每个队伍可能会分到多个 <code>GameBox</code>，随着比赛的进行，最早的 <code>GameBox</code> 可能会下线，同时也会上线新的 <code>GameBox</code>。</p>
+<h3 id="ADP-攻防增强"><a href="#ADP-攻防增强" class="headerlink" title="ADP-攻防增强"></a>ADP-攻防增强</h3><p><strong>A</strong>ttack <strong>D</strong>efense <strong>P</strong>lus（ADP）全称攻防增强模式。在该模式下，参赛队伍连接到同一个网络空间。主办方会在平台上放置题目，选手需要登录平台获得题目信息。</p>
+<p>攻击模式下，平台会给出题目的访问链接，选手按照解题模式做题并提交 flag 即可完成攻击；当完成攻击后，每轮计算分数时都会计算该题目的攻击得分。</p>
+<p>防御模式下，选手需要自行挖掘题目的漏洞，并制作漏洞补丁包上传至平台，之后点击验证。验证时，平台会新建一个完全干净的题目环境，使用预置的 Exploit 进行攻击。若攻击失败，则验证通过，后续每轮计算分数均会认为该题目已防御。</p>
+<p>也就是说，对于每个题目，仅需要攻击成功一次、防御成功一次，该题就可以认为已完成，后续无需继续关注。</p>
+<p>ADP 通常仅包含 <code>Web</code> 及 <code>Pwn</code> 两种类型的题目。随着比赛的进行，最早的题目可能会下线，后续也有可能会上线新的题目。</p>
+<p>ADP 相较于 AwD 来说，选手无须编写批量攻击脚本，也无需持续关注题目的环境是否被攻击、服务是否异常等等；要做的只是攻击一次、防御一次，因此选手可以有更多时间聚焦于还未完成的题目。从主办方角度来说，这也大大减轻了比赛的硬件成本和运维成本。</p>
+<h3 id="RHG-自动化-AI-自动化"><a href="#RHG-自动化-AI-自动化" class="headerlink" title="RHG-自动化 [AI 自动化]"></a>RHG-自动化 [AI 自动化]</h3><p><strong>R</strong>obo <strong>H</strong>acking <strong>G</strong>ame（RHG）利用人工智能、AI 或自动化攻击程序来全自动地挖掘并利用漏洞，考验选手对于 <code>漏洞理解</code> 以及 <code>工程化</code> 的能力。比赛开始前，一般会提前 1 至 4 周左右给出测试环境以及相关接口文档。选手需要编写自动化程序请求接口，获取题目相关信息。</p>
+<p>这类程序通常称之为 <code>bot</code>，需要在程序中全自动地访问目标、挖掘漏洞、完成利用并获取 flag，最后再由程序自动提交。RHG 因为是由 <code>bot</code> 全自动进行工作，所以比赛开始几乎就等同于结束，剩下的一切都取决于参赛选手编写的自动化 <code>bot</code> 的稳定性与成功率。</p>
+<p>比赛过程中通常不允许选手对 <code>bot</code> 进行任何操作，包括 debug、patch 等；选手只能看到自己的 <code>bot</code> 完成了哪些题，以及当前的得分情况等等。</p>
+<h3 id="RW-真实世界"><a href="#RW-真实世界" class="headerlink" title="RW-真实世界"></a>RW-真实世界</h3><p><strong>R</strong>eal <strong>W</strong>orld（RW）首次于 2018 年由 <code>长亭科技</code> 主办的 RealWorldCTF 中出现。该赛制着重考察选手在面对真实环境时的漏洞挖掘与利用能力。通常 RW 模式出题也会围绕真实渗透攻击中常见的漏洞，例如 VM&#x2F;Docker 逃逸、针对浏览器的攻击、针对 IoT&#x2F;Car 等设备的攻击、Web 类攻击等等。</p>
+<p>在 RW 赛制中会有一个 <code>Show Time</code>。当选手认为自己已经可以完成题目时，可以在比赛平台上提交展示申请，由工作人员根据申请先后顺序进行排期。选手展示之前需要上台并连接相关网络，同时现场大屏会切换至目标的正常页面。选手确认连接并测试无误之后开始计时。</p>
+<p>一般情况下，上台攻击时间为 <code>5 分钟</code>。选手一旦完成攻击，现场大屏幕会实时看到攻击效果，此时裁判会根据效果是否符合题目要求来判定该题是否完成。如果在攻击时间内依然未能看到展示效果，则认为本次攻击失败。现如今，为了防止选手恶意排期，通常会限制一个队伍的总展示次数，例如在 2019 年数字经济云安全公测大赛中，每个队伍只允许上台展示 30 次，因此选手也需要尽可能保证上台之后攻击的成功率。</p>
+<p>举个例子，题目要求攻击位于比赛网络中的某个网站，并将首页替换为包含队伍名称的页面。题目会给出该网站的一些信息，例如源代码、数据库等等。选手经过本地漏洞挖掘之后，提交展示申请，排期到了之后进行上台展示。注意，因为 RW 模式是以展示效果作为题目是否完成的准则，所以在 RW 模式中并 <code>不存在 Flag</code>。</p>
+<h3 id="KoH-抢占山头"><a href="#KoH-抢占山头" class="headerlink" title="KoH-抢占山头"></a>KoH-抢占山头</h3><p><strong>K</strong>ing <strong>o</strong>f <strong>H</strong>ill（KoH）是近些年新衍生的一种赛制。该赛制有点类似于 AwD，但又和 AwD 不太一样。选手面对的是一个黑盒目标，需要先挖掘漏洞并利用漏洞控制目标，将自己的队伍标识（<code>队伍名称</code> 或 <code>Token</code> 一类）写入到指定文件。随后还需要在该主机上进行加固等操作，防止其他队伍再次攻击。</p>
+<p>主办方会定期检查标识文件，根据文件中的队伍标识来判定本回合分数归属于哪个队伍。可以看出，KoH 也是一种对抗极为激烈的赛制，同时考察选手的渗透能力与防御加固能力。</p>
+<h3 id="Mix-混合"><a href="#Mix-混合" class="headerlink" title="Mix-混合"></a>Mix-混合</h3><p>混合模式结合了以上多种模式。现如今，单一赛制已经无法完全满足比赛及选手的参赛需求，因此大部分比赛会同时采用多个模式。例如参赛队伍先通过解题（Jeopardy）获取一些初始分数，再通过攻防对抗（AwD）进行得分增减的零和博弈，最终以总分高低分出胜负。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://FighterGodNemo.github.io">琉璃幻彩</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/">https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://FighterGodNemo.github.io" target="_blank">琉璃幻彩的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/CTF/">CTF</a><a class="post-meta__tags" href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B/">网络安全竞赛</a><a class="post-meta__tags" href="/tags/%E8%B5%9B%E5%88%B6%E4%BB%8B%E7%BB%8D/">赛制介绍</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/03/15/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/JAVA/" title="JAVA"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">JAVA</div></div><div class="info-2"><div class="info-item-1">Java 技术体系（JDK, JRE, JVM）： · JVM (Java Virtual Machine)：Java 虚拟机是 Java 跨平台的核心。它负责加载、验证、执行字节码。不同平台有各自不同的 JVM，但它们对字节码的解释...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/%E5%AD%A6%E9%95%BF%E7%9A%84%E6%8C%91%E6%88%98%E9%A2%98/%E6%96%B0%E7%94%9F%E7%A4%BC%E7%89%A9%E5%A4%A7%E6%8C%91%E6%88%98%E7%AC%AC%E4%B8%80%E9%A2%98/" title="新生礼物大挑战第一题"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">新生礼物大挑战第一题</div></div><div class="info-2"><div class="info-item-1">pdf  先搜索文档内隐藏flag，无收获。 放入010editor，Ctrl＋F搜索文字“flag”等，没有线索。 拉到最后发现“1.png”字样，猜测文档含zip压缩包。 搜索找到zip文件头：50 4B 03 04 和文件尾：5...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20%E8%AD%A6%E9%93%AE%E6%9D%AF/" title="25警铮杯"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">25警铮杯</div></div><div class="info-2"><div class="info-item-1">一、MISC1.签个到吧别告诉我你连签到题都不会 flag{xxxxxxxx} flag{qiandaotizhenjiandan} 2.一眼盯帧什么东西一闪而过了？cdusec{xxxxx} cdusec{dwa_bjsh_cwnj...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/Web/SQLmap/" title="SQLmap"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">SQLmap</div></div><div class="info-2"><div class="info-item-1">使用方法12cd sqlmap使用命令      简介sqlmap是一个开源的渗透工具，可用来进行自动化检测，利用SQL漏洞注入获取数据库服务器的权限。它具有功能强大的检测引擎，有针对不同类型数据库进行渗透测试的功能选项，包括获取数据...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/bkcrack/" title="bkcrack"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">bkcrack</div></div><div class="info-2"><div class="info-item-1">D: cd D:\CaptureTheFlag\CTFTool\bkcrack-1.7.1-win64 bkcrack 是一个用于破解使用传统 ZIP 加密（PKZIP Cipher）的 ZIP 文件的工具，基于 Biham 和 Ko...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Misc/Powershell/" title="Powershell"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">Powershell</div></div><div class="info-2"><div class="info-item-1"> </div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2025%20MoeCTF/" title="MoeCTF_2025"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">MoeCTF_2025</div></div><div class="info-2"><div class="info-item-1"> 解压得2048_master.exe 运行后显示： 退出，发现layout.dat，内含程序数据 用010editor分别打开2048_master.exe和layout.dat得到：   修改layout数据如下： 运行得flag...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Crypto/%E5%85%B1%E6%A8%A1%E6%94%BB%E5%87%BB%E3%80%81LLL%E7%AE%97%E6%B3%95%EF%BC%88coppers/" title="共模攻击、LLL算法（coppers"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">共模攻击、LLL算法（coppers</div></div><div class="info-2"><div class="info-item-1">俩个公匙就用共模攻击 </div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">琉璃幻彩</div><div class="author-info-description">The Greatest Magician!</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">112</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">130</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">28</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FighterGodNemo"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/FighterGodNemo" title="Github" target="_blank"><i class="fab fa-github"></i></a><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="微信"><i class="fab fa-weixin"></i></a><div class="qr-code-popup"><img src="/img/qrcode/wechat-qr.png" alt="微信二维码"/ loading='lazy'></div></div><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="QQ"><i class="fab fa-qq"></i></a><div class="qr-code-popup"><img src="/img/qrcode/qq-qr.png" alt="QQ二维码"/ loading='lazy'></div></div><div class="copy-text-wrapper"><a class="social-icon" href="javascript:void(0)" title="Steam好友代码：1905706957" data-copy-text="1905706957"><i class="fab fa-steam"></i></a><div class="copy-text-popup"><h3>Steam好友代码</h3><p>1905706957</p><p class="copy-hint">点击图标复制</p></div></div><a class="social-icon" href="mailto:guliujia2233@outlook.com" title="Email" target="_blank"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">热爱 CTF 和 Forensic 的网安人一枚～
+欢迎各位大佬交流点评！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Jeopardy-%E8%A7%A3%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">Jeopardy-解题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AwD-%E6%94%BB%E9%98%B2%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">AwD-攻防模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ADP-%E6%94%BB%E9%98%B2%E5%A2%9E%E5%BC%BA"><span class="toc-number">3.</span> <span class="toc-text">ADP-攻防增强</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RHG-%E8%87%AA%E5%8A%A8%E5%8C%96-AI-%E8%87%AA%E5%8A%A8%E5%8C%96"><span class="toc-number">4.</span> <span class="toc-text">RHG-自动化 [AI 自动化]</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RW-%E7%9C%9F%E5%AE%9E%E4%B8%96%E7%95%8C"><span class="toc-number">5.</span> <span class="toc-text">RW-真实世界</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#KoH-%E6%8A%A2%E5%8D%A0%E5%B1%B1%E5%A4%B4"><span class="toc-number">6.</span> <span class="toc-text">KoH-抢占山头</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Mix-%E6%B7%B7%E5%90%88"><span class="toc-number">7.</span> <span class="toc-text">Mix-混合</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/%E5%AD%A6%E9%95%BF%E7%9A%84%E6%8C%91%E6%88%98%E9%A2%98/%E5%93%88%E5%9F%BA%E7%B1%B3/" title="哈基米">哈基米</a><time datetime="2026-04-15T05:35:32.819Z" title="更新于 2026-04-15 13:35:32">2026-04-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/Web/SQLmap/" title="SQLmap">SQLmap</a><time datetime="2026-04-15T05:35:32.818Z" title="更新于 2026-04-15 13:35:32">2026-04-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/Web/BurpSuite/" title="BurpSuite">BurpSuite</a><time datetime="2026-04-15T05:35:32.815Z" title="更新于 2026-04-15 13:35:32">2026-04-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Reverse/%E5%8F%8D%E7%BC%96%E8%AF%91/" title="反编译">反编译</a><time datetime="2026-04-15T05:35:32.813Z" title="更新于 2026-04-15 13:35:32">2026-04-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Reverse/GDB/" title="GDB">GDB</a><time datetime="2026-04-15T05:35:32.811Z" title="更新于 2026-04-15 13:35:32">2026-04-15</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 琉璃幻彩</span><span class="framework-info"><span id="busuanzi_container_site_pv">本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span><span class="footer-separator">|</span><span id="busuanzi_container_site_uv">本站访客数 <span id="busuanzi_value_site_uv"></span> 人次</span></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+  const getUtterancesTheme = theme => theme === 'dark' ? 'photon-dark' : 'github-light'
+
+  const loadUtterances = (el = document, key) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyUtterances = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const config = {
+      src: 'https://utteranc.es/client.js',
+      repo: 'FighterGodNemo/FighterGodNemo.github.io',
+      theme: getUtterancesTheme(document.documentElement.getAttribute('data-theme')),
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      'issue-term': isShuoshuo ? key : (option && option['issue-term']) || 'pathname'
+    }
+
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => ele.setAttribute(key, value))
+    el.querySelector('#utterances-wrap').appendChild(ele)
+  }
+
+  const changeUtterancesTheme = theme => {
+    const iframe = document.querySelector('#utterances-wrap iframe')
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: getUtterancesTheme(theme)
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeUtterancesTheme, 'utterances')
+
+  if (isShuoshuo) {
+    'Utterances' === 'Utterances'
+      ? window.shuoshuoComment = { loadComment: loadUtterances }
+      : window.loadOtherComment = loadUtterances
+    return
+  }
+  
+  if ('Utterances' === 'Utterances' || !false) {
+    if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+    else loadUtterances()
+  } else {
+    window.loadOtherComment = loadUtterances
+  }
+})()</script></div><script src="/js/custom.js?v=20260402-2"></script><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.staticfile.org/pjax/0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:description\"]","link[rel=\"canonical\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>
