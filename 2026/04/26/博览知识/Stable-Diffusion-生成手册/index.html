@@ -1,0 +1,468 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Stable Diffusion 生成手册 | 琉璃幻彩的博客</title><meta name="author" content="琉璃幻彩"><meta name="copyright" content="琉璃幻彩"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="基础结论本地 Stable Diffusion WebUI 需要保持后端服务运行，Codex 通过 WebUI API 调用生成图片和视频。浏览器页面可以关闭，但启动 WebUI 的程序窗口不能关闭；否则 http:&#x2F;&#x2F;127.0.0.1:7860&#x2F;sdapi&#x2F;v1&#x2F; API 无法继续响应。 当前机器配置为 64GB 内存、约 24GB 显存，适合正常高显存工作流，不建议使用 lowvram 或">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Stable Diffusion 生成手册">
+<meta property="og:url" content="https://fightergodnemo.github.io/2026/04/26/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Stable-Diffusion-%E7%94%9F%E6%88%90%E6%89%8B%E5%86%8C/index.html">
+<meta property="og:site_name" content="琉璃幻彩的博客">
+<meta property="og:description" content="基础结论本地 Stable Diffusion WebUI 需要保持后端服务运行，Codex 通过 WebUI API 调用生成图片和视频。浏览器页面可以关闭，但启动 WebUI 的程序窗口不能关闭；否则 http:&#x2F;&#x2F;127.0.0.1:7860&#x2F;sdapi&#x2F;v1&#x2F; API 无法继续响应。 当前机器配置为 64GB 内存、约 24GB 显存，适合正常高显存工作流，不建议使用 lowvram 或">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fightergodnemo.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2026-04-26T11:44:05.000Z">
+<meta property="article:modified_time" content="2026-04-26T12:41:00.000Z">
+<meta property="article:author" content="琉璃幻彩">
+<meta property="article:tag" content="AI视频">
+<meta property="article:tag" content="StableDiffusion">
+<meta property="article:tag" content="博览知识">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fightergodnemo.github.io/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Stable Diffusion 生成手册",
+  "url": "https://fightergodnemo.github.io/2026/04/26/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Stable-Diffusion-%E7%94%9F%E6%88%90%E6%89%8B%E5%86%8C/",
+  "image": "https://fightergodnemo.github.io/img/avatar.jpg",
+  "datePublished": "2026-04-26T11:44:05.000Z",
+  "dateModified": "2026-04-26T12:41:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "琉璃幻彩",
+      "url": "https://FighterGodNemo.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="https://fightergodnemo.github.io/2026/04/26/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Stable-Diffusion-%E7%94%9F%E6%88%90%E6%89%8B%E5%86%8C/index.html"><link rel="preconnect" href="https://cdn.staticfile.org"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.5.2/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.20260426230012063.json","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.staticfile.org/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Stable Diffusion 生成手册',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script src="/js/bg-firstpaint.js?v=20260402-2"></script><link rel="stylesheet" href="/css/custom.css?v=20260402-2"><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="琉璃幻彩的博客" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">114</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">131</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">30</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" data-has-custom-post-top-img="0"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">琉璃幻彩的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">Stable Diffusion 生成手册</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Stable Diffusion 生成手册</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-04-26T11:44:05.000Z" title="发表于 2026-04-26 19:44:05">2026-04-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-04-26T12:41:00.000Z" title="更新于 2026-04-26 20:41:00">2026-04-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/">博览知识</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">3.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span></div></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="基础结论"><a href="#基础结论" class="headerlink" title="基础结论"></a>基础结论</h2><p>本地 Stable Diffusion WebUI 需要保持后端服务运行，Codex 通过 WebUI API 调用生成图片和视频。浏览器页面可以关闭，但启动 WebUI 的程序窗口不能关闭；否则 <code>http://127.0.0.1:7860/sdapi/v1/</code> API 无法继续响应。</p>
+<p>当前机器配置为 64GB 内存、约 24GB 显存，适合正常高显存工作流，不建议使用 <code>lowvram</code> 或 <code>medvram</code>。启动参数建议保留：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--api --opt-sdp-attention</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>--api</code> 是 Codex 调用 WebUI 的关键参数。</p>
+<h2 id="当前可用模型与插件"><a href="#当前可用模型与插件" class="headerlink" title="当前可用模型与插件"></a>当前可用模型与插件</h2><p>人像写实生成可优先使用：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">majicMIX realistic 麦橘写实_v7.safetensors</span><br></pre></td></tr></table></figure>
+
+<p>AnimateDiff 运动模型推荐：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">v3_sd15_mm.ckpt</span><br></pre></td></tr></table></figure>
+
+<p>备用稳定模型：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mm_sd_v15_v2.ckpt</span><br></pre></td></tr></table></figure>
+
+<p>SDXL 专用模型：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mm_sdxl_v10_beta.ckpt</span><br></pre></td></tr></table></figure>
+
+<p>注意：SD1.5 模型如 majicMIX realistic 应优先搭配 SD1.5 运动模型，不要混用 SDXL 运动模型。</p>
+<h2 id="文生图推荐流程"><a href="#文生图推荐流程" class="headerlink" title="文生图推荐流程"></a>文生图推荐流程</h2><p>人像生成先把“脸、构图、光线、画面质量”定下来，再考虑动起来。示例负面提示词：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(worst quality:2),(low quality:2),(normal quality:2),lowres,watermark</span><br></pre></td></tr></table></figure>
+
+<p>majicMIX realistic v7 的基础写实人像参数可从下面开始：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Sampler: Euler a</span><br><span class="line">Steps: 30</span><br><span class="line">CFG Scale: 7</span><br><span class="line">Size: 512x768</span><br><span class="line">Hires.fix: 开</span><br><span class="line">Hires upscaler: ESRGAN_4x</span><br><span class="line">Hires scale: 2</span><br><span class="line">Hires steps: 16</span><br><span class="line">Hires denoising strength: 0.35</span><br><span class="line">Clip skip: 2</span><br><span class="line">Restore faces: 关</span><br></pre></td></tr></table></figure>
+
+<p>WebUI 中文界面里，<code>denoising_strength</code> 对应 <strong>重绘幅度</strong>。</p>
+<p>在文生图页面里，重绘幅度通常藏在：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">文生图 -&gt; 高分辨率修复 (Hires. fix) -&gt; 重绘幅度</span><br></pre></td></tr></table></figure>
+
+<p>在图生图页面里，重绘幅度通常在主参数区直接显示。</p>
+<h2 id="文生视频还是图生视频"><a href="#文生视频还是图生视频" class="headerlink" title="文生视频还是图生视频"></a>文生视频还是图生视频</h2><p>如果目标是人像成片质量，推荐：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">文生图 -&gt; 图生视频 -&gt; 插帧 -&gt; 必要时再放大</span><br></pre></td></tr></table></figure>
+
+<p>原因是人像视频最怕脸漂、衣服漂、背景漂。先文生图可以先确定人物身份和构图，再用图生视频让画面动起来，最终更像“这张图活了”。</p>
+<p>直接文生视频适合快速找动作灵感，但人物一致性更难控制。</p>
+<h2 id="图生视频基础参数"><a href="#图生视频基础参数" class="headerlink" title="图生视频基础参数"></a>图生视频基础参数</h2><p>以“女孩转头看向镜头笑，5 秒”为例，推荐从保守参数开始：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Motion model: v3_sd15_mm.ckpt</span><br><span class="line">Number of frames: 16 或 24</span><br><span class="line">FPS: 8 或 12</span><br><span class="line">Denoising strength: 0.24 - 0.36</span><br><span class="line">Closed loop: N</span><br><span class="line">Frame Interpolation: FILM</span><br><span class="line">Interp X: 3</span><br></pre></td></tr></table></figure>
+
+<p>如果想直接生成更完整的 5 秒动作：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Number of frames: 40</span><br><span class="line">FPS: 8</span><br><span class="line">Denoising strength: 0.28 - 0.36</span><br></pre></td></tr></table></figure>
+
+<p>如果显存和速度允许，也可以提高到：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Number of frames: 40</span><br><span class="line">FPS: 24</span><br><span class="line">Frame Interpolation: FILM</span><br><span class="line">Interp X: 3</span><br></pre></td></tr></table></figure>
+
+<p>但实际操作里，更稳的方案通常是先生成低帧率视频，再插帧到 24fps。</p>
+<h2 id="Denoising-Strength-怎么选"><a href="#Denoising-Strength-怎么选" class="headerlink" title="Denoising Strength 怎么选"></a>Denoising Strength 怎么选</h2><p><code>Denoising strength</code> 越低，越保留原图；越高，动作和变化越大，但脸和身份更容易漂。</p>
+<p>高清修复时：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">0.05 - 0.20：极度保守，基本保留原图</span><br><span class="line">0.20 - 0.35：常用范围，画质提升且不太改脸</span><br><span class="line">0.35 - 0.50：变化更明显，可能改五官和衣服</span><br></pre></td></tr></table></figure>
+
+<p>图生视频时：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">0.18 - 0.25：稳定优先，动作较小</span><br><span class="line">0.25 - 0.35：推荐范围，动作和稳定性比较平衡</span><br><span class="line">0.35 - 0.50：动作更大，但脸漂风险明显增加</span><br></pre></td></tr></table></figure>
+
+<p>如果想让人物运动幅度更大，优先逐步增加到 <code>0.32 - 0.36</code>，不要一开始就拉到 <code>0.5</code> 以上。</p>
+<h2 id="帧数、帧率与时长"><a href="#帧数、帧率与时长" class="headerlink" title="帧数、帧率与时长"></a>帧数、帧率与时长</h2><p>视频时长由下面公式决定：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">时长 = 总帧数 / FPS</span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">16 frames / 8 fps = 2 秒</span><br><span class="line">24 frames / 8 fps = 3 秒</span><br><span class="line">40 frames / 8 fps = 5 秒</span><br><span class="line">120 frames / 24 fps = 5 秒</span><br></pre></td></tr></table></figure>
+
+<p>真实生成时，不必一开始就直接生成 120 帧。更实用的做法是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">先生成 16-40 帧、8fps 的稳定视频</span><br><span class="line">再通过 FILM/RIFE 插帧到 24fps</span><br><span class="line">最后导出为 5 秒 MP4</span><br></pre></td></tr></table></figure>
+
+<h2 id="FILM-插帧参数"><a href="#FILM-插帧参数" class="headerlink" title="FILM 插帧参数"></a>FILM 插帧参数</h2><p>AnimateDiff 里的 <code>Frame Interpolation</code> 选 <code>FILM</code>，<code>Interp X</code> 填插帧倍数，不是直接填目标 fps。</p>
+<p>换算方式：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Interp X = 目标 FPS / 原始 FPS</span><br></pre></td></tr></table></figure>
+
+<p>例如原始 8fps 想补到 24fps：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">24 / 8 = 3</span><br></pre></td></tr></table></figure>
+
+<p>所以填写：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Frame Interpolation: FILM</span><br><span class="line">Interp X: 3</span><br></pre></td></tr></table></figure>
+
+<p>常用建议：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">X = 2：轻量插帧</span><br><span class="line">X = 3：推荐，8fps 到 24fps</span><br><span class="line">X = 4：更丝滑，但更慢，也更可能出现插帧幻影</span><br><span class="line">X = 10：不建议日常使用，容易慢且糊影明显</span><br></pre></td></tr></table></figure>
+
+<h2 id="Closed-Loop-怎么选"><a href="#Closed-Loop-怎么选" class="headerlink" title="Closed Loop 怎么选"></a>Closed Loop 怎么选</h2><p><code>Closed loop</code> 控制视频是否尝试首尾循环。</p>
+<p>对“转头看镜头笑”这类有明确起点和终点的动作，推荐：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Closed loop: N</span><br></pre></td></tr></table></figure>
+
+<p>常见含义：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">N：不闭环，适合转头、看镜头、微笑、短动作</span><br><span class="line">R-P：轻微减少首尾跳变，适合不强求无缝的小循环</span><br><span class="line">R+P：更偏循环，适合呼吸、发丝飘动、光影变化</span><br><span class="line">A：强行闭环，不建议人脸动作，容易回弹或鬼畜</span><br></pre></td></tr></table></figure>
+
+<h2 id="提高视频质量的顺序"><a href="#提高视频质量的顺序" class="headerlink" title="提高视频质量的顺序"></a>提高视频质量的顺序</h2><p>建议每次只改一个关键变量，方便判断问题来源：</p>
+<ol>
+<li>先确定一张高质量文生图。</li>
+<li>用图生视频小参数试动作。</li>
+<li>如果动作太小，逐步提高 <code>denoising strength</code>。</li>
+<li>如果脸漂，降低 <code>denoising strength</code>，或缩短帧数。</li>
+<li>如果不流畅，先保持低 fps 生成，再插帧到 24fps。</li>
+<li>如果出现彩色噪点、雪花、画面碎裂，换运动模型或降低帧数、降低重绘幅度。</li>
+<li>成片后再用 ffmpeg 或 WebUI 插件导出 MP4。</li>
+</ol>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><h3 id="为什么不要开脸部修复"><a href="#为什么不要开脸部修复" class="headerlink" title="为什么不要开脸部修复"></a>为什么不要开脸部修复</h3><p>脸部修复可能会把每一帧的人脸当作独立图片重新修，导致视频里脸不断变化。人像视频更看重帧间一致性，因此除非脸严重坏掉，否则不建议开。</p>
+<h3 id="为什么直接高帧率生成不一定更好"><a href="#为什么直接高帧率生成不一定更好" class="headerlink" title="为什么直接高帧率生成不一定更好"></a>为什么直接高帧率生成不一定更好</h3><p>高帧数会显著增加生成压力，也更容易出现身份漂移和画面累计误差。先低帧率生成稳定动作，再插帧，通常比直接硬生成高帧率更稳。</p>
+<h3 id="为什么动作幅度不够"><a href="#为什么动作幅度不够" class="headerlink" title="为什么动作幅度不够"></a>为什么动作幅度不够</h3><p>常见原因是 <code>denoising strength</code> 太低、提示词动作不明确，或者总帧数太短。可以尝试：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">slowly turns head toward camera</span><br><span class="line">looking into camera</span><br><span class="line">warm gentle smile</span><br><span class="line">subtle blinking</span><br></pre></td></tr></table></figure>
+
+<p>并把 <code>denoising strength</code> 从 <code>0.24</code> 提到 <code>0.30</code>、<code>0.34</code> 逐步测试。</p>
+<h3 id="为什么动作没有按要求做"><a href="#为什么动作没有按要求做" class="headerlink" title="为什么动作没有按要求做"></a>为什么动作没有按要求做</h3><p>AnimateDiff 不是严格的动作引擎，更像是“让一张图在原构图附近动起来”。如果要求是大动作，例如：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">坐在沙发上 -&gt; 起身 -&gt; 离开</span><br></pre></td></tr></table></figure>
+
+<p>但首帧是近景坐姿、腿脚不完整、画面里没有可站立和离开的空间，模型就很难按要求生成完整动作。它通常会倾向于保留原构图，只做轻微漂动；如果强行提高重绘幅度，又容易出现身体变形、背景糊掉、后半段崩坏。</p>
+<p>参数上的矛盾是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">denoising 低：人物稳定，但动作做不出来</span><br><span class="line">denoising 高：动作变大，但脸、身体、背景容易漂或糊</span><br></pre></td></tr></table></figure>
+
+<p>正确做法是先让首帧适合动作：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">全身或大半身</span><br><span class="line">坐在沙发边</span><br><span class="line">腿脚完整</span><br><span class="line">画面更远</span><br><span class="line">旁边有可以站起来和离开的空间</span><br></pre></td></tr></table></figure>
+
+<p>然后把动作拆成短段：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">第一段：身体前倾，准备起身</span><br><span class="line">第二段：从沙发上站起来</span><br><span class="line">第三段：离开沙发或走出画面</span><br></pre></td></tr></table></figure>
+
+<p>更稳的控制方式是使用关键帧或姿态控制，例如 ControlNet OpenPose、Prompt Travel、或者输入真人起身视频做 video-to-video。只靠一句提示词，很难精确控制复杂人体动作。</p>
+<h3 id="分段短片怎么衔接"><a href="#分段短片怎么衔接" class="headerlink" title="分段短片怎么衔接"></a>分段短片怎么衔接</h3><p>如果一张图无法直接完成完整动作，就把短片拆成多个小动作段。衔接原则是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">第一段视频 -&gt; 提取最后一帧 -&gt; 作为第二段图生视频的首图 -&gt; 最后拼接视频</span><br></pre></td></tr></table></figure>
+
+<p>例如“坐着前倾 -&gt; 起身”：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">坐姿首图</span><br><span class="line">  -&gt; 第一段：身体前倾，准备起身</span><br><span class="line">  -&gt; 提取第一段最后一帧</span><br><span class="line">  -&gt; 第二段：从前倾姿势站起来</span><br><span class="line">  -&gt; 两段视频拼接</span><br></pre></td></tr></table></figure>
+
+<p>在 WebUI 里主要仍然使用 <code>图生图 + AnimateDiff</code>。AnimateDiff 的 <code>Video source</code> &#x2F; <code>Video path</code> 更偏 video-to-video 或帧序列控制，通常还需要配合 ControlNet，不是把两个成片智能衔接的按钮。</p>
+<p>第二段 prompt 开头要明确继承上一段状态：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">same girl, same room, same clothes, leaning forward from sofa, then slowly stands up</span><br></pre></td></tr></table></figure>
+
+<p>推荐分段参数：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Segment 1:</span><br><span class="line">动作：身体前倾，准备起身</span><br><span class="line">Frames: 16</span><br><span class="line">FPS: 8</span><br><span class="line">Denoising: 0.35 - 0.42</span><br><span class="line">FILM: Off</span><br><span class="line"></span><br><span class="line">Segment 2:</span><br><span class="line">初始图：第一段最后一帧</span><br><span class="line">动作：从前倾姿势站起来</span><br><span class="line">Frames: 16</span><br><span class="line">FPS: 8</span><br><span class="line">Denoising: 0.38 - 0.46</span><br><span class="line">FILM: Off</span><br></pre></td></tr></table></figure>
+
+<p>等每一段动作都稳定后，再统一插帧到 24fps。不要一开始就开 FILM。</p>
+<h3 id="保存-MP4-时还会不会有拆分帧"><a href="#保存-MP4-时还会不会有拆分帧" class="headerlink" title="保存 MP4 时还会不会有拆分帧"></a>保存 MP4 时还会不会有拆分帧</h3><p>如果 AnimateDiff 保存格式只选：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MP4</span><br></pre></td></tr></table></figure>
+
+<p>通常只会得到成品视频，不一定保留单帧 PNG。做分段短片时，末帧很重要，因此推荐保存格式选：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MP4 + PNG</span><br></pre></td></tr></table></figure>
+
+<p>或者：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GIF + PNG</span><br></pre></td></tr></table></figure>
+
+<p><code>PNG</code> 会把每一帧单独保存出来，方便拿最后一张作为下一段图生视频首图。常见路径：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">outputs\img2img-images\AnimateDiff\日期\编号\最后一张.png</span><br></pre></td></tr></table></figure>
+
+<p>如果已经只生成了 MP4，也可以用 ffmpeg 从 MP4 提取最后一帧，但它经过视频压缩，不如原始 PNG 稳。</p>
+<h3 id="为什么画面会漂"><a href="#为什么画面会漂" class="headerlink" title="为什么画面会漂"></a>为什么画面会漂</h3><p>常见原因是重绘幅度太高、帧数太长、提示词过复杂，或者运动模型与底模不匹配。解决顺序：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">降低 denoising strength</span><br><span class="line">减少 Number of frames</span><br><span class="line">使用 SD1.5 对应运动模型</span><br><span class="line">简化提示词</span><br><span class="line">先做短视频草稿</span><br></pre></td></tr></table></figure>
+
+<h3 id="为什么视频没有画面，只有灰色"><a href="#为什么视频没有画面，只有灰色" class="headerlink" title="为什么视频没有画面，只有灰色"></a>为什么视频没有画面，只有灰色</h3><p>如果导出的视频文件能被识别、有帧数、有时长，但播放时没有画面，要先判断是播放器问题还是帧本身异常。</p>
+<p>排查结论示例：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">文件不是空的</span><br><span class="line">视频有 118 帧</span><br><span class="line">分辨率 512x512</span><br><span class="line">但每一帧 RGB 都是 127,127,127</span><br></pre></td></tr></table></figure>
+
+<p>这说明不是播放器坏了，而是生成出来的帧本身就是纯灰图。</p>
+<p>常见原因是底模和 AnimateDiff 运动模型不匹配。例如：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Checkpoint: 麦橘超然majicFlus_v1</span><br><span class="line">Motion model: v3_sd15_mm.ckpt</span><br></pre></td></tr></table></figure>
+
+<p><code>v3_sd15_mm.ckpt</code> 是 SD1.5 AnimateDiff 运动模型，而 <code>麦橘超然majicFlus_v1</code> 是 Flux.1 D &#x2F; 非 SD1.5 体系模型。两者结构不兼容，就可能输出全灰帧。</p>
+<p>解决方法：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">做 AnimateDiff 图生视频：切回 SD1.5 底模</span><br><span class="line">推荐底模：majicMIX realistic 麦橘写实_v7</span><br><span class="line">推荐运动模型：v3_sd15_mm.ckpt</span><br><span class="line">备用运动模型：mm_sd_v15_v2.ckpt</span><br></pre></td></tr></table></figure>
+
+<p>先关闭 FILM 插帧，生成短视频确认有画面：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Number of frames: 16 或 24</span><br><span class="line">FPS: 8</span><br><span class="line">Frame Interpolation: Off</span><br><span class="line">Closed loop: N</span><br><span class="line">Denoising strength: 0.24 - 0.33</span><br></pre></td></tr></table></figure>
+
+<p>确认画面正常后，再打开：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Frame Interpolation: FILM</span><br><span class="line">Interp X: 3</span><br></pre></td></tr></table></figure>
+
+<h2 id="Stride-与-Overlap"><a href="#Stride-与-Overlap" class="headerlink" title="Stride 与 Overlap"></a>Stride 与 Overlap</h2><p>WebUI 中文界面里常见翻译：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">步幅 = Stride</span><br><span class="line">重叠 = Overlap</span><br></pre></td></tr></table></figure>
+
+<p>这两个是 AnimateDiff 的长视频上下文衔接参数，主要在 <code>Number of frames &gt; Context batch size</code> 时才明显生效。短视频例如 <code>16 frames + Context batch size 16</code> 时，它们不是解决动作失败的主按钮。</p>
+<h3 id="Stride-步幅"><a href="#Stride-步幅" class="headerlink" title="Stride 步幅"></a>Stride 步幅</h3><p><code>Stride</code> 控制模型在长视频里隔多远的帧也要保持一致。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Stride 小：更稳，动作更保守</span><br><span class="line">Stride 大：动作可能更自由，但更容易漂、糊、闪</span><br></pre></td></tr></table></figure>
+
+<p>推荐：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">普通人像、转头、微笑、起身：Stride = 1</span><br><span class="line">想尝试更大动作：Stride = 2</span><br><span class="line">不建议日常直接用 4 或更高</span><br></pre></td></tr></table></figure>
+
+<h3 id="Overlap-重叠"><a href="#Overlap-重叠" class="headerlink" title="Overlap 重叠"></a>Overlap 重叠</h3><p><code>Overlap</code> 控制长视频分段生成时，相邻片段之间有多少帧重叠，用来让片段衔接更顺。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Overlap 大：前后更连贯，但动作可能更黏、更慢，耗时增加</span><br><span class="line">Overlap 小：动作更自由，但更容易跳、闪、变脸</span><br></pre></td></tr></table></figure>
+
+<p>当 <code>Context batch size = 16</code> 时：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Overlap = -1：自动，通常等于 batch size / 4，也就是 4</span><br><span class="line">Overlap = 4：推荐默认，稳定性和动作幅度平衡</span><br><span class="line">Overlap = 8：更稳，但动作更小</span><br><span class="line">Overlap = 2：动作可能更大，但片段更容易断裂</span><br></pre></td></tr></table></figure>
+
+<p>人像视频推荐先固定：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Context batch size: 16</span><br><span class="line">Stride: 1</span><br><span class="line">Overlap: 4 或 -1</span><br></pre></td></tr></table></figure>
+
+<p>如果动作太小，可以试：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Stride: 2</span><br><span class="line">Overlap: 2</span><br></pre></td></tr></table></figure>
+
+<p>但风险是脸漂、身体糊、后半段崩坏。实际调参优先级应是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">首帧构图 &gt; denoising strength &gt; Number of frames &gt; 动作是否拆段 &gt; Stride / Overlap</span><br></pre></td></tr></table></figure>
+
+<h2 id="majicMIX-realistic-v7-与-majicFlus-v1-怎么选"><a href="#majicMIX-realistic-v7-与-majicFlus-v1-怎么选" class="headerlink" title="majicMIX realistic v7 与 majicFlus_v1 怎么选"></a>majicMIX realistic v7 与 majicFlus_v1 怎么选</h2><p>这两个模型不是简单的“谁绝对更好”，而是适合不同工作流。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">majicMIX realistic 麦橘写实_v7:</span><br><span class="line">  体系：SD1.5</span><br><span class="line">  优势：兼容 A1111 / AnimateDiff，适合文生图、图生视频、人像短视频</span><br><span class="line">  推荐运动模型：v3_sd15_mm.ckpt</span><br><span class="line">  备用运动模型：mm_sd_v15_v2.ckpt</span><br><span class="line"></span><br><span class="line">麦橘超然majicFlus_v1:</span><br><span class="line">  体系：Flux.1 D / 非 SD1.5</span><br><span class="line">  优势：更适合高质量静态图、人像首帧</span><br><span class="line">  局限：当前 A1111 AnimateDiff 里没有可直接匹配的 SD1.5 运动模型</span><br></pre></td></tr></table></figure>
+
+<p>实践建议：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">想生成静态人像：可以优先试 麦橘超然majicFlus_v1</span><br><span class="line">想生成 AnimateDiff 视频：优先用 majicMIX realistic 麦橘写实_v7</span><br></pre></td></tr></table></figure>
+
+<p>如果想利用 <code>麦橘超然majicFlus_v1</code> 的画质做视频，可以先用它生成高质量首帧，再交给专门的图生视频模型或工具，而不是强行套 SD1.5 AnimateDiff 运动模型。</p>
+<h2 id="推荐默认模板"><a href="#推荐默认模板" class="headerlink" title="推荐默认模板"></a>推荐默认模板</h2><p>写实人像图生视频可以从这个模板开始：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Checkpoint: majicMIX realistic 麦橘写实_v7</span><br><span class="line">Prompt: 1girl, same girl, slowly turns head toward camera, looking into camera, warm gentle smile, subtle blinking, realistic portrait, soft daylight, stable face, stable body</span><br><span class="line">Negative: (worst quality:2),(low quality:2),(normal quality:2),lowres,watermark,bad face, distorted face, deformed eyes, extra fingers, flicker, artifacts</span><br><span class="line">Sampler: Euler a</span><br><span class="line">Steps: 20 - 30</span><br><span class="line">CFG Scale: 6 - 7</span><br><span class="line">Motion model: v3_sd15_mm.ckpt</span><br><span class="line">Number of frames: 24 或 40</span><br><span class="line">FPS: 8</span><br><span class="line">Denoising strength: 0.28 - 0.36</span><br><span class="line">Closed loop: N</span><br><span class="line">Frame Interpolation: FILM</span><br><span class="line">Interp X: 3</span><br></pre></td></tr></table></figure>
+
+<p>核心原则：<strong>先稳，再动，再流畅</strong>。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://FighterGodNemo.github.io">琉璃幻彩</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://fightergodnemo.github.io/2026/04/26/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Stable-Diffusion-%E7%94%9F%E6%88%90%E6%89%8B%E5%86%8C/">https://fightergodnemo.github.io/2026/04/26/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Stable-Diffusion-%E7%94%9F%E6%88%90%E6%89%8B%E5%86%8C/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://FighterGodNemo.github.io" target="_blank">琉璃幻彩的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/">博览知识</a><a class="post-meta__tags" href="/tags/StableDiffusion/">StableDiffusion</a><a class="post-meta__tags" href="/tags/AI%E8%A7%86%E9%A2%91/">AI视频</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/04/26/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2026%20%E6%98%9F%E8%8A%92%E6%9D%AF/" title="2026 星芒杯"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">2026 星芒杯</div></div><div class="info-2"><div class="info-item-1"> </div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/03/15/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/DoS%E6%8B%92%E7%BB%9D%E6%9C%8D%E5%8A%A1%E6%94%BB%E5%87%BB/" title="DoS拒绝服务攻击"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">DoS拒绝服务攻击</div></div><div class="info-2"><div class="info-item-1"> </div></div></div></a><a class="pagination-related" href="/2026/03/15/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E7%89%B9%E6%B4%9B%E4%BC%8A%E6%9C%A8%E9%A9%AC/" title="特洛伊木马"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">特洛伊木马</div></div><div class="info-2"><div class="info-item-1">完整木马程序分为两个部分：服务器程序和控制器程序。 典型木马工作原理：当服务器端在目标计算机上被执行后，木马打开一个默认的端口进行监听，当客户机向服务器提出连接请求，服务器上相应程序自动运行来应答请求。服务端程序与客户端建立连接后，由...</div></div></div></a><a class="pagination-related" href="/2026/03/15/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/JAVA/" title="JAVA"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">JAVA</div></div><div class="info-2"><div class="info-item-1">Java 技术体系（JDK, JRE, JVM）： · JVM (Java Virtual Machine)：Java 虚拟机是 Java 跨平台的核心。它负责加载、验证、执行字节码。不同平台有各自不同的 JVM，但它们对字节码的解释...</div></div></div></a><a class="pagination-related" href="/2026/03/15/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E3%80%8AC%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%EF%BC%88%E7%AC%AC%E4%BA%94%E7%89%88%EF%BC%89%E3%80%8B/" title="《C程序设计（第五版）》"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">《C程序设计（第五版）》</div></div><div class="info-2"><div class="info-item-1">寄存器（Register）寄存器是 CPU 内部的“超高速小盒子”，用来临时存放数据、地址或运算结果。特点：CPU里、速度快、容量小。常见寄存器例子（x86 里）：1.AX、BX、CX、DX：通用寄存器2.IP&#x2F;EIP&#x...</div></div></div></a><a class="pagination-related" href="/2026/03/15/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/exp%E6%98%AF%E4%BB%80%E4%B9%88/" title="exp是什么"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">exp是什么</div></div><div class="info-2"><div class="info-item-1">在PWN里，exp是“exploit”的缩写，意思是漏洞利用**。 EXP脚本就是利用程序漏洞来获取系统权限或执行恶意操作的代码。 </div></div></div></a><a class="pagination-related" href="/2026/03/15/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E/" title="溢出漏洞"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">溢出漏洞</div></div><div class="info-2"><div class="info-item-1">一、缓冲区溢出漏洞缓冲区是一块连续的内存区域，用于存放程序运行时加载到内存的运行代码和数据。缓冲区溢出是指程序运行时，向固定大小的缓冲区写入超过其容量的数据，多余的数据会越过缓冲区的边界覆盖相邻内存空间，从而造成溢出。  栈溢出漏洞检...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">琉璃幻彩</div><div class="author-info-description">The Greatest Magician!</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">114</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">131</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">30</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FighterGodNemo"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/FighterGodNemo" title="Github" target="_blank"><i class="fab fa-github"></i></a><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="微信"><i class="fab fa-weixin"></i></a><div class="qr-code-popup"><img src="/img/qrcode/wechat-qr.png" alt="微信二维码"/ loading='lazy'></div></div><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="QQ"><i class="fab fa-qq"></i></a><div class="qr-code-popup"><img src="/img/qrcode/qq-qr.png" alt="QQ二维码"/ loading='lazy'></div></div><div class="copy-text-wrapper"><a class="social-icon" href="javascript:void(0)" title="Steam好友代码：1905706957" data-copy-text="1905706957"><i class="fab fa-steam"></i></a><div class="copy-text-popup"><h3>Steam好友代码</h3><p>1905706957</p><p class="copy-hint">点击图标复制</p></div></div><a class="social-icon" href="mailto:guliujia2233@outlook.com" title="Email" target="_blank"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">热爱 CTF 和 Forensic 的网安人一枚～
+欢迎各位大佬交流点评！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%BB%93%E8%AE%BA"><span class="toc-number">1.</span> <span class="toc-text">基础结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BD%93%E5%89%8D%E5%8F%AF%E7%94%A8%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%8F%92%E4%BB%B6"><span class="toc-number">2.</span> <span class="toc-text">当前可用模型与插件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E7%94%9F%E5%9B%BE%E6%8E%A8%E8%8D%90%E6%B5%81%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">文生图推荐流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E7%94%9F%E8%A7%86%E9%A2%91%E8%BF%98%E6%98%AF%E5%9B%BE%E7%94%9F%E8%A7%86%E9%A2%91"><span class="toc-number">4.</span> <span class="toc-text">文生视频还是图生视频</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%94%9F%E8%A7%86%E9%A2%91%E5%9F%BA%E7%A1%80%E5%8F%82%E6%95%B0"><span class="toc-number">5.</span> <span class="toc-text">图生视频基础参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Denoising-Strength-%E6%80%8E%E4%B9%88%E9%80%89"><span class="toc-number">6.</span> <span class="toc-text">Denoising Strength 怎么选</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%A7%E6%95%B0%E3%80%81%E5%B8%A7%E7%8E%87%E4%B8%8E%E6%97%B6%E9%95%BF"><span class="toc-number">7.</span> <span class="toc-text">帧数、帧率与时长</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FILM-%E6%8F%92%E5%B8%A7%E5%8F%82%E6%95%B0"><span class="toc-number">8.</span> <span class="toc-text">FILM 插帧参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Closed-Loop-%E6%80%8E%E4%B9%88%E9%80%89"><span class="toc-number">9.</span> <span class="toc-text">Closed Loop 怎么选</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E9%AB%98%E8%A7%86%E9%A2%91%E8%B4%A8%E9%87%8F%E7%9A%84%E9%A1%BA%E5%BA%8F"><span class="toc-number">10.</span> <span class="toc-text">提高视频质量的顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">11.</span> <span class="toc-text">常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E8%A6%81%E5%BC%80%E8%84%B8%E9%83%A8%E4%BF%AE%E5%A4%8D"><span class="toc-number">11.1.</span> <span class="toc-text">为什么不要开脸部修复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E7%9B%B4%E6%8E%A5%E9%AB%98%E5%B8%A7%E7%8E%87%E7%94%9F%E6%88%90%E4%B8%8D%E4%B8%80%E5%AE%9A%E6%9B%B4%E5%A5%BD"><span class="toc-number">11.2.</span> <span class="toc-text">为什么直接高帧率生成不一定更好</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8A%A8%E4%BD%9C%E5%B9%85%E5%BA%A6%E4%B8%8D%E5%A4%9F"><span class="toc-number">11.3.</span> <span class="toc-text">为什么动作幅度不够</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8A%A8%E4%BD%9C%E6%B2%A1%E6%9C%89%E6%8C%89%E8%A6%81%E6%B1%82%E5%81%9A"><span class="toc-number">11.4.</span> <span class="toc-text">为什么动作没有按要求做</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%AE%B5%E7%9F%AD%E7%89%87%E6%80%8E%E4%B9%88%E8%A1%94%E6%8E%A5"><span class="toc-number">11.5.</span> <span class="toc-text">分段短片怎么衔接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%9D%E5%AD%98-MP4-%E6%97%B6%E8%BF%98%E4%BC%9A%E4%B8%8D%E4%BC%9A%E6%9C%89%E6%8B%86%E5%88%86%E5%B8%A7"><span class="toc-number">11.6.</span> <span class="toc-text">保存 MP4 时还会不会有拆分帧</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%BB%E9%9D%A2%E4%BC%9A%E6%BC%82"><span class="toc-number">11.7.</span> <span class="toc-text">为什么画面会漂</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A7%86%E9%A2%91%E6%B2%A1%E6%9C%89%E7%94%BB%E9%9D%A2%EF%BC%8C%E5%8F%AA%E6%9C%89%E7%81%B0%E8%89%B2"><span class="toc-number">11.8.</span> <span class="toc-text">为什么视频没有画面，只有灰色</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Stride-%E4%B8%8E-Overlap"><span class="toc-number">12.</span> <span class="toc-text">Stride 与 Overlap</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Stride-%E6%AD%A5%E5%B9%85"><span class="toc-number">12.1.</span> <span class="toc-text">Stride 步幅</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Overlap-%E9%87%8D%E5%8F%A0"><span class="toc-number">12.2.</span> <span class="toc-text">Overlap 重叠</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#majicMIX-realistic-v7-%E4%B8%8E-majicFlus-v1-%E6%80%8E%E4%B9%88%E9%80%89"><span class="toc-number">13.</span> <span class="toc-text">majicMIX realistic v7 与 majicFlus_v1 怎么选</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A8%E8%8D%90%E9%BB%98%E8%AE%A4%E6%A8%A1%E6%9D%BF"><span class="toc-number">14.</span> <span class="toc-text">推荐默认模板</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/26/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Stable-Diffusion-%E7%94%9F%E6%88%90%E6%89%8B%E5%86%8C/" title="Stable Diffusion 生成手册">Stable Diffusion 生成手册</a><time datetime="2026-04-26T12:41:00.000Z" title="更新于 2026-04-26 20:41:00">2026-04-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/26/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/2026%20%E6%98%9F%E8%8A%92%E6%9D%AF/" title="2026 星芒杯">2026 星芒杯</a><time datetime="2026-04-26T03:21:00.000Z" title="更新于 2026-04-26 11:21:00">2026-04-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/25/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/FIC/2026FIC/" title="无标题">无标题</a><time datetime="2026-04-25T08:34:00.000Z" title="更新于 2026-04-25 16:34:00">2026-04-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/03/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/%E5%B9%B3%E8%88%AA%E6%9D%AF/2024%E5%B9%B3%E8%88%AA%E6%9D%AF/" title="2024平航杯">2024平航杯</a><time datetime="2026-04-22T05:21:00.000Z" title="更新于 2026-04-22 13:21:00">2026-04-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/FIC/25FIC%E5%88%9D%E8%B5%9B/" title="2025 FIC初赛">2025 FIC初赛</a><time datetime="2026-04-22T05:21:00.000Z" title="更新于 2026-04-22 13:21:00">2026-04-22</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 琉璃幻彩</span><span class="framework-info"><span id="busuanzi_container_site_pv">本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span><span class="footer-separator">|</span><span id="busuanzi_container_site_uv">本站访客数 <span id="busuanzi_value_site_uv"></span> 人次</span></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+  const getUtterancesTheme = theme => theme === 'dark' ? 'photon-dark' : 'github-light'
+
+  const loadUtterances = (el = document, key) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyUtterances = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const config = {
+      src: 'https://utteranc.es/client.js',
+      repo: 'FighterGodNemo/FighterGodNemo.github.io',
+      theme: getUtterancesTheme(document.documentElement.getAttribute('data-theme')),
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      'issue-term': isShuoshuo ? key : (option && option['issue-term']) || 'pathname'
+    }
+
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => ele.setAttribute(key, value))
+    el.querySelector('#utterances-wrap').appendChild(ele)
+  }
+
+  const changeUtterancesTheme = theme => {
+    const iframe = document.querySelector('#utterances-wrap iframe')
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: getUtterancesTheme(theme)
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeUtterancesTheme, 'utterances')
+
+  if (isShuoshuo) {
+    'Utterances' === 'Utterances'
+      ? window.shuoshuoComment = { loadComment: loadUtterances }
+      : window.loadOtherComment = loadUtterances
+    return
+  }
+  
+  if ('Utterances' === 'Utterances' || !false) {
+    if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+    else loadUtterances()
+  } else {
+    window.loadOtherComment = loadUtterances
+  }
+})()</script></div><script src="/js/custom.js?v=20260402-2"></script><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.staticfile.org/pjax/0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:description\"]","link[rel=\"canonical\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>
