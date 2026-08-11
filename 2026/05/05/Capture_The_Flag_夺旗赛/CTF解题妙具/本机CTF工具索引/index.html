@@ -1,0 +1,798 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>本机CTF工具索引 | 琉璃幻彩的博客</title><meta name="author" content="琉璃幻彩"><meta name="copyright" content="琉璃幻彩"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本机 CTF 工具索引统一分类入口见工具进阶使用总览。本文保留 CTF 题型视角，便于按赛题场景快速选工具。 这篇索引用来快速判断“遇到什么题先用什么工具”。详细工具清单仍以本机记忆库为准： 1234C:\Users\glj07\AppData\Roaming\Codex_Assistant\Usable_Tools_List.txtC:\Users\glj07\AppData\Roaming\C">
+<meta property="og:type" content="article">
+<meta property="og:title" content="本机CTF工具索引">
+<meta property="og:url" content="https://fightergodnemo.github.io/2026/05/05/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/%E6%9C%AC%E6%9C%BACTF%E5%B7%A5%E5%85%B7%E7%B4%A2%E5%BC%95/index.html">
+<meta property="og:site_name" content="琉璃幻彩的博客">
+<meta property="og:description" content="本机 CTF 工具索引统一分类入口见工具进阶使用总览。本文保留 CTF 题型视角，便于按赛题场景快速选工具。 这篇索引用来快速判断“遇到什么题先用什么工具”。详细工具清单仍以本机记忆库为准： 1234C:\Users\glj07\AppData\Roaming\Codex_Assistant\Usable_Tools_List.txtC:\Users\glj07\AppData\Roaming\C">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fightergodnemo.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2026-05-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-08-03T00:13:00.000Z">
+<meta property="article:author" content="琉璃幻彩">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="CTF工具">
+<meta property="article:tag" content="工具索引">
+<meta property="article:tag" content="工具进阶">
+<meta property="article:tag" content="本机环境">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fightergodnemo.github.io/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "本机CTF工具索引",
+  "url": "https://fightergodnemo.github.io/2026/05/05/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/%E6%9C%AC%E6%9C%BACTF%E5%B7%A5%E5%85%B7%E7%B4%A2%E5%BC%95/",
+  "image": "https://fightergodnemo.github.io/img/avatar.jpg",
+  "datePublished": "2026-05-04T16:00:00.000Z",
+  "dateModified": "2026-08-03T00:13:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "琉璃幻彩",
+      "url": "https://FighterGodNemo.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="https://fightergodnemo.github.io/2026/05/05/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/%E6%9C%AC%E6%9C%BACTF%E5%B7%A5%E5%85%B7%E7%B4%A2%E5%BC%95/index.html"><link rel="preconnect" href="https://cdn.staticfile.org"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.5.2/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.20260811113116377.json","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.staticfile.org/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '本机CTF工具索引',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script src="/js/bg-firstpaint.js?v=20260402-2"></script><link rel="stylesheet" href="/css/custom.css?v=20260402-2"><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="琉璃幻彩的博客" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">149</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">164</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">37</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" data-has-custom-post-top-img="0"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">琉璃幻彩的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">本机CTF工具索引</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">本机CTF工具索引</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-05-04T16:00:00.000Z" title="发表于 2026-05-05 00:00:00">2026-05-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-08-03T00:13:00.000Z" title="更新于 2026-08-03 08:13:00">2026-08-03</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%B7%A5%E5%85%B7%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8/">工具进阶使用</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%B7%A5%E5%85%B7%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8/%E5%B7%A5%E5%85%B7%E7%B4%A2%E5%BC%95/">工具索引</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">2.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>10分钟</span></span></div></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="本机-CTF-工具索引"><a href="#本机-CTF-工具索引" class="headerlink" title="本机 CTF 工具索引"></a>本机 CTF 工具索引</h1><p>统一分类入口见<a href="/2026/08/02/%E5%B7%A5%E5%85%B7%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8/%E5%B7%A5%E5%85%B7%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8%E6%80%BB%E8%A7%88/">工具进阶使用总览</a>。本文保留 CTF 题型视角，便于按赛题场景快速选工具。</p>
+<p>这篇索引用来快速判断“遇到什么题先用什么工具”。详细工具清单仍以本机记忆库为准：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\glj07\AppData\Roaming\Codex_Assistant\Usable_Tools_List.txt</span><br><span class="line">C:\Users\glj07\AppData\Roaming\Codex_Assistant\CTF_Tools_Complete_List.txt</span><br><span class="line">C:\Users\glj07\AppData\Roaming\Codex_Assistant\WSL_CTF工具清单.txt</span><br><span class="line">C:\Users\glj07\.codex\skills\ctf-memory-playbook\references\local-tool-index.md</span><br></pre></td></tr></table></figure>
+
+<p>安装新工具后要同步更新这篇文章、上面的本机工具清单和 <code>local-tool-index.md</code>，避免后续解题时重复安装或忘记已有工具。</p>
+<h2 id="快速选择"><a href="#快速选择" class="headerlink" title="快速选择"></a>快速选择</h2><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>优先工具</th>
+<th>什么时候用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>编码、压缩、哈希、常见转换</td>
+<td>CyberChef、CaptfEncoder、HashCalc、Python</td>
+<td>题目像 Base、Hex、URL、Unicode、哈希、JWT、简单密码时先用</td>
+</tr>
+<tr>
+<td>RSA、ECC、大整数、脚本化密码题</td>
+<td>Python + PyCryptodome、gmpy2、sympy、Sage&#x2F;WSL 数学环境</td>
+<td>需要模逆、CRT、Coppersmith、格、分解、批量尝试时用</td>
+</tr>
+<tr>
+<td>Web 抓包、改包、认证绕过</td>
+<td>Burp Suite、HackBar、浏览器 DevTools、Python requests</td>
+<td>需要观察请求、改 Header&#x2F;Cookie&#x2F;POST、构造 payload 时用</td>
+</tr>
+<tr>
+<td>Web 扫描、目录爆破、SQL 注入</td>
+<td>sqlmap、dirsearch、ffuf、gobuster、御剑、nuclei</td>
+<td>已确认授权或 CTF 靶机，需要快速枚举入口和验证注入时用</td>
+</tr>
+<tr>
+<td><code>.git</code> 泄露</td>
+<td>GitHack、git-dumper</td>
+<td><code>/.git/index</code> 可访问用 GitHack；<code>HEAD/refs/objects</code> 可访问但 <code>index</code> 404 用 git-dumper</td>
+</tr>
+<tr>
+<td>流量包</td>
+<td>Wireshark、TShark、Scapy</td>
+<td><code>.pcap/.pcapng</code>、HTTP 对象、TCP 流、DNS、TLS SNI、USB 流量分析</td>
+</tr>
+<tr>
+<td>隐写和 Misc 文件</td>
+<td>binwalk、foremost、ExifTool、StegSolve、steghide、010 Editor、Audacity</td>
+<td>文件套娃、图片&#x2F;音频隐写、文件头修复、LSB、附加数据、频谱分析</td>
+</tr>
+<tr>
+<td>逆向</td>
+<td>IDA Pro、Ghidra、JEB、JADX、dnSpy、x64dbg、Detect It Easy、UPX</td>
+<td>PE&#x2F;ELF&#x2F;APK&#x2F;.NET&#x2F;Java&#x2F;Python 打包程序逆向</td>
+</tr>
+<tr>
+<td>Pwn</td>
+<td>WSL pwntools、gdb、checksec、ROPgadget、ropper、one_gadget、IDA&#x2F;Ghidra</td>
+<td>Linux ELF、本地调试、远程交互、ROP、ret2libc、栈迁移</td>
+</tr>
+<tr>
+<td>字典爆破</td>
+<td>hashcat、john、Hydra、Cryptodictionary</td>
+<td>hash、压缩包、弱口令、Web 登录、SSH&#x2F;FTP 等口令场景</td>
+</tr>
+</tbody></table>
+<h2 id="Windows-主工具"><a href="#Windows-主工具" class="headerlink" title="Windows 主工具"></a>Windows 主工具</h2><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>当前推荐路径</th>
+<th>用法</th>
+<th>适合场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>7-Zip 25.01</td>
+<td><code>D:\CaptureTheFlag\CTFTool\7-Zip\7z.exe</code></td>
+<td><code>7z l file.zip</code>、<code>7z x file.zip -oout</code></td>
+<td>压缩包查看、解压、嵌套包、伪加密前置检查</td>
+</tr>
+<tr>
+<td>CyberChef</td>
+<td><code>D:\CaptureTheFlag\CTFTool\CyberChef\CyberChef_v9.28.0.html</code></td>
+<td>浏览器打开 HTML</td>
+<td>编码解码、异或、哈希、JWT、数据清洗</td>
+</tr>
+<tr>
+<td>CaptfEncoder 3.1.2</td>
+<td><code>D:\CaptureTheFlag\CTFTool\CaptfEncoder-win-x64-3.1.2.exe</code></td>
+<td>直接启动 GUI</td>
+<td>常见 CTF 编码、古典密码、批量转换</td>
+</tr>
+<tr>
+<td>HashCalc</td>
+<td><code>D:\CaptureTheFlag\CTFTool\HashCalc.exe</code></td>
+<td>直接启动 GUI</td>
+<td>快速核对 MD5、SHA1、CRC 等</td>
+</tr>
+<tr>
+<td>010 Editor</td>
+<td><code>D:\CaptureTheFlag\CTFTool\010Editor\010Editor.exe</code></td>
+<td><code>010Editor.exe file.bin</code></td>
+<td>十六进制查看、文件头修复、结构模板分析</td>
+</tr>
+<tr>
+<td>Notepad++</td>
+<td><code>D:\CaptureTheFlag\CTFTool\Notepad++\notepad++.exe</code></td>
+<td><code>notepad++.exe file.txt</code></td>
+<td>多文件文本查看、日志和脚本轻编辑</td>
+</tr>
+<tr>
+<td>bkcrack 1.7.1</td>
+<td><code>D:\CaptureTheFlag\CTFTool\bkcrack-1.7.1-win64\bkcrack.exe</code></td>
+<td><code>bkcrack -C enc.zip -c known.txt -P known.zip -p known.txt</code></td>
+<td>ZipCrypto 明文攻击，不适合 AES ZIP</td>
+</tr>
+<tr>
+<td>Wireshark 4.6.2</td>
+<td><code>D:\CaptureTheFlag\CTFTool\Wireshark\Wireshark.exe</code></td>
+<td>直接打开 pcap</td>
+<td>图形化协议分析、追踪流、导出对象</td>
+</tr>
+<tr>
+<td>TShark 4.6.2</td>
+<td><code>D:\CaptureTheFlag\CTFTool\Wireshark\tshark.exe</code></td>
+<td><code>tshark -r a.pcapng -Y http</code></td>
+<td>批量过滤、导出字段、脚本化流量分析</td>
+</tr>
+<tr>
+<td>Burp Suite 2025.9.4</td>
+<td><code>D:\CaptureTheFlag\CTFTool\BurpSuite V2025.9.4\</code></td>
+<td>运行目录内启动脚本</td>
+<td>Web 抓包、重放、Intruder、Repeater</td>
+</tr>
+<tr>
+<td>SQLMap 1.9.12.3 dev</td>
+<td><code>D:\CaptureTheFlag\CTFTool\SQL注入工具包\SQL注入\sqlmap-master\sqlmap.py</code></td>
+<td><code>python sqlmap.py -u &quot;URL&quot; --batch</code></td>
+<td>SQL 注入验证、库表枚举、dump</td>
+</tr>
+<tr>
+<td>dirsearch 0.4.3</td>
+<td><code>D:\CaptureTheFlag\CTFTool\dirsearch-0.4.3\dirsearch.py</code></td>
+<td><code>python dirsearch.py -u URL -e php,txt,bak</code></td>
+<td>Web 目录和敏感文件枚举</td>
+</tr>
+<tr>
+<td>GitHack</td>
+<td><code>C:\Users\glj07\bin\githack.cmd</code></td>
+<td><code>githack http://target/.git/</code></td>
+<td><code>.git/index</code> 可访问时恢复源码</td>
+</tr>
+<tr>
+<td>git-dumper 1.0.9</td>
+<td><code>C:\Users\glj07\AppData\Roaming\Python\Python310\Scripts\git-dumper.exe</code></td>
+<td><code>git-dumper URL/.git/ outdir</code></td>
+<td><code>index</code> 不可访问但 refs&#x2F;objects 可访问时恢复源码</td>
+</tr>
+<tr>
+<td>御剑目录扫描</td>
+<td><code>D:\CaptureTheFlag\CTFTool\御剑WEB目录扫描优化版\御剑WEB目录扫描优化版.Patched.exe</code></td>
+<td>GUI 输入目标</td>
+<td>Windows GUI 扫后台、备份、敏感路径</td>
+</tr>
+</tbody></table>
+<h2 id="Crypto"><a href="#Crypto" class="headerlink" title="Crypto"></a>Crypto</h2><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>路径&#x2F;命令</th>
+<th>使用方法</th>
+<th>适合场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PyCryptodome</td>
+<td><code>C:\Users\glj07\Desktop\ctftools-all-in-one\Crypto\</code></td>
+<td>在脚本中 <code>from Crypto.Util.number import *</code></td>
+<td>RSA、AES、DES、字节与整数转换</td>
+</tr>
+<tr>
+<td>gmpy2</td>
+<td><code>C:\Users\glj07\Desktop\ctftools-all-in-one\gmpy2\</code></td>
+<td><code>import gmpy2</code></td>
+<td>大整数、开方、模逆、快速数论计算</td>
+</tr>
+<tr>
+<td>sympy</td>
+<td>WSL Python 包或本机环境</td>
+<td><code>from sympy import factorint</code></td>
+<td>小规模分解、方程、数学验证</td>
+</tr>
+<tr>
+<td>轩禹 CTF RSA 工具 3.6</td>
+<td><code>D:\CaptureTheFlag\CTFTool\轩禹CTF_RSA工具3.6</code></td>
+<td>GUI</td>
+<td>常见 RSA 参数组合的快速尝试</td>
+</tr>
+<tr>
+<td>fastcoll</td>
+<td><code>D:\CaptureTheFlag\CTFTool\fastcoll_v1.0.0.5.exe.zip</code></td>
+<td>解压后命令行使用</td>
+<td>MD5 碰撞类题目</td>
+</tr>
+<tr>
+<td>Cryptodictionary</td>
+<td><code>D:\CaptureTheFlag\CTFTool\Cryptodictionary\</code></td>
+<td>配合 hashcat&#x2F;john&#x2F;Burp</td>
+<td>弱口令、目录、用户名、设备默认密码爆破</td>
+</tr>
+</tbody></table>
+<p>优先策略：能用脚本复现的 Crypto 题，优先写 Python；GUI 工具只作为试探和交叉验证。</p>
+<h2 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h2><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>路径&#x2F;命令</th>
+<th>使用方法</th>
+<th>适合场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Burp Suite</td>
+<td><code>D:\CaptureTheFlag\CTFTool\BurpSuite V2025.9.4\</code></td>
+<td>Repeater 改包，Intruder 爆破</td>
+<td>登录、Cookie、JWT、权限绕过、反序列化入口</td>
+</tr>
+<tr>
+<td>HackBar</td>
+<td><code>D:\CaptureTheFlag\CTFTool\HackBar-v2.3.1</code> &#x2F; Chrome 扩展</td>
+<td>浏览器插件</td>
+<td>快速构造 GET&#x2F;POST、URL 编码、SQL payload</td>
+</tr>
+<tr>
+<td>sqlmap</td>
+<td><code>D:\CaptureTheFlag\CTFTool\SQL注入工具包\SQL注入\sqlmap-master\sqlmap.py</code></td>
+<td><code>python sqlmap.py -r request.txt --batch</code></td>
+<td>已有请求包时的注入验证</td>
+</tr>
+<tr>
+<td>ffuf</td>
+<td>WSL <code>/usr/local/bin/ffuf</code></td>
+<td><code>ffuf -u http://host/FUZZ -w wordlist</code></td>
+<td>快速目录、参数、子域 fuzz</td>
+</tr>
+<tr>
+<td>gobuster</td>
+<td>WSL <code>/usr/bin/gobuster</code></td>
+<td><code>gobuster dir -u URL -w wordlist</code></td>
+<td>目录枚举</td>
+</tr>
+<tr>
+<td>nuclei</td>
+<td>WSL <code>/usr/local/bin/nuclei</code></td>
+<td><code>nuclei -u URL -t templates</code></td>
+<td>模板化漏洞探测</td>
+</tr>
+<tr>
+<td>nmap</td>
+<td>WSL <code>/usr/bin/nmap</code> 或 Windows 安装包</td>
+<td><code>nmap -sV -A host</code></td>
+<td>端口、服务、版本指纹</td>
+</tr>
+<tr>
+<td>GitHack&#x2F;git-dumper</td>
+<td>见上表</td>
+<td>从 <code>.git</code> 泄露恢复源码</td>
+<td>源码泄露、历史 commit 线索、配置泄露</td>
+</tr>
+<tr>
+<td>AntSword&#x2F;Behinder</td>
+<td><code>D:\CaptureTheFlag\CTFTool\AntSword-Loader-v4\</code>、<code>D:\CaptureTheFlag\CTFTool\Behinder\</code></td>
+<td>GUI</td>
+<td>CTF 中已经拿到 Webshell 后连接验证</td>
+</tr>
+</tbody></table>
+<p>优先策略：先手工观察和 Burp 抓包，再决定是否上扫描器。CTF 靶机可快速枚举，真实环境只在授权范围内使用。</p>
+<h2 id="Misc-与隐写"><a href="#Misc-与隐写" class="headerlink" title="Misc 与隐写"></a>Misc 与隐写</h2><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>路径&#x2F;命令</th>
+<th>使用方法</th>
+<th>适合场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>binwalk</td>
+<td>WSL <code>/usr/bin/binwalk</code></td>
+<td><code>binwalk -e file</code></td>
+<td>固件、图片套娃、嵌入压缩包</td>
+</tr>
+<tr>
+<td>foremost</td>
+<td>WSL <code>/usr/bin/foremost</code> 或 Windows foremost</td>
+<td><code>foremost -i file -o out</code></td>
+<td>文件雕刻、拼接数据恢复</td>
+</tr>
+<tr>
+<td>ExifTool</td>
+<td>WSL <code>/usr/bin/exiftool</code></td>
+<td><code>exiftool file</code></td>
+<td>图片、音频、视频、文档元数据</td>
+</tr>
+<tr>
+<td>StegSolve</td>
+<td><code>D:\CaptureTheFlag\CTFTool\Stegsolve\StegSolve.jar</code></td>
+<td><code>java -jar StegSolve.jar</code></td>
+<td>图片 bit plane、颜色通道、LSB 观察</td>
+</tr>
+<tr>
+<td>steghide</td>
+<td><code>D:\CaptureTheFlag\CTFTool\cmder\ImageStrike\tools\steghide\steghide.exe</code></td>
+<td><code>steghide extract -sf image.jpg</code></td>
+<td>JPG&#x2F;WAV 隐写，常伴随密码</td>
+</tr>
+<tr>
+<td>Audacity</td>
+<td><code>D:\CaptureTheFlag\CTFTool\Audacity\</code></td>
+<td>GUI 打开音频</td>
+<td>频谱、波形、摩斯、音频隐藏信息</td>
+</tr>
+<tr>
+<td>MP3Stego</td>
+<td><code>D:\CaptureTheFlag\CTFTool\MP3Stego_1_1_19</code></td>
+<td>命令行</td>
+<td>MP3 隐写</td>
+</tr>
+<tr>
+<td>tweakpng 1.4.6</td>
+<td><code>D:\CaptureTheFlag\CTFTool\tweakpng-1.4.6\x64\tweakpng.exe</code></td>
+<td>GUI</td>
+<td>PNG chunk 修复和查看</td>
+</tr>
+<tr>
+<td>QR_Research</td>
+<td><code>D:\CaptureTheFlag\CTFTool\QR_Research</code></td>
+<td>脚本&#x2F;资料</td>
+<td>二维码定位点、损坏二维码修复</td>
+</tr>
+</tbody></table>
+<p>优先策略：先 <code>file</code>、<code>strings</code>、<code>exiftool</code>、<code>binwalk</code>，再按格式进入 StegSolve、Audacity、010 Editor。</p>
+<h2 id="Reverse"><a href="#Reverse" class="headerlink" title="Reverse"></a>Reverse</h2><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>路径&#x2F;命令</th>
+<th>使用方法</th>
+<th>适合场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IDA Pro 9.3 安装包</td>
+<td><code>D:\CaptureTheFlag\CTFTool\idapro93\ida-pro_93_x64win.exe</code></td>
+<td>安装后使用 IDA</td>
+<td>新项目优先考虑；当前目录是安装包</td>
+</tr>
+<tr>
+<td>IDA Pro 8.3</td>
+<td><code>D:\CaptureTheFlag\CTFTool\IDA Pro 8.3\</code></td>
+<td>启动 <code>ida64.exe</code>&#x2F;快捷方式</td>
+<td>PE&#x2F;ELF 静态分析、反编译</td>
+</tr>
+<tr>
+<td>Ghidra 11.2</td>
+<td><code>D:\CaptureTheFlag\CTFTool\ghidra_11.2_PUBLIC_20240926.zip</code></td>
+<td>解压后运行 <code>ghidraRun.bat</code></td>
+<td>免费反编译、固件&#x2F;ELF&#x2F;复杂结构</td>
+</tr>
+<tr>
+<td>JEB 5.0</td>
+<td><code>D:\CaptureTheFlag\CTFTool\JEB_5_0_0_202308071454搭配400M+的7Z使用\jeb_wincon.bat</code></td>
+<td>运行 bat</td>
+<td>Android、Dex、混淆代码</td>
+</tr>
+<tr>
+<td>JADX 1.5.3</td>
+<td><code>D:\Forensic\ForensicTool\Reverse\jadx-gui-1\jadx-gui-1.5.3.exe</code></td>
+<td>GUI 打开 APK</td>
+<td>APK Java&#x2F;Kotlin 反编译</td>
+</tr>
+<tr>
+<td>dnSpy</td>
+<td><code>D:\CaptureTheFlag\CTFTool\dnSpy-net-win64\dnSpy.exe</code></td>
+<td>GUI 打开 .NET 程序</td>
+<td>.NET 反编译、调试、补丁</td>
+</tr>
+<tr>
+<td>ILDASM</td>
+<td><code>C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\ildasm.exe</code></td>
+<td><code>ildasm /text app.exe &gt; out.il</code></td>
+<td>.NET IL 文本输出</td>
+</tr>
+<tr>
+<td>x64dbg&#x2F;x32dbg</td>
+<td><code>D:\CaptureTheFlag\CTFTool\snapshot\release\x64\x64dbg.exe</code></td>
+<td>GUI 调试</td>
+<td>Windows 动态调试、patch、反调试绕过</td>
+</tr>
+<tr>
+<td>Detect It Easy</td>
+<td><code>D:\CaptureTheFlag\CTFTool\DiE查壳工具</code></td>
+<td>GUI</td>
+<td>查壳、编译器、文件类型</td>
+</tr>
+<tr>
+<td>UPX 5.0.2</td>
+<td><code>D:\CaptureTheFlag\CTFTool\UPX\upx-5.0.2-win64\upx.exe</code></td>
+<td><code>upx.exe -d file.exe -o unpacked.exe</code></td>
+<td>UPX 脱壳、壳识别后第一步</td>
+</tr>
+<tr>
+<td>pyinstxtractor</td>
+<td><code>D:\CaptureTheFlag\CTFTool\pyinstxtractor-2023.12</code></td>
+<td><code>python pyinstxtractor.py app.exe</code></td>
+<td>PyInstaller 打包程序提取</td>
+</tr>
+</tbody></table>
+<p>优先策略：先 DiE&#x2F;file&#x2F;strings 判型，Windows GUI 程序用 IDA&#x2F;x64dbg，APK 用 JADX&#x2F;JEB，.NET 用 dnSpy&#x2F;ILDASM。</p>
+<h2 id="Pwn"><a href="#Pwn" class="headerlink" title="Pwn"></a>Pwn</h2><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>路径&#x2F;命令</th>
+<th>使用方法</th>
+<th>适合场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>WSL Ubuntu-CTF</td>
+<td><code>wsl -d Ubuntu-CTF -u glj07</code></td>
+<td>进入后 <code>cd ~/CTF</code></td>
+<td>Linux ELF、pwntools、gdb、ROP</td>
+</tr>
+<tr>
+<td>pwntools 4.15.0</td>
+<td>WSL Python 包</td>
+<td><code>from pwn import *</code></td>
+<td>远程交互、payload 生成、ELF 解析</td>
+</tr>
+<tr>
+<td>gdb 15.0.50</td>
+<td>WSL <code>/usr/bin/gdb</code></td>
+<td><code>gdb ./pwn</code></td>
+<td>本地调试</td>
+</tr>
+<tr>
+<td>checksec</td>
+<td>WSL <code>/usr/local/bin/checksec</code></td>
+<td><code>checksec --file=./pwn</code></td>
+<td>保护检查</td>
+</tr>
+<tr>
+<td>ROPGadget 7.7</td>
+<td>WSL <code>/usr/local/bin/ROPgadget</code></td>
+<td><code>ROPgadget --binary ./pwn</code></td>
+<td>ROP gadget 搜索</td>
+</tr>
+<tr>
+<td>ropper</td>
+<td>WSL <code>/usr/local/bin/ropper</code></td>
+<td><code>ropper --file ./pwn</code></td>
+<td>ROP 搜索</td>
+</tr>
+<tr>
+<td>objdump&#x2F;readelf&#x2F;strings</td>
+<td>WSL 系统命令</td>
+<td><code>readelf -a ./pwn</code></td>
+<td>ELF 基础信息</td>
+</tr>
+<tr>
+<td>netcat&#x2F;nc</td>
+<td>WSL <code>/usr/bin/nc</code></td>
+<td><code>nc host port</code></td>
+<td>远程服务连通性测试</td>
+</tr>
+</tbody></table>
+<p>优先策略：Pwn 默认进 WSL；过程脚本保存在题目目录，最终脚本保留可复现命令。</p>
+<h2 id="WSL-工具速查"><a href="#WSL-工具速查" class="headerlink" title="WSL 工具速查"></a>WSL 工具速查</h2><table>
+<thead>
+<tr>
+<th>类别</th>
+<th>命令</th>
+<th>版本线索</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>基础</td>
+<td><code>python3</code>、<code>pip</code>、<code>gcc</code>、<code>gdb</code>、<code>make</code>、<code>git</code>、<code>curl</code>、<code>wget</code></td>
+<td>Python 3.12.3、GDB 15.0.50</td>
+</tr>
+<tr>
+<td>Web</td>
+<td><code>sqlmap</code>、<code>ffuf</code>、<code>gobuster</code>、<code>wfuzz</code>、<code>nikto</code>、<code>whatweb</code></td>
+<td>sqlmap 1.10.3.5 dev、ffuf 2.1.0-dev、gobuster 3.6</td>
+</tr>
+<tr>
+<td>资产发现</td>
+<td><code>nmap</code>、<code>amass</code>、<code>subfinder</code>、<code>httpx</code>、<code>nuclei</code>、<code>naabu</code>、<code>katana</code>、<code>gau</code>、<code>waybackurls</code>、<code>dnsx</code></td>
+<td>Nmap 7.94SVN</td>
+</tr>
+<tr>
+<td>密码爆破</td>
+<td><code>john</code>、<code>hashcat</code>、<code>hydra</code></td>
+<td>john 6.2.6、hashcat 可用</td>
+</tr>
+<tr>
+<td>逆向&#x2F;Pwn</td>
+<td><code>file</code>、<code>strings</code>、<code>objdump</code>、<code>readelf</code>、<code>radare2</code>、<code>checksec</code>、<code>ROPgadget</code>、<code>ropper</code></td>
+<td>ROPgadget 7.7</td>
+</tr>
+<tr>
+<td>取证&#x2F;Misc</td>
+<td><code>binwalk</code>、<code>foremost</code>、<code>exiftool</code>、<code>vol</code>、<code>volshell</code>、<code>scapy</code></td>
+<td>Volatility 3 Framework 2.26.2、ExifTool 12.76</td>
+</tr>
+</tbody></table>
+<p>进入方式：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wsl <span class="literal">-d</span> Ubuntu<span class="literal">-CTF</span> <span class="literal">-u</span> glj07</span><br><span class="line"><span class="built_in">cd</span> ~/CTF</span><br></pre></td></tr></table></figure>
+
+<h2 id="维护规则"><a href="#维护规则" class="headerlink" title="维护规则"></a>维护规则</h2><p>新增或升级 CTF 工具后，同步更新：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\glj07\AppData\Roaming\Codex_Assistant\Usable_Tools_List.txt</span><br><span class="line">C:\Users\glj07\AppData\Roaming\Codex_Assistant\CTF_Tools_Complete_List.txt</span><br><span class="line">C:\Users\glj07\AppData\Roaming\Codex_Assistant\WSL_CTF工具清单.txt</span><br><span class="line">C:\Users\glj07\.codex\skills\ctf-memory-playbook\references\local-tool-index.md</span><br><span class="line">D:\TheBlogs\source\_posts\工具进阶使用\工具索引\本机CTF工具索引.md</span><br></pre></td></tr></table></figure>
+
+<p>写入时至少记录工具名、版本或目录版本、路径、调用方式、适用场景、Windows&#x2F;WSL 位置和验证日期。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://FighterGodNemo.github.io">琉璃幻彩</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://fightergodnemo.github.io/2026/05/05/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/%E6%9C%AC%E6%9C%BACTF%E5%B7%A5%E5%85%B7%E7%B4%A2%E5%BC%95/">https://fightergodnemo.github.io/2026/05/05/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/%E6%9C%AC%E6%9C%BACTF%E5%B7%A5%E5%85%B7%E7%B4%A2%E5%BC%95/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://FighterGodNemo.github.io" target="_blank">琉璃幻彩的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/CTF/">CTF</a><a class="post-meta__tags" href="/tags/%E5%B7%A5%E5%85%B7%E8%BF%9B%E9%98%B6/">工具进阶</a><a class="post-meta__tags" href="/tags/CTF%E5%B7%A5%E5%85%B7/">CTF工具</a><a class="post-meta__tags" href="/tags/%E5%B7%A5%E5%85%B7%E7%B4%A2%E5%BC%95/">工具索引</a><a class="post-meta__tags" href="/tags/%E6%9C%AC%E6%9C%BA%E7%8E%AF%E5%A2%83/">本机环境</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/05/06/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/BugKu%20CTF/" title="BugKu CTF"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">BugKu CTF</div></div><div class="info-2"><div class="info-item-1">Web你必须让他停下描述:你必须让他停下题目的网页不断刷新，停不下来。偶尔闪出一个包含CTF的页面。我们需要用插件禁用JavaScript。成功阻止自动刷新。然后手动刷新到目标页面：Ctrl+U 查看源代码即可 GET参数是what，...</div></div></div></a><a class="pagination-related" href="/2026/05/05/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/%E6%9C%AC%E6%9C%BAForensic%E5%B7%A5%E5%85%B7%E7%B4%A2%E5%BC%95/" title="本机Forensic工具索引"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">本机Forensic工具索引</div></div><div class="info-2"><div class="info-item-1">本机 Forensic 工具索引统一分类入口见工具进阶使用总览。本文保留电子取证视角，便于按证据类型快速选工具。 这篇索引用来快速判断“遇到什么证据先用什么工具”。正式案件分析仍要保留路径、哈希、命令、截图和结论，不能只写工具名。 本...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/IDA_Pro/" title="IDA Pro"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">IDA Pro</div></div><div class="info-2"><div class="info-item-1">商业反汇编和调试工具，用于分析恶意软件和逆向工程。 IDA 的核心优势在于二进制文件（如 ELF、PE）的反汇编与反编译，其反编译器（Hex-Rays Decompiler）对 C&#x2F;C++ 等静态语言的支持更成熟。而 Pyt...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/Web/SQLmap/" title="SQLmap"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">SQLmap</div></div><div class="info-2"><div class="info-item-1">使用方法12cd sqlmap使用命令      简介sqlmap是一个开源的渗透工具，可用来进行自动化检测，利用SQL漏洞注入获取数据库服务器的权限。它具有功能强大的检测引擎，有针对不同类型数据库进行渗透测试的功能选项，包括获取数据...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/Ciphey/" title="Ciphey"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">Ciphey</div></div><div class="info-2"><div class="info-item-1">在Windows上 ciphey安装看这篇文章：在Windows上 ciphey安装（详细版）-CSDN博客 123**D：**cd D:\Forensic\ForensicTool\Decrypt\Ciphey\Python38\t...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/MySQL/" title="MySQL"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">MySQL</div></div><div class="info-2"><div class="info-item-1">mysql -u root -p输入密码。 </div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/Wireshark/" title="Wireshark"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">Wireshark</div></div><div class="info-2"><div class="info-item-1">网络协议分析工具，用于捕获和分析网络流量。网络流量分析是指捕捉网络中流动的数据包，并通过查看包内部数据以及进行相关的协议、流量分析、统计等来发现网络运行过程中出现的问题。 在应急响应与日常运维中都是至关重要的步骤。 对于取证分析，在C...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/Web/BurpSuite/" title="Burp Suite"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">Burp Suite</div></div><div class="info-2"><div class="info-item-1">Web应用安全测试工具，支持代理、扫描、漏洞利用等功能。 Burpsuite一共包含13个功能模块。主要模块功能： Spider：主要用于大型的应用系统测试，帮助我们快速了解系统结构和分布情况 Scanner：自动检测Web系统的各种...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">琉璃幻彩</div><div class="author-info-description">The Greatest Magician!</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">149</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">164</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">37</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FighterGodNemo"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/FighterGodNemo" title="Github" target="_blank"><i class="fab fa-github"></i></a><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="微信"><i class="fab fa-weixin"></i></a><div class="qr-code-popup"><img src="/img/qrcode/wechat-qr.png" alt="微信二维码"/ loading='lazy'></div></div><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="QQ"><i class="fab fa-qq"></i></a><div class="qr-code-popup"><img src="/img/qrcode/qq-qr.png" alt="QQ二维码"/ loading='lazy'></div></div><div class="copy-text-wrapper"><a class="social-icon" href="javascript:void(0)" title="Steam好友代码：1905706957" data-copy-text="1905706957"><i class="fab fa-steam"></i></a><div class="copy-text-popup"><h3>Steam好友代码</h3><p>1905706957</p><p class="copy-hint">点击图标复制</p></div></div><a class="social-icon" href="mailto:guliujia2233@outlook.com" title="Email" target="_blank"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">热爱 CTF 和 Forensic 的网安人一枚～
+欢迎各位大佬交流点评！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%AC%E6%9C%BA-CTF-%E5%B7%A5%E5%85%B7%E7%B4%A2%E5%BC%95"><span class="toc-number">1.</span> <span class="toc-text">本机 CTF 工具索引</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E9%80%89%E6%8B%A9"><span class="toc-number">1.1.</span> <span class="toc-text">快速选择</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Windows-%E4%B8%BB%E5%B7%A5%E5%85%B7"><span class="toc-number">1.2.</span> <span class="toc-text">Windows 主工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Crypto"><span class="toc-number">1.3.</span> <span class="toc-text">Crypto</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Web"><span class="toc-number">1.4.</span> <span class="toc-text">Web</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Misc-%E4%B8%8E%E9%9A%90%E5%86%99"><span class="toc-number">1.5.</span> <span class="toc-text">Misc 与隐写</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reverse"><span class="toc-number">1.6.</span> <span class="toc-text">Reverse</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pwn"><span class="toc-number">1.7.</span> <span class="toc-text">Pwn</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WSL-%E5%B7%A5%E5%85%B7%E9%80%9F%E6%9F%A5"><span class="toc-number">1.8.</span> <span class="toc-text">WSL 工具速查</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%B4%E6%8A%A4%E8%A7%84%E5%88%99"><span class="toc-number">1.9.</span> <span class="toc-text">维护规则</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/11/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E5%93%B2%E5%AD%A6%E4%B8%8E%E7%94%9F%E7%89%A9/%E6%97%A5%E6%9C%AC%E6%96%87%E5%8C%96%E6%B7%B1%E5%BA%A6%E7%A0%94%E7%A9%B6_%E8%AF%BB%E7%A9%BA%E6%B0%94%E4%B8%8E%E6%B2%89%E9%BB%98%E7%9A%84%E6%9A%B4%E5%8A%9B/" title="无标题">无标题</a><time datetime="2026-08-11T11:20:17.772Z" title="更新于 2026-08-11 19:20:17">2026-08-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/10/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E5%93%B2%E5%AD%A6%E4%B8%8E%E7%94%9F%E7%89%A9/%E6%84%9F%E6%83%85%E6%80%9D%E6%83%B3%E4%B8%8E%E4%BA%BA%E6%80%A7%E6%B4%9E%E5%AF%9F%E6%B5%85%E8%B0%88/" title="无标题">无标题</a><time datetime="2026-08-10T12:11:00.000Z" title="更新于 2026-08-10 20:11:00">2026-08-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/02/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E5%93%B2%E5%AD%A6%E4%B8%8E%E7%94%9F%E7%89%A9/%E6%B2%89%E6%B2%A1%E6%88%90%E6%9C%AC%E4%B8%8D%E5%8F%82%E4%B8%8E%E9%87%8D%E5%A4%A7%E5%86%B3%E7%AD%96-%E6%B7%B1%E5%BA%A6%E8%B0%83%E7%A0%94/" title="无标题">无标题</a><time datetime="2026-08-10T12:11:00.000Z" title="更新于 2026-08-10 20:11:00">2026-08-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/10/%E6%B8%B8%E6%88%8FGame/CS2%E8%81%8C%E4%B8%9A%E9%80%89%E6%89%8B%E9%BC%A0%E6%A0%87%E7%81%B5%E6%95%8F%E5%BA%A6%E9%85%8D%E7%BD%AE%E6%8A%A5%E5%91%8A/" title="无标题">无标题</a><time datetime="2026-08-10T12:02:00.000Z" title="更新于 2026-08-10 20:02:00">2026-08-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/10/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E5%93%B2%E5%AD%A6%E4%B8%8E%E7%94%9F%E7%89%A9/%E5%A4%96%E8%83%9A%E5%9E%8B%E4%BD%93%E8%B4%A8%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/" title="无标题">无标题</a><time datetime="2026-08-10T12:00:00.000Z" title="更新于 2026-08-10 20:00:00">2026-08-10</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 琉璃幻彩</span><span class="framework-info"><span id="busuanzi_container_site_pv">本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span><span class="footer-separator">|</span><span id="busuanzi_container_site_uv">本站访客数 <span id="busuanzi_value_site_uv"></span> 人次</span></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+  const getUtterancesTheme = theme => theme === 'dark' ? 'photon-dark' : 'github-light'
+
+  const loadUtterances = (el = document, key) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyUtterances = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const config = {
+      src: 'https://utteranc.es/client.js',
+      repo: 'FighterGodNemo/FighterGodNemo.github.io',
+      theme: getUtterancesTheme(document.documentElement.getAttribute('data-theme')),
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      'issue-term': isShuoshuo ? key : (option && option['issue-term']) || 'pathname'
+    }
+
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => ele.setAttribute(key, value))
+    el.querySelector('#utterances-wrap').appendChild(ele)
+  }
+
+  const changeUtterancesTheme = theme => {
+    const iframe = document.querySelector('#utterances-wrap iframe')
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: getUtterancesTheme(theme)
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeUtterancesTheme, 'utterances')
+
+  if (isShuoshuo) {
+    'Utterances' === 'Utterances'
+      ? window.shuoshuoComment = { loadComment: loadUtterances }
+      : window.loadOtherComment = loadUtterances
+    return
+  }
+  
+  if ('Utterances' === 'Utterances' || !false) {
+    if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+    else loadUtterances()
+  } else {
+    window.loadOtherComment = loadUtterances
+  }
+})()</script></div><script src="/js/custom.js?v=20260402-2"></script><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.staticfile.org/pjax/0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:description\"]","link[rel=\"canonical\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

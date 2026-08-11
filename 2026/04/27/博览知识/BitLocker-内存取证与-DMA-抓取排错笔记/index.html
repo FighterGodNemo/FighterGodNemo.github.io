@@ -1,0 +1,356 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>BitLocker 内存取证与 DMA 抓取排错笔记 | 琉璃幻彩的博客</title><meta name="author" content="琉璃幻彩"><meta name="copyright" content="琉璃幻彩"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="技术经验总览这次排查的核心经验是：先判断当前阶段到底是在处理内存、密钥，还是磁盘。三者混在一起时，很容易把错误归因到工具本身。 PCILeech 阶段只负责把目标机物理内存抓成 raw。EFDD 的 Extract keys 阶段只负责从内存 raw 里找 BitLocker 密钥材料。EFDD 的 Decrypt or mount disk 阶段才需要目标 BitLocker 硬盘或磁盘镜像。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BitLocker 内存取证与 DMA 抓取排错笔记">
+<meta property="og:url" content="https://fightergodnemo.github.io/2026/04/27/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/BitLocker-%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E4%B8%8E-DMA-%E6%8A%93%E5%8F%96%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="琉璃幻彩的博客">
+<meta property="og:description" content="技术经验总览这次排查的核心经验是：先判断当前阶段到底是在处理内存、密钥，还是磁盘。三者混在一起时，很容易把错误归因到工具本身。 PCILeech 阶段只负责把目标机物理内存抓成 raw。EFDD 的 Extract keys 阶段只负责从内存 raw 里找 BitLocker 密钥材料。EFDD 的 Decrypt or mount disk 阶段才需要目标 BitLocker 硬盘或磁盘镜像。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fightergodnemo.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2026-04-27T08:36:00.000Z">
+<meta property="article:modified_time" content="2026-04-27T08:56:00.000Z">
+<meta property="article:author" content="琉璃幻彩">
+<meta property="article:tag" content="BitLocker">
+<meta property="article:tag" content="博览知识">
+<meta property="article:tag" content="电子取证">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fightergodnemo.github.io/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "BitLocker 内存取证与 DMA 抓取排错笔记",
+  "url": "https://fightergodnemo.github.io/2026/04/27/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/BitLocker-%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E4%B8%8E-DMA-%E6%8A%93%E5%8F%96%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/",
+  "image": "https://fightergodnemo.github.io/img/avatar.jpg",
+  "datePublished": "2026-04-27T08:36:00.000Z",
+  "dateModified": "2026-04-27T08:56:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "琉璃幻彩",
+      "url": "https://FighterGodNemo.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="https://fightergodnemo.github.io/2026/04/27/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/BitLocker-%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E4%B8%8E-DMA-%E6%8A%93%E5%8F%96%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/index.html"><link rel="preconnect" href="https://cdn.staticfile.org"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.5.2/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.20260811113116377.json","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.staticfile.org/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'BitLocker 内存取证与 DMA 抓取排错笔记',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script src="/js/bg-firstpaint.js?v=20260402-2"></script><link rel="stylesheet" href="/css/custom.css?v=20260402-2"><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="琉璃幻彩的博客" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">149</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">164</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">37</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" data-has-custom-post-top-img="0"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">琉璃幻彩的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">BitLocker 内存取证与 DMA 抓取排错笔记</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">BitLocker 内存取证与 DMA 抓取排错笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-04-27T08:36:00.000Z" title="发表于 2026-04-27 16:36:00">2026-04-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-04-27T08:56:00.000Z" title="更新于 2026-04-27 16:56:00">2026-04-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/">博览知识</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">3.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span></div></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="技术经验总览"><a href="#技术经验总览" class="headerlink" title="技术经验总览"></a>技术经验总览</h2><p>这次排查的核心经验是：先判断当前阶段到底是在处理内存、密钥，还是磁盘。三者混在一起时，很容易把错误归因到工具本身。</p>
+<p>PCILeech 阶段只负责把目标机物理内存抓成 raw。EFDD 的 <code>Extract keys</code> 阶段只负责从内存 raw 里找 BitLocker 密钥材料。EFDD 的 <code>Decrypt or mount disk</code> 阶段才需要目标 BitLocker 硬盘或磁盘镜像。</p>
+<p>一句话流程：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">目标机内存状态正确</span><br><span class="line">-&gt; PCILeech 抓内存 raw</span><br><span class="line">-&gt; EFDD 从 raw 里 Extract keys</span><br><span class="line">-&gt; EFDD 用候选 key 挂载或解密目标 BitLocker 磁盘</span><br></pre></td></tr></table></figure>
+
+<p>合规前提仍然要放在最前面：只用于自有设备、明确授权维修、企业应急响应、司法取证或实验室学习。</p>
+<h2 id="本次排查速查"><a href="#本次排查速查" class="headerlink" title="本次排查速查"></a>本次排查速查</h2><p>这次截图里最有价值的经验点不是某个按钮怎么点，而是每个界面代表的阶段不同：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">PCILeech 控制台显示 Dumping Memory</span><br><span class="line">=&gt; 正在抓内存，不是在读硬盘。</span><br><span class="line"></span><br><span class="line">输出文件约 17.4G</span><br><span class="line">=&gt; 更像内存 raw，大小接近目标机物理内存或可读内存范围。</span><br><span class="line"></span><br><span class="line">Arsenal Image Mounter 挂载 raw 后看不到正常 BitLocker 分区</span><br><span class="line">=&gt; 大概率是把内存 raw 当磁盘镜像挂了，方向错了。</span><br><span class="line"></span><br><span class="line">EFDD Extract keys 出现 BitLocker Volume Master Key</span><br><span class="line">=&gt; 已找到候选二进制密钥材料，不会显示成 48 位恢复密钥。</span><br><span class="line"></span><br><span class="line">EFDD Decrypt or mount disk 里只看到 Physical0</span><br><span class="line">=&gt; 需要确认 Physical0 是分析机自己的盘还是目标盘；目标盘未接入或编号没识别时不会凭空出现。</span><br></pre></td></tr></table></figure>
+
+<p>经验判断顺序应是：先看文件类型，再看工具阶段，最后看结果语义。不要只看“有 raw 文件”就默认它是硬盘镜像，也不要看到 EFDD 没吐出 48 位数字就判断失败。</p>
+<h2 id="关键概念"><a href="#关键概念" class="headerlink" title="关键概念"></a>关键概念</h2><p>BitLocker 的 48 位恢复密钥、VMK、FVEK 不是同一种东西。</p>
+<p>48 位恢复密钥是用户或管理员用于恢复解锁的数字密码，常见格式类似多组短数字。它通常保存在 Microsoft 账户、企业管理系统、恢复密钥文件、打印件或 U 盘中。</p>
+<p>VMK 是 Volume Master Key，FVEK 是 Full Volume Encryption Key，属于 BitLocker 实际解密链路里的二进制密钥材料。EFDD 从内存里搜索到的结果通常会显示为十六进制 key data，而不是 48 位恢复密钥格式。</p>
+<p>锁屏、Windows 登录密码、BIOS&#x2F;UEFI 密码、BitLocker PIN、硬盘密码也不是一回事。</p>
+<p>Windows 登录密码只控制用户会话。很多 TPM 自动解锁的机器启动到 Windows 登录界面时，系统盘可能已经解锁，此时内存里可能存在 BitLocker 相关密钥。</p>
+<p>BIOS&#x2F;UEFI 开机密码只控制机器能否继续启动或进入固件设置，和 BitLocker 解锁没有直接等价关系。</p>
+<p>BitLocker 开机 PIN 和 BitLocker 直接相关。输入 PIN 后系统盘才会解锁，之后抓取内存才更可能找到对应密钥。</p>
+<p>硬盘密码是硬盘固件层面的锁，和 BitLocker 是另一套机制。</p>
+<h2 id="工具链分工经验"><a href="#工具链分工经验" class="headerlink" title="工具链分工经验"></a>工具链分工经验</h2><p>PCILeech&#x2F;LeechCore 一类工具用于通过 DMA 方式读取目标机器物理内存，输出内存镜像，例如 <code>memdump.raw</code> 或 <code>mem_dump.raw</code>。这个文件是 RAM dump，不是硬盘镜像。</p>
+<p>Elcomsoft Forensic Disk Decryptor 可以从内存镜像中搜索 BitLocker 相关密钥，也可以在已经有密钥、密码或恢复密钥时挂载或解密 BitLocker 磁盘。</p>
+<p>Arsenal Image Mounter 主要用于挂载磁盘镜像，例如 raw&#x2F;dd&#x2F;E01&#x2F;VHD&#x2F;VHDX。它不适合把 PCILeech 生成的内存 raw 当成磁盘挂载。内存 raw 应交给 EFDD 的 <code>Extract keys</code> 流程处理。</p>
+<p>外接的“像硬盘一样的设备”不一定是普通移动硬盘。若它配合 PCILeech 让 <code>Current Action: Dumping Memory</code> 跑起来，更可能是 DMA 采集设备，作用是读取内存，不是直接读取 BitLocker 磁盘数据。</p>
+<h2 id="操作流程判断"><a href="#操作流程判断" class="headerlink" title="操作流程判断"></a>操作流程判断</h2><p>合规实验里的逻辑链是：</p>
+<p>先确认目标 BitLocker 卷已经处于已解锁或已挂载状态。只锁屏通常不等于重新锁住 BitLocker，但关机、重启、休眠或还停在 BitLocker 解锁前界面时，内存里可能没有可用的解密材料。</p>
+<p>然后抓取物理内存，生成内存镜像。抓取完成后检查输出文件是否存在、大小是否接近目标机器物理内存范围、最终 <code>Pages failed</code> 比例是否可接受。</p>
+<p>接着在 EFDD 里选择 <code>Extract keys</code>，导入内存镜像，扫描 BitLocker 相关密钥。如果结果中出现 <code>BitLocker Volume Master Key</code> 和十六进制 <code>Key data</code>，说明已经找到了候选 VMK，而不是 48 位恢复密钥。</p>
+<p>最后把目标 BitLocker 磁盘或磁盘镜像交给 EFDD 的 <code>Decrypt or mount disk</code>。如果只是验证密钥是否可用，优先选择挂载；如果要完整导出解密后的镜像，再考虑解密输出。正式取证场景应优先对原盘做镜像，并避免直接修改原盘。</p>
+<h2 id="PCILeech-参数经验"><a href="#PCILeech-参数经验" class="headerlink" title="PCILeech 参数经验"></a>PCILeech 参数经验</h2><p>不同版本的 PCILeech 参数可能不同，应先查看当前版本帮助。一次排错中，帮助信息显示 <code>dump</code> 子命令支持的输出参数是 <code>-out</code>，不是 <code>-o</code>。</p>
+<p>因此不能凭印象写 <code>-o</code>。应先运行当前版本帮助：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.\pcileech.exe dump -help</span><br></pre></td></tr></table></figure>
+
+<p>本次截图中帮助显示：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">OPTIONS : -min, -max, -out, -force</span><br></pre></td></tr></table></figure>
+
+<p>因此输出文件应使用 <code>-out</code> 指定，例如：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.\pcileech.exe dump -out &quot;C:\dump\memdump.raw&quot;</span><br></pre></td></tr></table></figure>
+
+<p>经验上建议使用英文短路径保存输出。中文目录、空格路径、批处理封装和文件名前后不一致都可能造成误判。</p>
+<p>如果控制台最后出现类似 <code>mem_dump.raw is not recognized as an internal or external command</code>，不一定代表 dump 失败。它更可能是批处理脚本最后误把输出文件名当命令执行。真正要检查的是 raw 文件是否生成、大小是否正常，以及抓取过程最终状态是否成功。</p>
+<p>还有一个容易混淆的点：<code>memdump.raw</code> 和 <code>mem_dump.raw</code> 只是文件名差异，但如果脚本前后不一致，就会出现后续步骤找不到文件。经验上全程统一一个文件名。</p>
+<h2 id="Pages-failed-的含义"><a href="#Pages-failed-的含义" class="headerlink" title="Pages failed 的含义"></a>Pages failed 的含义</h2><p><code>Pages failed</code> 表示物理内存页读取失败的数量和比例。内存镜像大小接近完整内存容量，不代表每一页内容都成功读取；不可读页可能被零填充或保留为空洞。</p>
+<p>一次抓取中 <code>Pages failed</code> 约 17%，说明失败比例偏高，EFDD 仍可能扫到候选 key，但关键页缺失会降低成功率。另一轮抓取降到约 7%，质量明显改善，应优先使用失败率更低的 dump。</p>
+<p>控制台出现 <code>Should not happen</code>、<code>not happen</code>、<code>did not happen</code> 一类提示时，不一定马上代表抓取失败。若统计仍显示 <code>Pages failed: 0 (0%)</code>，可以先让它跑完；最终以完成状态、raw 文件大小和最终失败比例为准。</p>
+<p>失败页可能来自 DMA 防护、IOMMU、Thunderbolt 安全策略、受保护内存区域、设备映射区域、连接不稳定或目标机状态变化。重新抓取时应避免休眠、重启、断电，减少移动设备和线缆，并优先使用失败率最低的一次镜像。</p>
+<h2 id="EFDD-结果判断经验"><a href="#EFDD-结果判断经验" class="headerlink" title="EFDD 结果判断经验"></a>EFDD 结果判断经验</h2><p>EFDD <code>Extract keys</code> 出现如下结果时，说明不是“没有密钥”，而是找到了 BitLocker 的二进制密钥材料：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Algorithm: BitLocker (incl. To Go) Volume Master Key</span><br><span class="line">Key data (hex): ...</span><br></pre></td></tr></table></figure>
+
+<p>这类结果不会显示成 48 位恢复密钥格式。它通常是 VMK&#x2F;FVEK 链路里的候选密钥。下一步应保存候选 key，然后回到 <code>Decrypt or mount disk</code>，选择目标 BitLocker 磁盘或磁盘镜像进行验证。</p>
+<p>如果 EFDD 列出多条 BitLocker Volume Master Key，可能来自多个卷、历史残留或误匹配。经验上不要只看第一条，应逐条验证。</p>
+<p>如果 <code>Decrypt or mount disk</code> 里只看到 <code>Physical0</code>，要先确认那是不是分析机自己的系统盘。目标硬盘接入后可能显示为 <code>Physical1</code> 或更高编号。不要把 <code>memdump.raw</code> 当目标磁盘选进去。</p>
+<h2 id="为什么提取不到"><a href="#为什么提取不到" class="headerlink" title="为什么提取不到"></a>为什么提取不到</h2><p>提取不到 BitLocker 密钥时，优先从状态链路排查，而不是反复换工具：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">抓取时 BitLocker 卷未解锁</span><br><span class="line">=&gt; 内存里可能没有可用 VMK/FVEK。</span><br><span class="line"></span><br><span class="line">目标机已经重启、关机或休眠</span><br><span class="line">=&gt; 关键密钥材料可能已经从当前内存状态消失。</span><br><span class="line"></span><br><span class="line">只有 BIOS/UEFI 开机密码或 Windows 登录密码</span><br><span class="line">=&gt; 这不等于 BitLocker 已解锁，也不等于内存里一定有密钥。</span><br><span class="line"></span><br><span class="line">Pages failed 比例高</span><br><span class="line">=&gt; raw 文件大小可能正常，但关键页缺失，EFDD 扫不到或扫到不完整。</span><br><span class="line"></span><br><span class="line">导入 EFDD 的文件不是内存 raw</span><br><span class="line">=&gt; Extract keys 阶段输入错，后续结果没有意义。</span><br><span class="line"></span><br><span class="line">没有目标 BitLocker 磁盘或镜像</span><br><span class="line">=&gt; 即使提取到了候选 key，也没法验证挂载。</span><br></pre></td></tr></table></figure>
+
+<p>这里最容易误会的是“我设置了一个开机密码”。这个说法必须继续追问清楚：如果他说的是 Windows 登录密码，它只影响用户登录；如果是 BIOS&#x2F;UEFI 密码，它只影响启动流程；如果是 BitLocker PIN，才直接关系到系统盘是否在启动前解锁。内存提取的关键点不是“有没有密码”，而是抓取那一刻目标 BitLocker 卷是否已经处于解锁状态。</p>
+<h2 id="Mount-与-Decrypt-的选择"><a href="#Mount-与-Decrypt-的选择" class="headerlink" title="Mount 与 Decrypt 的选择"></a>Mount 与 Decrypt 的选择</h2><p><code>mount</code> 是临时挂载，适合先验证 key 是否能打开目标卷。成功后可以浏览和复制文件，适合作为第一步验证。</p>
+<p><code>decrypt</code> 是导出完整解密后的磁盘或分区镜像，耗时更久、占用空间更大，更适合已经确认 key 正确后再做。</p>
+<p>这次经验中，如果只是验证 PCILeech 和 EFDD 提取到的 key 是否有效，优先建议 mount，而不是直接 decrypt。</p>
+<h2 id="常见误区"><a href="#常见误区" class="headerlink" title="常见误区"></a>常见误区</h2><p>不要把内存镜像当磁盘镜像挂载。<code>memdump.raw</code> 是 RAM dump，不会像硬盘那样有正常分区表和文件系统。</p>
+<p>不要在还没取得目标磁盘或磁盘镜像时期待 EFDD 直接显示文件。EFDD 从内存里提取出来的是候选密钥，后续还需要用对应的目标 BitLocker 盘验证。</p>
+<p>不要把 BIOS 密码、Windows 登录密码、BitLocker PIN、硬盘密码混为一谈。内存提取能否成功，关键不是“有没有开机密码”，而是抓取内存时 BitLocker 卷是否已经解锁并挂载。</p>
+<p>不要随意运行工具目录里的 <code>unlock</code>、<code>stickykeys</code>、脚本补丁或系统改动类文件。若目标只是授权内存取证，应只围绕内存 dump、密钥提取和只读验证开展。</p>
+<h2 id="排错检查清单"><a href="#排错检查清单" class="headerlink" title="排错检查清单"></a>排错检查清单</h2><p>抓取阶段优先检查：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">是否在 pcileech.exe 所在目录运行</span><br><span class="line">是否管理员命令行</span><br><span class="line">是否先查看当前版本 dump -help</span><br><span class="line">输出参数是否为当前版本支持的 -out</span><br><span class="line">输出路径是否为英文短路径</span><br><span class="line">raw 文件是否生成</span><br><span class="line">raw 文件大小是否接近物理内存范围</span><br><span class="line">最终 Pages failed 是否偏高</span><br></pre></td></tr></table></figure>
+
+<p>EFDD 阶段优先检查：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Extract keys 导入的是内存 raw</span><br><span class="line">Decrypt or mount disk 选择的是目标 BitLocker 磁盘或磁盘镜像</span><br><span class="line">没有把 memdump.raw 当磁盘镜像挂载</span><br><span class="line">候选 VMK 已保存并逐条验证</span><br><span class="line">目标硬盘编号没有选错</span><br></pre></td></tr></table></figure>
+
+<p>目标状态优先检查：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">BitLocker 卷是否已经解锁并挂载</span><br><span class="line">机器是否关机、重启或休眠过</span><br><span class="line">所谓开机密码到底是 Windows 登录密码、BIOS 密码、BitLocker PIN 还是硬盘密码</span><br><span class="line">内存 dump 是否来自同一台目标机、同一轮已解锁状态</span><br></pre></td></tr></table></figure>
+
+<h2 id="回复模板"><a href="#回复模板" class="headerlink" title="回复模板"></a>回复模板</h2><p>如果别人咨询这类问题，可以先要求确认授权：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">可以研究，但只能限定在自有设备、授权维修或司法/企业取证场景。BitLocker、Windows 用户凭据、BIOS/UEFI 密码都属于敏感访问控制。可以聊原理、取证流程和官方恢复方式，不提供未授权绕过操作。</span><br></pre></td></tr></table></figure>
+
+<p>如果对方把恢复密钥和 VMK 混淆，可以这样解释：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EFDD 从内存里扫到的十六进制 Key data 通常是 BitLocker VMK/FVEK 一类密钥材料，不是 48 位恢复密钥。下一步应保存候选 key，再用目标 BitLocker 磁盘或磁盘镜像验证能否挂载。</span><br></pre></td></tr></table></figure>
+
+<p>如果对方问是否要拔目标硬盘：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">可以接到分析机，但不是为了直接读取文件。BitLocker 盘接到别的电脑上仍然是加密状态。更稳妥的方式是先做磁盘镜像，再用 EFDD 和已提取的 key 去挂载或解密镜像；不要初始化、格式化或修复原盘。</span><br></pre></td></tr></table></figure>
+
+<h2 id="官方恢复思路"><a href="#官方恢复思路" class="headerlink" title="官方恢复思路"></a>官方恢复思路</h2><p>官方恢复方式不是提取或破解原密码，而是证明设备归属后，通过账户体系、企业管理系统或厂商流程恢复访问权。</p>
+<p>Windows 用户密码优先走 Microsoft 账户重置、其他管理员账户、域管理员、Entra ID、Intune 或 AD 管理后台。</p>
+<p>BitLocker 优先查 Microsoft 账户、AD DS、Entra ID、Intune、MBAM、恢复密钥文件、打印件或 U 盘备份。没有恢复密钥、密码、合法密钥材料或已解锁状态下的内存证据，厂商和微软也不能帮忙直接解密数据。</p>
+<p>BIOS&#x2F;UEFI 或主板密码优先走品牌官方售后、序列号、购买凭证和资产归属证明。不要默认短接、刷 BIOS 或拆芯片，这类操作容易损坏设备，也容易越过授权边界。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://FighterGodNemo.github.io">琉璃幻彩</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://fightergodnemo.github.io/2026/04/27/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/BitLocker-%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E4%B8%8E-DMA-%E6%8A%93%E5%8F%96%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/">https://fightergodnemo.github.io/2026/04/27/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/BitLocker-%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E4%B8%8E-DMA-%E6%8A%93%E5%8F%96%E6%8E%92%E9%94%99%E7%AC%94%E8%AE%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://FighterGodNemo.github.io" target="_blank">琉璃幻彩的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/">博览知识</a><a class="post-meta__tags" href="/tags/%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/">电子取证</a><a class="post-meta__tags" href="/tags/BitLocker/">BitLocker</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/04/27/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Codex-%E5%A4%9A%E7%AA%97%E5%8F%A3-MCP-%E8%BF%9B%E7%A8%8B%E5%A4%8D%E7%94%A8%E6%96%B9%E6%A1%88/" title="Codex 多窗口 MCP 进程复用方案"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Codex 多窗口 MCP 进程复用方案</div></div><div class="info-2"><div class="info-item-1">核心结论Codex 多窗口重复拉起 MCP 进程，根源通常是 stdio MCP 由每个 Codex 窗口或会话各自启动。窗口越多，本地 MCP 进程越容易成倍增加。 解决思路是把适合共享的 MCP 改成常驻 HTTP 服务：本机只启...</div></div></div></a><a class="pagination-related" href="/2026/04/26/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Stable-Diffusion-%E7%94%9F%E6%88%90%E6%89%8B%E5%86%8C/" title="Stable Diffusion 生成手册"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Stable Diffusion 生成手册</div></div><div class="info-2"><div class="info-item-1">基础结论本地 Stable Diffusion WebUI 需要保持后端服务运行，Codex 通过 WebUI API 调用生成图片和视频。浏览器页面可以关闭，但启动 WebUI 的程序窗口不能关闭；否则 http://127.0.0...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E7%9F%A5%E8%AF%86/%E6%80%8E%E4%B9%88%E4%BB%8E%E5%86%85%E5%AD%98%E4%B8%AD%E6%8F%90%E5%8F%96bitlocker%E5%AF%86%E7%A0%81%E4%BB%A5%E5%8F%8A%E5%8E%9F%E7%90%86/" title="怎么从内存中提取bitlocker密码以及原理"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">怎么从内存中提取bitlocker密码以及原理</div></div><div class="info-2"><div class="info-item-1">从内存中提取 BitLocker 密码是基于 内存取证 的原理。以下是详细说明： 提取原理1. 核心原理 密钥常驻内存：当 BitLocker 加密的驱动器被解锁并挂载时，加密密钥会一直保留在内存中 冷启动攻击：RAM 中的数据在断电...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/%E8%87%AA%E5%8A%A8%E4%BF%AE%E5%A4%8Dzip%E4%BC%AA%E5%8A%A0%E5%AF%86/" title="自动修复zip伪加密"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">自动修复zip伪加密</div></div><div class="info-2"><div class="info-item-1">ZipCenOp.jar java -jar ZipCenOp.jar r lm.zip 文件格式签名（File Signature 或 Magic Number）是文件开头的特定字节序列，用于标识文件的类型。以下是一些常见文件格式的...</div></div></div></a><a class="pagination-related" href="/2026/04/11/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/%E5%B9%B3%E8%88%AA%E6%9D%AF/2026%E5%B9%B3%E8%88%AA%E6%9D%AF%E5%9B%A2%E9%98%9F%E8%B5%9B/" title="2026平航杯团队赛"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-04-11</div><div class="info-item-2">2026平航杯团队赛</div></div><div class="info-2"><div class="info-item-1">前言：案件背景一段气，藏于硬盘之间 ，无影无形 ；二段气 ，隐于内存之中，似有还无 ；三段气 ，破于取证之下 ，水落石出！ 三十年河东三十年河西 ，莫欺平航穷！说罢，气息不再掩饰，取证人的锋芒，自此划破迷雾——各位选手，备好你的取证工...</div></div></div></a><a class="pagination-related" href="/2026/04/27/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Codex-%E5%A4%9A%E7%AA%97%E5%8F%A3-MCP-%E8%BF%9B%E7%A8%8B%E5%A4%8D%E7%94%A8%E6%96%B9%E6%A1%88/" title="Codex 多窗口 MCP 进程复用方案"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-04-27</div><div class="info-item-2">Codex 多窗口 MCP 进程复用方案</div></div><div class="info-2"><div class="info-item-1">核心结论Codex 多窗口重复拉起 MCP 进程，根源通常是 stdio MCP 由每个 Codex 窗口或会话各自启动。窗口越多，本地 MCP 进程越容易成倍增加。 解决思路是把适合共享的 MCP 改成常驻 HTTP 服务：本机只启...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/%E5%B9%B3%E8%88%AA%E6%9D%AF/2025%E5%B9%B3%E8%88%AA%E6%9D%AF%E6%94%B9%E7%BC%96%E7%BB%83%E4%B9%A0%E9%A2%98/" title="2025 平航杯改编练习题"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">2025 平航杯改编练习题</div></div><div class="info-2"><div class="info-item-1">前言案情介绍： 2025年4月，杭州滨江警方接到辖区内市民刘晓倩(简称：倩倩)报案称：其个人电子设备疑似遭人监控。经初步调查，警方发现倩倩的手机存在可疑后台活动，手机可能存在被木马控制情况；对倩倩计算机进行流量监控，捕获可疑流量包。遂...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E7%9F%A5%E8%AF%86/Slowhttptest/" title="Slowhttptest"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">Slowhttptest</div></div><div class="info-2"><div class="info-item-1">Slowhttptest是依赖HTTP协议的慢速攻击DoS攻击工具，设计的基本原理是服务器在请求完全接收后才会进行处理，如果客户端的发送速度缓慢或者发送不完整，服务端为其保留连接资源池占用，大量此类请求并发将导致DoS。 </div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">琉璃幻彩</div><div class="author-info-description">The Greatest Magician!</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">149</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">164</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">37</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FighterGodNemo"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/FighterGodNemo" title="Github" target="_blank"><i class="fab fa-github"></i></a><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="微信"><i class="fab fa-weixin"></i></a><div class="qr-code-popup"><img src="/img/qrcode/wechat-qr.png" alt="微信二维码"/ loading='lazy'></div></div><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="QQ"><i class="fab fa-qq"></i></a><div class="qr-code-popup"><img src="/img/qrcode/qq-qr.png" alt="QQ二维码"/ loading='lazy'></div></div><div class="copy-text-wrapper"><a class="social-icon" href="javascript:void(0)" title="Steam好友代码：1905706957" data-copy-text="1905706957"><i class="fab fa-steam"></i></a><div class="copy-text-popup"><h3>Steam好友代码</h3><p>1905706957</p><p class="copy-hint">点击图标复制</p></div></div><a class="social-icon" href="mailto:guliujia2233@outlook.com" title="Email" target="_blank"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">热爱 CTF 和 Forensic 的网安人一枚～
+欢迎各位大佬交流点评！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E7%BB%8F%E9%AA%8C%E6%80%BB%E8%A7%88"><span class="toc-number">1.</span> <span class="toc-text">技术经验总览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E6%AC%A1%E6%8E%92%E6%9F%A5%E9%80%9F%E6%9F%A5"><span class="toc-number">2.</span> <span class="toc-text">本次排查速查</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5"><span class="toc-number">3.</span> <span class="toc-text">关键概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E9%93%BE%E5%88%86%E5%B7%A5%E7%BB%8F%E9%AA%8C"><span class="toc-number">4.</span> <span class="toc-text">工具链分工经验</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%88%A4%E6%96%AD"><span class="toc-number">5.</span> <span class="toc-text">操作流程判断</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PCILeech-%E5%8F%82%E6%95%B0%E7%BB%8F%E9%AA%8C"><span class="toc-number">6.</span> <span class="toc-text">PCILeech 参数经验</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pages-failed-%E7%9A%84%E5%90%AB%E4%B9%89"><span class="toc-number">7.</span> <span class="toc-text">Pages failed 的含义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EFDD-%E7%BB%93%E6%9E%9C%E5%88%A4%E6%96%AD%E7%BB%8F%E9%AA%8C"><span class="toc-number">8.</span> <span class="toc-text">EFDD 结果判断经验</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%8F%90%E5%8F%96%E4%B8%8D%E5%88%B0"><span class="toc-number">9.</span> <span class="toc-text">为什么提取不到</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Mount-%E4%B8%8E-Decrypt-%E7%9A%84%E9%80%89%E6%8B%A9"><span class="toc-number">10.</span> <span class="toc-text">Mount 与 Decrypt 的选择</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E8%AF%AF%E5%8C%BA"><span class="toc-number">11.</span> <span class="toc-text">常见误区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%92%E9%94%99%E6%A3%80%E6%9F%A5%E6%B8%85%E5%8D%95"><span class="toc-number">12.</span> <span class="toc-text">排错检查清单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9E%E5%A4%8D%E6%A8%A1%E6%9D%BF"><span class="toc-number">13.</span> <span class="toc-text">回复模板</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%98%E6%96%B9%E6%81%A2%E5%A4%8D%E6%80%9D%E8%B7%AF"><span class="toc-number">14.</span> <span class="toc-text">官方恢复思路</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/11/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E5%93%B2%E5%AD%A6%E4%B8%8E%E7%94%9F%E7%89%A9/%E6%97%A5%E6%9C%AC%E6%96%87%E5%8C%96%E6%B7%B1%E5%BA%A6%E7%A0%94%E7%A9%B6_%E8%AF%BB%E7%A9%BA%E6%B0%94%E4%B8%8E%E6%B2%89%E9%BB%98%E7%9A%84%E6%9A%B4%E5%8A%9B/" title="无标题">无标题</a><time datetime="2026-08-11T11:20:17.772Z" title="更新于 2026-08-11 19:20:17">2026-08-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/10/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E5%93%B2%E5%AD%A6%E4%B8%8E%E7%94%9F%E7%89%A9/%E6%84%9F%E6%83%85%E6%80%9D%E6%83%B3%E4%B8%8E%E4%BA%BA%E6%80%A7%E6%B4%9E%E5%AF%9F%E6%B5%85%E8%B0%88/" title="无标题">无标题</a><time datetime="2026-08-10T12:11:00.000Z" title="更新于 2026-08-10 20:11:00">2026-08-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/02/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E5%93%B2%E5%AD%A6%E4%B8%8E%E7%94%9F%E7%89%A9/%E6%B2%89%E6%B2%A1%E6%88%90%E6%9C%AC%E4%B8%8D%E5%8F%82%E4%B8%8E%E9%87%8D%E5%A4%A7%E5%86%B3%E7%AD%96-%E6%B7%B1%E5%BA%A6%E8%B0%83%E7%A0%94/" title="无标题">无标题</a><time datetime="2026-08-10T12:11:00.000Z" title="更新于 2026-08-10 20:11:00">2026-08-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/10/%E6%B8%B8%E6%88%8FGame/CS2%E8%81%8C%E4%B8%9A%E9%80%89%E6%89%8B%E9%BC%A0%E6%A0%87%E7%81%B5%E6%95%8F%E5%BA%A6%E9%85%8D%E7%BD%AE%E6%8A%A5%E5%91%8A/" title="无标题">无标题</a><time datetime="2026-08-10T12:02:00.000Z" title="更新于 2026-08-10 20:02:00">2026-08-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/10/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E5%93%B2%E5%AD%A6%E4%B8%8E%E7%94%9F%E7%89%A9/%E5%A4%96%E8%83%9A%E5%9E%8B%E4%BD%93%E8%B4%A8%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/" title="无标题">无标题</a><time datetime="2026-08-10T12:00:00.000Z" title="更新于 2026-08-10 20:00:00">2026-08-10</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 琉璃幻彩</span><span class="framework-info"><span id="busuanzi_container_site_pv">本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span><span class="footer-separator">|</span><span id="busuanzi_container_site_uv">本站访客数 <span id="busuanzi_value_site_uv"></span> 人次</span></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+  const getUtterancesTheme = theme => theme === 'dark' ? 'photon-dark' : 'github-light'
+
+  const loadUtterances = (el = document, key) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyUtterances = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const config = {
+      src: 'https://utteranc.es/client.js',
+      repo: 'FighterGodNemo/FighterGodNemo.github.io',
+      theme: getUtterancesTheme(document.documentElement.getAttribute('data-theme')),
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      'issue-term': isShuoshuo ? key : (option && option['issue-term']) || 'pathname'
+    }
+
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => ele.setAttribute(key, value))
+    el.querySelector('#utterances-wrap').appendChild(ele)
+  }
+
+  const changeUtterancesTheme = theme => {
+    const iframe = document.querySelector('#utterances-wrap iframe')
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: getUtterancesTheme(theme)
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeUtterancesTheme, 'utterances')
+
+  if (isShuoshuo) {
+    'Utterances' === 'Utterances'
+      ? window.shuoshuoComment = { loadComment: loadUtterances }
+      : window.loadOtherComment = loadUtterances
+    return
+  }
+  
+  if ('Utterances' === 'Utterances' || !false) {
+    if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+    else loadUtterances()
+  } else {
+    window.loadOtherComment = loadUtterances
+  }
+})()</script></div><script src="/js/custom.js?v=20260402-2"></script><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.staticfile.org/pjax/0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:description\"]","link[rel=\"canonical\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

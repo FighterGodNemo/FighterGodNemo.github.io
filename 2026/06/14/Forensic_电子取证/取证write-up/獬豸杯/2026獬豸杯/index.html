@@ -1,0 +1,1074 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>2026獬豸杯 | 琉璃幻彩的博客</title><meta name="author" content="琉璃幻彩"><meta name="copyright" content="琉璃幻彩"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="答案速览手机取证答案速览   题号 答案    题目1 AM69VKKVU4CMGELB   题目2 一加Ace 5 至尊版   题目3 13696966666   题目4 AD3563   题目5 steghide-0.5.1-win32.zip   题目6 JHTJ@202605   题目7 100   题目8 银行卡   题目9 6222355973482923738   题目10 1770">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2026獬豸杯">
+<meta property="og:url" content="https://fightergodnemo.github.io/2026/06/14/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/%E7%8D%AC%E8%B1%B8%E6%9D%AF/2026%E7%8D%AC%E8%B1%B8%E6%9D%AF/index.html">
+<meta property="og:site_name" content="琉璃幻彩的博客">
+<meta property="og:description" content="答案速览手机取证答案速览   题号 答案    题目1 AM69VKKVU4CMGELB   题目2 一加Ace 5 至尊版   题目3 13696966666   题目4 AD3563   题目5 steghide-0.5.1-win32.zip   题目6 JHTJ@202605   题目7 100   题目8 银行卡   题目9 6222355973482923738   题目10 1770">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fightergodnemo.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2026-06-14T02:19:00.000Z">
+<meta property="article:modified_time" content="2026-07-07T01:20:00.000Z">
+<meta property="article:author" content="琉璃幻彩">
+<meta property="article:tag" content="2026獬豸杯">
+<meta property="article:tag" content="Forensic">
+<meta property="article:tag" content="电子取证">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fightergodnemo.github.io/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "2026獬豸杯",
+  "url": "https://fightergodnemo.github.io/2026/06/14/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/%E7%8D%AC%E8%B1%B8%E6%9D%AF/2026%E7%8D%AC%E8%B1%B8%E6%9D%AF/",
+  "image": "https://fightergodnemo.github.io/img/avatar.jpg",
+  "datePublished": "2026-06-14T02:19:00.000Z",
+  "dateModified": "2026-07-07T01:20:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "琉璃幻彩",
+      "url": "https://FighterGodNemo.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="https://fightergodnemo.github.io/2026/06/14/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/%E7%8D%AC%E8%B1%B8%E6%9D%AF/2026%E7%8D%AC%E8%B1%B8%E6%9D%AF/index.html"><link rel="preconnect" href="https://cdn.staticfile.org"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.5.2/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.20260811113116377.json","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.staticfile.org/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '2026獬豸杯',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script src="/js/bg-firstpaint.js?v=20260402-2"></script><link rel="stylesheet" href="/css/custom.css?v=20260402-2"><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="琉璃幻彩的博客" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">149</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">164</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">37</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" data-has-custom-post-top-img="0"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">琉璃幻彩的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">2026獬豸杯</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">2026獬豸杯</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-06-14T02:19:00.000Z" title="发表于 2026-06-14 10:19:00">2026-06-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-07-07T01:20:00.000Z" title="更新于 2026-07-07 09:20:00">2026-07-07</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Forensic-%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/">Forensic_电子取证</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">11k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>42分钟</span></span></div></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="答案速览"><a href="#答案速览" class="headerlink" title="答案速览"></a>答案速览</h2><h3 id="手机取证答案速览"><a href="#手机取证答案速览" class="headerlink" title="手机取证答案速览"></a>手机取证答案速览</h3><table>
+<thead>
+<tr>
+<th>题号</th>
+<th>答案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>题目1</td>
+<td><code>AM69VKKVU4CMGELB</code></td>
+</tr>
+<tr>
+<td>题目2</td>
+<td><code>一加Ace 5 至尊版</code></td>
+</tr>
+<tr>
+<td>题目3</td>
+<td><code>13696966666</code></td>
+</tr>
+<tr>
+<td>题目4</td>
+<td><code>AD3563</code></td>
+</tr>
+<tr>
+<td>题目5</td>
+<td><code>steghide-0.5.1-win32.zip</code></td>
+</tr>
+<tr>
+<td>题目6</td>
+<td><code>JHTJ@202605</code></td>
+</tr>
+<tr>
+<td>题目7</td>
+<td><code>100</code></td>
+</tr>
+<tr>
+<td>题目8</td>
+<td><code>银行卡</code></td>
+</tr>
+<tr>
+<td>题目9</td>
+<td><code>6222355973482923738</code></td>
+</tr>
+<tr>
+<td>题目10</td>
+<td><code>17706223971</code></td>
+</tr>
+<tr>
+<td>题目11</td>
+<td><code>com.meiit.browser</code></td>
+</tr>
+<tr>
+<td>题目12</td>
+<td><code>2026-05-13 18:37:56</code></td>
+</tr>
+<tr>
+<td>题目13</td>
+<td><code>17706223971</code></td>
+</tr>
+<tr>
+<td>题目14</td>
+<td><code>46</code></td>
+</tr>
+</tbody></table>
+<h3 id="计算机取证答案速览"><a href="#计算机取证答案速览" class="headerlink" title="计算机取证答案速览"></a>计算机取证答案速览</h3><table>
+<thead>
+<tr>
+<th>题号</th>
+<th>答案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>题目13</td>
+<td><code>330122199801209527</code></td>
+</tr>
+</tbody></table>
+<h3 id="服务器取证答案速览"><a href="#服务器取证答案速览" class="headerlink" title="服务器取证答案速览"></a>服务器取证答案速览</h3><table>
+<thead>
+<tr>
+<th>题号</th>
+<th>答案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>题目2</td>
+<td><code>ahao</code></td>
+</tr>
+<tr>
+<td>题目3</td>
+<td><code>nginx/1.20</code></td>
+</tr>
+<tr>
+<td>题目4</td>
+<td><code>5</code></td>
+</tr>
+<tr>
+<td>题目5</td>
+<td><code>C51C6B88</code></td>
+</tr>
+<tr>
+<td>题目6</td>
+<td><code>Root@123456</code></td>
+</tr>
+<tr>
+<td>题目7</td>
+<td><code>8081</code></td>
+</tr>
+<tr>
+<td>题目8</td>
+<td><code>60M</code></td>
+</tr>
+<tr>
+<td>题目9</td>
+<td><code>8.208.44.202</code></td>
+</tr>
+<tr>
+<td>题目10</td>
+<td><code>/fk/static</code></td>
+</tr>
+<tr>
+<td>题目11</td>
+<td><code>192.168.203.135</code></td>
+</tr>
+<tr>
+<td>题目12</td>
+<td><code>wy0719</code></td>
+</tr>
+<tr>
+<td>题目13</td>
+<td><code>彩虹易支付</code></td>
+</tr>
+<tr>
+<td>题目14</td>
+<td><code>2026/5/11</code></td>
+</tr>
+<tr>
+<td>题目15</td>
+<td><code>GhostOperator</code></td>
+</tr>
+<tr>
+<td>题目18</td>
+<td><code>大佬牛</code></td>
+</tr>
+<tr>
+<td>题目20</td>
+<td><code>_tmp_z5m1w8</code></td>
+</tr>
+</tbody></table>
+<h3 id="内存取证答案速览"><a href="#内存取证答案速览" class="headerlink" title="内存取证答案速览"></a>内存取证答案速览</h3><table>
+<thead>
+<tr>
+<th>题号</th>
+<th>答案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>题目1</td>
+<td><code>8804</code></td>
+</tr>
+<tr>
+<td>题目2</td>
+<td><code>HACKER</code></td>
+</tr>
+<tr>
+<td>题目3</td>
+<td><code>2026xzb_enc</code></td>
+</tr>
+<tr>
+<td>题目4</td>
+<td><code>RNSMa</code></td>
+</tr>
+<tr>
+<td>题目5</td>
+<td><code>8</code></td>
+</tr>
+<tr>
+<td>题目6</td>
+<td><code>16</code></td>
+</tr>
+</tbody></table>
+<h3 id="压缩包-杂项答案速览"><a href="#压缩包-杂项答案速览" class="headerlink" title="压缩包&#x2F;杂项答案速览"></a>压缩包&#x2F;杂项答案速览</h3><table>
+<thead>
+<tr>
+<th>题号</th>
+<th>答案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>题目15</td>
+<td><code>5</code></td>
+</tr>
+</tbody></table>
+<h2 id="一、手机取证"><a href="#一、手机取证" class="headerlink" title="一、手机取证"></a>一、手机取证</h2><h3 id="题目1：手机的序列号是什么？"><a href="#题目1：手机的序列号是什么？" class="headerlink" title="题目1：手机的序列号是什么？"></a>题目1：手机的序列号是什么？</h3><ul>
+<li>题目原文：请分析检材1：手机的序列号是什么？【答案格式：AB65CDEFG6HIJKLM,字母全部大写】</li>
+<li>证据类型：Android 启动日志 &#x2F; 设备属性痕迹</li>
+<li>检材来源：<code>K:\检材1.tar</code></li>
+<li>证据来源：<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材1\exports\logs\adb\ksu\log\dmesg.log</code>；<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材1\exports\logs\adb\ksu\log\dmesg.old.log</code></li>
+<li>关键证据&#x2F;关键路径：<code>dmesg.log</code> 第 2428、9677 行；<code>dmesg.old.log</code> 第 2428、9876 行</li>
+<li>提取&#x2F;查询方法：<code>Select-String -Pattern &#39;AM69VKKVU4CMGELB|serialno|ro\.boot\.serialno&#39;</code></li>
+<li>重要截图：不适用，命令行日志摘录已直接给出。</li>
+<li>摘录：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">init: Loading module /lib/modules/oplusboot.ko with args &#x27;mode=normal serialno=AM69VKKVU4CMGELB verifiedbootstate=orange prjname=21861&#x27;</span><br><span class="line">Init cannot set &#x27;ro.boot.serialno&#x27; to &#x27;AM69VKKVU4CMGELB&#x27;: Read-only property was already set</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>推理：启动参数与只读属性写入记录均指向同一 <code>serialno</code> 值，可作为设备序列号。</li>
+<li>最终答案：<code>AM69VKKVU4CMGELB</code></li>
+</ul>
+<h3 id="题目2：该手机的具体型号是什么？"><a href="#题目2：该手机的具体型号是什么？" class="headerlink" title="题目2：该手机的具体型号是什么？"></a>题目2：该手机的具体型号是什么？</h3><ul>
+<li>题目原文：请分析检材1：该手机的具体型号是什么？【答案格式：小米17至尊版】</li>
+<li>证据类型：Android 系统属性</li>
+<li>检材来源：<code>K:\检材1.tar</code></li>
+<li>证据来源：<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材1\exports\props\adb\lspd\log\props.txt</code>；<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材1\exports\props\adb\lspd\log.old\props.txt</code></li>
+<li>关键证据&#x2F;关键路径：<code>ro.product.marketname</code> 与 <code>ro.product.model</code></li>
+<li>提取&#x2F;查询方法：<code>Select-String -Pattern &#39;^\[ro\.product\.marketname\]|^\[ro\.product\.model\]&#39;</code></li>
+<li>重要截图：不适用，属性文本摘录已直接给出。</li>
+<li>摘录：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[ro.product.marketname]: [一加Ace 5 至尊版]</span><br><span class="line">[ro.product.model]: [PLC110]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>推理：<code>marketname</code> 是面向用户的具体型号名称，<code>model</code> 为辅助硬件型号。</li>
+<li>最终答案：<code>一加Ace 5 至尊版</code></li>
+</ul>
+<h3 id="题目3：手机中已删除的联系人手机号码是什么？"><a href="#题目3：手机中已删除的联系人手机号码是什么？" class="headerlink" title="题目3：手机中已删除的联系人手机号码是什么？"></a>题目3：手机中已删除的联系人手机号码是什么？</h3><ul>
+<li>题目原文：请分析检材1：手机中已删除的联系人手机号码是什么？【答案格式：12345678910】</li>
+<li>证据类型：Android 联系人 SQLite 数据库</li>
+<li>检材来源：<code>K:\检材1.tar</code></li>
+<li>证据来源：<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材1\exports\contacts\data\com.android.providers.contacts\databases\contacts2.db</code></li>
+<li>关键证据&#x2F;关键路径：<code>raw_contacts._id=4</code>，<code>raw_contacts.deleted=1</code>；<code>data._id=7</code></li>
+<li>提取&#x2F;查询方法：用 <code>sqlite3</code>&#x2F;Python <code>sqlite3</code> 关联 <code>raw_contacts</code>、<code>data</code>、<code>mimetypes</code>，筛选已删除联系人与电话类型记录。</li>
+<li>重要截图：不适用，数据库查询结果摘录已直接给出。</li>
+<li>摘录：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">raw_id=4, deleted=1, mimetype=vnd.android.cursor.item/phone_v2,</span><br><span class="line">data1=13696966666, data4=+8613696966666</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>推理：<code>deleted=1</code> 表示该联系人为删除状态，电话字段 <code>data1</code> 为题目所需手机号。</li>
+<li>最终答案：<code>13696966666</code></li>
+</ul>
+<h3 id="题目4：密码本文件-MD5-后-6-位是什么？"><a href="#题目4：密码本文件-MD5-后-6-位是什么？" class="headerlink" title="题目4：密码本文件 MD5 后 6 位是什么？"></a>题目4：密码本文件 MD5 后 6 位是什么？</h3><ul>
+<li>题目原文：请分析检材1：手机中找到密码本文件，计算其MD5哈希值，取后6位，字母大写。【答案格式：EF3898】</li>
+<li>证据类型：用户文件 &#x2F; 哈希校验</li>
+<li>检材来源：<code>K:\检材1.tar</code></li>
+<li>证据来源：<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材1\exports\selected_from_tar\media\0\常用密码.txt</code></li>
+<li>关键证据&#x2F;关键路径：原始路径 <code>media/0/常用密码.txt</code></li>
+<li>提取&#x2F;查询方法：<code>Get-FileHash -Algorithm MD5</code></li>
+<li>重要截图：不适用，哈希输出摘录已直接给出。</li>
+<li>摘录：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">B159BD42F13027EF4A5637535FAD3563</span><br><span class="line">MD5 后 6 位：AD3563</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>推理：按题目要求取 MD5 最后 6 位并转为大写。</li>
+<li>最终答案：<code>AD3563</code></li>
+</ul>
+<h3 id="题目5：嫌疑人下载的图片隐写工具名称是什么？"><a href="#题目5：嫌疑人下载的图片隐写工具名称是什么？" class="headerlink" title="题目5：嫌疑人下载的图片隐写工具名称是什么？"></a>题目5：嫌疑人下载的图片隐写工具名称是什么？</h3><ul>
+<li>题目原文：请分析检材1：嫌疑人下载的图片隐写工具名称是什么？【答案格式：outguess.zip，英文小写】</li>
+<li>证据类型：下载目录文件痕迹</li>
+<li>检材来源：<code>K:\检材1.tar</code></li>
+<li>证据来源：<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材1\exports\selected_from_tar\media\0\Download\tgllq\steghide-0.5.1-win32.zip</code></li>
+<li>关键证据&#x2F;关键路径：<code>media/0/Download/tgllq/steghide-0.5.1-win32.zip</code></li>
+<li>提取&#x2F;查询方法：<code>tar -tf K:\检材1.tar | Select-String -Pattern &#39;steghide|Download|tgllq&#39;</code></li>
+<li>重要截图：不适用，文件路径摘录已直接给出。</li>
+<li>摘录：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">media/0/Download/tgllq/steghide-0.5.1-win32.zip</span><br><span class="line">MD5: BE849FDB19E281547C4E0E7850465609</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>推理：下载目录中存在 <code>steghide</code> Windows 压缩包，符合图片隐写工具特征。</li>
+<li>最终答案：<code>steghide-0.5.1-win32.zip</code></li>
+</ul>
+<h3 id="题目6：嫌疑人使用隐写工具进行文件隐写密码是什么？"><a href="#题目6：嫌疑人使用隐写工具进行文件隐写密码是什么？" class="headerlink" title="题目6：嫌疑人使用隐写工具进行文件隐写密码是什么？"></a>题目6：嫌疑人使用隐写工具进行文件隐写密码是什么？</h3><ul>
+<li>题目原文：请分析检材1：嫌疑人使用隐写工具进行文件隐写密码是什么？【答案格式：ABCD@202002】</li>
+<li>证据类型：图片隐写 &#x2F; 密码本验证</li>
+<li>检材来源：<code>K:\检材1.tar</code></li>
+<li>证据来源：<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材1\exports\selected_from_tar\media\0\DCIM\Camera\important.jpg</code>；<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材1\exports\selected_from_tar\media\0\常用密码.txt</code></li>
+<li>关键证据&#x2F;关键路径：<code>常用密码.txt</code> 第 552 行；<code>important.jpg</code> 的 <code>steghide info</code> 输出</li>
+<li>提取&#x2F;查询方法：<code>steghide.exe info important.jpg -p JHTJ@202605</code></li>
+<li>重要截图：不适用，命令行验证结果摘录已直接给出。</li>
+<li>摘录：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&quot;important.jpg&quot;:</span><br><span class="line">  format: jpeg</span><br><span class="line">  capacity: 31.7 KB</span><br><span class="line">  embedded file &quot;重点客户.z01&quot;:</span><br><span class="line">    size: 5.0 KB</span><br><span class="line">    encrypted: rijndael-128, cbc</span><br><span class="line">    compressed: yes</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>推理：使用该密码能够正确读取嵌入文件信息，说明其为隐写密码。</li>
+<li>最终答案：<code>JHTJ@202605</code></li>
+</ul>
+<h3 id="题目7：嫌疑人向数据贩子购买公民个人信息共计多少条？"><a href="#题目7：嫌疑人向数据贩子购买公民个人信息共计多少条？" class="headerlink" title="题目7：嫌疑人向数据贩子购买公民个人信息共计多少条？"></a>题目7：嫌疑人向数据贩子购买公民个人信息共计多少条？</h3><ul>
+<li>题目原文：请分析检材1：嫌疑人向数据贩子购买公民个人信息共计多少条？【答案格式：123】</li>
+<li>证据类型：即时通信 SQLite 数据库</li>
+<li>检材来源：<code>K:\检材1.tar</code></li>
+<li>证据来源：<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材1\exports\chat_lianqu\data\com.lianqujiaoyou.chat\app_flutter\OpenIM_v3_1355997814.db</code></li>
+<li>关键证据&#x2F;关键路径：表 <code>chat_logs_si_1082423674_1355997814</code>，<code>rowid=10</code>，<code>seq=17</code></li>
+<li>提取&#x2F;查询方法：用 <code>sqlite3</code>&#x2F;Python <code>sqlite3</code> 检索 <code>content like &#39;%100%&#39; or content like &#39;%富豪%&#39;</code></li>
+<li>重要截图：不适用，聊天 JSON 摘录已直接给出。</li>
+<li>摘录：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;content&quot;:&quot;先给我来个100条富豪的数据吧，试试看效果怎么样。&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>推理：聊天内容明确提出购买 <code>100条富豪的数据</code>。</li>
+<li>最终答案：<code>100</code></li>
+</ul>
+<h3 id="题目8：嫌疑人向数据贩子交易时使用的付款方式是什么？"><a href="#题目8：嫌疑人向数据贩子交易时使用的付款方式是什么？" class="headerlink" title="题目8：嫌疑人向数据贩子交易时使用的付款方式是什么？"></a>题目8：嫌疑人向数据贩子交易时使用的付款方式是什么？</h3><ul>
+<li>题目原文：请分析检材1：嫌疑人向数据贩子交易时使用的付款方式是什么？【答案格式：支付宝】</li>
+<li>证据类型：即时通信 SQLite 数据库</li>
+<li>检材来源：<code>K:\检材1.tar</code></li>
+<li>证据来源：<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材1\exports\app_uni04963c4\data\uni.app.UNI04963C4\files\1600123285_3137373036323233393731\msg_0.db</code></li>
+<li>关键证据&#x2F;关键路径：表 <code>message</code>，<code>id=7</code> 至 <code>id=10</code></li>
+<li>提取&#x2F;查询方法：读取 <code>id,time,is_self,sender,element_descriptions</code> 字段并按消息顺序还原交易对话。</li>
+<li>重要截图：不适用，聊天记录摘录已直接给出。</li>
+<li>摘录：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">id=7 text=怎么付款给你?</span><br><span class="line">id=8 text=微信、支付宝、银行卡?</span><br><span class="line">id=9 sender=13557893346 text=银行卡吧</span><br><span class="line">id=10 sender=13557893346 text=工商银行卡号：6222355973482923738</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>推理：对方在备选付款方式中选择 <code>银行卡</code>，随后提供银行卡号。</li>
+<li>最终答案：<code>银行卡</code></li>
+</ul>
+<h3 id="题目9：数据贩子交易过程中提供的银行卡号是多少？"><a href="#题目9：数据贩子交易过程中提供的银行卡号是多少？" class="headerlink" title="题目9：数据贩子交易过程中提供的银行卡号是多少？"></a>题目9：数据贩子交易过程中提供的银行卡号是多少？</h3><ul>
+<li>题目原文：请分析检材1：数据贩子交易过程中提供的银行卡号是多少？【答案格式：6222351234482925678】</li>
+<li>证据类型：即时通信 SQLite 数据库</li>
+<li>检材来源：<code>K:\检材1.tar</code></li>
+<li>证据来源：<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材1\exports\app_uni04963c4\data\uni.app.UNI04963C4\files\1600123285_3137373036323233393731\msg_0.db</code></li>
+<li>关键证据&#x2F;关键路径：表 <code>message</code>，<code>id=10</code>，<code>time=2026-05-12 16:41:01</code></li>
+<li>提取&#x2F;查询方法：查询 <code>message</code> 表 <code>id=10</code> 的 <code>element_descriptions</code>。</li>
+<li>重要截图：不适用，聊天记录摘录已直接给出。</li>
+<li>摘录：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=10 sender=13557893346 text=工商银行卡号：6222355973482923738</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>推理：消息文本直接给出交易银行卡号。</li>
+<li>最终答案：<code>6222355973482923738</code></li>
+</ul>
+<h3 id="题目10：嫌疑人所使用聊天工具的用户-ID-是多少？"><a href="#题目10：嫌疑人所使用聊天工具的用户-ID-是多少？" class="headerlink" title="题目10：嫌疑人所使用聊天工具的用户 ID 是多少？"></a>题目10：嫌疑人所使用聊天工具的用户 ID 是多少？</h3><ul>
+<li>题目原文：10；请分析检材1：接上题，嫌疑人所使用聊天工具的用户 ID 是多少？【答案格式：12345】</li>
+<li>证据类型：应用本地存储 SQLite 数据库 &#x2F; 即时通信消息库</li>
+<li>检材来源：<code>K:\检材1.tar</code></li>
+<li>证据来源：<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材1\exports\app_uni04963c4\data\uni.app.UNI04963C4\databases\DCStorage</code>；<code>msg_0.db</code></li>
+<li>关键证据&#x2F;关键路径：表 <code>DC_1046388429_storage</code>，<code>rowid=60</code>，<code>key=userInfo</code></li>
+<li>提取&#x2F;查询方法：查询 <code>DC_1046388429_storage</code> 中 <code>key=&#39;userInfo&#39;</code>，并与 <code>message.sender</code> 自发消息记录交叉验证。</li>
+<li>重要截图：不适用，数据库记录摘录已直接给出。</li>
+<li>摘录：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;type&quot;:&quot;object&quot;,&quot;data&quot;:&#123;&quot;userID&quot;:&quot;17706223971&quot;,&quot;SDKAppID&quot;:&quot;1600123285&quot;,...,&quot;sname&quot;:&quot;10000&quot;&#125;&#125;</span><br><span class="line">message.sender=17706223971 的记录为嫌疑人自发消息</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>推理：<code>userInfo.userID</code> 与自发消息 <code>sender</code> 一致，可确认为嫌疑人的聊天工具用户 ID。</li>
+<li>最终答案：<code>17706223971</code></li>
+</ul>
+<h3 id="题目11：访问下载链接的浏览器对应包名是什么？"><a href="#题目11：访问下载链接的浏览器对应包名是什么？" class="headerlink" title="题目11：访问下载链接的浏览器对应包名是什么？"></a>题目11：访问下载链接的浏览器对应包名是什么？</h3><ul>
+<li>题目原文：请分析检材1：嫌疑人使用浏览器访问了该下载链接，该浏览器对应的包名是什么？【答案格式：com.heytap.market】</li>
+<li>证据类型：浏览器历史 SQLite 数据库</li>
+<li>检材来源：<code>K:\检材1.tar</code></li>
+<li>证据来源：<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材1\exports\browser_downloads\data\com.meiit.browser\databases\stock_assistant.db</code>；<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材1\exports\browser_downloads\user\0\com.meiit.browser\databases\stock_assistant.db</code></li>
+<li>关键证据&#x2F;关键路径：表 <code>history</code>，<code>id=1</code>、<code>id=2</code>、<code>id=6</code></li>
+<li>提取&#x2F;查询方法：查询 <code>history</code> 表中 <code>url like &#39;%pan.baidu.com%&#39;</code> 的访问记录。</li>
+<li>重要截图：不适用，浏览器历史记录摘录已直接给出。</li>
+<li>摘录：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">id=1 2026-05-12 16:51:03 name=请输入提取码_百度网盘 url=https://pan.baidu.com/wap/init?surl=SY2Ep7BwqBZYnjd9QUqaHA&amp;pwd=kmys</span><br><span class="line">id=2 2026-05-12 16:51:09 name=百度网盘分享 url=https://pan.baidu.com/s/1SY2Ep7BwqBZYnjd9QUqaHA?dp-logid=67463400371519710002&amp;pwd=kmys</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>推理：命中百度网盘分享链接的浏览器历史数据库位于 <code>com.meiit.browser</code> 包名目录下。</li>
+<li>最终答案：<code>com.meiit.browser</code></li>
+</ul>
+<h3 id="题目12：嫌疑人于何时下载数据商人发送的数据压缩包文件？"><a href="#题目12：嫌疑人于何时下载数据商人发送的数据压缩包文件？" class="headerlink" title="题目12：嫌疑人于何时下载数据商人发送的数据压缩包文件？"></a>题目12：嫌疑人于何时下载数据商人发送的数据压缩包文件？</h3><ul>
+<li>题目原文：请分析检材1：嫌疑人于何时下载数据商人发送的数据压缩包文件？【答案格式：2022-02-02 12:00:00】</li>
+<li>证据类型：下载目录文件时间戳 &#x2F; 原始 tar 条目</li>
+<li>检材来源：<code>K:\检材1.tar</code></li>
+<li>证据来源：原始 tar 条目 <code>media\0\Download\BaiduNetdisk\方象.zip</code>；本地抽取文件 <code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材1\exports\selected_from_tar\media\0\Download\BaiduNetdisk\数据.zip</code></li>
+<li>关键证据&#x2F;关键路径：<code>media\0\Download\BaiduNetdisk\方象.zip</code>，大小 <code>19851</code></li>
+<li>提取&#x2F;查询方法：<code>7z l -ba K:\检材1.tar media\0\Download\BaiduNetdisk\*</code>；<code>Get-Item LastWriteTime</code></li>
+<li>重要截图：不适用，文件时间戳摘录已直接给出。</li>
+<li>摘录：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2026-05-13 18:37:56 .....        19851        19968  media\0\Download\BaiduNetdisk\方象.zip</span><br><span class="line">LastWriteTime: 2026-05-13 18:37:56</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>推理：百度网盘下载目录中的压缩包时间戳对应下载完成落盘时间。</li>
+<li>最终答案：<code>2026-05-13 18:37:56</code></li>
+</ul>
+<h3 id="题目13：该压缩包的解压密码是什么？"><a href="#题目13：该压缩包的解压密码是什么？" class="headerlink" title="题目13：该压缩包的解压密码是什么？"></a>题目13：该压缩包的解压密码是什么？</h3><ul>
+<li>题目原文：请分析检材1：接上题，该压缩包的解压密码是什么？【答案格式：根据实际值填写】</li>
+<li>证据类型：聊天记录 &#x2F; 压缩包密码验证</li>
+<li>检材来源：<code>K:\检材1.tar</code></li>
+<li>证据来源：<code>msg_0.db</code>；<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材1\exports\selected_from_tar\media\0\Download\BaiduNetdisk\数据.zip</code></li>
+<li>关键证据&#x2F;关键路径：表 <code>message</code>，<code>id=17</code>；<code>DCStorage</code> 中的 <code>userID=17706223971</code></li>
+<li>提取&#x2F;查询方法：查询消息 <code>id=17</code>，再用 <code>7z.exe t -p17706223971 数据.zip</code> 验证密码。</li>
+<li>重要截图：不适用，聊天记录与 7z 校验结果摘录已直接给出。</li>
+<li>摘录：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">id=17 sender=13557893346 text=我已经加密传到百度网盘了，你下载一下，解密密码是你的手机号码。</span><br><span class="line">userID=17706223971</span><br><span class="line">Everything is Ok</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>推理：聊天说明密码为嫌疑人手机号，用户 ID 同时也是手机号；7z 使用该值测试压缩包成功。</li>
+<li>最终答案：<code>17706223971</code></li>
+</ul>
+<h3 id="题目14：年龄在-40-至-60-岁的富豪共有多少人？"><a href="#题目14：年龄在-40-至-60-岁的富豪共有多少人？" class="headerlink" title="题目14：年龄在 40 至 60 岁的富豪共有多少人？"></a>题目14：年龄在 40 至 60 岁的富豪共有多少人？</h3><ul>
+<li>题目原文：分析检材1：接上题，年龄在 40 至 60 岁（含 40、60 岁）的富豪共有多少人？【答案格式：123】</li>
+<li>证据类型：Excel 表格数据统计</li>
+<li>检材来源：<code>K:\检材1.tar</code></li>
+<li>证据来源：<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材1\exports\downloads_unpacked\data_zip_17706223971\数据.xlsx</code></li>
+<li>关键证据&#x2F;关键路径：<code>Sheet1</code>，字段 <code>姓名、身份证号码、银行卡(借记卡)、手机号码、出生日期、年龄、出生地</code></li>
+<li>提取&#x2F;查询方法：使用 <code>openpyxl</code> 读取 <code>Sheet1</code>，统计 <code>40 &lt;= int(年龄) &lt;= 60</code>。</li>
+<li>重要截图：不适用，表格统计输出摘录已直接给出。</li>
+<li>摘录：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Sheet1 max_row=101 max_col=7</span><br><span class="line">headers=[&#x27;姓名&#x27;, &#x27;身份证号码&#x27;, &#x27;银行卡(借记卡)&#x27;, &#x27;手机号码&#x27;, &#x27;出生日期&#x27;, &#x27;年龄&#x27;, &#x27;出生地&#x27;]</span><br><span class="line">count_40_60=46</span><br><span class="line">边界样例：褚罗淑 年龄=60；邹傅妍 年龄=40</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>推理：总表除表头外共有 100 条数据，按题意包含 40 岁和 60 岁边界进行计数。</li>
+<li>最终答案：<code>46</code></li>
+</ul>
+<h2 id="三、计算机取证"><a href="#三、计算机取证" class="headerlink" title="三、计算机取证"></a>三、计算机取证</h2><h3 id="题目13：身份证号检索"><a href="#题目13：身份证号检索" class="headerlink" title="题目13：身份证号检索"></a>题目13：身份证号检索</h3><ul>
+<li>题目原文：<code>当前工作区未保留该题完整比赛原题；已确认题意为“搜索计算机检材中指定人员的身份证号”。</code></li>
+<li>证据类型：<code>计算机取证 / E01 磁盘镜像</code></li>
+<li>检材来源：<code>K:\检材2.E01</code>；本地分析目录 <code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\ZD25Q256@SOP8-208_20260526_193907</code></li>
+<li>证据来源：<code>检材2.E01</code> 第三个 NTFS 分区，offset <code>106086400</code>；分区根目录 <code>身份证.zip</code>，inode <code>438</code>；<code>身份证.zip</code> 内部路径 <code>身份证/身份证/1.png</code>；派生解压图片 <code>exports/computer_id_search/extracted/zip_manual_1.png</code></li>
+<li>关键证据&#x2F;关键路径：<code>身份证.zip</code> 的本地文件头；<code>IEND</code> 前附加的 18 位 ASCII 数字串；图片正面出生日期</li>
+<li>提取&#x2F;查询方法：先用 TSK 定位分区根目录身份证相关文件，再用 <code>icat</code> 抽取。由于 <code>身份证.zip</code> 存在头部&#x2F;中央目录异常，使用 ZIP local file header 手工解析并按 raw deflate 解出 PNG。</li>
+<li>重要截图：<code>![](computer-id-card.png)</code></li>
+<li>摘录：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fls -p -o 106086400 /mnt/k/检材2.E01</span><br><span class="line">fls -p -o 106086400 /mnt/k/检材2.E01 436</span><br><span class="line">icat -o 106086400 /mnt/k/检材2.E01 438 &gt; exports/computer_id_search/extracted/身份证.zip</span><br></pre></td></tr></table></figure>
+
+<p>分区根目录命中如下：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">r/r 442-128-1:  1</span><br><span class="line">r/r 443-128-1:  1.png</span><br><span class="line">d/d 436-144-1:  身份证</span><br><span class="line">r/r 438-128-1:  身份证.zip</span><br></pre></td></tr></table></figure>
+
+<p><code>身份证.zip</code> 用 7-Zip 可列目录但直接解压报头部错误：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">身份证\身份证\1.png  Size 325876  Compressed 324544</span><br><span class="line">ERROR: Headers Error : 身份证\身份证\1.png</span><br></pre></td></tr></table></figure>
+
+<p>绕过中央目录，按本地文件头手工解压得到图片，CRC 可对上：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">entry 1 method 8 crc 0xb2cb77c csize 324544 usize 325876 name 身份证/身份证/1.png</span><br><span class="line">decompressed 325876 crc_calc 0xb2cb77c starts b&#x27;\x89PNG\r\n\x1a\n&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>图片可见信息显示姓名为莹小石，出生日期为 <code>1998 年 1 月 20 日</code>：</p>
+<p><img src="/2026/06/14/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/%E7%8D%AC%E8%B1%B8%E6%9D%AF/2026%E7%8D%AC%E8%B1%B8%E6%9D%AF/computer-id-card.png" loading='lazy'></p>
+<p>继续检查 PNG 结构，在最后一个 <code>IDAT</code> 数据块之后、<code>IEND</code> 结束块之前发现 18 位 ASCII 数字串：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PNG tail bytes:</span><br><span class="line">00 00 33 33 30 31 32 32 31 39 39 38 30 31 32 30 39 35 32 37 00 00 49 45 4e 44 ae 42 60 82</span><br><span class="line"></span><br><span class="line">ASCII:</span><br><span class="line">330122199801209527</span><br></pre></td></tr></table></figure>
+
+<p>该数字串符合居民身份证号结构，其中出生日期位 <code>19980120</code> 与图片正面出生日期一致；校验位验证结果也正确：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">idn = 330122199801209527</span><br><span class="line">sum 291 mod 5 check_expected 7 check_actual 7 valid True</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>推理：镜像中恢复出的 PNG 正面显示姓名为莹小石、出生日期为 <code>1998 年 1 月 20 日</code>；PNG 尾部隐藏的 18 位数字串为 <code>330122199801209527</code>，其中出生日期段 <code>19980120</code> 与图片一致，且校验位验证通过，因此该值就是目标身份证号。</li>
+<li>最终答案：<code>330122199801209527</code></li>
+</ul>
+<h2 id="四、服务器取证"><a href="#四、服务器取证" class="headerlink" title="四、服务器取证"></a>四、服务器取证</h2><h3 id="题目2：请分析检材3：嫌疑人将某普通用户加入特殊用户组，赋予其读取-etc-shadow-的权限，请问该普通用户的用户名是什么？【答案格式：admin】"><a href="#题目2：请分析检材3：嫌疑人将某普通用户加入特殊用户组，赋予其读取-etc-shadow-的权限，请问该普通用户的用户名是什么？【答案格式：admin】" class="headerlink" title="题目2：请分析检材3：嫌疑人将某普通用户加入特殊用户组，赋予其读取 &#x2F;etc&#x2F;shadow 的权限，请问该普通用户的用户名是什么？【答案格式：admin】"></a>题目2：请分析检材3：嫌疑人将某普通用户加入特殊用户组，赋予其读取 &#x2F;etc&#x2F;shadow 的权限，请问该普通用户的用户名是什么？【答案格式：admin】</h3><ul>
+<li>题目原文：<code>2.请分析检材3：嫌疑人将某普通用户加入特殊用户组，赋予其读取 /etc/shadow 的权限，请问该普通用户的用户名是什么？【答案格式：admin】</code></li>
+<li>证据类型：<code>服务器取证 / Linux 磁盘镜像</code></li>
+<li>检材来源：<code>K:\检材3.E01</code>；本地分析目录 <code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材3</code></li>
+<li>证据来源：<code>exports/etc/shadow_acl_decode.txt</code>；<code>exports/etc/passwd</code></li>
+<li>关键路径：<code>shadow_acl_decode.txt</code> 第 2 行、第 8-12 行；<code>passwd</code> 最后一行</li>
+<li>提取&#x2F;查询方法：解码 <code>/etc/shadow</code> 的 ACL，并结合 <code>/etc/passwd</code> 反查 UID 对应用户</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">image uid map 1000: ahao</span><br><span class="line">ACL_USER: perm=4 id=1000 ahao</span><br><span class="line"></span><br><span class="line">ahao:x:1000:1000::/home/ahao:/bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>推理：<code>/etc/shadow</code> 的 <code>system.posix_acl_access</code> 解码后出现 <code>ACL_USER: perm=4 id=1000 ahao</code>，其中 <code>perm=4</code> 对应读权限；<code>/etc/passwd</code> 显示 UID <code>1000</code> 的普通用户为 <code>ahao</code>，因此被赋予读取 <code>/etc/shadow</code> 权限的普通用户就是 <code>ahao</code>。<br>最终答案：<code>ahao</code></p>
+<h3 id="题目3：请分析检材3：分析嫌疑人所使用的-Web-服务器，其具体名称及主版本号是什么？【答案格式：apache-2-40】"><a href="#题目3：请分析检材3：分析嫌疑人所使用的-Web-服务器，其具体名称及主版本号是什么？【答案格式：apache-2-40】" class="headerlink" title="题目3：请分析检材3：分析嫌疑人所使用的 Web 服务器，其具体名称及主版本号是什么？【答案格式：apache&#x2F;2.40】"></a>题目3：请分析检材3：分析嫌疑人所使用的 Web 服务器，其具体名称及主版本号是什么？【答案格式：apache&#x2F;2.40】</h3><ul>
+<li>题目原文：<code>3.请分析检材3：分析嫌疑人所使用的 Web 服务器，其具体名称及主版本号是什么？【答案格式：apache/2.40】</code></li>
+<li>证据类型：<code>服务器取证 / Linux 磁盘镜像</code></li>
+<li>检材来源：<code>K:\检材3.E01</code>；本地分析目录 <code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材3</code></li>
+<li>证据来源：<code>/tmp/case3_root/usr/sbin/nginx</code>；<code>/tmp/case3_root/etc/systemd/system/multi-user.target.wants/nginx.service</code>；<code>/tmp/case3_root/etc/nginx/nginx.conf</code></li>
+<li>关键路径：<code>nginx.conf</code> 第 37-39 行；<code>nginx</code> 二进制版本字符串</li>
+<li>提取&#x2F;查询方法：检查启用的 Web 服务与二进制版本字符串</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/tmp/case3_root/etc/nginx/nginx.conf:37:        listen       8081;</span><br><span class="line">/tmp/case3_root/etc/nginx/nginx.conf:39:        server_name  shop.aakkjx.top;</span><br><span class="line"></span><br><span class="line">nginx version: nginx/1.20.1</span><br></pre></td></tr></table></figure>
+
+<p>推理：系统启用了 <code>nginx.service</code>，配置文件明确监听 <code>8081</code>，二进制版本字符串为 <code>nginx/1.20.1</code>。题目要求“主版本号”，因此规范化写为 <code>nginx/1.20</code>。<br>最终答案：<code>nginx/1.20</code></p>
+<h3 id="题目4：请分析检材3：嫌疑人借助-AI-部署-“守卫”-脚本，非管理员-IP-登录时将触发定时强制登出，该服务每隔几分钟触发一次？【答案格式：10】"><a href="#题目4：请分析检材3：嫌疑人借助-AI-部署-“守卫”-脚本，非管理员-IP-登录时将触发定时强制登出，该服务每隔几分钟触发一次？【答案格式：10】" class="headerlink" title="题目4：请分析检材3：嫌疑人借助 AI 部署 “守卫” 脚本，非管理员 IP 登录时将触发定时强制登出，该服务每隔几分钟触发一次？【答案格式：10】"></a>题目4：请分析检材3：嫌疑人借助 AI 部署 “守卫” 脚本，非管理员 IP 登录时将触发定时强制登出，该服务每隔几分钟触发一次？【答案格式：10】</h3><ul>
+<li>题目原文：<code>4.请分析检材3：嫌疑人借助 AI 部署 “守卫” 脚本，非管理员 IP 登录时将触发定时强制登出，该服务每隔几分钟触发一次？【答案格式：10】</code></li>
+<li>证据类型：<code>服务器取证 / Linux 磁盘镜像</code></li>
+<li>检材来源：<code>K:\检材3.E01</code>；本地分析目录 <code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材3</code></li>
+<li>证据来源：<code>/tmp/case3_root/etc/systemd/system/net-monitor.service</code>；<code>/tmp/case3_root/usr/local/bin/network-check.py</code></li>
+<li>关键路径：<code>network-check.py</code> 第 7-9 行、第 57-61 行</li>
+<li>提取&#x2F;查询方法：检查 systemd 服务与守卫脚本常量</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ALLOWED_IP = &quot;192.168.203.100&quot;</span><br><span class="line">CHECK_INTERVAL = 30</span><br><span class="line">KICK_DELAY = &quot;5 minutes&quot;</span><br><span class="line"></span><br><span class="line">os.system(&#x27;echo &quot;&#123;&#125;&quot; | at now + &#123;&#125; &gt; /dev/null 2&gt;&amp;1&#x27;.format(kick_cmd, KICK_DELAY))</span><br></pre></td></tr></table></figure>
+
+<p>推理：脚本对非管理员 IP 的 <code>pts</code> 登录会调用 <code>at now + KICK_DELAY</code> 安排强制登出，真正对应题意的是 <code>KICK_DELAY = &quot;5 minutes&quot;</code>，而不是 <code>CHECK_INTERVAL = 30</code> 秒轮询间隔。<br>最终答案：<code>5</code></p>
+<h3 id="题目5：请分析检材3：计算服务器内数据库备份文件，计算其SHA256哈希值，取后6位，字母大写。【答案格式：6DEF3898】"><a href="#题目5：请分析检材3：计算服务器内数据库备份文件，计算其SHA256哈希值，取后6位，字母大写。【答案格式：6DEF3898】" class="headerlink" title="题目5：请分析检材3：计算服务器内数据库备份文件，计算其SHA256哈希值，取后6位，字母大写。【答案格式：6DEF3898】"></a>题目5：请分析检材3：计算服务器内数据库备份文件，计算其SHA256哈希值，取后6位，字母大写。【答案格式：6DEF3898】</h3><ul>
+<li>题目原文：<code>5.请分析检材3：计算服务器内数据库备份文件，计算其SHA256哈希值，取后6位，字母大写。【答案格式：6DEF3898】</code></li>
+<li>证据类型：<code>服务器取证 / Linux 磁盘镜像</code></li>
+<li>检材来源：<code>K:\检材3.E01</code>；本地分析目录 <code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材3</code></li>
+<li>证据来源：<code>/tmp/case3_root/opt/faka.sql</code>；<code>/tmp/case3_root/tmp/db_backup/</code></li>
+<li>关键路径：<code>/opt/faka.sql</code> 文件头；<code>/tmp/db_backup/*.sql.gz</code> 大小与 gzip 元信息</li>
+<li>提取&#x2F;查询方法：筛选有效数据库备份文件并执行 <code>sha256sum</code></li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-- MySQL dump 10.13  Distrib 5.6.50, for Linux (x86_64)</span><br><span class="line"></span><br><span class="line">de28cb4c4290bcb9363709b69d9da6da1d41f979efd08ea654f890b4c51c6b88  /tmp/case3_root/opt/faka.sql</span><br><span class="line">C51C6B88</span><br></pre></td></tr></table></figure>
+
+<p>推理：<code>/tmp/db_backup</code> 下的 <code>fk_*.sql.gz</code> 都是空 gzip，不能作为有效备份；<code>/opt/faka.sql</code> 才是实际数据库备份。按题目示例给出的 8 位答案格式，取 SHA256 末 8 位并转大写得到 <code>C51C6B88</code>。<br>最终答案：<code>C51C6B88</code></p>
+<h3 id="题目6：请分析检材3：MySQL-数据库-root-用户的登录密码是什么？【答案格式：根据实际值填写】"><a href="#题目6：请分析检材3：MySQL-数据库-root-用户的登录密码是什么？【答案格式：根据实际值填写】" class="headerlink" title="题目6：请分析检材3：MySQL 数据库 root 用户的登录密码是什么？【答案格式：根据实际值填写】"></a>题目6：请分析检材3：MySQL 数据库 root 用户的登录密码是什么？【答案格式：根据实际值填写】</h3><ul>
+<li>题目原文：<code>6.请分析检材3：MySQL 数据库 root 用户的登录密码是什么？【答案格式：根据实际值填写】</code></li>
+<li>证据类型：<code>服务器取证 / Linux 磁盘镜像</code></li>
+<li>检材来源：<code>K:\检材3.E01</code>；本地分析目录 <code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材3</code></li>
+<li>证据来源：<code>/tmp/case3_root/usr/share/nginx/html/fk/config.php</code>；<code>/tmp/case3_root/etc/cron.daily/autobackup.sh</code>；<code>/tmp/case3_root/var/lib/mysql/mysql/user.MYD</code></li>
+<li>关键路径：<code>config.php</code> 第 3-8 行；<code>autobackup.sh</code> 第 1-3 行；<code>user.MYD</code> 中 root 哈希</li>
+<li>提取&#x2F;查询方法：交叉核对站点配置、备份脚本与本地 MySQL 哈希</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&quot;user&quot; =&gt; &quot;root&quot;,</span><br><span class="line">&quot;pwd&quot; =&gt; &quot;Root@123456&quot;,</span><br><span class="line"></span><br><span class="line">DB_PASSWORD=&quot;Root@123456&quot;</span><br><span class="line"></span><br><span class="line">*286872C85B04AF686EFB0743834334D81AC2EE1E</span><br><span class="line">Root@123456 -&gt; *286872C85B04AF686EFB0743834334D81AC2EE1E</span><br></pre></td></tr></table></figure>
+
+<p>推理：站点配置和自动备份脚本都把数据库 root 密码写成 <code>Root@123456</code>；同时对该密码计算 MySQL 5.x native password 哈希，结果与 <code>user.MYD</code> 中 root 账户哈希一致。<br>最终答案：<code>Root@123456</code></p>
+<h3 id="题目7：请分析检材3：外挂网站所对外开放的端口号是多少？【答案格式：1234】"><a href="#题目7：请分析检材3：外挂网站所对外开放的端口号是多少？【答案格式：1234】" class="headerlink" title="题目7：请分析检材3：外挂网站所对外开放的端口号是多少？【答案格式：1234】"></a>题目7：请分析检材3：外挂网站所对外开放的端口号是多少？【答案格式：1234】</h3><ul>
+<li>题目原文：<code>7.请分析检材3：外挂网站所对外开放的端口号是多少？【答案格式：1234】</code></li>
+<li>证据类型：<code>服务器取证 / Linux 磁盘镜像</code></li>
+<li>检材来源：<code>K:\检材3.E01</code>；本地分析目录 <code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材3</code></li>
+<li>证据来源：<code>/tmp/case3_root/etc/nginx/nginx.conf</code>；<code>/tmp/case3_root/var/log/nginx/access.log-20260514</code></li>
+<li>关键路径：<code>nginx.conf</code> 第 36-40 行；访问日志示例行</li>
+<li>提取&#x2F;查询方法：检查 nginx 监听端口并用访问日志侧证</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">listen       8081;</span><br><span class="line">listen       [::]:8081;</span><br><span class="line">server_name  shop.aakkjx.top;</span><br><span class="line"></span><br><span class="line">http://201.158.214.48:8081/fk/static/dashboard.php?my=add_submit</span><br></pre></td></tr></table></figure>
+
+<p>推理：有效站点配置监听 <code>8081</code>，访问日志中的后台访问 referrer 也明确带有 <code>:8081</code>，两处能相互印证。<br>最终答案：<code>8081</code></p>
+<h3 id="题目8：请分析检材3：嫌疑人为上传大型恶意插件修改文件上传限制，其最大上传限制是多少？【答案格式：100M】"><a href="#题目8：请分析检材3：嫌疑人为上传大型恶意插件修改文件上传限制，其最大上传限制是多少？【答案格式：100M】" class="headerlink" title="题目8：请分析检材3：嫌疑人为上传大型恶意插件修改文件上传限制，其最大上传限制是多少？【答案格式：100M】"></a>题目8：请分析检材3：嫌疑人为上传大型恶意插件修改文件上传限制，其最大上传限制是多少？【答案格式：100M】</h3><ul>
+<li>题目原文：<code>8.请分析检材3：嫌疑人为上传大型恶意插件修改文件上传限制，其最大上传限制是多少？【答案格式：100M】</code></li>
+<li>证据类型：<code>服务器取证 / Linux 磁盘镜像</code></li>
+<li>检材来源：<code>K:\检材3.E01</code>；本地分析目录 <code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材3</code></li>
+<li>证据来源：<code>/tmp/case3_root/etc/php.ini</code>；<code>/tmp/case3_root/root/.viminfo</code></li>
+<li>关键路径：<code>php.ini</code> 第 799 行；<code>.viminfo</code> 多次记录该行</li>
+<li>提取&#x2F;查询方法：检查 PHP 上传限制配置项，并以 root 编辑痕迹侧证</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">upload_max_filesize = 60M</span><br><span class="line"></span><br><span class="line">/tmp/case3_root/root/.viminfo:62:-&#x27;  799  24  /etc/php.ini</span><br></pre></td></tr></table></figure>
+
+<p>推理：控制单个上传文件上限的配置项是 <code>upload_max_filesize</code>，当前值为 <code>60M</code>；<code>.viminfo</code> 显示 root 多次编辑并停留在该行。<br>最终答案：<code>60M</code></p>
+<h3 id="题目9：请分析检材3：嫌疑人设置数据库定时自动备份并上传至境外，请问该境外服务器的IP地址是多少？【答案格式：8-8-8-8-】"><a href="#题目9：请分析检材3：嫌疑人设置数据库定时自动备份并上传至境外，请问该境外服务器的IP地址是多少？【答案格式：8-8-8-8-】" class="headerlink" title="题目9：请分析检材3：嫌疑人设置数据库定时自动备份并上传至境外，请问该境外服务器的IP地址是多少？【答案格式：8.8.8.8]】"></a>题目9：请分析检材3：嫌疑人设置数据库定时自动备份并上传至境外，请问该境外服务器的IP地址是多少？【答案格式：8.8.8.8]】</h3><ul>
+<li>题目原文：<code>9.请分析检材3：嫌疑人设置数据库定时自动备份并上传至境外，请问该境外服务器的IP地址是多少？【答案格式：8.8.8.8]】</code></li>
+<li>证据类型：<code>服务器取证 / Linux 磁盘镜像</code></li>
+<li>检材来源：<code>K:\检材3.E01</code>；本地分析目录 <code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材3</code></li>
+<li>证据来源：<code>/tmp/case3_root/etc/cron.daily/autobackup.sh</code>；<code>/tmp/case3_root/root/.ssh/known_hosts</code></li>
+<li>关键路径：<code>autobackup.sh</code> 第 6-8、33、36 行；<code>known_hosts</code> 第 1 行</li>
+<li>提取&#x2F;查询方法：检查定时备份脚本中的远程目标参数</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">REMOTE_USER=&quot;root&quot;</span><br><span class="line">REMOTE_SERVER=&quot;8.208.44.202&quot;</span><br><span class="line">REMOTE_DIR=&quot;/root/&quot;</span><br><span class="line"></span><br><span class="line">scp ... $&#123;REMOTE_USER&#125;@$&#123;REMOTE_SERVER&#125;:$&#123;REMOTE_DIR&#125;</span><br></pre></td></tr></table></figure>
+
+<p>推理：自动备份脚本把上传和远程清理的目标都配置为 <code>REMOTE_SERVER=&quot;8.208.44.202&quot;</code>，并且 <code>known_hosts</code> 中存在同 IP 的 SSH 连接记录。<br>最终答案：<code>8.208.44.202</code></p>
+<h3 id="题目10：请分析检材3：嫌疑人登录后台的目录路径是什么？【答案格式：-abc-abc】"><a href="#题目10：请分析检材3：嫌疑人登录后台的目录路径是什么？【答案格式：-abc-abc】" class="headerlink" title="题目10：请分析检材3：嫌疑人登录后台的目录路径是什么？【答案格式：&#x2F;abc&#x2F;abc】"></a>题目10：请分析检材3：嫌疑人登录后台的目录路径是什么？【答案格式：&#x2F;abc&#x2F;abc】</h3><ul>
+<li>题目原文：<code>10.请分析检材3：嫌疑人登录后台的目录路径是什么？【答案格式：/abc/abc】</code></li>
+<li>证据类型：<code>服务器取证 / Linux 磁盘镜像</code></li>
+<li>检材来源：<code>K:\检材3.E01</code>；本地分析目录 <code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材3</code></li>
+<li>证据来源：<code>/tmp/case3_root/usr/share/nginx/html/fk/static/login.php</code>；<code>/tmp/case3_root/var/log/nginx/access.log-20260514</code></li>
+<li>关键路径：<code>static/login.php</code>；日志中 <code>/fk/static/login.php</code></li>
+<li>提取&#x2F;查询方法：确认后台登录页物理路径，并用访问日志验证真实访问路径</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GET /fk/static/login.php HTTP/1.1</span><br><span class="line">POST /fk/static/login.php HTTP/1.1</span><br></pre></td></tr></table></figure>
+
+<p>推理：后台登录页真实访问路径是 <code>/fk/static/login.php</code>，题目要求的是目录路径，因此答案取其所在目录 <code>/fk/static</code>。<br>最终答案：<code>/fk/static</code></p>
+<h3 id="题目11：请分析检材3：访问后台登录页面次数最多的-IP-地址是什么？【答案格式：192-168-1-1】"><a href="#题目11：请分析检材3：访问后台登录页面次数最多的-IP-地址是什么？【答案格式：192-168-1-1】" class="headerlink" title="题目11：请分析检材3：访问后台登录页面次数最多的 IP 地址是什么？【答案格式：192.168.1.1】"></a>题目11：请分析检材3：访问后台登录页面次数最多的 IP 地址是什么？【答案格式：192.168.1.1】</h3><ul>
+<li>题目原文：<code>11.请分析检材3：访问后台登录页面次数最多的 IP 地址是什么？【答案格式：192.168.1.1】</code></li>
+<li>证据类型：<code>服务器取证 / Linux 磁盘镜像</code></li>
+<li>检材来源：<code>K:\检材3.E01</code>；本地分析目录 <code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材3</code></li>
+<li>证据来源：<code>/tmp/case3_root/var/log/nginx/access.log*</code></li>
+<li>关键路径：<code>/fk/static/login.php</code> 访问统计；<code>access.log-20260514</code> 第 348、353 行示例</li>
+<li>提取&#x2F;查询方法：对全部 nginx 访问日志按 <code>/fk/static/login.php</code> 统计访问次数</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">6 192.168.203.135 /tmp/case3_root/var/log/nginx/access.log-20260514 348</span><br><span class="line">5 203.45.12.67 ...</span><br><span class="line">4 201.158.214.48 ...</span><br></pre></td></tr></table></figure>
+
+<p>推理：对 <code>/fk/static/login.php</code> 在全部 <code>access.log*</code> 中做次数统计，<code>192.168.203.135</code> 以 6 次排第一。<br>最终答案：<code>192.168.203.135</code></p>
+<h3 id="题目12：请分析检材3：网站后台管理员的明文密码为多少？【答案格式：根据实际值填写】"><a href="#题目12：请分析检材3：网站后台管理员的明文密码为多少？【答案格式：根据实际值填写】" class="headerlink" title="题目12：请分析检材3：网站后台管理员的明文密码为多少？【答案格式：根据实际值填写】"></a>题目12：请分析检材3：网站后台管理员的明文密码为多少？【答案格式：根据实际值填写】</h3><ul>
+<li>题目原文：<code>12.请分析检材3：网站后台管理员的明文密码为多少？【答案格式：根据实际值填写】</code></li>
+<li>证据类型：<code>服务器取证 / Linux 磁盘镜像</code></li>
+<li>检材来源：<code>K:\检材3.E01</code>；本地分析目录 <code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材3</code></li>
+<li>证据来源：<code>/tmp/case3_root/opt/faka.sql</code>；<code>/tmp/case3_root/usr/share/nginx/html/fk/ajax.php</code>；<code>/tmp/case3_root/usr/share/nginx/html/fk/static/login.php</code></li>
+<li>关键路径：<code>faka.sql</code> 中 <code>admin_pwd</code>；<code>ajax.php</code> 第 1440-1441 行</li>
+<li>提取&#x2F;查询方法：检查配置缓存与后台找回逻辑</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">admin_user=admin</span><br><span class="line">admin_pwd=wy0719</span><br><span class="line"></span><br><span class="line">echo &quot;密码:&quot;.$conf[&#x27;admin_pwd&#x27;].&quot;&lt;br&gt;&quot;;</span><br></pre></td></tr></table></figure>
+
+<p>推理：数据库缓存配置中后台管理员密码明文为 <code>wy0719</code>，后台找回逻辑也直接输出 <code>$conf[&#39;admin_pwd&#39;]</code>，能相互佐证。<br>最终答案：<code>wy0719</code></p>
+<h3 id="题目13：请分析检材3：该网站支付接口所对接的第三方接入商名称是什么？【答案格式：根据实际值填写】"><a href="#题目13：请分析检材3：该网站支付接口所对接的第三方接入商名称是什么？【答案格式：根据实际值填写】" class="headerlink" title="题目13：请分析检材3：该网站支付接口所对接的第三方接入商名称是什么？【答案格式：根据实际值填写】"></a>题目13：请分析检材3：该网站支付接口所对接的第三方接入商名称是什么？【答案格式：根据实际值填写】</h3><ul>
+<li>题目原文：<code>13.请分析检材3：该网站支付接口所对接的第三方接入商名称是什么？【答案格式：根据实际值填写】</code></li>
+<li>证据类型：<code>服务器取证 / Linux 磁盘镜像</code></li>
+<li>检材来源：<code>K:\检材3.E01</code>；本地分析目录 <code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材3</code></li>
+<li>证据来源：<code>/tmp/case3_root/usr/share/nginx/html/fk/admin/payurl.php</code>；<code>/tmp/case3_root/usr/share/nginx/html/fk/other/submit.php</code>；<code>/tmp/case3_root/usr/share/nginx/html/fk/other/epay/epay_submit.class.php</code></li>
+<li>关键路径：<code>payurl.php</code> 第 3 行；<code>epay_submit.class.php</code> 第 4-5 行</li>
+<li>提取&#x2F;查询方法：检查支付插件说明、提交类与接口实现</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">本站代理免费赠送【彩虹易支付跳认证】插件</span><br><span class="line"></span><br><span class="line">功能：彩虹易支付接口请求提交类</span><br></pre></td></tr></table></figure>
+
+<p>推理：后台插件说明与 <code>EpaySubmit</code> 类注释都直接指向“彩虹易支付”，足以确认该站所对接的第三方支付接入商名称。<br>最终答案：<code>彩虹易支付</code></p>
+<h3 id="题目14：请分析检材3：网站的创建时间是什么时候？【答案格式：2026-5-20】"><a href="#题目14：请分析检材3：网站的创建时间是什么时候？【答案格式：2026-5-20】" class="headerlink" title="题目14：请分析检材3：网站的创建时间是什么时候？【答案格式：2026&#x2F;5&#x2F;20】"></a>题目14：请分析检材3：网站的创建时间是什么时候？【答案格式：2026&#x2F;5&#x2F;20】</h3><ul>
+<li>题目原文：<code>14.请分析检材3：网站的创建时间是什么时候？【答案格式：2026/5/20】</code></li>
+<li>证据类型：<code>服务器取证 / Linux 磁盘镜像</code></li>
+<li>检材来源：<code>K:\检材3.E01</code>；本地分析目录 <code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材3</code></li>
+<li>证据来源：<code>/tmp/case3_root/usr/share/nginx/html/fk</code>；<code>/tmp/case3_root/usr/share/nginx/html/fk/install/install.lock</code></li>
+<li>关键路径：站点目录与安装锁文件的文件系统创建时间</li>
+<li>提取&#x2F;查询方法：读取 <code>stat</code> 的 birth time</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/tmp/case3_root/usr/share/nginx/html/fk 2026-05-11 17:08:28...</span><br><span class="line">/tmp/case3_root/usr/share/nginx/html/fk/install/install.lock 2026-05-11 17:08:28...</span><br></pre></td></tr></table></figure>
+
+<p>推理：站点目录和安装锁文件的创建时间都集中在 <code>2026-05-11</code>，这比源码自带时间和旧业务数据时间更能代表本服务器上该网站的创建时间。<br>最终答案：<code>2026/5/11</code></p>
+<h3 id="题目15：请分析检材3：网站Git配置信息中，找出作者姓名是什么？【答案格式：根据实际值填写】"><a href="#题目15：请分析检材3：网站Git配置信息中，找出作者姓名是什么？【答案格式：根据实际值填写】" class="headerlink" title="题目15：请分析检材3：网站Git配置信息中，找出作者姓名是什么？【答案格式：根据实际值填写】"></a>题目15：请分析检材3：网站Git配置信息中，找出作者姓名是什么？【答案格式：根据实际值填写】</h3><ul>
+<li>题目原文：<code>15.请分析检材3：网站Git配置信息中，找出作者姓名是什么？【答案格式：根据实际值填写】</code></li>
+<li>证据类型：<code>服务器取证 / Linux 磁盘镜像</code></li>
+<li>检材来源：<code>K:\检材3.E01</code>；本地分析目录 <code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材3</code></li>
+<li>证据来源：<code>/tmp/case3_root/usr/share/nginx/html/fk/backup_config.txt</code></li>
+<li>关键路径：<code>backup_config.txt</code> 第 6-8 行</li>
+<li>提取&#x2F;查询方法：解析伪装成 Git 配置的备份文件，解码 <code>user.name</code></li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[user]</span><br><span class="line">    name = NDc2ODZmNzM3NDRmNzA2NTcyNjE3NDZmNzI=</span><br><span class="line">    email = admin@0xdeadbeef.local</span><br><span class="line"></span><br><span class="line">47686f73744f70657261746f72</span><br><span class="line">GhostOperator</span><br></pre></td></tr></table></figure>
+
+<p>推理：<code>user.name</code> 不是明文，而是 Base64 编码后的十六进制字符串。先 Base64 解码得到 <code>47686f73744f70657261746f72</code>，再按十六进制转 ASCII，恢复出作者姓名 <code>GhostOperator</code>。<br>最终答案：<code>GhostOperator</code></p>
+<h3 id="题目18：请分析检材3：统计全部订单数据，购买数量累计最高的应用名称是什么？【答案格式：根据实际值填写】"><a href="#题目18：请分析检材3：统计全部订单数据，购买数量累计最高的应用名称是什么？【答案格式：根据实际值填写】" class="headerlink" title="题目18：请分析检材3：统计全部订单数据，购买数量累计最高的应用名称是什么？【答案格式：根据实际值填写】"></a>题目18：请分析检材3：统计全部订单数据，购买数量累计最高的应用名称是什么？【答案格式：根据实际值填写】</h3><ul>
+<li>题目原文：<code>18.请分析检材3：统计全部订单数据，购买数量累计最高的应用名称是什么？【答案格式：根据实际值填写】</code></li>
+<li>证据类型：<code>服务器取证 / 订单数据统计</code></li>
+<li>检材来源：<code>K:\检材3.E01</code>；本地分析目录 <code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材3</code></li>
+<li>证据来源：本轮先按已确认答案登记，后续补充订单表聚合查询与统计摘录</li>
+<li>关键证据&#x2F;关键路径：待补 <code>订单表 -&gt; 应用名称 / 购买数量</code> 聚合统计</li>
+<li>提取&#x2F;查询方法：待补 <code>GROUP BY 应用名称</code> 的累计购买数量统计</li>
+<li>重要截图：待补</li>
+<li>摘录：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">当前已确认答案：大佬牛</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>推理：本轮先按已确认答案将题目 18 记录入 WP，后续补回订单表聚合 SQL、统计结果截图与原始摘录。</li>
+<li>最终答案：<code>大佬牛</code></li>
+</ul>
+<h3 id="题目20：请分析检材3：嫌疑人创建的拥有-FILE-与-SUPER-权限的隐蔽-MySQL-账户，其用户名是什么？【答案格式：admin】"><a href="#题目20：请分析检材3：嫌疑人创建的拥有-FILE-与-SUPER-权限的隐蔽-MySQL-账户，其用户名是什么？【答案格式：admin】" class="headerlink" title="题目20：请分析检材3：嫌疑人创建的拥有 FILE 与 SUPER 权限的隐蔽 MySQL 账户，其用户名是什么？【答案格式：admin】"></a>题目20：请分析检材3：嫌疑人创建的拥有 FILE 与 SUPER 权限的隐蔽 MySQL 账户，其用户名是什么？【答案格式：admin】</h3><ul>
+<li>题目原文：<code>20.请分析检材3：嫌疑人创建的拥有 FILE 与 SUPER 权限的隐蔽 MySQL 账户，其用户名是什么？【答案格式：admin】</code></li>
+<li>证据类型：<code>服务器取证 / Linux 磁盘镜像 + 远程 SSH 验证</code></li>
+<li>检材来源：<code>K:\检材3.E01</code>；本地分析目录 <code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材3</code></li>
+<li>证据来源：远程 SSH 主机 <code>192.168.2.10:22</code> 的本地 MySQL 权限表；<code>/tmp/case3_root/usr/share/nginx/html/fk/config.php</code></li>
+<li>关键路径：MySQL <code>mysql.user</code> 查询结果中 <code>_tmp_z5m1w8@localhost</code></li>
+<li>提取&#x2F;查询方法：登录远程主机后枚举 <code>mysql.user</code> 权限项，并排除系统常规管理员 <code>root</code></li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">_tmp_z5m1w8	localhost	Y	Y	N	N	N</span><br><span class="line">root	localhost	Y	Y	Y	Y	Y</span><br></pre></td></tr></table></figure>
+
+<p>推理：除系统常规管理员 <code>root</code> 外，仅 <code>_tmp_z5m1w8@localhost</code> 同时具备 <code>FILE=Y</code> 和 <code>SUPER=Y</code>，符合题目所述“隐蔽 MySQL 账户”。<br>最终答案：<code>_tmp_z5m1w8</code></p>
+<h2 id="内存取证"><a href="#内存取证" class="headerlink" title="内存取证"></a>内存取证</h2><h3 id="题目1：勒索进程-PID"><a href="#题目1：勒索进程-PID" class="headerlink" title="题目1：勒索进程 PID"></a>题目1：勒索进程 PID</h3><ul>
+<li>题目原文：<code>1.该勒索进程的进程标识号（PID）是多少？【按实际值填写】</code></li>
+<li>证据类型：内存取证 &#x2F; Windows Crash Dump &#x2F; 勒索进程定位</li>
+<li>检材来源：<code>K:\检材6\HACKER-20260606-174920.dmp</code></li>
+<li>证据来源：<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材6\exports\vol_windows_pslist.txt</code>；<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材6\exports\vol_windows_pstree.txt</code>；<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材6\exports\vol_windows_cmdline.txt</code></li>
+<li>关键证据&#x2F;关键路径：<code>windows.pslist</code> 中 <code>ransom.exe</code> 的 PID；<code>windows.pstree</code> 中 <code>ransom.exe</code> 的父进程与路径；<code>windows.cmdline</code> 中 <code>ransom.exe</code> 命令行</li>
+<li>提取&#x2F;查询方法：使用 Volatility 3 分别执行 <code>windows.pslist</code>、<code>windows.pstree</code>、<code>windows.cmdline</code>，交叉确认可疑勒索进程。</li>
+<li>重要截图：不适用（命令行内存取证结果，关键输出已摘录）。</li>
+<li>摘录：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">8804  2568  ransom.exe  0xb20ac87640c0  5  -  1  False  2026-06-06 17:49:12.000000 UTC  N/A</span><br><span class="line">*** 8804  2568  ransom.exe  ...  \Device\HarddiskVolume3\Users\HACK\Desktop\ransom.exe  &quot;C:\Users\HACK\Desktop\ransom.exe&quot;</span><br><span class="line">8804  ransom.exe  &quot;C:\Users\HACK\Desktop\ransom.exe&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>推理：<code>pslist</code> 显示 PID <code>8804</code> 的进程名为 <code>ransom.exe</code>；<code>pstree</code> 显示该进程由 <code>explorer.exe</code> 启动，路径为 <code>C:\Users\HACK\Desktop\ransom.exe</code>；<code>cmdline</code> 再次确认命令行为 <code>&quot;C:\Users\HACK\Desktop\ransom.exe&quot;</code>。三项证据一致，因此勒索进程 PID 为 <code>8804</code>。</li>
+<li>最终答案：<code>8804</code></li>
+</ul>
+<h3 id="题目2：受害计算机主机名"><a href="#题目2：受害计算机主机名" class="headerlink" title="题目2：受害计算机主机名"></a>题目2：受害计算机主机名</h3><ul>
+<li>题目原文：<code>2.受害计算机的主机名（COMPUTERNAME）是什么？ 【答案格式：ABC】</code></li>
+<li>证据类型：内存取证 &#x2F; Windows 环境变量</li>
+<li>检材来源：<code>K:\检材6\HACKER-20260606-174920.dmp</code></li>
+<li>证据来源：<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材6\exports\vol_windows_envars.txt</code></li>
+<li>关键证据&#x2F;关键路径：<code>windows.envars</code> 输出中 <code>ransom.exe</code> 进程的 <code>COMPUTERNAME</code> 环境变量</li>
+<li>提取&#x2F;查询方法：使用 Volatility 3 <code>windows.envars</code> 提取进程环境变量，并检索 <code>COMPUTERNAME</code>。</li>
+<li>重要截图：不适用（命令行内存取证结果，关键输出已摘录）。</li>
+<li>摘录：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">8804  ransom.exe  0x265ad867a60  COMPUTERNAME  HACKER</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>推理：<code>windows.envars</code> 中多个进程的 <code>COMPUTERNAME</code> 均为 <code>HACKER</code>，勒索进程 <code>ransom.exe</code> 也继承了同一环境变量，因此受害计算机主机名为 <code>HACKER</code>。</li>
+<li>最终答案：<code>HACKER</code></li>
+</ul>
+<h3 id="题目3：被批量加密的桌面子目录"><a href="#题目3：被批量加密的桌面子目录" class="headerlink" title="题目3：被批量加密的桌面子目录"></a>题目3：被批量加密的桌面子目录</h3><ul>
+<li>题目原文：<code>3.勒索软件将用户桌面下哪个子目录中的文件进行了批量加密？【仅写目录名，答案格式：abc1234_abc1234】</code></li>
+<li>证据类型：内存取证 &#x2F; 勒索程序字符串分析</li>
+<li>检材来源：<code>K:\检材6\HACKER-20260606-174920.dmp</code></li>
+<li>证据来源：<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材6\exports\ransom_dump\8804.ransom.exe.0x7ff63f4e0000.dmp</code>；<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材6\exports\ransom_relevant_ascii_strings.txt</code></li>
+<li>关键证据&#x2F;关键路径：导出的 <code>ransom.exe</code> 内部 ASCII 字符串 <code>0xb047: %s\Desktop\2026xzb_enc</code></li>
+<li>提取&#x2F;查询方法：用 Volatility 3 <code>windows.pslist --pid 8804 --dump</code> 从内存中导出 <code>ransom.exe</code>，再提取 ASCII 字符串并检索 <code>Desktop</code>、<code>2026xzb</code>、<code>.enc</code>。</li>
+<li>重要截图：不适用（二进制字符串分析，关键输出已摘录）。</li>
+<li>摘录：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0xb047: %s\Desktop\2026xzb_enc</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>推理：程序内置路径模板 <code>%s\Desktop\2026xzb_enc</code>，其中 <code>%s</code> 来自 <code>USERPROFILE</code>，说明批量加密目标是用户桌面下的 <code>2026xzb_enc</code> 子目录。</li>
+<li>最终答案：<code>2026xzb_enc</code></li>
+</ul>
+<h3 id="题目4：加密文件开头-5-字节-Magic"><a href="#题目4：加密文件开头-5-字节-Magic" class="headerlink" title="题目4：加密文件开头 5 字节 Magic"></a>题目4：加密文件开头 5 字节 Magic</h3><ul>
+<li>题目原文：<code>4.附件 secret_project4.docx.enc 采用勒索家族自定义封装格式。请对该文件进行十六进制分析，该加密文件开头的 5 字节魔数（Magic）是什么？【答案格式：ABCDe 大小写需完全一致】</code></li>
+<li>证据类型：文件十六进制分析 &#x2F; 勒索封装格式识别</li>
+<li>检材来源：<code>K:\检材6\secret_project4.docx.enc</code></li>
+<li>证据来源：<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材6\exports\secret_project4_header_hex.txt</code></li>
+<li>关键证据&#x2F;关键路径：<code>secret_project4.docx.enc</code> 文件偏移 <code>0x00</code> 起始 5 字节</li>
+<li>提取&#x2F;查询方法：使用 Python 读取 <code>secret_project4.docx.enc</code> 前 128 字节，输出十六进制与 ASCII 对照。</li>
+<li>重要截图：不适用（十六进制输出已摘录）。</li>
+<li>摘录：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">size 10089</span><br><span class="line">00000000  52 4e 53 4d 61 27 00 00 e5 ac 47 0d 7b bf c0 c2  RNSMa&#x27;....G.&#123;...</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>推理：文件起始 5 字节为 <code>52 4e 53 4d 61</code>，按 ASCII 解码为 <code>RNSMa</code>，且题目要求大小写完全一致。</li>
+<li>最终答案：<code>RNSMa</code></li>
+</ul>
+<h3 id="题目5：真正密文数据起始偏移"><a href="#题目5：真正密文数据起始偏移" class="headerlink" title="题目5：真正密文数据起始偏移"></a>题目5：真正密文数据起始偏移</h3><ul>
+<li>题目原文：<code>5，真正的密文数据从文件起始偏移多少字节处开始？（从 0 计）【答案格式：数字】</code></li>
+<li>证据类型：文件十六进制分析 &#x2F; 勒索封装格式解析</li>
+<li>检材来源：<code>K:\检材6\secret_project4.docx.enc</code></li>
+<li>证据来源：<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材6\exports\secret_project4_header_hex.txt</code></li>
+<li>关键证据&#x2F;关键路径：<code>secret_project4.docx.enc</code> 文件偏移 <code>0x00-0x07</code></li>
+<li>提取&#x2F;查询方法：读取文件头部，解析 <code>RNSM</code> 魔数与后续小端长度字段。</li>
+<li>重要截图：不适用（十六进制输出已摘录）。</li>
+<li>摘录：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">size 10089</span><br><span class="line">00000000  52 4e 53 4d 61 27 00 00 e5 ac 47 0d 7b bf c0 c2  RNSMa&#x27;....G.&#123;...</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>推理：前 4 字节为 <code>RNSM</code>；随后 4 字节 <code>61 27 00 00</code> 是小端长度 <code>0x2761 = 10081</code>，等于文件总大小 <code>10089 - 8</code>。因此前 8 字节为封装头，真正密文从偏移 <code>8</code> 开始。</li>
+<li>最终答案：<code>8</code></li>
+</ul>
+<h3 id="题目6：对称密钥长度"><a href="#题目6：对称密钥长度" class="headerlink" title="题目6：对称密钥长度"></a>题目6：对称密钥长度</h3><ul>
+<li>题目原文：<code>6。请从内存镜像中提取本次加密所使用的对称密钥，该密钥的长度是多少字节？【答案格式：数字】</code></li>
+<li>证据类型：内存取证 &#x2F; 勒索程序反汇编 &#x2F; 密钥结构扫描</li>
+<li>检材来源：<code>K:\检材6\HACKER-20260606-174920.dmp</code></li>
+<li>证据来源：<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材6\exports\ransom_objdump_imports.txt</code>；<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材6\exports\ransom_keygen_disasm_excerpt.txt</code>；<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材6\exports\ransom_key_candidates.txt</code></li>
+<li>关键证据&#x2F;关键路径：<code>CryptGenRandom</code> 调用前 <code>mov edx,0x10</code>；内存中特征结构 <code>de c0 ad de + 16 字节 key + be ba fe ca</code></li>
+<li>提取&#x2F;查询方法：用 <code>objdump -d -M intel</code> 反汇编导出的 <code>ransom.exe</code>，定位 <code>CryptGenRandom</code> 参数；再用 Python 在内存镜像中扫描结构特征并提取密钥。</li>
+<li>重要截图：不适用（反汇编与内存扫描输出已摘录）。</li>
+<li>摘录：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">DLL Name: ADVAPI32.dll</span><br><span class="line">104d8  CryptAcquireContextW</span><br><span class="line">104f0  CryptGenRandom</span><br><span class="line">10502  CryptReleaseContext</span><br><span class="line"></span><br><span class="line">7ff63f4e90d4: 48 8b 4c 24 38        mov    rcx,QWORD PTR [rsp+0x38]</span><br><span class="line">7ff63f4e90d9: ba 10 00 00 00        mov    edx,0x10</span><br><span class="line">7ff63f4e90de: 4c 8d 40 04           lea    r8,[rax+0x4]</span><br><span class="line">7ff63f4e90e2: ff 15 c0 71 00 00     call   QWORD PTR [rip+0x71c0]        # CryptGenRandom</span><br><span class="line"></span><br><span class="line">offset=0xe8382740 key_hex=cb8978dde5b08227aac1c40ba91849c5 key_len=16</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>推理：<code>CryptGenRandom(hProv, dwLen, pbBuffer)</code> 的第二个参数为 <code>dwLen</code>，反汇编中 <code>mov edx,0x10</code> 表示生成 <code>0x10 = 16</code> 字节随机数据。内存结构中也提取到 16 字节对称密钥 <code>cb8978dde5b08227aac1c40ba91849c5</code>，因此密钥长度为 16 字节。</li>
+<li>最终答案：<code>16</code></li>
+</ul>
+<h2 id="压缩包-杂项"><a href="#压缩包-杂项" class="headerlink" title="压缩包&#x2F;杂项"></a>压缩包&#x2F;杂项</h2><h3 id="题目15：找出嫌疑人筛选的重点客户名单，并统计名单内共有多少人？"><a href="#题目15：找出嫌疑人筛选的重点客户名单，并统计名单内共有多少人？" class="headerlink" title="题目15：找出嫌疑人筛选的重点客户名单，并统计名单内共有多少人？"></a>题目15：找出嫌疑人筛选的重点客户名单，并统计名单内共有多少人？</h3><ul>
+<li>题目原文：综合分析：请找出嫌疑人筛选的重点客户名单，并统计名单内共有多少人？【答案格式：1】</li>
+<li>证据类型：跨检材分卷压缩包恢复 &#x2F; 图片隐写 &#x2F; Windows 回收站记录 &#x2F; Excel 表格</li>
+<li>检材来源：<code>K:\检材1.tar</code>；<code>K:\检材2.E01</code></li>
+<li>证据来源：<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材1\exports\stego\important_jpg\重点客户.z01</code>；<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材2\exports\suspicious_files\recycle_RC12AM0.zip</code>；<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\检材2\exports\suspicious_files\recycle_IC12AM0.zip</code>；<code>C:\Users\glj07\Desktop\Codex工作区\Writeup\Forensic\2026獬豸杯\综合_重点客户\exports\combined_zip\extracted\重点客户.xlsx</code></li>
+<li>关键证据&#x2F;关键路径：手机隐写文件提供 <code>重点客户.z01</code>；<code>检材2.E01</code> 分区 <code>1187840</code> 的回收站 <code>$RC12AM0.zip</code> 提供 <code>重点客户.zip</code>；<code>$IC12AM0.zip</code> 记录原始路径 <code>C:\Users\Administrator\Desktop\重点客户.zip</code></li>
+<li>提取&#x2F;查询方法：<code>steghide.exe extract -sf important.jpg -p JHTJ@202605 -xf 重点客户.z01</code>；<code>wsl icat -o 1187840 /mnt/k/检材2.E01 96504-128-1 &gt; recycle_RC12AM0.zip</code>；<code>wsl icat -o 1187840 /mnt/k/检材2.E01 96506-128-1 &gt; recycle_IC12AM0.zip</code>；将两卷命名为 <code>重点客户.z01</code> 与 <code>重点客户.zip</code> 后执行 <code>7z x 重点客户.zip</code>；最后用 <code>openpyxl</code> 读取 <code>重点客户.xlsx</code>。</li>
+<li>重要截图：不适用，分卷识别、回收站路径和 Excel 统计结果均已在摘录中列出。</li>
+<li>摘录：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">7z l recycle_RC12AM0.zip:</span><br><span class="line">ERROR = Missing volume : recycle_RC12AM0.z01</span><br><span class="line">2026-05-12 10:04:23 ....A        10192         9029  重点客户.xlsx</span><br><span class="line"></span><br><span class="line">$IC12AM0.zip:</span><br><span class="line">path=C:\Users\Administrator\Desktop\重点客户.zip</span><br><span class="line"></span><br><span class="line">组合分卷：</span><br><span class="line">重点客户.z01 &lt;- 检材1 important.jpg 隐写提取</span><br><span class="line">重点客户.zip &lt;- 检材2 回收站 $RC12AM0.zip</span><br><span class="line">7z x 重点客户.zip -&gt; Everything is Ok</span><br><span class="line"></span><br><span class="line">openpyxl:</span><br><span class="line">Sheet1 max_row=6 max_col=7</span><br><span class="line">data_count=5</span><br></pre></td></tr></table></figure>
+
+<p>重点客户名单：</p>
+<table>
+<thead>
+<tr>
+<th>姓名</th>
+<th>身份证号码</th>
+<th>银行卡(借记卡)</th>
+<th>手机号码</th>
+<th>出生日期</th>
+<th align="right">年龄</th>
+<th>出生地</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>曹向广</td>
+<td>331022198011215130</td>
+<td>6214761149487927846</td>
+<td>13992198895</td>
+<td>1980-11-21</td>
+<td align="right">45</td>
+<td>浙江省 台州市 三门县</td>
+</tr>
+<tr>
+<td>云昕玥</td>
+<td>320505197206277159</td>
+<td>6216113632593102826</td>
+<td>13718874819</td>
+<td>1972-06-27</td>
+<td align="right">53</td>
+<td>江苏省 苏州市 虎丘区</td>
+</tr>
+<tr>
+<td>马易政</td>
+<td>33102220031215671X</td>
+<td>6252470582962982818</td>
+<td>13975277417</td>
+<td>2003-12-15</td>
+<td align="right">22</td>
+<td>浙江省 台州市 三门县</td>
+</tr>
+<tr>
+<td>陈干瑞</td>
+<td>320118196106304629</td>
+<td>6229100960890143661</td>
+<td>13708425461</td>
+<td>1961-06-30</td>
+<td align="right">64</td>
+<td>江苏省 南京市 高淳区</td>
+</tr>
+<tr>
+<td>苗轩游</td>
+<td>310113199203118844</td>
+<td>6214761531070180189</td>
+<td>15236625577</td>
+<td>1992-03-11</td>
+<td align="right">34</td>
+<td>上海市 上海市辖区 宝山区</td>
+</tr>
+</tbody></table>
+<ul>
+<li>推理：单独查看手机隐写得到的 <code>重点客户.z01</code> 时提示缺少末卷；在 <code>检材2.E01</code> 回收站中发现同名分卷末卷，组合后 7z 完整解压成功。完整工作簿 <code>Sheet1 max_row=6</code>，扣除表头后名单内共有 5 人。</li>
+<li>最终答案：<code>5</code></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://FighterGodNemo.github.io">琉璃幻彩</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://fightergodnemo.github.io/2026/06/14/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/%E7%8D%AC%E8%B1%B8%E6%9D%AF/2026%E7%8D%AC%E8%B1%B8%E6%9D%AF/">https://fightergodnemo.github.io/2026/06/14/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/%E7%8D%AC%E8%B1%B8%E6%9D%AF/2026%E7%8D%AC%E8%B1%B8%E6%9D%AF/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://FighterGodNemo.github.io" target="_blank">琉璃幻彩的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/">电子取证</a><a class="post-meta__tags" href="/tags/Forensic/">Forensic</a><a class="post-meta__tags" href="/tags/2026%E7%8D%AC%E8%B1%B8%E6%9D%AF/">2026獬豸杯</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/07/30/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/AionUi-%E5%8D%87%E7%BA%A7%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%81%E7%A7%BB%E5%A4%B1%E8%B4%A5%E6%8E%92%E6%9F%A5%E4%B8%8E%E4%BF%AE%E5%A4%8D/" title="AionUi 升级数据库迁移失败排查与修复"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">AionUi 升级数据库迁移失败排查与修复</div></div><div class="info-2"><div class="info-item-1">问题现象AionUi 从 2.1.41 更新到 2.1.43 后，启动时报错：  本地数据迁移失败 — AionCore 在初始化本地数据时发生了错误  界面能加载，但后端一直卡在 Initializing database，6 分钟...</div></div></div></a><a class="pagination-related  no-desc" href="/2026/06/14/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/%E7%8D%AC%E8%B1%B8%E6%9D%AF/2025%E7%8D%AC%E8%B1%B8%E6%9D%AF/2026%E7%8D%AC%E8%B1%B8%E6%9D%AF/" title=""><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2"></div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/05/10/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/2026%E7%9B%98%E5%8F%A4%E7%9F%B3%E6%9D%AF%E5%88%9D%E8%B5%9B%E5%9B%A2%E4%BD%93/" title="2026盘古石杯初赛团体"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-10</div><div class="info-item-2">2026盘古石杯初赛团体</div></div><div class="info-2"><div class="info-item-1">答案速览以下仅列出本次对话中已经按新 skill 规范化到正式 WP 的题号。    题号 答案 状态    14 com.example.predictor 已确认   16 com.socialchat.social_chat_a...</div></div></div></a><a class="pagination-related" href="/2026/05/05/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/%E6%9C%AC%E6%9C%BAForensic%E5%B7%A5%E5%85%B7%E7%B4%A2%E5%BC%95/" title="本机Forensic工具索引"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-05</div><div class="info-item-2">本机Forensic工具索引</div></div><div class="info-2"><div class="info-item-1">本机 Forensic 工具索引统一分类入口见工具进阶使用总览。本文保留电子取证视角，便于按证据类型快速选工具。 这篇索引用来快速判断“遇到什么证据先用什么工具”。正式案件分析仍要保留路径、哈希、命令、截图和结论，不能只写工具名。 本...</div></div></div></a><a class="pagination-related" href="/2026/07/30/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Tencent-Marvis-Privacy-Analysis/" title="腾讯 Marvis 客户端“扫盘”与隐私风险取证分析"><img class="cover" src="https://cdn.jsdelivr.net/gh/FighterGodNemo/CDN/img/forensic-analysis.jpg" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-07-30</div><div class="info-item-2">腾讯 Marvis 客户端“扫盘”与隐私风险取证分析</div></div><div class="info-2"><div class="info-item-1">腾讯 Marvis 客户端“扫盘”与隐私风险取证分析前言我在使用腾讯 Marvis 时观察到持续的磁盘访问，同时发现多个知识库、Agent、Host 和系统服务进程常驻。由于 Marvis 的核心卖点之一就是“理解本地文件”和“构建个...</div></div></div></a><a class="pagination-related" href="/2026/05/10/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/%E7%9B%98%E5%8F%A4%E7%9F%B3%E6%9D%AF/2026%E7%9B%98%E5%8F%A4%E7%9F%B3%E6%9D%AF%E5%88%9D%E8%B5%9B%E5%9B%A2%E4%BD%93/" title="2026盘古石杯初赛团体"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-10</div><div class="info-item-2">2026盘古石杯初赛团体</div></div><div class="info-2"><div class="info-item-1">前言本文记录 2026 盘古石杯初赛团体赛当前已完成复核的取证题。当前材料主要来自工作区内的 analysis-notes.md、导出的 Android 文件系统记录、APK 反编译结果和 UsageStats 事件记录；题目答案值、...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/SPC/%E7%AC%AC%E4%B8%89%E5%B1%8A%E5%BA%94%E7%94%A8%E5%AE%9E%E6%88%98%E6%8A%80%E6%9C%AF%E5%8F%96%E8%AF%81%E5%88%9D%E8%B5%9B/" title="第三届应用实战技术取证初赛"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">第三届应用实战技术取证初赛</div></div><div class="info-2"><div class="info-item-1">前言警方接到某车企报案，称其各大平台推广下存在大量AI水军。警方迅速利用大模型对各大平台文章下的评论进行分析，获得异常评论的相关信息。通过研判、调证等手段，警方成功端掉该水军窝点。并抓获与窝点相关的犯罪嫌疑人李某和苏某，并对窝点中和嫌...</div></div></div></a><a class="pagination-related" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E7%9F%A5%E8%AF%86/%E4%BB%BF%E7%9C%9F%E5%90%8E%E6%89%93%E5%BC%80%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%9F%A5%E7%9C%8BLinux%E7%9A%84%E7%89%88%E6%9C%AC/" title="仿真后打开命令行查看Linux的版本"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">仿真后打开命令行查看Linux的版本</div></div><div class="info-2"><div class="info-item-1">输入 wsl –list –verbose 这个命令的作用是列出所有已安装的 WSL (Windows Subsystem for Linux) 发行版及其详细信息。 · –list：显示所有已安装的 Linux 发行版 · –ver...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">琉璃幻彩</div><div class="author-info-description">The Greatest Magician!</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">149</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">164</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">37</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FighterGodNemo"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/FighterGodNemo" title="Github" target="_blank"><i class="fab fa-github"></i></a><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="微信"><i class="fab fa-weixin"></i></a><div class="qr-code-popup"><img src="/img/qrcode/wechat-qr.png" alt="微信二维码"/ loading='lazy'></div></div><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="QQ"><i class="fab fa-qq"></i></a><div class="qr-code-popup"><img src="/img/qrcode/qq-qr.png" alt="QQ二维码"/ loading='lazy'></div></div><div class="copy-text-wrapper"><a class="social-icon" href="javascript:void(0)" title="Steam好友代码：1905706957" data-copy-text="1905706957"><i class="fab fa-steam"></i></a><div class="copy-text-popup"><h3>Steam好友代码</h3><p>1905706957</p><p class="copy-hint">点击图标复制</p></div></div><a class="social-icon" href="mailto:guliujia2233@outlook.com" title="Email" target="_blank"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">热爱 CTF 和 Forensic 的网安人一枚～
+欢迎各位大佬交流点评！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AD%94%E6%A1%88%E9%80%9F%E8%A7%88"><span class="toc-number">1.</span> <span class="toc-text">答案速览</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E6%9C%BA%E5%8F%96%E8%AF%81%E7%AD%94%E6%A1%88%E9%80%9F%E8%A7%88"><span class="toc-number">1.1.</span> <span class="toc-text">手机取证答案速览</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8F%96%E8%AF%81%E7%AD%94%E6%A1%88%E9%80%9F%E8%A7%88"><span class="toc-number">1.2.</span> <span class="toc-text">计算机取证答案速览</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8F%96%E8%AF%81%E7%AD%94%E6%A1%88%E9%80%9F%E8%A7%88"><span class="toc-number">1.3.</span> <span class="toc-text">服务器取证答案速览</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E7%AD%94%E6%A1%88%E9%80%9F%E8%A7%88"><span class="toc-number">1.4.</span> <span class="toc-text">内存取证答案速览</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%8B%E7%BC%A9%E5%8C%85-%E6%9D%82%E9%A1%B9%E7%AD%94%E6%A1%88%E9%80%9F%E8%A7%88"><span class="toc-number">1.5.</span> <span class="toc-text">压缩包&#x2F;杂项答案速览</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%89%8B%E6%9C%BA%E5%8F%96%E8%AF%81"><span class="toc-number">2.</span> <span class="toc-text">一、手机取证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE1%EF%BC%9A%E6%89%8B%E6%9C%BA%E7%9A%84%E5%BA%8F%E5%88%97%E5%8F%B7%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">2.1.</span> <span class="toc-text">题目1：手机的序列号是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE2%EF%BC%9A%E8%AF%A5%E6%89%8B%E6%9C%BA%E7%9A%84%E5%85%B7%E4%BD%93%E5%9E%8B%E5%8F%B7%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">2.2.</span> <span class="toc-text">题目2：该手机的具体型号是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE3%EF%BC%9A%E6%89%8B%E6%9C%BA%E4%B8%AD%E5%B7%B2%E5%88%A0%E9%99%A4%E7%9A%84%E8%81%94%E7%B3%BB%E4%BA%BA%E6%89%8B%E6%9C%BA%E5%8F%B7%E7%A0%81%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">2.3.</span> <span class="toc-text">题目3：手机中已删除的联系人手机号码是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE4%EF%BC%9A%E5%AF%86%E7%A0%81%E6%9C%AC%E6%96%87%E4%BB%B6-MD5-%E5%90%8E-6-%E4%BD%8D%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">2.4.</span> <span class="toc-text">题目4：密码本文件 MD5 后 6 位是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE5%EF%BC%9A%E5%AB%8C%E7%96%91%E4%BA%BA%E4%B8%8B%E8%BD%BD%E7%9A%84%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99%E5%B7%A5%E5%85%B7%E5%90%8D%E7%A7%B0%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">2.5.</span> <span class="toc-text">题目5：嫌疑人下载的图片隐写工具名称是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE6%EF%BC%9A%E5%AB%8C%E7%96%91%E4%BA%BA%E4%BD%BF%E7%94%A8%E9%9A%90%E5%86%99%E5%B7%A5%E5%85%B7%E8%BF%9B%E8%A1%8C%E6%96%87%E4%BB%B6%E9%9A%90%E5%86%99%E5%AF%86%E7%A0%81%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">2.6.</span> <span class="toc-text">题目6：嫌疑人使用隐写工具进行文件隐写密码是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE7%EF%BC%9A%E5%AB%8C%E7%96%91%E4%BA%BA%E5%90%91%E6%95%B0%E6%8D%AE%E8%B4%A9%E5%AD%90%E8%B4%AD%E4%B9%B0%E5%85%AC%E6%B0%91%E4%B8%AA%E4%BA%BA%E4%BF%A1%E6%81%AF%E5%85%B1%E8%AE%A1%E5%A4%9A%E5%B0%91%E6%9D%A1%EF%BC%9F"><span class="toc-number">2.7.</span> <span class="toc-text">题目7：嫌疑人向数据贩子购买公民个人信息共计多少条？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE8%EF%BC%9A%E5%AB%8C%E7%96%91%E4%BA%BA%E5%90%91%E6%95%B0%E6%8D%AE%E8%B4%A9%E5%AD%90%E4%BA%A4%E6%98%93%E6%97%B6%E4%BD%BF%E7%94%A8%E7%9A%84%E4%BB%98%E6%AC%BE%E6%96%B9%E5%BC%8F%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">2.8.</span> <span class="toc-text">题目8：嫌疑人向数据贩子交易时使用的付款方式是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE9%EF%BC%9A%E6%95%B0%E6%8D%AE%E8%B4%A9%E5%AD%90%E4%BA%A4%E6%98%93%E8%BF%87%E7%A8%8B%E4%B8%AD%E6%8F%90%E4%BE%9B%E7%9A%84%E9%93%B6%E8%A1%8C%E5%8D%A1%E5%8F%B7%E6%98%AF%E5%A4%9A%E5%B0%91%EF%BC%9F"><span class="toc-number">2.9.</span> <span class="toc-text">题目9：数据贩子交易过程中提供的银行卡号是多少？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE10%EF%BC%9A%E5%AB%8C%E7%96%91%E4%BA%BA%E6%89%80%E4%BD%BF%E7%94%A8%E8%81%8A%E5%A4%A9%E5%B7%A5%E5%85%B7%E7%9A%84%E7%94%A8%E6%88%B7-ID-%E6%98%AF%E5%A4%9A%E5%B0%91%EF%BC%9F"><span class="toc-number">2.10.</span> <span class="toc-text">题目10：嫌疑人所使用聊天工具的用户 ID 是多少？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE11%EF%BC%9A%E8%AE%BF%E9%97%AE%E4%B8%8B%E8%BD%BD%E9%93%BE%E6%8E%A5%E7%9A%84%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AF%B9%E5%BA%94%E5%8C%85%E5%90%8D%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">2.11.</span> <span class="toc-text">题目11：访问下载链接的浏览器对应包名是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE12%EF%BC%9A%E5%AB%8C%E7%96%91%E4%BA%BA%E4%BA%8E%E4%BD%95%E6%97%B6%E4%B8%8B%E8%BD%BD%E6%95%B0%E6%8D%AE%E5%95%86%E4%BA%BA%E5%8F%91%E9%80%81%E7%9A%84%E6%95%B0%E6%8D%AE%E5%8E%8B%E7%BC%A9%E5%8C%85%E6%96%87%E4%BB%B6%EF%BC%9F"><span class="toc-number">2.12.</span> <span class="toc-text">题目12：嫌疑人于何时下载数据商人发送的数据压缩包文件？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE13%EF%BC%9A%E8%AF%A5%E5%8E%8B%E7%BC%A9%E5%8C%85%E7%9A%84%E8%A7%A3%E5%8E%8B%E5%AF%86%E7%A0%81%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">2.13.</span> <span class="toc-text">题目13：该压缩包的解压密码是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE14%EF%BC%9A%E5%B9%B4%E9%BE%84%E5%9C%A8-40-%E8%87%B3-60-%E5%B2%81%E7%9A%84%E5%AF%8C%E8%B1%AA%E5%85%B1%E6%9C%89%E5%A4%9A%E5%B0%91%E4%BA%BA%EF%BC%9F"><span class="toc-number">2.14.</span> <span class="toc-text">题目14：年龄在 40 至 60 岁的富豪共有多少人？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8F%96%E8%AF%81"><span class="toc-number">3.</span> <span class="toc-text">三、计算机取证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE13%EF%BC%9A%E8%BA%AB%E4%BB%BD%E8%AF%81%E5%8F%B7%E6%A3%80%E7%B4%A2"><span class="toc-number">3.1.</span> <span class="toc-text">题目13：身份证号检索</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8F%96%E8%AF%81"><span class="toc-number">4.</span> <span class="toc-text">四、服务器取证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE2%EF%BC%9A%E8%AF%B7%E5%88%86%E6%9E%90%E6%A3%80%E6%9D%903%EF%BC%9A%E5%AB%8C%E7%96%91%E4%BA%BA%E5%B0%86%E6%9F%90%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7%E5%8A%A0%E5%85%A5%E7%89%B9%E6%AE%8A%E7%94%A8%E6%88%B7%E7%BB%84%EF%BC%8C%E8%B5%8B%E4%BA%88%E5%85%B6%E8%AF%BB%E5%8F%96-etc-shadow-%E7%9A%84%E6%9D%83%E9%99%90%EF%BC%8C%E8%AF%B7%E9%97%AE%E8%AF%A5%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7%E7%9A%84%E7%94%A8%E6%88%B7%E5%90%8D%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E3%80%90%E7%AD%94%E6%A1%88%E6%A0%BC%E5%BC%8F%EF%BC%9Aadmin%E3%80%91"><span class="toc-number">4.1.</span> <span class="toc-text">题目2：请分析检材3：嫌疑人将某普通用户加入特殊用户组，赋予其读取 &#x2F;etc&#x2F;shadow 的权限，请问该普通用户的用户名是什么？【答案格式：admin】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE3%EF%BC%9A%E8%AF%B7%E5%88%86%E6%9E%90%E6%A3%80%E6%9D%903%EF%BC%9A%E5%88%86%E6%9E%90%E5%AB%8C%E7%96%91%E4%BA%BA%E6%89%80%E4%BD%BF%E7%94%A8%E7%9A%84-Web-%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%8C%E5%85%B6%E5%85%B7%E4%BD%93%E5%90%8D%E7%A7%B0%E5%8F%8A%E4%B8%BB%E7%89%88%E6%9C%AC%E5%8F%B7%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E3%80%90%E7%AD%94%E6%A1%88%E6%A0%BC%E5%BC%8F%EF%BC%9Aapache-2-40%E3%80%91"><span class="toc-number">4.2.</span> <span class="toc-text">题目3：请分析检材3：分析嫌疑人所使用的 Web 服务器，其具体名称及主版本号是什么？【答案格式：apache&#x2F;2.40】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE4%EF%BC%9A%E8%AF%B7%E5%88%86%E6%9E%90%E6%A3%80%E6%9D%903%EF%BC%9A%E5%AB%8C%E7%96%91%E4%BA%BA%E5%80%9F%E5%8A%A9-AI-%E9%83%A8%E7%BD%B2-%E2%80%9C%E5%AE%88%E5%8D%AB%E2%80%9D-%E8%84%9A%E6%9C%AC%EF%BC%8C%E9%9D%9E%E7%AE%A1%E7%90%86%E5%91%98-IP-%E7%99%BB%E5%BD%95%E6%97%B6%E5%B0%86%E8%A7%A6%E5%8F%91%E5%AE%9A%E6%97%B6%E5%BC%BA%E5%88%B6%E7%99%BB%E5%87%BA%EF%BC%8C%E8%AF%A5%E6%9C%8D%E5%8A%A1%E6%AF%8F%E9%9A%94%E5%87%A0%E5%88%86%E9%92%9F%E8%A7%A6%E5%8F%91%E4%B8%80%E6%AC%A1%EF%BC%9F%E3%80%90%E7%AD%94%E6%A1%88%E6%A0%BC%E5%BC%8F%EF%BC%9A10%E3%80%91"><span class="toc-number">4.3.</span> <span class="toc-text">题目4：请分析检材3：嫌疑人借助 AI 部署 “守卫” 脚本，非管理员 IP 登录时将触发定时强制登出，该服务每隔几分钟触发一次？【答案格式：10】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE5%EF%BC%9A%E8%AF%B7%E5%88%86%E6%9E%90%E6%A3%80%E6%9D%903%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%86%85%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E6%96%87%E4%BB%B6%EF%BC%8C%E8%AE%A1%E7%AE%97%E5%85%B6SHA256%E5%93%88%E5%B8%8C%E5%80%BC%EF%BC%8C%E5%8F%96%E5%90%8E6%E4%BD%8D%EF%BC%8C%E5%AD%97%E6%AF%8D%E5%A4%A7%E5%86%99%E3%80%82%E3%80%90%E7%AD%94%E6%A1%88%E6%A0%BC%E5%BC%8F%EF%BC%9A6DEF3898%E3%80%91"><span class="toc-number">4.4.</span> <span class="toc-text">题目5：请分析检材3：计算服务器内数据库备份文件，计算其SHA256哈希值，取后6位，字母大写。【答案格式：6DEF3898】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE6%EF%BC%9A%E8%AF%B7%E5%88%86%E6%9E%90%E6%A3%80%E6%9D%903%EF%BC%9AMySQL-%E6%95%B0%E6%8D%AE%E5%BA%93-root-%E7%94%A8%E6%88%B7%E7%9A%84%E7%99%BB%E5%BD%95%E5%AF%86%E7%A0%81%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E3%80%90%E7%AD%94%E6%A1%88%E6%A0%BC%E5%BC%8F%EF%BC%9A%E6%A0%B9%E6%8D%AE%E5%AE%9E%E9%99%85%E5%80%BC%E5%A1%AB%E5%86%99%E3%80%91"><span class="toc-number">4.5.</span> <span class="toc-text">题目6：请分析检材3：MySQL 数据库 root 用户的登录密码是什么？【答案格式：根据实际值填写】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE7%EF%BC%9A%E8%AF%B7%E5%88%86%E6%9E%90%E6%A3%80%E6%9D%903%EF%BC%9A%E5%A4%96%E6%8C%82%E7%BD%91%E7%AB%99%E6%89%80%E5%AF%B9%E5%A4%96%E5%BC%80%E6%94%BE%E7%9A%84%E7%AB%AF%E5%8F%A3%E5%8F%B7%E6%98%AF%E5%A4%9A%E5%B0%91%EF%BC%9F%E3%80%90%E7%AD%94%E6%A1%88%E6%A0%BC%E5%BC%8F%EF%BC%9A1234%E3%80%91"><span class="toc-number">4.6.</span> <span class="toc-text">题目7：请分析检材3：外挂网站所对外开放的端口号是多少？【答案格式：1234】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE8%EF%BC%9A%E8%AF%B7%E5%88%86%E6%9E%90%E6%A3%80%E6%9D%903%EF%BC%9A%E5%AB%8C%E7%96%91%E4%BA%BA%E4%B8%BA%E4%B8%8A%E4%BC%A0%E5%A4%A7%E5%9E%8B%E6%81%B6%E6%84%8F%E6%8F%92%E4%BB%B6%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E9%99%90%E5%88%B6%EF%BC%8C%E5%85%B6%E6%9C%80%E5%A4%A7%E4%B8%8A%E4%BC%A0%E9%99%90%E5%88%B6%E6%98%AF%E5%A4%9A%E5%B0%91%EF%BC%9F%E3%80%90%E7%AD%94%E6%A1%88%E6%A0%BC%E5%BC%8F%EF%BC%9A100M%E3%80%91"><span class="toc-number">4.7.</span> <span class="toc-text">题目8：请分析检材3：嫌疑人为上传大型恶意插件修改文件上传限制，其最大上传限制是多少？【答案格式：100M】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE9%EF%BC%9A%E8%AF%B7%E5%88%86%E6%9E%90%E6%A3%80%E6%9D%903%EF%BC%9A%E5%AB%8C%E7%96%91%E4%BA%BA%E8%AE%BE%E7%BD%AE%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%9A%E6%97%B6%E8%87%AA%E5%8A%A8%E5%A4%87%E4%BB%BD%E5%B9%B6%E4%B8%8A%E4%BC%A0%E8%87%B3%E5%A2%83%E5%A4%96%EF%BC%8C%E8%AF%B7%E9%97%AE%E8%AF%A5%E5%A2%83%E5%A4%96%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84IP%E5%9C%B0%E5%9D%80%E6%98%AF%E5%A4%9A%E5%B0%91%EF%BC%9F%E3%80%90%E7%AD%94%E6%A1%88%E6%A0%BC%E5%BC%8F%EF%BC%9A8-8-8-8-%E3%80%91"><span class="toc-number">4.8.</span> <span class="toc-text">题目9：请分析检材3：嫌疑人设置数据库定时自动备份并上传至境外，请问该境外服务器的IP地址是多少？【答案格式：8.8.8.8]】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE10%EF%BC%9A%E8%AF%B7%E5%88%86%E6%9E%90%E6%A3%80%E6%9D%903%EF%BC%9A%E5%AB%8C%E7%96%91%E4%BA%BA%E7%99%BB%E5%BD%95%E5%90%8E%E5%8F%B0%E7%9A%84%E7%9B%AE%E5%BD%95%E8%B7%AF%E5%BE%84%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E3%80%90%E7%AD%94%E6%A1%88%E6%A0%BC%E5%BC%8F%EF%BC%9A-abc-abc%E3%80%91"><span class="toc-number">4.9.</span> <span class="toc-text">题目10：请分析检材3：嫌疑人登录后台的目录路径是什么？【答案格式：&#x2F;abc&#x2F;abc】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE11%EF%BC%9A%E8%AF%B7%E5%88%86%E6%9E%90%E6%A3%80%E6%9D%903%EF%BC%9A%E8%AE%BF%E9%97%AE%E5%90%8E%E5%8F%B0%E7%99%BB%E5%BD%95%E9%A1%B5%E9%9D%A2%E6%AC%A1%E6%95%B0%E6%9C%80%E5%A4%9A%E7%9A%84-IP-%E5%9C%B0%E5%9D%80%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E3%80%90%E7%AD%94%E6%A1%88%E6%A0%BC%E5%BC%8F%EF%BC%9A192-168-1-1%E3%80%91"><span class="toc-number">4.10.</span> <span class="toc-text">题目11：请分析检材3：访问后台登录页面次数最多的 IP 地址是什么？【答案格式：192.168.1.1】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE12%EF%BC%9A%E8%AF%B7%E5%88%86%E6%9E%90%E6%A3%80%E6%9D%903%EF%BC%9A%E7%BD%91%E7%AB%99%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%E5%91%98%E7%9A%84%E6%98%8E%E6%96%87%E5%AF%86%E7%A0%81%E4%B8%BA%E5%A4%9A%E5%B0%91%EF%BC%9F%E3%80%90%E7%AD%94%E6%A1%88%E6%A0%BC%E5%BC%8F%EF%BC%9A%E6%A0%B9%E6%8D%AE%E5%AE%9E%E9%99%85%E5%80%BC%E5%A1%AB%E5%86%99%E3%80%91"><span class="toc-number">4.11.</span> <span class="toc-text">题目12：请分析检材3：网站后台管理员的明文密码为多少？【答案格式：根据实际值填写】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE13%EF%BC%9A%E8%AF%B7%E5%88%86%E6%9E%90%E6%A3%80%E6%9D%903%EF%BC%9A%E8%AF%A5%E7%BD%91%E7%AB%99%E6%94%AF%E4%BB%98%E6%8E%A5%E5%8F%A3%E6%89%80%E5%AF%B9%E6%8E%A5%E7%9A%84%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8E%A5%E5%85%A5%E5%95%86%E5%90%8D%E7%A7%B0%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E3%80%90%E7%AD%94%E6%A1%88%E6%A0%BC%E5%BC%8F%EF%BC%9A%E6%A0%B9%E6%8D%AE%E5%AE%9E%E9%99%85%E5%80%BC%E5%A1%AB%E5%86%99%E3%80%91"><span class="toc-number">4.12.</span> <span class="toc-text">题目13：请分析检材3：该网站支付接口所对接的第三方接入商名称是什么？【答案格式：根据实际值填写】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE14%EF%BC%9A%E8%AF%B7%E5%88%86%E6%9E%90%E6%A3%80%E6%9D%903%EF%BC%9A%E7%BD%91%E7%AB%99%E7%9A%84%E5%88%9B%E5%BB%BA%E6%97%B6%E9%97%B4%E6%98%AF%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%EF%BC%9F%E3%80%90%E7%AD%94%E6%A1%88%E6%A0%BC%E5%BC%8F%EF%BC%9A2026-5-20%E3%80%91"><span class="toc-number">4.13.</span> <span class="toc-text">题目14：请分析检材3：网站的创建时间是什么时候？【答案格式：2026&#x2F;5&#x2F;20】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE15%EF%BC%9A%E8%AF%B7%E5%88%86%E6%9E%90%E6%A3%80%E6%9D%903%EF%BC%9A%E7%BD%91%E7%AB%99Git%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF%E4%B8%AD%EF%BC%8C%E6%89%BE%E5%87%BA%E4%BD%9C%E8%80%85%E5%A7%93%E5%90%8D%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E3%80%90%E7%AD%94%E6%A1%88%E6%A0%BC%E5%BC%8F%EF%BC%9A%E6%A0%B9%E6%8D%AE%E5%AE%9E%E9%99%85%E5%80%BC%E5%A1%AB%E5%86%99%E3%80%91"><span class="toc-number">4.14.</span> <span class="toc-text">题目15：请分析检材3：网站Git配置信息中，找出作者姓名是什么？【答案格式：根据实际值填写】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE18%EF%BC%9A%E8%AF%B7%E5%88%86%E6%9E%90%E6%A3%80%E6%9D%903%EF%BC%9A%E7%BB%9F%E8%AE%A1%E5%85%A8%E9%83%A8%E8%AE%A2%E5%8D%95%E6%95%B0%E6%8D%AE%EF%BC%8C%E8%B4%AD%E4%B9%B0%E6%95%B0%E9%87%8F%E7%B4%AF%E8%AE%A1%E6%9C%80%E9%AB%98%E7%9A%84%E5%BA%94%E7%94%A8%E5%90%8D%E7%A7%B0%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E3%80%90%E7%AD%94%E6%A1%88%E6%A0%BC%E5%BC%8F%EF%BC%9A%E6%A0%B9%E6%8D%AE%E5%AE%9E%E9%99%85%E5%80%BC%E5%A1%AB%E5%86%99%E3%80%91"><span class="toc-number">4.15.</span> <span class="toc-text">题目18：请分析检材3：统计全部订单数据，购买数量累计最高的应用名称是什么？【答案格式：根据实际值填写】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE20%EF%BC%9A%E8%AF%B7%E5%88%86%E6%9E%90%E6%A3%80%E6%9D%903%EF%BC%9A%E5%AB%8C%E7%96%91%E4%BA%BA%E5%88%9B%E5%BB%BA%E7%9A%84%E6%8B%A5%E6%9C%89-FILE-%E4%B8%8E-SUPER-%E6%9D%83%E9%99%90%E7%9A%84%E9%9A%90%E8%94%BD-MySQL-%E8%B4%A6%E6%88%B7%EF%BC%8C%E5%85%B6%E7%94%A8%E6%88%B7%E5%90%8D%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E3%80%90%E7%AD%94%E6%A1%88%E6%A0%BC%E5%BC%8F%EF%BC%9Aadmin%E3%80%91"><span class="toc-number">4.16.</span> <span class="toc-text">题目20：请分析检材3：嫌疑人创建的拥有 FILE 与 SUPER 权限的隐蔽 MySQL 账户，其用户名是什么？【答案格式：admin】</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81"><span class="toc-number">5.</span> <span class="toc-text">内存取证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE1%EF%BC%9A%E5%8B%92%E7%B4%A2%E8%BF%9B%E7%A8%8B-PID"><span class="toc-number">5.1.</span> <span class="toc-text">题目1：勒索进程 PID</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE2%EF%BC%9A%E5%8F%97%E5%AE%B3%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%BB%E6%9C%BA%E5%90%8D"><span class="toc-number">5.2.</span> <span class="toc-text">题目2：受害计算机主机名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE3%EF%BC%9A%E8%A2%AB%E6%89%B9%E9%87%8F%E5%8A%A0%E5%AF%86%E7%9A%84%E6%A1%8C%E9%9D%A2%E5%AD%90%E7%9B%AE%E5%BD%95"><span class="toc-number">5.3.</span> <span class="toc-text">题目3：被批量加密的桌面子目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE4%EF%BC%9A%E5%8A%A0%E5%AF%86%E6%96%87%E4%BB%B6%E5%BC%80%E5%A4%B4-5-%E5%AD%97%E8%8A%82-Magic"><span class="toc-number">5.4.</span> <span class="toc-text">题目4：加密文件开头 5 字节 Magic</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE5%EF%BC%9A%E7%9C%9F%E6%AD%A3%E5%AF%86%E6%96%87%E6%95%B0%E6%8D%AE%E8%B5%B7%E5%A7%8B%E5%81%8F%E7%A7%BB"><span class="toc-number">5.5.</span> <span class="toc-text">题目5：真正密文数据起始偏移</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE6%EF%BC%9A%E5%AF%B9%E7%A7%B0%E5%AF%86%E9%92%A5%E9%95%BF%E5%BA%A6"><span class="toc-number">5.6.</span> <span class="toc-text">题目6：对称密钥长度</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%8B%E7%BC%A9%E5%8C%85-%E6%9D%82%E9%A1%B9"><span class="toc-number">6.</span> <span class="toc-text">压缩包&#x2F;杂项</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE15%EF%BC%9A%E6%89%BE%E5%87%BA%E5%AB%8C%E7%96%91%E4%BA%BA%E7%AD%9B%E9%80%89%E7%9A%84%E9%87%8D%E7%82%B9%E5%AE%A2%E6%88%B7%E5%90%8D%E5%8D%95%EF%BC%8C%E5%B9%B6%E7%BB%9F%E8%AE%A1%E5%90%8D%E5%8D%95%E5%86%85%E5%85%B1%E6%9C%89%E5%A4%9A%E5%B0%91%E4%BA%BA%EF%BC%9F"><span class="toc-number">6.1.</span> <span class="toc-text">题目15：找出嫌疑人筛选的重点客户名单，并统计名单内共有多少人？</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/11/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E5%93%B2%E5%AD%A6%E4%B8%8E%E7%94%9F%E7%89%A9/%E6%97%A5%E6%9C%AC%E6%96%87%E5%8C%96%E6%B7%B1%E5%BA%A6%E7%A0%94%E7%A9%B6_%E8%AF%BB%E7%A9%BA%E6%B0%94%E4%B8%8E%E6%B2%89%E9%BB%98%E7%9A%84%E6%9A%B4%E5%8A%9B/" title="无标题">无标题</a><time datetime="2026-08-11T11:20:17.772Z" title="更新于 2026-08-11 19:20:17">2026-08-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/10/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E5%93%B2%E5%AD%A6%E4%B8%8E%E7%94%9F%E7%89%A9/%E6%84%9F%E6%83%85%E6%80%9D%E6%83%B3%E4%B8%8E%E4%BA%BA%E6%80%A7%E6%B4%9E%E5%AF%9F%E6%B5%85%E8%B0%88/" title="无标题">无标题</a><time datetime="2026-08-10T12:11:00.000Z" title="更新于 2026-08-10 20:11:00">2026-08-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/02/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E5%93%B2%E5%AD%A6%E4%B8%8E%E7%94%9F%E7%89%A9/%E6%B2%89%E6%B2%A1%E6%88%90%E6%9C%AC%E4%B8%8D%E5%8F%82%E4%B8%8E%E9%87%8D%E5%A4%A7%E5%86%B3%E7%AD%96-%E6%B7%B1%E5%BA%A6%E8%B0%83%E7%A0%94/" title="无标题">无标题</a><time datetime="2026-08-10T12:11:00.000Z" title="更新于 2026-08-10 20:11:00">2026-08-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/10/%E6%B8%B8%E6%88%8FGame/CS2%E8%81%8C%E4%B8%9A%E9%80%89%E6%89%8B%E9%BC%A0%E6%A0%87%E7%81%B5%E6%95%8F%E5%BA%A6%E9%85%8D%E7%BD%AE%E6%8A%A5%E5%91%8A/" title="无标题">无标题</a><time datetime="2026-08-10T12:02:00.000Z" title="更新于 2026-08-10 20:02:00">2026-08-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/10/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E5%93%B2%E5%AD%A6%E4%B8%8E%E7%94%9F%E7%89%A9/%E5%A4%96%E8%83%9A%E5%9E%8B%E4%BD%93%E8%B4%A8%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/" title="无标题">无标题</a><time datetime="2026-08-10T12:00:00.000Z" title="更新于 2026-08-10 20:00:00">2026-08-10</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 琉璃幻彩</span><span class="framework-info"><span id="busuanzi_container_site_pv">本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span><span class="footer-separator">|</span><span id="busuanzi_container_site_uv">本站访客数 <span id="busuanzi_value_site_uv"></span> 人次</span></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+  const getUtterancesTheme = theme => theme === 'dark' ? 'photon-dark' : 'github-light'
+
+  const loadUtterances = (el = document, key) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyUtterances = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const config = {
+      src: 'https://utteranc.es/client.js',
+      repo: 'FighterGodNemo/FighterGodNemo.github.io',
+      theme: getUtterancesTheme(document.documentElement.getAttribute('data-theme')),
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      'issue-term': isShuoshuo ? key : (option && option['issue-term']) || 'pathname'
+    }
+
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => ele.setAttribute(key, value))
+    el.querySelector('#utterances-wrap').appendChild(ele)
+  }
+
+  const changeUtterancesTheme = theme => {
+    const iframe = document.querySelector('#utterances-wrap iframe')
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: getUtterancesTheme(theme)
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeUtterancesTheme, 'utterances')
+
+  if (isShuoshuo) {
+    'Utterances' === 'Utterances'
+      ? window.shuoshuoComment = { loadComment: loadUtterances }
+      : window.loadOtherComment = loadUtterances
+    return
+  }
+  
+  if ('Utterances' === 'Utterances' || !false) {
+    if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+    else loadUtterances()
+  } else {
+    window.loadOtherComment = loadUtterances
+  }
+})()</script></div><script src="/js/custom.js?v=20260402-2"></script><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.staticfile.org/pjax/0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:description\"]","link[rel=\"canonical\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>
