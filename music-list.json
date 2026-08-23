@@ -72,9 +72,15 @@
     "cover": "/img/bg/%E8%83%8C%E6%99%AF%E4%BA%94.webp"
   },
   {
+    "name": "老本行",
+    "artist": "ICE、那奇沃夫、贝贝",
+    "url": "/music/%E8%83%8C%E6%99%AF%E4%BA%94/ICE%E3%80%81%E9%82%A3%E5%A5%87%E6%B2%83%E5%A4%AB%E3%80%81%E8%B4%9D%E8%B4%9D%20-%20%E8%80%81%E6%9C%AC%E8%A1%8C%2002.mp3",
+    "cover": "/img/bg/%E8%83%8C%E6%99%AF%E4%BA%94.webp"
+  },
+  {
     "name": "远光点",
     "artist": "鸣潮先约电台, Crywolf",
-    "url": "/music/%E8%83%8C%E6%99%AF%E4%BA%94/%E9%B8%A3%E6%BD%AE%E5%85%88%E7%BA%A6%E7%94%B5%E5%8F%B0%2C%20Crywolf%20-%20%E8%BF%9C%E5%85%89%E7%82%B9%2002.mp3",
+    "url": "/music/%E8%83%8C%E6%99%AF%E4%BA%94/%E9%B8%A3%E6%BD%AE%E5%85%88%E7%BA%A6%E7%94%B5%E5%8F%B0%2C%20Crywolf%20-%20%E8%BF%9C%E5%85%89%E7%82%B9%2003.mp3",
     "cover": "/img/bg/%E8%83%8C%E6%99%AF%E4%BA%94.webp"
   }
 ]
