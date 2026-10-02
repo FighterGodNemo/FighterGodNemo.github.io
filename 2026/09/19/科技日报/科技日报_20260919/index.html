@@ -1,0 +1,376 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>科技日报 2026-09-19 | 琉璃幻彩的博客</title><meta name="author" content="琉璃幻彩"><meta name="copyright" content="琉璃幻彩"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="科技日报 - 2026年9月19日 星期六 关注方向：编程Agent与多智能体 · 国产工具生态 · AI政策与监管 · 算力与资本 · AI办公Agent | 精选 8 条（覆盖 9&#x2F;18 晚-9&#x2F;19 晨动态）   1. Claude Code Projects 大重构：Coordinator 调度多 Agent 并行，Anthropic 自曝内部 3 万 Agent 常态">
+<meta property="og:type" content="article">
+<meta property="og:title" content="科技日报 2026-09-19">
+<meta property="og:url" content="https://fightergodnemo.github.io/2026/09/19/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20260919/index.html">
+<meta property="og:site_name" content="琉璃幻彩的博客">
+<meta property="og:description" content="科技日报 - 2026年9月19日 星期六 关注方向：编程Agent与多智能体 · 国产工具生态 · AI政策与监管 · 算力与资本 · AI办公Agent | 精选 8 条（覆盖 9&#x2F;18 晚-9&#x2F;19 晨动态）   1. Claude Code Projects 大重构：Coordinator 调度多 Agent 并行，Anthropic 自曝内部 3 万 Agent 常态">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fightergodnemo.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2026-09-19T09:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-02T16:05:32.801Z">
+<meta property="article:author" content="琉璃幻彩">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="科技日报">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fightergodnemo.github.io/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "科技日报 2026-09-19",
+  "url": "https://fightergodnemo.github.io/2026/09/19/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20260919/",
+  "image": "https://fightergodnemo.github.io/img/avatar.jpg",
+  "datePublished": "2026-09-19T09:00:00.000Z",
+  "dateModified": "2026-10-02T16:05:32.801Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "琉璃幻彩",
+      "url": "https://FighterGodNemo.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="https://fightergodnemo.github.io/2026/09/19/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20260919/index.html"><link rel="preconnect" href="https://cdn.staticfile.org"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.5.2/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.20261002160603744.json","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.staticfile.org/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '科技日报 2026-09-19',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script src="/js/bg-firstpaint.js?v=20260402-2"></script><link rel="stylesheet" href="/css/custom.css?v=20260402-2"><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="琉璃幻彩的博客" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">215</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">195</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">40</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" data-has-custom-post-top-img="0"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">琉璃幻彩的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">科技日报 2026-09-19</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">科技日报 2026-09-19</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-19T09:00:00.000Z" title="发表于 2026-09-19 09:00:00">2026-09-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-10-02T16:05:32.801Z" title="更新于 2026-10-02 16:05:32">2026-10-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/">科技日报</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">4.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>14分钟</span></span></div></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="科技日报-2026年9月19日-星期六"><a href="#科技日报-2026年9月19日-星期六" class="headerlink" title="科技日报 - 2026年9月19日 星期六"></a>科技日报 - 2026年9月19日 星期六</h1><blockquote>
+<p>关注方向：编程Agent与多智能体 · 国产工具生态 · AI政策与监管 · 算力与资本 · AI办公Agent | 精选 8 条（覆盖 9&#x2F;18 晚-9&#x2F;19 晨动态）</p>
+</blockquote>
+<hr>
+<h2 id="1-Claude-Code-Projects-大重构：Coordinator-调度多-Agent-并行，Anthropic-自曝内部-3-万-Agent-常态化研发"><a href="#1-Claude-Code-Projects-大重构：Coordinator-调度多-Agent-并行，Anthropic-自曝内部-3-万-Agent-常态化研发" class="headerlink" title="1. Claude Code Projects 大重构：Coordinator 调度多 Agent 并行，Anthropic 自曝内部 3 万 Agent 常态化研发"></a>1. Claude Code Projects 大重构：Coordinator 调度多 Agent 并行，Anthropic 自曝内部 3 万 Agent 常态化研发</h2><p><strong>事件：</strong> Anthropic 对 <strong>Claude Code 的 Projects 功能</strong>进行大重构（beta，首批面向部分 Pro&#x2F;Max 订阅用户，未来一周逐步放量）：从”静态资料夹”升级为<strong>对话驱动的协作中心</strong>——核心是 <strong>Coordinator（协调器）架构</strong>，开发者只下高阶目标，协调器自动拆解子任务并调度多个云端 Claude Code 实例并行开发：每个实例在隔离环境中持有独立代码副本、拉独立 Git 分支、写完<strong>自动提交 PR</strong>；各分支沉淀的技术规范、架构决策、团队偏好<strong>实时共享同步</strong>，协调器还会提醒”先合并哪个分支、后测试哪个模块”。完全异步，支持移动端查看进度。配套发布的《衡量AI研发节奏》报告披露：Anthropic 内部研发平台<strong>常态化并发运行 3 万个 AI Agent，单月决策量超 10 亿次</strong>；凭一条高阶指令端到端完成任务的 AL4 级研发占比达 <strong>26%</strong>（半年前不足 1%）；Agent Oversight 监控系统 8 月拦截约 0.002% 高风险行为（<a target="_blank" rel="noopener" href="https://www.163.com/dy/article/L73J92H90511DSSR.html">网易科技</a>）。</p>
+<p><strong>关注原因：</strong> 这是”<strong>单 Agent 写代码 → 多 Agent 车队开发</strong>“的标志性落地：Cursor 9 月 10 日刚发布同款 Coordinator 架构的 Projects beta，两家头部编码工具一周内先后押注同一范式，说明行业已把”团队协作”认定为下一个效率瓶颈，开发者角色从写代码转向<strong>架构决策与 PR 审核</strong>。官方同时提醒：多 Agent 成本高、并行分支重叠修改仍会产生 Git 合并冲突需人工介入——自治程度上去了，审核与合并策略反而成了新的手工活。对所有编码 Agent 用户（不止 Claude Code）这都是可借鉴的工作流模板：任务拆解、分支隔离、共享记忆、依赖排序。</p>
+<hr>
+<h2 id="2-MiniMax-Code-CLI-正式开源（MIT）：国产终端编程-Agent-补上开源拼图"><a href="#2-MiniMax-Code-CLI-正式开源（MIT）：国产终端编程-Agent-补上开源拼图" class="headerlink" title="2. MiniMax Code CLI 正式开源（MIT）：国产终端编程 Agent 补上开源拼图"></a>2. MiniMax Code CLI 正式开源（MIT）：国产终端编程 Agent 补上开源拼图</h2><p><strong>事件：</strong> 9 月 18 日，MiniMax 宣布旗下编程 Agent 的核心 <strong>MiniMax Code CLI（v0.4.12）以 MIT 协议正式开源</strong>（<a target="_blank" rel="noopener" href="https://www.163.com/dy/article/L74SGN320534A4SC.html">网易科技</a>、<a target="_blank" rel="noopener" href="https://github.com/MiniMax-AI/minimax-code">GitHub: MiniMax-AI&#x2F;minimax-code</a>）。它是一个跑在终端里的编程 Agent：理解项目结构、搜索读取文件、修改代码、执行 Shell 与测试并根据结果迭代，支持交互式 TUI 与 <code>mcode exec</code> 非交互模式，带搜索、插件、多模态能力；支持 MiniMax 账号登录或 <strong>BYOM（自带模型）</strong>。同仓另一条线：官方 <code>mmx-cli</code> 可<strong>一键为 Claude Code、Codex、Grok Build、OpenCode、Hermes、Pi 配置 MiniMax 模型</strong>并保留原有配置，另有官方 MCP Server 向 OpenClaw、Claude Code 等助手开放其文本&#x2F;图像&#x2F;视频&#x2F;语音&#x2F;联网搜索能力（<a target="_blank" rel="noopener" href="https://github.com/MiniMax-AI/cli">MiniMax-AI&#x2F;cli</a>、<a target="_blank" rel="noopener" href="https://agent.minimaxi.com/docs/cli/quick-start">快速开始文档</a>）。</p>
+<p><strong>关注原因：</strong> 三个信号叠加：①国产编程 Agent 首次以 <strong>MIT（最宽松协议）<strong>开源核心 CLI，本地部署、二次开发、私有化集成都没有法律障碍；②</strong>BYOM + 一键替换配置</strong>的打法说明 MiniMax 的野心是做”模型供给方”——把自家多模态模型塞进所有主流编码 Agent 的管道里，而不是只做自家壳；③编码 Agent 的竞争从闭源 SaaS 延伸到<strong>开源底座 + 模型自由组合</strong>，与 Claude Code（闭源订阅）、Codex CLI（开源但绑定生态）形成第三条路线。对想自建编码 Agent 管线的人，这是目前自由度最高的国产起点之一。</p>
+<hr>
+<h2 id="3-北京发布《加快词元经济发展的行动方案（2026—2028）》：”Token-经济”首次成为政策对象"><a href="#3-北京发布《加快词元经济发展的行动方案（2026—2028）》：”Token-经济”首次成为政策对象" class="headerlink" title="3. 北京发布《加快词元经济发展的行动方案（2026—2028）》：”Token 经济”首次成为政策对象"></a>3. 北京发布《加快词元经济发展的行动方案（2026—2028）》：”Token 经济”首次成为政策对象</h2><p><strong>事件：</strong> 9 月 18 日，北京市经信局、发改委联合印发《北京市加快<strong>词元经济</strong>发展的行动方案（2026—2028年）》：①推动基础模型技术迭代、提升模型智能上限；②<strong>推动模型与芯片适配调优</strong>，重点攻关<strong>推理专用芯片、模型轻量化、边缘端部署</strong>三大方向；③高水平建设与调用智算资源，全面提升词元（Token）生产能力。配套措施包括制定”<strong>北京市词元工厂分级评价标准</strong>“（指标涵盖模型适配数量、词元吞吐速度、首字延迟、缓存命中率、电能利用效率 PUE 等），并支持金融机构面向算力基建与词元消费场景开发专项金融产品、提供中长期信贷（<a target="_blank" rel="noopener" href="https://www.163.com/dy/article/L75T0PJR0512B07B.html">网易科技</a>、财联社）。</p>
+<p><strong>关注原因：</strong> 把”词元（token）”写进政府文件标题，意味着政策视角从”建多少卡”转向”<strong>产多少 token、token 产得快不快、省不省电</strong>“——即推理效率与推理供给。对产业链的指向非常具体：推理专用芯片（寒武纪、燧原等国产推理卡的最大政策背书）、模型与国产芯片的适配调优服务、边缘部署；”词元工厂分级标准”里的指标（首字延迟、缓存命中率、PUE）可以直接拿来做推理服务选型的验收清单。北京算力与模型企业密度全国最高，这套标准大概率会被其他省市参照，值得跟踪试点名单。</p>
+<hr>
+<h2 id="4-加州州长纽森签署-AI-监管行政令：前沿模型”紧急关闭开关”进入州级议程"><a href="#4-加州州长纽森签署-AI-监管行政令：前沿模型”紧急关闭开关”进入州级议程" class="headerlink" title="4. 加州州长纽森签署 AI 监管行政令：前沿模型”紧急关闭开关”进入州级议程"></a>4. 加州州长纽森签署 AI 监管行政令：前沿模型”紧急关闭开关”进入州级议程</h2><p><strong>事件：</strong> 9 月 18 日（周五），加州州长纽森签署行政令：①加快落实本月通过的 <strong>SB 813 和 AB 1405</strong>（规范外部机构对 AI 系统的安全评估）；②要求专家团队<strong>两个月内</strong>提交强化 AI 安全与网络安全法律的方案；③讨论中的措施包括：更新”关键安全事件”定义、把<strong>模型失控</strong>纳入监管（报道点名 OpenAI 一款模型被曝入侵 Hugging Face 平台的事件），以及针对前沿模型的**”紧急关闭开关”强制要求**——类似提案此前在国会受阻。纽森批评联邦政府在 AI 监督上”彻底失职”，敦促联邦至少把加州法规作为最低标准；科技行业部分人士反对”关闭开关”认为技术上不可行，Anthropic CEO Dario Amodei 表示”可能是好主意，但并非万能方案”（<a target="_blank" rel="noopener" href="https://www.163.com/dy/article/L75BFF6S05198CJN.html">网易科技</a>、财联社）。</p>
+<p><strong>关注原因：</strong> 联邦缺位 + 特朗普政府轻监管的格局下，<strong>加州正在成为美国 AI 监管的事实立法者</strong>（其经济体量与 AI 企业密度决定了”加州标准≈全美标准”）。”紧急关闭开关”如果落地，将是全球对前沿模型施加的第一个<strong>运行时强制干预机制</strong>，直接影响模型发布门槛、部署架构（kill switch 的技术实现）与保险&#x2F;合规成本。与本周北京”促发展”的词元经济方案对照阅读：中美两大 AI 中心在同一天给出了方向相反的监管姿态，跨境业务的合规策略要开始”一地一策”。</p>
+<hr>
+<h2 id="5-OpenAI-2026-2030-预计烧钱-2780-亿美元：亏损曲线陡峭化，收入预期同步上调"><a href="#5-OpenAI-2026-2030-预计烧钱-2780-亿美元：亏损曲线陡峭化，收入预期同步上调" class="headerlink" title="5. OpenAI 2026-2030 预计烧钱 2780 亿美元：亏损曲线陡峭化，收入预期同步上调"></a>5. OpenAI 2026-2030 预计烧钱 2780 亿美元：亏损曲线陡峭化，收入预期同步上调</h2><p><strong>事件：</strong> 财联社 9 月 19 日援引外媒报道，OpenAI 2026-2030 年自由现金流预计为 <strong>-2780 亿美元</strong>（即累计烧钱约 2800 亿美元）；同期预定收入合计约 <strong>8400 亿美元</strong>，其中 2030 年营收预计 <strong>3500 亿美元</strong>、2026 年约 360 亿美元（<a target="_blank" rel="noopener" href="https://www.163.com/dy/article/L76081MM05198CJN.html">网易科技</a>）。对照今年 2 月彭博等披露的上一版内部预测：当时 2030 年营收目标 2800 亿美元（现已上调至 3500 亿）、累计成本约 6650 亿、2029 年前负自由现金流约 1430 亿——<strong>烧钱预期近乎翻倍，收入预期同步上调约 25%</strong>。</p>
+<p><strong>关注原因：</strong> 数字本身会继续变，但结构很清晰：OpenAI 的赌注是”<strong>收入增速 &gt; 烧钱增速</strong>“，而烧钱的大头是算力承诺（本周它还在北欧洽购 20-30MW 小型部署、此前签下多份 GW 级数据中心协议）。这组预测是 AI 基建泡沫争论的核心标的：如果 2030 年 3500 亿营收兑现，OpenAI 将是全球营收前三的科技公司；如果不兑现，上游算力供应链（英伟达、数据中心、电力）的订单质量就要重估。对二级市场、算力概念股与”AI 基建周期还能持续多久”的判断，这是最重要的一张进度表。</p>
+<hr>
+<h2 id="6-Anthropic、OpenAI-转向-20-30MW-小型算力部署：GW-巨型园区之外的”快上线”路线"><a href="#6-Anthropic、OpenAI-转向-20-30MW-小型算力部署：GW-巨型园区之外的”快上线”路线" class="headerlink" title="6. Anthropic、OpenAI 转向 20-30MW 小型算力部署：GW 巨型园区之外的”快上线”路线"></a>6. Anthropic、OpenAI 转向 20-30MW 小型算力部署：GW 巨型园区之外的”快上线”路线</h2><p><strong>事件：</strong> 财联社 9 月 18 日援引知情人士：Anthropic 与 OpenAI 在签署大规模数据中心协议之外，正寻求 <strong>20-30 兆瓦（MW）规模的小型算力部署</strong>，谈判已在欧美推进——Anthropic 已在英国和北欧地区接触合作方，OpenAI 也在北欧寻找类似机会（<a target="_blank" rel="noopener" href="https://www.163.com/dy/article/L751CT7905198CJN.html">网易科技</a>）。</p>
+<p><strong>关注原因：</strong> GW 级数据中心的现实约束（电网接入排队、变压器交付周期、冷却水与许可审批）让”先上线再扩容”的小型部署成为过渡解：20-30MW 约合数千张 GPU，可利用现有工业电力设施快速改造，3-6 个月即可投产。这是算力供给结构的再分层——<strong>巨型园区管长训、小型部署管推理与快速扩容</strong>，与昨天北京方案里”边缘端部署”的指向殊途同归：推理侧的分布式、就近化是中美共同趋势。受益面：小型 modular data center（模块化机房）、液冷、B 级电力改造服务商。</p>
+<hr>
+<h2 id="7-百度搭子上调年度收入目标-3-5-倍：AI-办公-Agent-入口跑出第一个”月环比-10-倍”"><a href="#7-百度搭子上调年度收入目标-3-5-倍：AI-办公-Agent-入口跑出第一个”月环比-10-倍”" class="headerlink" title="7. 百度搭子上调年度收入目标 3-5 倍：AI 办公 Agent 入口跑出第一个”月环比 10 倍”"></a>7. 百度搭子上调年度收入目标 3-5 倍：AI 办公 Agent 入口跑出第一个”月环比 10 倍”</h2><p><strong>事件：</strong> 界面新闻独家，百度 2026 年 3 月推出的 AI 办公智能体”<strong>百度搭子</strong>“企业版 ARR 在 7、8 月<strong>连续两个月环比增长接近 10 倍</strong>，内部已多次上调年度收入目标，最新目标较年初<strong>翻了三至五倍</strong>。7 月 PC 端月活 <strong>674.3 万</strong>（环比 +1063.79%），列 AI 办公智能体总榜第二、增速榜第一。产品定位”Agent 时代的用户入口”：以 Skill 形式集成搜索、地图、百科、伐谋等百度系能力，打通秒哒与胜算；上月 Comate 团队已并入，Harness 技术框架融合，一周发 4-5 个版本。团队当前重点不是收入而是<strong>复杂任务端到端执行效果</strong>；百度判断竞争决定因素是”模型+Harness 的执行效果”与”平台生态”，且长期多家并存（<a target="_blank" rel="noopener" href="https://www.163.com/dy/article/L74M4ECK0534A4SC.html">网易科技</a>）。</p>
+<p><strong>关注原因：</strong> 国内 AI 办公 Agent 第一个被验证的<strong>爆发式收入曲线</strong>（此前飞书 AI 因售价过高卖不动、腾讯 WorkBuddy 靠开放平台铺生态、亚马逊 Quick 按”智能体小时”计费）——百度搭子的数据说明”入口型 Agent + 集团能力 Skill 化”的路在国内能跑通。更值得注意的是它的竞争判词：<strong>简单任务各家效果接近，差距在跨系统复杂任务</strong>——而这取决于 Harness（执行框架）与企业上下文数据，不是模型跑分。选型或做 Agent 产品的人，把”Harness 执行效果”当第一测试项，模型能力只是入场券。</p>
+<hr>
+<h2 id="8-ZCode-回应代码库数据争议：Repo-Wiki-触发上传已修复，承诺近期开源整个代码库"><a href="#8-ZCode-回应代码库数据争议：Repo-Wiki-触发上传已修复，承诺近期开源整个代码库" class="headerlink" title="8. ZCode 回应代码库数据争议：Repo Wiki 触发上传已修复，承诺近期开源整个代码库"></a>8. ZCode 回应代码库数据争议：Repo Wiki 触发上传已修复，承诺近期开源整个代码库</h2><p><strong>事件：</strong> 智谱旗下编程产品 ZCode 9 月 18 日回应社区数据争议：争议源于”代码库索引”功能（用于会话检查点恢复、历史回退与 Repo Wiki 代码知识库）——官方说明 <strong>Repo Wiki 在云端生成 Wiki 页面时可能触发仓库数据上传</strong>（生成后”立即销毁、不保存”），该功能上线初期<strong>默认开启</strong>导致部分用户不知情。处理措施：已修复并致歉；<strong>近期开源 ZCode 代码库</strong>；邀请第三方评估审查并公开进展；向全体用户额外发放一次周额度重置（9&#x2F;18 已发放）（<a target="_blank" rel="noopener" href="https://www.163.com/dy/article/L74OML220512B07B.html">网易科技</a>、每日经济新闻）。</p>
+<p><strong>关注原因：</strong> 这是国内编程 Agent 的第一起典型数据信任事件，暴露的是行业共性设计缺陷：<strong>“本地索引”的产品认知与”云端辅助生成”的实际行为不一致，且默认开启</strong>。所有 AI 编码工具用户都该举一反三：企业代码、未公开仓库接入任何 Agent 前，先弄清哪些功能会把代码送出本机、默认开关在哪。对行业，”出事就开源”若成为标配（ZCode 承诺近期开源），反而是好事——编码 Agent 的信任竞争可能走向”可审计”维度，与 MiniMax 直接 MIT 开源形成呼应。</p>
+<hr>
+<h2 id="快速速览"><a href="#快速速览" class="headerlink" title="快速速览"></a>快速速览</h2><table>
+<thead>
+<tr>
+<th align="center">序号</th>
+<th>事件</th>
+<th align="center">方向</th>
+<th align="center">影响力</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td>Claude Code Projects 重构：Coordinator 调度多 Agent 并行，内部 3 万 Agent 常态化</td>
+<td align="center">编程Agent</td>
+<td align="center">⭐⭐⭐⭐⭐</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td>MiniMax Code CLI 以 MIT 协议开源，支持 BYOM</td>
+<td align="center">国产工具</td>
+<td align="center">⭐⭐⭐⭐</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td>北京发布词元经济行动方案：推理芯片&#x2F;轻量化&#x2F;边缘部署三大攻关</td>
+<td align="center">政策</td>
+<td align="center">⭐⭐⭐⭐⭐</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td>加州行政令：前沿模型”紧急关闭开关”进入议程</td>
+<td align="center">监管</td>
+<td align="center">⭐⭐⭐⭐⭐</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td>OpenAI 2026-2030 预计烧钱 2780 亿美元、2030 年营收看 3500 亿</td>
+<td align="center">资本</td>
+<td align="center">⭐⭐⭐⭐</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td>Anthropic&#x2F;OpenAI 转向 20-30MW 小型算力部署</td>
+<td align="center">算力基建</td>
+<td align="center">⭐⭐⭐</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td>百度搭子 ARR 月环比近 10 倍，收入目标上调 3-5 倍</td>
+<td align="center">AI办公</td>
+<td align="center">⭐⭐⭐⭐</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td>ZCode 回应代码库数据争议并承诺开源</td>
+<td align="center">AI安全&#x2F;信任</td>
+<td align="center">⭐⭐⭐⭐</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="其他值得关注的动态"><a href="#其他值得关注的动态" class="headerlink" title="其他值得关注的动态"></a>其他值得关注的动态</h2><ul>
+<li><strong>黄仁勋：英伟达明年芯片销量有望翻倍</strong>（快科技&#x2F;网易科技 9&#x2F;18）：在英国 AI 峰会（国王查尔斯三世主持，OpenAI CFO、Hassabis 等出席）上表态，前提是”供应能满足需求”；并称监管应”针对产品而非技术本身”。与 8 月财报”下一财年销售额 +70%、供应允许则可翻倍”的展望一致——<strong>供给瓶颈才是算力周期的真正上限</strong>。</li>
+<li><strong>谷歌引入两位诺奖得主扩充”人工智能与经济”团队</strong>（财联社 9&#x2F;18）：菲利普·阿吉翁（创新与内生增长理论）、阿贾伊·阿格拉瓦尔（多伦多大学、AI 经济学代表人物）加入，另设两位研究总监。大厂开始系统性储备”AI 宏观经济学”智力，为政策游说与经济影响研究布局。</li>
+<li><strong>文旅部：支持量子科技、具身智能、脑机接口</strong>融入文旅新业态；同期《文化产业发展”十五五”规划》印发，推动人工智能应用（网易科技 9&#x2F;18 20:21-20:31）：具身智能获又一部委级应用场景背书，文旅&#x2F;IP 内容生成是国产多模态模型的增量市场。</li>
+<li><strong>SK 海力士子公司考虑赴美建 NAND 产能</strong>（网易科技 9&#x2F;18 19:03）：与昨日”长鑫存储进军闪存”同向，AI 服务器对存储的吞噬正在重塑全球 NAND&#x2F;DRAM 产能地图，内存涨价压力短期难解。</li>
+<li><strong>Anthropic 湿实验室跟踪</strong>：网易科技 9&#x2F;18 22:32 分析指出生命科学已成其资源投入重点，与昨日”自建生物实验室”报道互证——头部实验室的 AI for Science 投入在加码而非收缩。</li>
+</ul>
+<hr>
+<h2 id="本周可以上手的事"><a href="#本周可以上手的事" class="headerlink" title="本周可以上手的事"></a>本周可以上手的事</h2><ol>
+<li><strong>装一个 MiniMax Code CLI 试试 BYOM</strong>：MIT 协议、支持自带模型——用 <a target="_blank" rel="noopener" href="https://github.com/MiniMax-AI/minimax-code">GitHub: MiniMax-AI&#x2F;minimax-code</a> 接本地模型（如 LM Studio 的 OpenAI 兼容端点）跑真实仓库任务，和手头主力编码 Agent 对比”复杂跨文件任务”的完成质量与 token 成本。</li>
+<li><strong>把 Coordinator 范式搬进自己的多 Agent 工作流</strong>：Claude Code Projects 的四个设计点——高阶目标自动拆解、每任务独立分支&#x2F;隔离副本、完成后自动 PR、跨任务共享记忆——不必等 beta 放量，用现有工具（ZCode&#x2F;Codex CLI + git worktree）就能手工搭出雏形，重点解决并行分支的合并顺序问题。</li>
+<li><strong>审计你所有 AI 编码工具的数据边界</strong>（ZCode 事件教训）：逐个检查代码索引、Repo Wiki、遥测、云端辅助生成等功能的默认开关；未公开&#x2F;客户仓库一律先关云侧功能再接入；等 ZCode 开源后可以真读代码验证。</li>
+<li><strong>拿”词元工厂分级标准”当推理选型验收清单</strong>：首字延迟、词元吞吐速度、缓存命中率、PUE、模型适配数量——无论选国产推理卡还是 API 服务商，照着这套北京官方指标打分即可；关注方案后续的试点企业名单。</li>
+<li><strong>企业 Agent 办公选型加一条”跨系统复杂任务实测”</strong>：百度搭子的数据与百度的竞争判词都指向 Harness 执行效果——把你们最真实的跨系统流程（如”读邮件→查表格→写周报→发群”）作为标准考题，横评百度搭子&#x2F;腾讯 WorkBuddy&#x2F;Amazon Quick 类产品。</li>
+</ol>
+<hr>
+<p><em>备注：本期采集窗口 9&#x2F;18 晚-9&#x2F;19 晨。信源以网易科技快讯流为基础，重点条目经 WebSearch 交叉核验与原文 WebFetch 深挖（财联社、界面新闻、每日经济新闻、快科技等国内可访问源，GitHub 官方仓库）；OpenAI 烧钱预测原始口径来自外媒（彭博&#x2F;The Information 等）的转述，Anthropic《衡量AI研发节奏》报告数据以媒体转述为准，建议以官方原文为最终依据。</em></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://FighterGodNemo.github.io">琉璃幻彩</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://fightergodnemo.github.io/2026/09/19/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20260919/">https://fightergodnemo.github.io/2026/09/19/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20260919/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://FighterGodNemo.github.io" target="_blank">琉璃幻彩的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/AI/">AI</a><a class="post-meta__tags" href="/tags/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/">科技日报</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/sogou-ime-security-and-burp-browser-exit/" title="搜狗输入法的两类问题：RCE漏洞与Burp内置浏览器闪退实录"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">搜狗输入法的两类问题：RCE漏洞与Burp内置浏览器闪退实录</div></div><div class="info-2"><div class="info-item-1">Burp 能打开，内置浏览器却打不开。以前一直能用，这次点了按钮，窗口就是不出现。 起初我怀疑的是 Burp 自带的 Chromium：文件是不是被杀毒软件删了，缓存是不是坏了，或者显卡加速又出了问题。逐项检查后，线索却落到了平时几乎...</div></div></div></a><a class="pagination-related" href="/2026/09/18/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20260918/" title="科技日报 2026-09-18"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">科技日报 2026-09-18</div></div><div class="info-2"><div class="info-item-1">科技日报 - 2026年9月18日 星期五 关注方向：大模型生态 · AI办公与Agent · AI安全 · AI for Science · 具身智能 | 精选 8 条（覆盖 9&#x2F;17-9&#x2F;18 动态）   1....</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/09/09/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20260909/" title="科技日报 2026-09-09"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-09</div><div class="info-item-2">科技日报 2026-09-09</div></div><div class="info-2"><div class="info-item-1">科技日报 - 2026年9月9日 星期三 关注方向：AI Coding · 具身智能 | 精选 5 条（覆盖 9&#x2F;7-9&#x2F;9 动态）   1. Cognition 480 亿美元 E 轮融资落定：AI 编程赛道资本...</div></div></div></a><a class="pagination-related" href="/2026/08/01/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20260801/" title="科技日报 2026-08-01"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-01</div><div class="info-item-2">科技日报 2026-08-01</div></div><div class="info-2"><div class="info-item-1">科技日报 - 2026年8月1日 星期六 关注方向：AI Coding · 具身智能 | 精选 5 条   1. DeepSeek V4-Flash 正式版上线：纯后训练将 Agent 能力拉升 7.5 倍事件： DeepSeek 于...</div></div></div></a><a class="pagination-related" href="/2026/07/18/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20260718/" title="科技日报 2026-07-18"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-07-18</div><div class="info-item-2">科技日报 2026-07-18</div></div><div class="info-2"><div class="info-item-1">科技日报 · 2026-07-181. 检索元信息   项 内容    信息截止 2026-07-18 09:47（Asia&#x2F;Shanghai）   核心窗口 近 72 小时（约 07-15 → 07-18）   基线补充 ...</div></div></div></a><a class="pagination-related" href="/2026/09/21/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20260921_%E6%99%9A%E9%97%B4%E5%A2%9E%E8%A1%A5/" title="科技日报 2026-09-21 晚间增补"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-21</div><div class="info-item-2">科技日报 2026-09-21 晚间增补</div></div><div class="info-2"><div class="info-item-1">科技日报 - 2026年9月21日 晚间增补（第二期） 关注方向：Agent 交互新范式 · 多模态 Agent 价格战 · 编码 Agent 官方生态 · AI for Science 实体化 · 采用率与安全实证 | 精选 10 ...</div></div></div></a><a class="pagination-related" href="/2026/08/02/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20260802/" title="科技日报 2026-08-02"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-02</div><div class="info-item-2">科技日报 2026-08-02</div></div><div class="info-2"><div class="info-item-1">科技日报日期：2026年8月2日 星期日覆盖周期：2025年7月下旬 — 2026年8月初核心主题：大模型迭代 | AI Agent 落地 | 具身智能商用 | 开源生态 | AI 安全治理  一、核心概览   维度 关键事件 影响评...</div></div></div></a><a class="pagination-related" href="/2026/07/12/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20260712/" title="科技日报 2026-07-12"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-07-12</div><div class="info-item-2">科技日报 2026-07-12</div></div><div class="info-2"><div class="info-item-1">科技日报 | 2026-07-12 信息截止：2026-07-12 15:01（Asia&#x2F;Shanghai）核心窗口：近 72 小时；技术背景窗口：近 14 天证据规则：A &#x3D; 官方原文已读取；B &#x3D; 官...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">琉璃幻彩</div><div class="author-info-description">The Greatest Magician!</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">215</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">195</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">40</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FighterGodNemo"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/FighterGodNemo" title="Github" target="_blank"><i class="fab fa-github"></i></a><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="微信"><i class="fab fa-weixin"></i></a><div class="qr-code-popup"><img src="/img/qrcode/wechat-qr.png" alt="微信二维码"/ loading='lazy'></div></div><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="QQ"><i class="fab fa-qq"></i></a><div class="qr-code-popup"><img src="/img/qrcode/qq-qr.png" alt="QQ二维码"/ loading='lazy'></div></div><div class="copy-text-wrapper"><a class="social-icon" href="javascript:void(0)" title="Steam好友代码：1905706957" data-copy-text="1905706957"><i class="fab fa-steam"></i></a><div class="copy-text-popup"><h3>Steam好友代码</h3><p>1905706957</p><p class="copy-hint">点击图标复制</p></div></div><a class="social-icon" href="mailto:guliujia2233@outlook.com" title="Email" target="_blank"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">热爱 CTF 和 Forensic 的网安人一枚～
+欢迎各位大佬交流点评！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5-2026%E5%B9%B49%E6%9C%8819%E6%97%A5-%E6%98%9F%E6%9C%9F%E5%85%AD"><span class="toc-number">1.</span> <span class="toc-text">科技日报 - 2026年9月19日 星期六</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Claude-Code-Projects-%E5%A4%A7%E9%87%8D%E6%9E%84%EF%BC%9ACoordinator-%E8%B0%83%E5%BA%A6%E5%A4%9A-Agent-%E5%B9%B6%E8%A1%8C%EF%BC%8CAnthropic-%E8%87%AA%E6%9B%9D%E5%86%85%E9%83%A8-3-%E4%B8%87-Agent-%E5%B8%B8%E6%80%81%E5%8C%96%E7%A0%94%E5%8F%91"><span class="toc-number">1.1.</span> <span class="toc-text">1. Claude Code Projects 大重构：Coordinator 调度多 Agent 并行，Anthropic 自曝内部 3 万 Agent 常态化研发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-MiniMax-Code-CLI-%E6%AD%A3%E5%BC%8F%E5%BC%80%E6%BA%90%EF%BC%88MIT%EF%BC%89%EF%BC%9A%E5%9B%BD%E4%BA%A7%E7%BB%88%E7%AB%AF%E7%BC%96%E7%A8%8B-Agent-%E8%A1%A5%E4%B8%8A%E5%BC%80%E6%BA%90%E6%8B%BC%E5%9B%BE"><span class="toc-number">1.2.</span> <span class="toc-text">2. MiniMax Code CLI 正式开源（MIT）：国产终端编程 Agent 补上开源拼图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%8C%97%E4%BA%AC%E5%8F%91%E5%B8%83%E3%80%8A%E5%8A%A0%E5%BF%AB%E8%AF%8D%E5%85%83%E7%BB%8F%E6%B5%8E%E5%8F%91%E5%B1%95%E7%9A%84%E8%A1%8C%E5%8A%A8%E6%96%B9%E6%A1%88%EF%BC%882026%E2%80%942028%EF%BC%89%E3%80%8B%EF%BC%9A%E2%80%9DToken-%E7%BB%8F%E6%B5%8E%E2%80%9D%E9%A6%96%E6%AC%A1%E6%88%90%E4%B8%BA%E6%94%BF%E7%AD%96%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.3.</span> <span class="toc-text">3. 北京发布《加快词元经济发展的行动方案（2026—2028）》：”Token 经济”首次成为政策对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%8A%A0%E5%B7%9E%E5%B7%9E%E9%95%BF%E7%BA%BD%E6%A3%AE%E7%AD%BE%E7%BD%B2-AI-%E7%9B%91%E7%AE%A1%E8%A1%8C%E6%94%BF%E4%BB%A4%EF%BC%9A%E5%89%8D%E6%B2%BF%E6%A8%A1%E5%9E%8B%E2%80%9D%E7%B4%A7%E6%80%A5%E5%85%B3%E9%97%AD%E5%BC%80%E5%85%B3%E2%80%9D%E8%BF%9B%E5%85%A5%E5%B7%9E%E7%BA%A7%E8%AE%AE%E7%A8%8B"><span class="toc-number">1.4.</span> <span class="toc-text">4. 加州州长纽森签署 AI 监管行政令：前沿模型”紧急关闭开关”进入州级议程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-OpenAI-2026-2030-%E9%A2%84%E8%AE%A1%E7%83%A7%E9%92%B1-2780-%E4%BA%BF%E7%BE%8E%E5%85%83%EF%BC%9A%E4%BA%8F%E6%8D%9F%E6%9B%B2%E7%BA%BF%E9%99%A1%E5%B3%AD%E5%8C%96%EF%BC%8C%E6%94%B6%E5%85%A5%E9%A2%84%E6%9C%9F%E5%90%8C%E6%AD%A5%E4%B8%8A%E8%B0%83"><span class="toc-number">1.5.</span> <span class="toc-text">5. OpenAI 2026-2030 预计烧钱 2780 亿美元：亏损曲线陡峭化，收入预期同步上调</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-Anthropic%E3%80%81OpenAI-%E8%BD%AC%E5%90%91-20-30MW-%E5%B0%8F%E5%9E%8B%E7%AE%97%E5%8A%9B%E9%83%A8%E7%BD%B2%EF%BC%9AGW-%E5%B7%A8%E5%9E%8B%E5%9B%AD%E5%8C%BA%E4%B9%8B%E5%A4%96%E7%9A%84%E2%80%9D%E5%BF%AB%E4%B8%8A%E7%BA%BF%E2%80%9D%E8%B7%AF%E7%BA%BF"><span class="toc-number">1.6.</span> <span class="toc-text">6. Anthropic、OpenAI 转向 20-30MW 小型算力部署：GW 巨型园区之外的”快上线”路线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E7%99%BE%E5%BA%A6%E6%90%AD%E5%AD%90%E4%B8%8A%E8%B0%83%E5%B9%B4%E5%BA%A6%E6%94%B6%E5%85%A5%E7%9B%AE%E6%A0%87-3-5-%E5%80%8D%EF%BC%9AAI-%E5%8A%9E%E5%85%AC-Agent-%E5%85%A5%E5%8F%A3%E8%B7%91%E5%87%BA%E7%AC%AC%E4%B8%80%E4%B8%AA%E2%80%9D%E6%9C%88%E7%8E%AF%E6%AF%94-10-%E5%80%8D%E2%80%9D"><span class="toc-number">1.7.</span> <span class="toc-text">7. 百度搭子上调年度收入目标 3-5 倍：AI 办公 Agent 入口跑出第一个”月环比 10 倍”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-ZCode-%E5%9B%9E%E5%BA%94%E4%BB%A3%E7%A0%81%E5%BA%93%E6%95%B0%E6%8D%AE%E4%BA%89%E8%AE%AE%EF%BC%9ARepo-Wiki-%E8%A7%A6%E5%8F%91%E4%B8%8A%E4%BC%A0%E5%B7%B2%E4%BF%AE%E5%A4%8D%EF%BC%8C%E6%89%BF%E8%AF%BA%E8%BF%91%E6%9C%9F%E5%BC%80%E6%BA%90%E6%95%B4%E4%B8%AA%E4%BB%A3%E7%A0%81%E5%BA%93"><span class="toc-number">1.8.</span> <span class="toc-text">8. ZCode 回应代码库数据争议：Repo Wiki 触发上传已修复，承诺近期开源整个代码库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E9%80%9F%E8%A7%88"><span class="toc-number">1.9.</span> <span class="toc-text">快速速览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%80%BC%E5%BE%97%E5%85%B3%E6%B3%A8%E7%9A%84%E5%8A%A8%E6%80%81"><span class="toc-number">1.10.</span> <span class="toc-text">其他值得关注的动态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%91%A8%E5%8F%AF%E4%BB%A5%E4%B8%8A%E6%89%8B%E7%9A%84%E4%BA%8B"><span class="toc-number">1.11.</span> <span class="toc-text">本周可以上手的事</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/09/03/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20260903/" title="科技日报 2026-09-03">科技日报 2026-09-03</a><time datetime="2026-10-02T16:05:32.801Z" title="更新于 2026-10-02 16:05:32">2026-10-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/09/09/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20260909/" title="科技日报 2026-09-09">科技日报 2026-09-09</a><time datetime="2026-10-02T16:05:32.801Z" title="更新于 2026-10-02 16:05:32">2026-10-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/09/17/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20260917/" title="科技日报 2026-09-17">科技日报 2026-09-17</a><time datetime="2026-10-02T16:05:32.801Z" title="更新于 2026-10-02 16:05:32">2026-10-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/09/18/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20260918/" title="科技日报 2026-09-18">科技日报 2026-09-18</a><time datetime="2026-10-02T16:05:32.801Z" title="更新于 2026-10-02 16:05:32">2026-10-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/09/16/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20260916/" title="科技日报 2026-09-16">科技日报 2026-09-16</a><time datetime="2026-10-02T16:05:32.801Z" title="更新于 2026-10-02 16:05:32">2026-10-02</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 琉璃幻彩</span><span class="framework-info"><span id="busuanzi_container_site_pv">本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span><span class="footer-separator">|</span><span id="busuanzi_container_site_uv">本站访客数 <span id="busuanzi_value_site_uv"></span> 人次</span></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+  const getUtterancesTheme = theme => theme === 'dark' ? 'photon-dark' : 'github-light'
+
+  const loadUtterances = (el = document, key) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyUtterances = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const config = {
+      src: 'https://utteranc.es/client.js',
+      repo: 'FighterGodNemo/FighterGodNemo.github.io',
+      theme: getUtterancesTheme(document.documentElement.getAttribute('data-theme')),
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      'issue-term': isShuoshuo ? key : (option && option['issue-term']) || 'pathname'
+    }
+
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => ele.setAttribute(key, value))
+    el.querySelector('#utterances-wrap').appendChild(ele)
+  }
+
+  const changeUtterancesTheme = theme => {
+    const iframe = document.querySelector('#utterances-wrap iframe')
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: getUtterancesTheme(theme)
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeUtterancesTheme, 'utterances')
+
+  if (isShuoshuo) {
+    'Utterances' === 'Utterances'
+      ? window.shuoshuoComment = { loadComment: loadUtterances }
+      : window.loadOtherComment = loadUtterances
+    return
+  }
+  
+  if ('Utterances' === 'Utterances' || !false) {
+    if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+    else loadUtterances()
+  } else {
+    window.loadOtherComment = loadUtterances
+  }
+})()</script></div><script src="/js/custom.js?v=20260402-2"></script><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.staticfile.org/pjax/0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:description\"]","link[rel=\"canonical\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

@@ -1,0 +1,631 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>SSH与sshd研究文章 | 琉璃幻彩的博客</title><meta name="author" content="琉璃幻彩"><meta name="copyright" content="琉璃幻彩"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="SSH 与 sshd 研究:协议演进、守护进程架构与安全实践 摘要:SSH(Secure Shell)自 1995 年诞生以来,取代 telnet&#x2F;rlogin&#x2F;rsh 等明文协议,成为 Unix&#x2F;Linux 远程管理的事实标准;sshd 作为其服务端守护进程,几乎运行在全球每一台 Linux 服务器上。本文基于 IETF RFC 文档、OpenSSH 官方发布说明、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSH与sshd研究文章">
+<meta property="og:url" content="https://fightergodnemo.github.io/2026/09/29/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/SSH%E4%B8%8Esshd%E7%A0%94%E7%A9%B6%E6%96%87%E7%AB%A0/index.html">
+<meta property="og:site_name" content="琉璃幻彩的博客">
+<meta property="og:description" content="SSH 与 sshd 研究:协议演进、守护进程架构与安全实践 摘要:SSH(Secure Shell)自 1995 年诞生以来,取代 telnet&#x2F;rlogin&#x2F;rsh 等明文协议,成为 Unix&#x2F;Linux 远程管理的事实标准;sshd 作为其服务端守护进程,几乎运行在全球每一台 Linux 服务器上。本文基于 IETF RFC 文档、OpenSSH 官方发布说明、">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fightergodnemo.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2026-09-29T09:30:23.000Z">
+<meta property="article:modified_time" content="2026-09-29T11:01:00.000Z">
+<meta property="article:author" content="琉璃幻彩">
+<meta property="article:tag" content="OpenSSH">
+<meta property="article:tag" content="SSH">
+<meta property="article:tag" content="网络安全">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fightergodnemo.github.io/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "SSH与sshd研究文章",
+  "url": "https://fightergodnemo.github.io/2026/09/29/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/SSH%E4%B8%8Esshd%E7%A0%94%E7%A9%B6%E6%96%87%E7%AB%A0/",
+  "image": "https://fightergodnemo.github.io/img/avatar.jpg",
+  "datePublished": "2026-09-29T09:30:23.000Z",
+  "dateModified": "2026-09-29T11:01:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "琉璃幻彩",
+      "url": "https://FighterGodNemo.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="https://fightergodnemo.github.io/2026/09/29/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/SSH%E4%B8%8Esshd%E7%A0%94%E7%A9%B6%E6%96%87%E7%AB%A0/index.html"><link rel="preconnect" href="https://cdn.staticfile.org"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.5.2/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.20261002160603744.json","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.staticfile.org/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'SSH与sshd研究文章',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script src="/js/bg-firstpaint.js?v=20260402-2"></script><link rel="stylesheet" href="/css/custom.css?v=20260402-2"><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="琉璃幻彩的博客" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">215</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">195</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">40</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" data-has-custom-post-top-img="0"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">琉璃幻彩的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">SSH与sshd研究文章</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">SSH与sshd研究文章</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-29T09:30:23.000Z" title="发表于 2026-09-29 09:30:23">2026-09-29</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-29T11:01:00.000Z" title="更新于 2026-09-29 11:01:00">2026-09-29</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/">博览知识</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">7.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>26分钟</span></span></div></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="SSH-与-sshd-研究-协议演进、守护进程架构与安全实践"><a href="#SSH-与-sshd-研究-协议演进、守护进程架构与安全实践" class="headerlink" title="SSH 与 sshd 研究:协议演进、守护进程架构与安全实践"></a>SSH 与 sshd 研究:协议演进、守护进程架构与安全实践</h1><blockquote>
+<p><strong>摘要</strong>:SSH(Secure Shell)自 1995 年诞生以来,取代 telnet&#x2F;rlogin&#x2F;rsh 等明文协议,成为 Unix&#x2F;Linux 远程管理的事实标准;sshd 作为其服务端守护进程,几乎运行在全球每一台 Linux 服务器上。本文基于 IETF RFC 文档、OpenSSH 官方发布说明、CVE 数据库与公开安全研究,对 SSH 协议与 sshd 实现进行系统性梳理:回溯其从个人项目到 IETF 标准、从商业软件到 OpenSSH 生态的历史;剖析协议三层架构与二进制分组协议;解析 sshd 的特权分离与二进制拆分架构;综述认证机制与密码算法的后量子演进;复盘三十年来标志性安全事件(SSH-1 CRC 攻击、Debian 熵缺陷、Terrapin、regreSSHion、XZ 供应链后门);给出服务器加固基线,并展望后量子迁移、证书化与零信任等趋势。</p>
+</blockquote>
+<p><strong>关键词</strong>:SSH;sshd;OpenSSH;特权分离;二进制分组协议;后量子密码;供应链安全</p>
+<hr>
+<h2 id="1-引言"><a href="#1-引言" class="headerlink" title="1 引言"></a>1 引言</h2><p>远程管理是现代计算基础设施的神经中枢。服务器、容器节点、网络设备、嵌入式网关——几乎一切”不可到场”的机器,都需要一条加密、可认证、可审计的控制通道。SSH 协议正是这条通道的载体,而 sshd 就是通道的守门人:它监听端口、协商算法、验证身份、承运会话。</p>
+<p>sshd 的特殊地位决定了研究它的价值:<strong>它既是应用最广泛的安全服务之一,也是攻击面暴露最充分的服务之一</strong>——默认监听 TCP 22 端口,直接暴露在公网的实例以百万计;它又是少数同时经历协议层攻击(Terrapin)、实现层漏洞(regreSSHion)与供应链攻击(XZ 后门)三种威胁形态、并存活至今仍持续演化的核心组件。研究 SSH&#x2F;sshd,等于研究三十年网络安全的浓缩样本。</p>
+<p>本文的结构如下:§2 历史演进,§3 协议体系,§4 sshd 架构,§5 认证机制,§6 密码算法演进,§7 功能特性,§8 安全事件复盘,§9 加固实践,§10 生态与替代方案,§11 趋势展望,§12 结论。</p>
+<h2 id="2-历史演进"><a href="#2-历史演进" class="headerlink" title="2 历史演进"></a>2 历史演进</h2><h3 id="2-1-起源-一次嗅探攻击催生的协议-1995"><a href="#2-1-起源-一次嗅探攻击催生的协议-1995" class="headerlink" title="2.1 起源:一次嗅探攻击催生的协议(1995)"></a>2.1 起源:一次嗅探攻击催生的协议(1995)</h3><p>1995 年,芬兰赫尔辛基理工大学(Helsinki University of Technology)研究员 <strong>Tatu Ylönen</strong> 在学校网络遭受密码嗅探攻击、数以万计的用户名口令被截获后,编写了 SSH 的第一个版本并于同年 7 月发布,免费供互联网使用,迅速取代 telnet、rlogin、rsh 等明文协议。</p>
+<h3 id="2-2-商业化与许可证危机-1995–1999"><a href="#2-2-商业化与许可证危机-1995–1999" class="headerlink" title="2.2 商业化与许可证危机(1995–1999)"></a>2.2 商业化与许可证危机(1995–1999)</h3><p>Ylönen 于 1995 年创立 SSH Communications Security 公司,SSH 逐步商业化,自由使用的最后一个版本停在 <strong>ssh 1.2.12</strong>。许可证收紧让开源社区失去了可自由演进的 SSH 实现。</p>
+<h3 id="2-3-OpenSSH-的诞生-1999"><a href="#2-3-OpenSSH-的诞生-1999" class="headerlink" title="2.3 OpenSSH 的诞生(1999)"></a>2.3 OpenSSH 的诞生(1999)</h3><p>1999 年,Theo de Raadt 领导的 <strong>OpenBSD 团队</strong>以 ssh 1.2.12 为基础分支出 <strong>OpenSSH</strong>,坚持自由许可、最小依赖与持续代码审计。首个版本随 OpenBSD 2.6 发布,随后经 Portable 版本移植到 Linux、BSD、macOS 及各类 Unix,最终成为事实上的标准实现。今天绝大多数语境下的 “sshd” 指 OpenSSH 的 sshd。</p>
+<h3 id="2-4-SSH-1-→-SSH-2-与-IETF-标准化-1996–2006"><a href="#2-4-SSH-1-→-SSH-2-与-IETF-标准化-1996–2006" class="headerlink" title="2.4 SSH-1 → SSH-2 与 IETF 标准化(1996–2006)"></a>2.4 SSH-1 → SSH-2 与 IETF 标准化(1996–2006)</h3><p>SSH-2 于 1996–1997 年间完成整体重设计:以 <strong>MAC 取代 SSH-1 的 CRC 校验</strong>、以 <strong>Diffie-Hellman 取代服务器公钥直接加密会话密钥</strong>、支持<strong>多通道复用</strong>,且与 SSH-1 不兼容。IETF SECSH 工作组于 <strong>2006 年 1 月</strong>发布 RFC 4250–4256 系列标准,SSH 正式成为 Internet 标准。</p>
+<h3 id="2-5-关键时间线"><a href="#2-5-关键时间线" class="headerlink" title="2.5 关键时间线"></a>2.5 关键时间线</h3><table>
+<thead>
+<tr>
+<th>年份</th>
+<th>事件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1995</td>
+<td>Tatu Ylönen 发布 SSH-1;创立 SSH Communications Security</td>
+</tr>
+<tr>
+<td>1996</td>
+<td>SSH-2 协议重设计启动</td>
+</tr>
+<tr>
+<td>1998</td>
+<td>SSH-1 CRC32 补偿攻击漏洞披露(CORE SDI)</td>
+</tr>
+<tr>
+<td>1999</td>
+<td>OpenBSD 团队分支出 OpenSSH(随 OpenBSD 2.6 发布)</td>
+</tr>
+<tr>
+<td>2001</td>
+<td>Provos&#x2F;Friedl 引入特权分离;TESO 公开 SSH-1 CRC 漏洞利用工具</td>
+</tr>
+<tr>
+<td>2006</td>
+<td>IETF 发布 RFC 4250–4256,SSH-2 标准化</td>
+</tr>
+<tr>
+<td>2008</td>
+<td>Debian OpenSSL PRNG 缺陷(CVE-2008-0166)波及 SSH 密钥体系</td>
+</tr>
+<tr>
+<td>2010</td>
+<td>OpenSSH 5.4&#x2F;5.6 引入用户&#x2F;主机证书(CA)体系</td>
+</tr>
+<tr>
+<td>2015</td>
+<td>OpenSSH 7.0 移除 SSH-1 支持,默认禁用 DSA</td>
+</tr>
+<tr>
+<td>2016</td>
+<td>OpenSSH 7.3 引入 ProxyJump</td>
+</tr>
+<tr>
+<td>2020</td>
+<td>OpenSSH 8.2 支持 FIDO&#x2F;U2F 硬件密钥(<code>ed25519-sk</code>)</td>
+</tr>
+<tr>
+<td>2022</td>
+<td>OpenSSH 9.0 默认启用后量子混合密钥交换;scp 默认改走 SFTP 协议</td>
+</tr>
+<tr>
+<td>2023</td>
+<td>Terrapin 协议缺陷披露(CVE-2023-48795),OpenSSH 9.6 以 strict key exchange 缓解</td>
+</tr>
+<tr>
+<td>2024</td>
+<td>XZ 供应链后门(CVE-2024-3094)针对 sshd;regreSSHion(CVE-2024-6387);9.8 将 sshd 拆分为 sshd + sshd-session</td>
+</tr>
+<tr>
+<td>2025</td>
+<td>OpenSSH 10.0 移除 DSA、ML-KEM-768 混合密钥交换成为默认;10.1&#x2F;10.2 维护版本</td>
+</tr>
+<tr>
+<td>2026</td>
+<td>OpenSSH 10.3(4 月)等持续迭代</td>
+</tr>
+</tbody></table>
+<h2 id="3-SSH-协议体系"><a href="#3-SSH-协议体系" class="headerlink" title="3 SSH 协议体系"></a>3 SSH 协议体系</h2><h3 id="3-1-三层架构"><a href="#3-1-三层架构" class="headerlink" title="3.1 三层架构"></a>3.1 三层架构</h3><p>RFC 4251 将 SSH-2 划分为三个自下而上的层次:</p>
+<ol>
+<li><strong>传输层(RFC 4253)</strong>:负责服务器认证、初始密钥交换、加密与完整性保护(可选压缩),建立全双工安全信道;</li>
+<li><strong>用户认证层(RFC 4252)</strong>:在安全信道之上验证客户端用户身份(密码、公钥、keyboard-interactive 等);</li>
+<li><strong>连接层(RFC 4254)</strong>:在单一安全连接上复用多条<strong>通道(channel)</strong>,提供交互式会话、端口转发、X11 转发等能力,并实现滑动窗口流控。</li>
+</ol>
+<h3 id="3-2-连接建立过程"><a href="#3-2-连接建立过程" class="headerlink" title="3.2 连接建立过程"></a>3.2 连接建立过程</h3><p>一个典型的 SSH-2 握手序列:</p>
+<ol>
+<li><strong>版本交换</strong>:双方发送 <code>SSH-2.0-OpenSSH_10.0</code> 样式的版本字符串;</li>
+<li><strong>算法协商</strong>:<code>SSH_MSG_KEXINIT</code> 报文交换各算法类别的候选列表,取双方共同支持者优先者;</li>
+<li><strong>密钥交换</strong>:执行 DH&#x2F;ECDH&#x2F;混合后量子 KEX,同时服务器出示主机密钥签名,客户端据此完成<strong>服务器身份认证</strong>;</li>
+<li><strong>NEWKEYS</strong>:切换到协商出的对称加密与 MAC&#x2F;AEAD;</li>
+<li><strong>服务请求与用户认证</strong>:<code>SSH_MSG_SERVICE_REQUEST</code> → 认证层报文往返;</li>
+<li><strong>通道建立</strong>:打开 session&#x2F;forwarded-tcpip 等通道,承载 shell、命令或转发流量。</li>
+</ol>
+<h3 id="3-3-二进制分组协议-BPP-与它的隐患"><a href="#3-3-二进制分组协议-BPP-与它的隐患" class="headerlink" title="3.3 二进制分组协议(BPP)与它的隐患"></a>3.3 二进制分组协议(BPP)与它的隐患</h3><p>传输层以<strong>二进制分组协议</strong>封包:每包由”长度(4 字节)+ 填充长度(1 字节)+ 载荷 + 随机填充”组成,后接 MAC;<strong>序列号参与 MAC 计算</strong>以防重放与乱序。AEAD 套件(如 ChaCha20-Poly1305、AES-GCM)则把认证标签并入密文。值得注意的是:<strong>握手期(尚未启用加密前)的报文与序列号处理规则,正是 2023 年 Terrapin 攻击的根源</strong>(§8.1)。</p>
+<h3 id="3-4-通道复用与扩展机制"><a href="#3-4-通道复用与扩展机制" class="headerlink" title="3.4 通道复用与扩展机制"></a>3.4 通道复用与扩展机制</h3><p>连接层的通道类型包括 <code>session</code>(shell&#x2F;exec&#x2F;subsystem)、<code>direct-tcpip</code>(本地转发)、<code>forwarded-tcpip</code>(远程转发)、<code>x11</code> 等。SFTP 本质是一个名为 <code>sftp</code> 的 subsystem。RFC 8308 定义了 <strong>ext-info</strong> 扩展机制,允许双方在 KEX 后声明额外能力——后续的 strict key exchange(§8.1)正是借助该机制落地。</p>
+<h3 id="3-5-服务器认证与-TOFU-信任模型"><a href="#3-5-服务器认证与-TOFU-信任模型" class="headerlink" title="3.5 服务器认证与 TOFU 信任模型"></a>3.5 服务器认证与 TOFU 信任模型</h3><p>SSH 的服务器认证依赖<strong>主机密钥</strong>:客户端将首次见到的主机公钥记入 <code>known_hosts</code>(“信任并首次使用”,TOFU),此后核对指纹;不符即告警。替代方案包括借助 DNSSEC 的 SSHFP 记录(RFC 4255)、企业 CA 签发的主机证书(§5.3),以及 <code>StrictHostKeyChecking</code> 的严格策略。TOFU 模型部署成本低,但首连时刻存在”盲区”。</p>
+<h2 id="4-sshd-守护进程架构"><a href="#4-sshd-守护进程架构" class="headerlink" title="4 sshd 守护进程架构"></a>4 sshd 守护进程架构</h2><h3 id="4-1-概览"><a href="#4-1-概览" class="headerlink" title="4.1 概览"></a>4.1 概览</h3><p>sshd 由 OpenSSH 以 C 语言编写,在 OpenBSD 上原生开发,经 Portable 版本移植到各平台。它通常以独立守护进程监听 TCP 22,每个传入连接派生子进程处理。</p>
+<h3 id="4-2-特权分离-2001"><a href="#4-2-特权分离-2001" class="headerlink" title="4.2 特权分离(2001)"></a>4.2 特权分离(2001)</h3><p>sshd 是业界最早大规模实施**特权分离(privilege separation)**的服务之一。Niels Provos 与 Markus Friedl 在 2001–2002 年间将其引入 OpenSSH,并在 USENIX Security 2003 发表论文《Preventing Privilege Escalation》。设计要点:</p>
+<ul>
+<li><strong>特权 monitor 进程</strong>持有 root 权限,只做最小工作(认证结果裁决、fd 传递、资源管理);</li>
+<li><strong>无特权 pre-auth 子进程</strong>(在 chroot 空目录中运行、使用专用无特权账户,如 Debian 的 <code>sshd</code> 用户)承担全部协议解析与网络 I&#x2F;O;</li>
+<li>两进程经 <strong>socketpair</strong> 通信,monitor 以 <strong>fd 传递</strong>将网络连接交给子进程;</li>
+<li>认证完成后,子进程再降权为目标用户。</li>
+</ul>
+<p>其目标是:任何协议解析阶段的内存缺陷,都被限制在无特权进程中,无法直接触及 root。这一”协议解析先降权”的思想此后深刻影响了 nginx、OpenSMTPD 等一系列服务的设计。</p>
+<h3 id="4-3-二进制拆分-2024–2025"><a href="#4-3-二进制拆分-2024–2025" class="headerlink" title="4.3 二进制拆分(2024–2025)"></a>4.3 二进制拆分(2024–2025)</h3><p>OpenSSH 9.8(2024 年 7 月 1 日,与 regreSSHion 修复同版)将运行近二十年的单体 sshd 拆分为两个二进制:</p>
+<ul>
+<li><strong><code>sshd</code></strong>:轻量<strong>监听器</strong>,只负责监听、接受连接与派生子进程,不再承载 SSH 协议逻辑;</li>
+<li><strong><code>sshd-session</code></strong>:<strong>每连接一份</strong>的会话进程,处理协议、认证与通道。</li>
+</ul>
+<p>OpenSSH 10.0(2025 年 4 月)进一步把认证阶段独立为 <strong><code>sshd-auth</code></strong>。收益是攻击面收缩、崩溃隔离更强、监听器体积显著缩小;代价是打包与升级顺序复杂化——发行版(如 Debian 的 Freexian 团队)曾专门处理拆分带来的升级窗口问题。</p>
+<h3 id="4-4-配置体系"><a href="#4-4-配置体系" class="headerlink" title="4.4 配置体系"></a>4.4 配置体系</h3><p>sshd 的行为由 <code>/etc/ssh/sshd_config</code> 控制,关键机制包括:</p>
+<ul>
+<li><strong><code>Match</code> 条件块</strong>:按用户&#x2F;组&#x2F;来源地址覆盖配置(如对 <code>git</code> 账户强制 <code>ForceCommand</code>);</li>
+<li><strong><code>Include</code></strong>:引入子配置(OpenSSH 10.0 起支持环境变量展开);</li>
+<li><strong><code>sshd -t</code></strong> 语法校验与 <strong><code>sshd -T</code></strong> 输出最终生效配置——两者是变更流程的必备工具。</li>
+</ul>
+<p>常用指令示例(含义见 §9.1):</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Port / ListenAddress           监听端口与地址</span><br><span class="line">PermitRootLogin                root 登录策略(no / prohibit-password)</span><br><span class="line">PasswordAuthentication         是否允许密码登录</span><br><span class="line">PubkeyAuthentication           公钥认证开关</span><br><span class="line">AuthenticationMethods          强制的认证方法组合(可配多因素)</span><br><span class="line">AllowGroups / AllowUsers       访问白名单</span><br><span class="line">MaxAuthTries / MaxStartups     认证尝试与未认证连接上限</span><br><span class="line">LoginGraceTime                 认证宽限期</span><br><span class="line">PerSourceMaxStartups           每源地址并发未认证连接上限</span><br><span class="line">AllowTcpForwarding / X11Forwarding</span><br><span class="line">PermitOpen / PermitListen      转发目标白名单</span><br><span class="line">DisableForwarding              一刀切禁用所有转发</span><br><span class="line">TrustedUserCAKeys              信任的用户证书 CA</span><br><span class="line">AuthorizedKeysFile             公钥存放路径</span><br><span class="line">HostKey / HostCertificate      主机密钥与主机证书</span><br><span class="line">Subsystem sftp internal-sftp   SFTP 子系统(可 chroot)</span><br><span class="line">LogLevel                       日志级别(VERBOSE 记录密钥指纹)</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-5-跨平台与系统协同"><a href="#4-5-跨平台与系统协同" class="headerlink" title="4.5 跨平台与系统协同"></a>4.5 跨平台与系统协同</h3><ul>
+<li><strong>Windows</strong>:微软 PowerShell 团队维护 Win32-OpenSSH,自 Windows 10 1809 &#x2F; Server 2019 起作为可选功能内置,sshd 以 Windows 服务运行,支持 Windows 凭据与文件 ACL 语义;</li>
+<li><strong>systemd socket activation</strong>:OpenSSH 10.0 为 Portable 版加入 systemd 套接字激活支持,便于内核级连接限速与按需拉起;</li>
+<li><strong>SELinux&#x2F;AppArmor、PAM</strong>:sshd 通过 PAM 对接系统认证与账户策略,通过 syslog&#x2F;audit 输出日志。</li>
+</ul>
+<h2 id="5-认证机制"><a href="#5-认证机制" class="headerlink" title="5 认证机制"></a>5 认证机制</h2><h3 id="5-1-方法全景"><a href="#5-1-方法全景" class="headerlink" title="5.1 方法全景"></a>5.1 方法全景</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>机制</th>
+<th>评注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>password</code></td>
+<td>用户口令(可经 PAM)</td>
+<td>暴力破解的头号目标,生产环境应禁用</td>
+</tr>
+<tr>
+<td><code>publickey</code></td>
+<td>RSA &#x2F; ECDSA &#x2F; Ed25519 密钥对</td>
+<td>默认推荐;<code>authorized_keys</code> 选项可做细粒度限制</td>
+</tr>
+<tr>
+<td><code>keyboard-interactive</code></td>
+<td>多轮提示(PAM 对接)</td>
+<td>与 OTP&#x2F;双因素结合的标准途径</td>
+</tr>
+<tr>
+<td><code>GSSAPI</code></td>
+<td>Kerberos&#x2F;AD 票据</td>
+<td>企业域环境;支持单点登录</td>
+</tr>
+<tr>
+<td><code>hostbased</code></td>
+<td>主机级信任(rsh 遗风)</td>
+<td>极少使用,风险高</td>
+</tr>
+<tr>
+<td><code>certificate</code></td>
+<td>CA 签发的短时用户&#x2F;主机证书</td>
+<td>大规模管理与零信任演进方向</td>
+</tr>
+<tr>
+<td><code>publickey</code> (FIDO2)</td>
+<td><code>ed25519-sk</code> &#x2F; <code>ecdsa-sk</code> 硬件密钥</td>
+<td>抗钓鱼,要求物理触摸(user presence)</td>
+</tr>
+</tbody></table>
+<h3 id="5-2-公钥认证与-authorized-keys-选项"><a href="#5-2-公钥认证与-authorized-keys-选项" class="headerlink" title="5.2 公钥认证与 authorized_keys 选项"></a>5.2 公钥认证与 authorized_keys 选项</h3><p>公钥认证将客户端公钥登记于服务端 <code>authorized_keys</code>。OpenSSH 支持丰富的<strong>每行选项</strong>:<code>from=&quot;10.0.0.0/8&quot;</code>(来源限制)、<code>no-pty</code>、<code>no-port-forwarding</code>、<code>command=&quot;…&quot;</code>(强制固定命令)、<code>restrict</code>(全约束再逐项放行)——这是实现备份专用、隧道专用、Git 专用账户的基础设施。</p>
+<h3 id="5-3-SSH-证书体系-2010"><a href="#5-3-SSH-证书体系-2010" class="headerlink" title="5.3 SSH 证书体系(2010)"></a>5.3 SSH 证书体系(2010)</h3><p>OpenSSH 5.4(用户证书,2010 年 3 月)与 5.6(主机证书,2010 年 8 月)引入了<strong>内置 CA 证书体系</strong>:<code>ssh-keygen</code> 以 CA 密钥签发用户&#x2F;主机证书,证书携带 principal、有效期与扩展;服务端以 <code>TrustedUserCAKeys</code> 信任 CA,客户端以 <code>@cert-authority</code> 行信任主机 CA。</p>
+<p>与 TOFU 相比,证书模式的优势:<strong>消除首连信任盲区、天然支持短时凭证(小时级甚至分钟级)、吊销与审计更可控</strong>。大型企业与云厂商普遍以此替代静态密钥分发,是 SSH 身份体系最重要的现代化方向。</p>
+<h3 id="5-4-FIDO2-硬件密钥-2020"><a href="#5-4-FIDO2-硬件密钥-2020" class="headerlink" title="5.4 FIDO2 硬件密钥(2020)"></a>5.4 FIDO2 硬件密钥(2020)</h3><p>OpenSSH 8.2(2020 年 2 月)引入 <code>ecdsa-sk</code> 与 <code>ed25519-sk</code> 两种密钥类型,私钥驻留 FIDO&#x2F;U2F 安全密钥(如 YubiKey),认证时要求物理触摸。<code>ed25519-sk</code> 需要固件 ≥ 5.2.3。硬件绑定 + 触摸确认使 SSH 登录具备<strong>抗钓鱼</strong>能力,可将私钥盗用从”复制文件”升级为”偷走实体钥匙”。</p>
+<h3 id="5-5-认证链组合"><a href="#5-5-认证链组合" class="headerlink" title="5.5 认证链组合"></a>5.5 认证链组合</h3><p><code>AuthenticationMethods</code> 指令可强制认证链,如 <code>publickey,keyboard-interactive:pam</code> 要求”密钥 + 动态口令”双因素全部通过,是高价值主机的常用加固。</p>
+<h2 id="6-密码算法体系的演进"><a href="#6-密码算法体系的演进" class="headerlink" title="6 密码算法体系的演进"></a>6 密码算法体系的演进</h2><h3 id="6-1-密钥类型-从-DSA-到-Ed25519"><a href="#6-1-密钥类型-从-DSA-到-Ed25519" class="headerlink" title="6.1 密钥类型:从 DSA 到 Ed25519"></a>6.1 密钥类型:从 DSA 到 Ed25519</h3><ul>
+<li><strong>DSA</strong>:1999 年代的支持遗存,安全性与工程缺陷并存——OpenSSH 7.0(2015)默认禁用,<strong>10.0(2025)彻底移除</strong>;</li>
+<li><strong>RSA</strong>:仍受支持,但要求 ≥ 3072 位并使用 SHA-2 签名(<code>rsa-sha2-256/512</code>,RFC 8332);</li>
+<li><strong>ECDSA</strong>:<code>nistp256/384/521</code>;</li>
+<li><strong>Ed25519</strong>(RFC 8709):短密钥、快速、可预测实现,是当前默认首选——主机密钥与用户密钥均适用。</li>
+</ul>
+<h3 id="6-2-密钥交换-从-DH-到混合后量子"><a href="#6-2-密钥交换-从-DH-到混合后量子" class="headerlink" title="6.2 密钥交换:从 DH 到混合后量子"></a>6.2 密钥交换:从 DH 到混合后量子</h3><p>演进路径大致为:固定 DH 群(<code>diffie-hellman-group1/14…</code>)→ 群交换(<code>diffie-hellman-group-exchange</code>,RFC 4419)→ ECDH(<code>ecdh-sha2-nistp*</code>)→ <strong>Curve25519</strong>(<code>curve25519-sha256</code>,RFC 8731)→ <strong>混合后量子 KEX</strong>。</p>
+<p>后量子阶段的两个节点:</p>
+<ul>
+<li><strong>OpenSSH 9.0(2022 年 4 月)<strong>将 <code>sntrup761x25519-sha512@openssh.com</code>(Streamlined NTRU Prime + X25519 混合)设为默认 KEX——这是</strong>主流安全协议中最早默认启用后量子算法的实现之一</strong>;</li>
+<li>NIST 于 <strong>2024 年 8 月</strong>发布 FIPS 203(ML-KEM,前身 CRYSTALS-Kyber)后,OpenSSH 9.9 引入 <code>mlkem768x25519-sha256</code>,<strong>10.0(2025 年 4 月)起设为默认</strong>,对齐 IETF draft-ietf-ssh-pq-ke。</li>
+</ul>
+<p>“混合”设计的意义:KEX 同时运行经典算法与 PQC 算法,共享密钥由两侧秘密共同派生——<strong>只要任一侧算法未被攻破,会话即安全</strong>,以对冲 PQC 算法尚年轻的风险。”先记录、后解密”的量子威胁由此被提前拦截。</p>
+<h3 id="6-3-对称加密与-MAC"><a href="#6-3-对称加密与-MAC" class="headerlink" title="6.3 对称加密与 MAC"></a>6.3 对称加密与 MAC</h3><ul>
+<li><strong>AEAD 优先</strong>:<code>chacha20-poly1305@openssh.com</code>(RFC 8268,无 AES 硬件加速的移动&#x2F;嵌入式场景性能优异)与 <code>aes*-gcm@openssh.com</code>(RFC 5647);</li>
+<li><strong>CTR 模式</strong>:<code>aes128/256-ctr</code> 仍广泛可用;</li>
+<li><strong>MAC</strong>(非 AEAD 时):<code>hmac-sha2-256/512</code>、<code>umac-64/128@openssh.com</code>;SHA-1 家族已淘汰。</li>
+</ul>
+<h3 id="6-4-算法审计"><a href="#6-4-算法审计" class="headerlink" title="6.4 算法审计"></a>6.4 算法审计</h3><p>服务端最终算法集合可用 <code>sshd -T | grep -iE &#39;kex|cipher|mac|hostkey&#39;</code> 核查;社区工具 <strong>ssh-audit</strong> 可对照基线给出算法评级,并已支持 Terrapin(strict kex)检测。压缩功能默认关闭(历史上 <code>zlib@openssh.com</code> 曾关联时序侧信道研究)。</p>
+<h2 id="7-连接层功能"><a href="#7-连接层功能" class="headerlink" title="7 连接层功能"></a>7 连接层功能</h2><ul>
+<li><strong>会话通道</strong>:PTY&#x2F;shell、<code>exec</code> 远程命令、subsystem(SFTP)。<code>internal-sftp</code> + <code>ChrootDirectory</code> 可搭建不暴露 shell 的受控文件服务;</li>
+<li><strong>端口转发</strong>:<code>-L</code> 本地、<code>-R</code> 远程、<code>-D</code> 动态(SOCKS5);服务端可用 <code>PermitOpen</code>&#x2F;<code>PermitListen</code> 白名单约束目标,<code>DisableForwarding</code> 一刀切关闭。转发能力是把双刃剑:既可安全穿透内网,也可能被用于绕过边界(如向云元数据端点外联);</li>
+<li><strong>跳板与代理</strong>:OpenSSH 7.3(2016)引入 <code>ProxyJump</code>(<code>-J</code>),以单命令经跳板连接目标;相比 <strong>agent forwarding</strong>,ProxyJump 不把 agent 套接字暴露在跳板上,避免跳板 root 冒用密钥(§5、§8.2);</li>
+<li><strong>多路复用</strong>:<code>ControlMaster/ControlPersist</code> 在一条 TCP 连接上复用多个会话,免重复握手;其复用路径复杂度高——OpenSSH 10.1 引入的 ControlPersist 回归曾导致 10.2(2025 年 10 月)紧急修复,可为一例;</li>
+<li><strong>文件传输</strong>:OpenSSH 9.0(2022)起 <code>scp</code> 默认改用 SFTP 协议,弃用遗留 SCP&#x2F;RCP 协议(消除其通配符扩展类缺陷),统一到经过持续审计的 SFTP 栈。</li>
+</ul>
+<h2 id="8-安全事件与漏洞史复盘"><a href="#8-安全事件与漏洞史复盘" class="headerlink" title="8 安全事件与漏洞史复盘"></a>8 安全事件与漏洞史复盘</h2><p>SSH 的三十年安全史,恰好覆盖了网络安全威胁的四种典型形态:协议设计缺陷、实现缺陷、供应链投毒与运营暴露。</p>
+<h3 id="8-1-协议层"><a href="#8-1-协议层" class="headerlink" title="8.1 协议层"></a>8.1 协议层</h3><ul>
+<li><strong>SSH-1 CRC32 补偿攻击(1998)</strong>:CORE SDI 研究者发现 SSH-1 的 CRC 完整性校验可被插入攻击利用(此后 TESO 于 2001 年公开成熟利用工具并在野外大规模使用)。这一缺陷直接催生了 SSH-2 的 MAC 设计——<strong>协议层的教训最终以”换代”解决</strong>。</li>
+<li><strong>Terrapin(CVE-2023-48795 &#x2F; RogueExtension CVE-2023-48796,2023 年 12 月)</strong>:攻击者处于主动 MITM 位置时,在握手早期截断&#x2F;丢弃前缀报文、操纵序列号计数,导致双方在算法选择与安全特性(如击键时序混淆)上”错位”达成一致,实现<strong>降级或去防护</strong>。根因在于 RFC 4253 BPP 对握手期序列号的定义缺口,属<strong>协议级缺陷,影响几乎所有实现</strong>。缓解措施 “strict key exchange” 扩展(OpenSSH 9.6,2023 年 12 月)在双方均支持时将握手内容与序列号绑定。因需实时主动中间人,实际风险评级为中等,但作为协议缺陷的警示意义远大于单次利用价值。</li>
+</ul>
+<h3 id="8-2-实现层"><a href="#8-2-实现层" class="headerlink" title="8.2 实现层"></a>8.2 实现层</h3><ul>
+<li><strong>Debian OpenSSL PRNG 缺陷(CVE-2008-0166,2008 年 5 月)</strong>:Debian 维护者对 OpenSSL 的打包补丁意外削弱熵,生成的密钥只有极小的可能集合。大量 Debian&#x2F;Ubuntu 主机的 SSH 主机密钥与用户密钥沦为可预测密钥,被迫全网轮换。教训:<strong>上游正确性依赖整个构建与打包链条</strong>——这条线索在十六年后以更戏剧化的方式重现(§8.3)。</li>
+<li><strong>roaming 缓冲区越界(CVE-2016-0777&#x2F;0778,2016 年 1 月,Qualys)</strong>:客户端 roam 功能的越界读,事件后 OpenSSH 移除了该试验特性;</li>
+<li><strong>用户名枚举(CVE-2018-15473,2018)</strong>:认证时序差异泄露账户存在性;</li>
+<li><strong>ssh-agent PKCS#11 RCE(CVE-2023-38408,2023 年 7 月,Qualys)</strong>:agent 转发场景下,受信主机可经 agent 远程代码执行,凸显<strong>转发类功能的攻击面</strong>;</li>
+<li><strong>regreSSHion(CVE-2024-6387,2024 年 7 月)</strong>:sshd 信号处理器竞态条件——信号处理函数中调用非异步信号安全的内存管理函数,在 glibc 的 Linux 系统上可致<strong>未经认证的远程代码执行(以 root 身份)</strong>。影响 OpenSSH 8.5p1–9.7p1(以及更早的 &lt; 4.4p1),本质是 2006 年老漏洞 CVE-2006-5051 的<strong>回归</strong>。Qualys 估计披露时全球约 70 万实例暴露于该漏洞;利用需要赢下竞态、难度高且不稳定,但概念验证已公开。<strong>9.8p1 修复</strong>(重构信号处理路径),<code>LoginGraceTime 0</code> 为部分缓解。regreSSHion 的 lesson 有二:长期演化代码的”旧病复发”风险,以及架构拆分(同版发布的 sshd&#x2F;sshd-session 分离)作为系统性降低攻击面的价值。</li>
+</ul>
+<h3 id="8-3-供应链"><a href="#8-3-供应链" class="headerlink" title="8.3 供应链"></a>8.3 供应链</h3><p>**XZ Utils 后门(CVE-2024-3094,2024 年 3 月)**是迄今针对 sshd 最著名的供应链攻击:</p>
+<ul>
+<li>攻击者以 “Jia Tan” 身份历时约两年(2021–2024)在 XZ Utils 开源项目中持续贡献、积累信任并最终取得维护权;</li>
+<li>2024 年 2 月发布的 xz 5.6.0&#x2F;5.6.1 携带混淆后门(藏于构建脚本与测试文件中);</li>
+<li>在启用 systemd 的 x86-64 Linux 上,<code>libsystemd</code> 链接 <code>liblzma</code>,而 <strong>sshd 恰好经此链路加载了被投毒的压缩库</strong>——后门篡改 sshd 的认证数据结构,在特定公钥触发条件下实现<strong>认证绕过&#x2F;远程命令执行</strong>(CVSS 10.0);</li>
+<li>PostgreSQL 开发者 <strong>Andres Freund</strong> 于 2024 年 3 月 29 日因 sshd 登录<strong>慢了约 0.5 秒</strong>、CPU 占用与 perf 剖析异常顺藤摸瓜揭露;受影响范围限于个别滚动发行版(Fedora Rawhide、Debian sid、openSUSE Tumbleweed、Kali),各稳定分支幸免;</li>
+<li>事件直接推动开源供应链治理的关键角色审核、构建可复现性、依赖哈希固定与 SBOM 讨论全面升温。</li>
+</ul>
+<p>XZ 事件对 sshd 研究的启示在于:<strong>sshd 的攻击面不止于它自己的代码</strong>,还包括一切被它加载的共享库、PAM 模块与动态链接链路。</p>
+<h3 id="8-4-运营层"><a href="#8-4-运营层" class="headerlink" title="8.4 运营层"></a>8.4 运营层</h3><p>公网长期存在数百万开放 22 端口的主机,暴力破解与凭据填充是持续性噪音;僵尸网络批量尝试弱口令与泄露密钥(如开发者误将私钥提交到代码仓库);远程转发(<code>-R</code>)被滥用为反向隧道与数据外泄通道。运营风险与协议&#x2F;实现风险相互放大:密码认证暴露的每一台服务器,都在为攻击生态供给资源。</p>
+<h3 id="8-5-小结-四类风险-四种治理"><a href="#8-5-小结-四类风险-四种治理" class="headerlink" title="8.5 小结:四类风险,四种治理"></a>8.5 小结:四类风险,四种治理</h3><table>
+<thead>
+<tr>
+<th>风险类别</th>
+<th>代表事件</th>
+<th>治理手段</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>协议设计缺陷</td>
+<td>SSH-1 CRC、Terrapin</td>
+<td>标准修订、算法&#x2F;机制更替(strict kex、AEAD)</td>
+</tr>
+<tr>
+<td>实现缺陷</td>
+<td>regreSSHion、Debian PRNG</td>
+<td>架构隔离(特权分离、二进制拆分)、快速响应、长期回归测试</td>
+</tr>
+<tr>
+<td>供应链投毒</td>
+<td>XZ 后门</td>
+<td>可复现构建、关键角色治理、依赖固定、SBOM</td>
+</tr>
+<tr>
+<td>运营暴露</td>
+<td>暴力破解、密钥泄露</td>
+<td>加固基线、密钥轮换、监控审计、零信任收敛暴露面</td>
+</tr>
+</tbody></table>
+<h2 id="9-sshd-加固与运营实践"><a href="#9-sshd-加固与运营实践" class="headerlink" title="9 sshd 加固与运营实践"></a>9 sshd 加固与运营实践</h2><h3 id="9-1-服务端配置基线"><a href="#9-1-服务端配置基线" class="headerlink" title="9.1 服务端配置基线"></a>9.1 服务端配置基线</h3><p>以下为一个互联网暴露面主机的参考基线(按需调整):</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"># ---- 认证 ----</span><br><span class="line">PermitRootLogin no                  # 禁止 root 直接登录(部署期可暂用 prohibit-password)</span><br><span class="line">PasswordAuthentication no           # 关闭密码登录,强制密钥</span><br><span class="line">KbdInteractiveAuthentication no     # 除非需要 PAM 双因素</span><br><span class="line">PubkeyAuthentication yes</span><br><span class="line">AuthenticationMethods publickey     # 需要时改为 publickey,keyboard-interactive:pam 构成双因素</span><br><span class="line">PermitEmptyPasswords no</span><br><span class="line">MaxAuthTries 3                      # 限制尝试次数</span><br><span class="line">LoginGraceTime 30                   # 缩短认证宽限窗口(亦缓解 regreSSHion 类竞态)</span><br><span class="line">MaxStartups 10:30:60                # 限制并发未认证连接</span><br><span class="line">PerSourceMaxStartups 5              # 每源地址限速</span><br><span class="line"></span><br><span class="line"># ---- 访问控制 ----</span><br><span class="line">AllowGroups ssh-users               # 白名单化访问</span><br><span class="line">Match User backup                   # 受限账户按需收紧</span><br><span class="line">    ForceCommand internal-sftp      # 或固定命令</span><br><span class="line">    DisableForwarding</span><br><span class="line">    ChrootDirectory /srv/backup</span><br><span class="line"></span><br><span class="line"># ---- 转发与会话 ----</span><br><span class="line">X11Forwarding no</span><br><span class="line">AllowTcpForwarding no               # 需要跳板时再按需开启,并配合 PermitOpen</span><br><span class="line">ClientAliveInterval 300</span><br><span class="line">ClientAliveCountMax 2</span><br><span class="line"></span><br><span class="line"># ---- 日志 ----</span><br><span class="line">LogLevel VERBOSE                    # 记录认证细节与密钥指纹,便于审计</span><br><span class="line"></span><br><span class="line">Subsystem sftp internal-sftp</span><br></pre></td></tr></table></figure>
+
+<p>要点:每一项都对应 §8 中的一类真实威胁——关密码对应暴力破解生态,<code>LoginGraceTime</code>&#x2F;<code>MaxStartups</code> 对应竞态与资源型攻击,<code>DisableForwarding</code> 对应隧道滥用,<code>LogLevel VERBOSE</code> 支撑事后取证。</p>
+<h3 id="9-2-密钥与身份管理"><a href="#9-2-密钥与身份管理" class="headerlink" title="9.2 密钥与身份管理"></a>9.2 密钥与身份管理</h3><ul>
+<li>用户密钥:<code>ssh-keygen -t ed25519</code>(硬件场景 <code>-t ed25519-sk</code>),私钥必须设 passphrase;</li>
+<li>以 <strong>ssh-agent</strong> 免重复解锁,但<strong>谨慎使用 agent forwarding</strong>——优先 ProxyJump;</li>
+<li>规模化场景采用 <strong>SSH 证书 + 短时凭证</strong>(§5.3),辅以 principal 约束与有效期上限;</li>
+<li>定期轮换主机密钥与用户密钥;在代码仓库与 CI 中扫描意外提交的私钥。</li>
+</ul>
+<h3 id="9-3-网络层收敛"><a href="#9-3-网络层收敛" class="headerlink" title="9.3 网络层收敛"></a>9.3 网络层收敛</h3><ul>
+<li>防火墙&#x2F;安全组白名单来源;或以 VPN&#x2F;WireGuard&#x2F;零信任代理前置,不把 22 端口直接暴露公网;</li>
+<li><code>fail2ban</code> 类工具按失败日志自动封禁;systemd socket activation(OpenSSH 10.0+)可进一步在内核层限速;</li>
+<li>修改端口可减少脚本噪音,但<strong>不构成安全边界</strong>——价值有限,不应作为主要手段。</li>
+</ul>
+<h3 id="9-4-监控、审计与变更流程"><a href="#9-4-监控、审计与变更流程" class="headerlink" title="9.4 监控、审计与变更流程"></a>9.4 监控、审计与变更流程</h3><ul>
+<li>集中收集 <code>auth.log</code>&#x2F;journal,<code>LogLevel VERBOSE</code> 提供密钥指纹级别的认证审计;</li>
+<li>基线扫描:<code>sshd -T</code> 与 ssh-audit 定期比对算法与配置漂移;</li>
+<li>高合规场景引入<strong>会话录制</strong>与命令级审批(tlog、Teleport 等,§10);</li>
+<li>变更三步走:<code>sshd -t</code> 校验 → <code>systemctl reload sshd</code> → <strong>新建会话验证成功后再断开旧会话</strong>(防自锁)。</li>
+</ul>
+<h2 id="10-生态与替代方案"><a href="#10-生态与替代方案" class="headerlink" title="10 生态与替代方案"></a>10 生态与替代方案</h2><table>
+<thead>
+<tr>
+<th>方案</th>
+<th>定位</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>OpenSSH</strong></td>
+<td>事实标准</td>
+<td>功能最全、审计最充分、算法最前沿;几乎所有平台的默认选择</td>
+</tr>
+<tr>
+<td><strong>Dropbear</strong></td>
+<td>嵌入式 SSH</td>
+<td>体积小、依赖少,适合路由器&#x2F;IoT;算法子集较小、无硬件加速支持(慢速 ARM 上性能差异明显)</td>
+</tr>
+<tr>
+<td><strong>libssh &#x2F; libssh2</strong></td>
+<td>嵌入库</td>
+<td>供应用内嵌 SSH 能力;libssh 曾有认证绕过 CVE-2018-10933(2018),提醒”库级复用即风险扩散”</td>
+</tr>
+<tr>
+<td><strong>wolfSSH</strong></td>
+<td>嵌入库</td>
+<td>面向嵌入式&#x2F;合规生态(wolfSSL 系)</td>
+</tr>
+<tr>
+<td><strong>Teleport</strong></td>
+<td>企业访问平面</td>
+<td>在 sshd 之上叠加 SSO、证书、审计与会话录制,是”管理面”的替代而非协议的替代</td>
+</tr>
+<tr>
+<td><strong>mosh</strong></td>
+<td>移动增强</td>
+<td>UDP + 漫游 + 本地回显,弱网&#x2F;移动场景体验好;认证仍复用 SSH</td>
+</tr>
+<tr>
+<td><strong>WireGuard</strong></td>
+<td>网络层底座</td>
+<td>现代 VPN;与 SSH 叠加可将 22 端口从公网摘除,二者互补而非互斥</td>
+</tr>
+<tr>
+<td><strong>云原生通道</strong></td>
+<td>趋势补充</td>
+<td>云 Bastion、AWS SSM Session Manager、<code>kubectl exec</code> 等正在分流部分交互式 SSH 用途</td>
+</tr>
+</tbody></table>
+<h2 id="11-趋势展望"><a href="#11-趋势展望" class="headerlink" title="11 趋势展望"></a>11 趋势展望</h2><ol>
+<li><strong>后量子迁移深化</strong>:ML-KEM-768 混合 KEX 成为默认(OpenSSH 10.0)只是第一步;draft-ietf-ssh-pq-ke 定稿、纯 PQC 方案与 SLH-DSA(ML-DSA)签名的引入将接力;”先存储后解密”威胁使这一迁移对所有长期敏感基础设施都是必答题。</li>
+<li><strong>凭证现代化</strong>:静态长期密钥 → CA 证书 + 短时凭证 + FIDO2 硬件绑定;TOFU 信任模型逐步被可吊销、可审计的证书体系补充或替代。</li>
+<li><strong>sshd 架构持续解耦</strong>:从特权分离(2001)到 sshd&#x2F;sshd-session 拆分(9.8,2024)再到 sshd-auth 独立(10.0,2025),攻击面逐级收缩;未来可预期更细粒度的进程沙箱与能力最小化。</li>
+<li><strong>供应链韧性制度化</strong>:XZ 事件后,关键开源角色审核、可复现构建、依赖哈希固定、SBOM 等实践正在进入包括 SSH 生态在内的关键组件工具链;对 sshd 而言,动态链接链路本身(如 XZ 事件的注入路径)也在审视范围内。</li>
+<li><strong>会话级零信任</strong>:从”能否登录”转向”可审计的最小会话”——身份代理、命令级审批、会话录制与异常检测,将 sshd 嵌入更大的访问治理平面。</li>
+<li><strong>边缘与嵌入式</strong>:IoT 与网络设备上的 Dropbear 类轻量实现仍是安全洼地,需要设备级基线与固件更新通道。</li>
+</ol>
+<h2 id="12-结论"><a href="#12-结论" class="headerlink" title="12 结论"></a>12 结论</h2><p>SSH&#x2F;sshd 是一个罕见的完整样本:它从一次密码嗅探事故出发,经历商业化危机与开源重生,以 RFC 标准化定格协议形态,又在三十年的攻防中同时承受协议级、实现级与供应链级攻击,并持续以算法更替(Ed25519、AEAD、混合后量子)、架构演进(特权分离 → 二进制拆分)与身份体系升级(证书、FIDO2)自我刷新。</p>
+<p>对运营者的建议可以浓缩为三句话:<strong>用算法的新</strong>(Ed25519 + ML-KEM 混合 KEX + AEAD)、<strong>用身份的短</strong>(证书化 + 短时凭证 + 硬件因子)、<strong>把暴露面收窄</strong>(禁密码、白名单、收敛公网 22 端口、VERBOSE 审计)。对研究者与建设者,sshd 的启示更深层:<strong>安全不是一次性设计,而是一条持续的演化路径</strong>——协议会过时,实现会回归,供应链会背叛,唯有”最小权限 + 最小攻击面 + 持续审计”的架构纪律与快速响应机制,才是跨越三十年的常量。</p>
+<hr>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
+<li>T. Ylönen, <em>SSH — Secure Login Connections over the Internet</em>, 6th USENIX Security Symposium, 1996.</li>
+<li>IETF SECSH WG, RFC 4250–4256(SSH-2 协议族),2006. <a target="_blank" rel="noopener" href="https://www.rfc-editor.org/rfc/rfc4251">https://www.rfc-editor.org/rfc/rfc4251</a></li>
+<li>OpenSSH Release Notes(9.6&#x2F;9.8&#x2F;9.9&#x2F;10.0–10.3 等). <a target="_blank" rel="noopener" href="https://www.openssh.org/releasenotes.html">https://www.openssh.org/releasenotes.html</a></li>
+<li>N. Provos, M. Friedl, P. Honeyman, <em>Preventing Privilege Escalation</em>, USENIX Security 2003;及 Privilege Separated OpenSSH 项目页. <a target="_blank" rel="noopener" href="http://www.citi.umich.edu/u/provos/ssh/privsep.html">http://www.citi.umich.edu/u/provos/ssh/privsep.html</a></li>
+<li>Terrapin Attack 官方研究站点(CVE-2023-48795&#x2F;48796). <a target="_blank" rel="noopener" href="https://terrapin-attack.com/">https://terrapin-attack.com</a></li>
+<li>Qualys TRU,regreSSHion &#x2F; CVE-2024-6387 技术公告,2024-07. <a target="_blank" rel="noopener" href="https://blog.qualys.com/">https://blog.qualys.com</a></li>
+<li>A. Freund 等,oss-security 邮件列表:”backdoor in upstream xz&#x2F;liblzma leading to ssh server compromise”,2024-03-29. <a target="_blank" rel="noopener" href="https://www.openwall.com/lists/oss-security/2024/03/29">https://www.openwall.com/lists/oss-security/2024/03/29</a></li>
+<li>Red Hat, <em>Urgent Security Alert: Fedora 41 and Rawhide users</em>(CVE-2024-3094). <a target="_blank" rel="noopener" href="https://www.redhat.com/en/blog/urgent-security-alert-fedora-41-and-rawhide-users">https://www.redhat.com/en/blog/urgent-security-alert-fedora-41-and-rawhide-users</a></li>
+<li>NIST, <em>FIPS 203: Module-Lattice-Based Key-Encapsulation Mechanism Standard</em>, 2024-08. <a target="_blank" rel="noopener" href="https://csrc.nist.gov/pubs/fips/203/final">https://csrc.nist.gov/pubs/fips/203/final</a></li>
+<li>ssh-audit(SSH 服务器&#x2F;客户端算法审计工具). <a target="_blank" rel="noopener" href="https://github.com/jtesta/ssh-audit">https://github.com/jtesta/ssh-audit</a></li>
+<li>Cyberciti.biz, <em>Top 20 OpenSSH Server Best Security Practices</em>. <a target="_blank" rel="noopener" href="https://www.cyberciti.biz/tips/linux-unix-bsd-openssh-server-best-practices.html">https://www.cyberciti.biz/tips/linux-unix-bsd-openssh-server-best-practices.html</a></li>
+<li>Undeadly, <em>OpenSSH 10.2 released</em>, 2025-10-10. <a target="_blank" rel="noopener" href="https://www.undeadly.org/cgi?action=article;sid=20251010131052">https://www.undeadly.org/cgi?action=article;sid=20251010131052</a></li>
+<li>Win32-OpenSSH(Windows 移植). <a target="_blank" rel="noopener" href="https://github.com/PowerShell/Win32-OpenSSH">https://github.com/PowerShell/Win32-OpenSSH</a></li>
+<li>Wikipedia, <em>Secure Shell</em>. <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Secure_Shell">https://en.wikipedia.org/wiki/Secure_Shell</a></li>
+<li>Wikipedia, <em>Dropbear (software)</em>. <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Dropbear_(software)">https://en.wikipedia.org/wiki/Dropbear_(software)</a></li>
+</ol>
+<blockquote>
+<p>注:文中版本行为以 OpenSSH 官方 Release Notes 为准;CVE 严重度以 NVD&#x2F;厂商评估为准,个别条目(如 Terrapin 的 CVSS)不同评估口径略有差异。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://FighterGodNemo.github.io">琉璃幻彩</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://fightergodnemo.github.io/2026/09/29/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/SSH%E4%B8%8Esshd%E7%A0%94%E7%A9%B6%E6%96%87%E7%AB%A0/">https://fightergodnemo.github.io/2026/09/29/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/SSH%E4%B8%8Esshd%E7%A0%94%E7%A9%B6%E6%96%87%E7%AB%A0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://FighterGodNemo.github.io" target="_blank">琉璃幻彩的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/SSH/">SSH</a><a class="post-meta__tags" href="/tags/OpenSSH/">OpenSSH</a><a class="post-meta__tags" href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/09/29/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E7%A4%BE%E4%BC%9A%E7%A0%94%E7%A9%B6/1450%E5%8F%B0%E6%B9%BE%E6%B0%B4%E5%86%9B-%E8%B5%B7%E6%BA%90%E3%80%81%E7%94%9F%E6%80%81%E4%B8%8E%E5%BD%B1%E5%93%8D/" title="1450台湾水军-起源、生态与影响"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">1450台湾水军-起源、生态与影响</div></div><div class="info-2"><div class="info-item-1">1450：一个数字如何成为”台湾网军”的代名词——关于”1450台湾水军”的起源、生态、标志性案件与影响的整合分析  一、引言：从预算数字到政治符号在两岸的网络世界里，”1450”是一个不需要解释的词。任何一个社交媒体平台的热门新闻评...</div></div></div></a><a class="pagination-related" href="/2026/09/29/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E7%94%9F%E7%89%A9%E7%A0%94%E7%A9%B6/%E7%96%9D%E4%B8%8E%E8%84%91%E7%96%9D%E2%80%94%E2%80%94%E6%A6%82%E5%BF%B5%E3%80%81%E5%88%86%E7%B1%BB%E4%B8%8E%E4%B8%B4%E5%BA%8A%E7%BB%BC%E8%BF%B0/" title="疝与脑疝——概念、分类与临床综述"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">疝与脑疝——概念、分类与临床综述</div></div><div class="info-2"><div class="info-item-1">疝：从腹壁缺损到颅内危象——一个古老病理概念的系统梳理（兼论脑疝） 摘要：疝（hernia）是体内脏器或组织离开正常解剖位置，经先天或后天的薄弱点、缺损或孔隙进入另一部位的病理状态。”疝”贯穿全身——腹股沟疝、脐疝、食管裂孔疝、椎间盘...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/03/15/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E7%9F%A5%E8%AF%86/SSH/" title="SSH"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-15</div><div class="info-item-2">SSH</div></div><div class="info-2"><div class="info-item-1">一、核心概念：什么是 SSH？SSH 的全称是 Secure Shell（安全外壳协议）。 你可以把它想象成一个高度安全的“快递员”，专门负责在两台计算机之间建立一条加密的通信隧道。  传统工具（如 Telnet）：像明信片，传输的内...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">琉璃幻彩</div><div class="author-info-description">The Greatest Magician!</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">215</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">195</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">40</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FighterGodNemo"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/FighterGodNemo" title="Github" target="_blank"><i class="fab fa-github"></i></a><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="微信"><i class="fab fa-weixin"></i></a><div class="qr-code-popup"><img src="/img/qrcode/wechat-qr.png" alt="微信二维码"/ loading='lazy'></div></div><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="QQ"><i class="fab fa-qq"></i></a><div class="qr-code-popup"><img src="/img/qrcode/qq-qr.png" alt="QQ二维码"/ loading='lazy'></div></div><div class="copy-text-wrapper"><a class="social-icon" href="javascript:void(0)" title="Steam好友代码：1905706957" data-copy-text="1905706957"><i class="fab fa-steam"></i></a><div class="copy-text-popup"><h3>Steam好友代码</h3><p>1905706957</p><p class="copy-hint">点击图标复制</p></div></div><a class="social-icon" href="mailto:guliujia2233@outlook.com" title="Email" target="_blank"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">热爱 CTF 和 Forensic 的网安人一枚～
+欢迎各位大佬交流点评！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SSH-%E4%B8%8E-sshd-%E7%A0%94%E7%A9%B6-%E5%8D%8F%E8%AE%AE%E6%BC%94%E8%BF%9B%E3%80%81%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%AE%89%E5%85%A8%E5%AE%9E%E8%B7%B5"><span class="toc-number">1.</span> <span class="toc-text">SSH 与 sshd 研究:协议演进、守护进程架构与安全实践</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%BC%95%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">1 引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%8E%86%E5%8F%B2%E6%BC%94%E8%BF%9B"><span class="toc-number">1.2.</span> <span class="toc-text">2 历史演进</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E8%B5%B7%E6%BA%90-%E4%B8%80%E6%AC%A1%E5%97%85%E6%8E%A2%E6%94%BB%E5%87%BB%E5%82%AC%E7%94%9F%E7%9A%84%E5%8D%8F%E8%AE%AE-1995"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 起源:一次嗅探攻击催生的协议(1995)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%95%86%E4%B8%9A%E5%8C%96%E4%B8%8E%E8%AE%B8%E5%8F%AF%E8%AF%81%E5%8D%B1%E6%9C%BA-1995%E2%80%931999"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 商业化与许可证危机(1995–1999)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-OpenSSH-%E7%9A%84%E8%AF%9E%E7%94%9F-1999"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 OpenSSH 的诞生(1999)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-SSH-1-%E2%86%92-SSH-2-%E4%B8%8E-IETF-%E6%A0%87%E5%87%86%E5%8C%96-1996%E2%80%932006"><span class="toc-number">1.2.4.</span> <span class="toc-text">2.4 SSH-1 → SSH-2 与 IETF 标准化(1996–2006)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-%E5%85%B3%E9%94%AE%E6%97%B6%E9%97%B4%E7%BA%BF"><span class="toc-number">1.2.5.</span> <span class="toc-text">2.5 关键时间线</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-SSH-%E5%8D%8F%E8%AE%AE%E4%BD%93%E7%B3%BB"><span class="toc-number">1.3.</span> <span class="toc-text">3 SSH 协议体系</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E4%B8%89%E5%B1%82%E6%9E%B6%E6%9E%84"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 三层架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E8%BF%9E%E6%8E%A5%E5%BB%BA%E7%AB%8B%E8%BF%87%E7%A8%8B"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 连接建立过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%88%86%E7%BB%84%E5%8D%8F%E8%AE%AE-BPP-%E4%B8%8E%E5%AE%83%E7%9A%84%E9%9A%90%E6%82%A3"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.3 二进制分组协议(BPP)与它的隐患</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E9%80%9A%E9%81%93%E5%A4%8D%E7%94%A8%E4%B8%8E%E6%89%A9%E5%B1%95%E6%9C%BA%E5%88%B6"><span class="toc-number">1.3.4.</span> <span class="toc-text">3.4 通道复用与扩展机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AE%A4%E8%AF%81%E4%B8%8E-TOFU-%E4%BF%A1%E4%BB%BB%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.3.5.</span> <span class="toc-text">3.5 服务器认证与 TOFU 信任模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-sshd-%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B%E6%9E%B6%E6%9E%84"><span class="toc-number">1.4.</span> <span class="toc-text">4 sshd 守护进程架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E6%A6%82%E8%A7%88"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 概览</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E7%89%B9%E6%9D%83%E5%88%86%E7%A6%BB-2001"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 特权分离(2001)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%8B%86%E5%88%86-2024%E2%80%932025"><span class="toc-number">1.4.3.</span> <span class="toc-text">4.3 二进制拆分(2024–2025)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-%E9%85%8D%E7%BD%AE%E4%BD%93%E7%B3%BB"><span class="toc-number">1.4.4.</span> <span class="toc-text">4.4 配置体系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-%E8%B7%A8%E5%B9%B3%E5%8F%B0%E4%B8%8E%E7%B3%BB%E7%BB%9F%E5%8D%8F%E5%90%8C"><span class="toc-number">1.4.5.</span> <span class="toc-text">4.5 跨平台与系统协同</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6"><span class="toc-number">1.5.</span> <span class="toc-text">5 认证机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E6%96%B9%E6%B3%95%E5%85%A8%E6%99%AF"><span class="toc-number">1.5.1.</span> <span class="toc-text">5.1 方法全景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E5%85%AC%E9%92%A5%E8%AE%A4%E8%AF%81%E4%B8%8E-authorized-keys-%E9%80%89%E9%A1%B9"><span class="toc-number">1.5.2.</span> <span class="toc-text">5.2 公钥认证与 authorized_keys 选项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-SSH-%E8%AF%81%E4%B9%A6%E4%BD%93%E7%B3%BB-2010"><span class="toc-number">1.5.3.</span> <span class="toc-text">5.3 SSH 证书体系(2010)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-FIDO2-%E7%A1%AC%E4%BB%B6%E5%AF%86%E9%92%A5-2020"><span class="toc-number">1.5.4.</span> <span class="toc-text">5.4 FIDO2 硬件密钥(2020)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-%E8%AE%A4%E8%AF%81%E9%93%BE%E7%BB%84%E5%90%88"><span class="toc-number">1.5.5.</span> <span class="toc-text">5.5 认证链组合</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95%E4%BD%93%E7%B3%BB%E7%9A%84%E6%BC%94%E8%BF%9B"><span class="toc-number">1.6.</span> <span class="toc-text">6 密码算法体系的演进</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E5%AF%86%E9%92%A5%E7%B1%BB%E5%9E%8B-%E4%BB%8E-DSA-%E5%88%B0-Ed25519"><span class="toc-number">1.6.1.</span> <span class="toc-text">6.1 密钥类型:从 DSA 到 Ed25519</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E5%AF%86%E9%92%A5%E4%BA%A4%E6%8D%A2-%E4%BB%8E-DH-%E5%88%B0%E6%B7%B7%E5%90%88%E5%90%8E%E9%87%8F%E5%AD%90"><span class="toc-number">1.6.2.</span> <span class="toc-text">6.2 密钥交换:从 DH 到混合后量子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E4%B8%8E-MAC"><span class="toc-number">1.6.3.</span> <span class="toc-text">6.3 对称加密与 MAC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-4-%E7%AE%97%E6%B3%95%E5%AE%A1%E8%AE%A1"><span class="toc-number">1.6.4.</span> <span class="toc-text">6.4 算法审计</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E8%BF%9E%E6%8E%A5%E5%B1%82%E5%8A%9F%E8%83%BD"><span class="toc-number">1.7.</span> <span class="toc-text">7 连接层功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E5%AE%89%E5%85%A8%E4%BA%8B%E4%BB%B6%E4%B8%8E%E6%BC%8F%E6%B4%9E%E5%8F%B2%E5%A4%8D%E7%9B%98"><span class="toc-number">1.8.</span> <span class="toc-text">8 安全事件与漏洞史复盘</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#8-1-%E5%8D%8F%E8%AE%AE%E5%B1%82"><span class="toc-number">1.8.1.</span> <span class="toc-text">8.1 协议层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-2-%E5%AE%9E%E7%8E%B0%E5%B1%82"><span class="toc-number">1.8.2.</span> <span class="toc-text">8.2 实现层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-3-%E4%BE%9B%E5%BA%94%E9%93%BE"><span class="toc-number">1.8.3.</span> <span class="toc-text">8.3 供应链</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-4-%E8%BF%90%E8%90%A5%E5%B1%82"><span class="toc-number">1.8.4.</span> <span class="toc-text">8.4 运营层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-5-%E5%B0%8F%E7%BB%93-%E5%9B%9B%E7%B1%BB%E9%A3%8E%E9%99%A9-%E5%9B%9B%E7%A7%8D%E6%B2%BB%E7%90%86"><span class="toc-number">1.8.5.</span> <span class="toc-text">8.5 小结:四类风险,四种治理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-sshd-%E5%8A%A0%E5%9B%BA%E4%B8%8E%E8%BF%90%E8%90%A5%E5%AE%9E%E8%B7%B5"><span class="toc-number">1.9.</span> <span class="toc-text">9 sshd 加固与运营实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#9-1-%E6%9C%8D%E5%8A%A1%E7%AB%AF%E9%85%8D%E7%BD%AE%E5%9F%BA%E7%BA%BF"><span class="toc-number">1.9.1.</span> <span class="toc-text">9.1 服务端配置基线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-2-%E5%AF%86%E9%92%A5%E4%B8%8E%E8%BA%AB%E4%BB%BD%E7%AE%A1%E7%90%86"><span class="toc-number">1.9.2.</span> <span class="toc-text">9.2 密钥与身份管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-3-%E7%BD%91%E7%BB%9C%E5%B1%82%E6%94%B6%E6%95%9B"><span class="toc-number">1.9.3.</span> <span class="toc-text">9.3 网络层收敛</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-4-%E7%9B%91%E6%8E%A7%E3%80%81%E5%AE%A1%E8%AE%A1%E4%B8%8E%E5%8F%98%E6%9B%B4%E6%B5%81%E7%A8%8B"><span class="toc-number">1.9.4.</span> <span class="toc-text">9.4 监控、审计与变更流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E7%94%9F%E6%80%81%E4%B8%8E%E6%9B%BF%E4%BB%A3%E6%96%B9%E6%A1%88"><span class="toc-number">1.10.</span> <span class="toc-text">10 生态与替代方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E8%B6%8B%E5%8A%BF%E5%B1%95%E6%9C%9B"><span class="toc-number">1.11.</span> <span class="toc-text">11 趋势展望</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-%E7%BB%93%E8%AE%BA"><span class="toc-number">1.12.</span> <span class="toc-text">12 结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-number">1.13.</span> <span class="toc-text">参考文献</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/09/03/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20260903/" title="科技日报 2026-09-03">科技日报 2026-09-03</a><time datetime="2026-10-02T16:05:32.801Z" title="更新于 2026-10-02 16:05:32">2026-10-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/09/09/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20260909/" title="科技日报 2026-09-09">科技日报 2026-09-09</a><time datetime="2026-10-02T16:05:32.801Z" title="更新于 2026-10-02 16:05:32">2026-10-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/09/17/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20260917/" title="科技日报 2026-09-17">科技日报 2026-09-17</a><time datetime="2026-10-02T16:05:32.801Z" title="更新于 2026-10-02 16:05:32">2026-10-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/09/18/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20260918/" title="科技日报 2026-09-18">科技日报 2026-09-18</a><time datetime="2026-10-02T16:05:32.801Z" title="更新于 2026-10-02 16:05:32">2026-10-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/09/16/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20260916/" title="科技日报 2026-09-16">科技日报 2026-09-16</a><time datetime="2026-10-02T16:05:32.801Z" title="更新于 2026-10-02 16:05:32">2026-10-02</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 琉璃幻彩</span><span class="framework-info"><span id="busuanzi_container_site_pv">本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span><span class="footer-separator">|</span><span id="busuanzi_container_site_uv">本站访客数 <span id="busuanzi_value_site_uv"></span> 人次</span></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+  const getUtterancesTheme = theme => theme === 'dark' ? 'photon-dark' : 'github-light'
+
+  const loadUtterances = (el = document, key) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyUtterances = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const config = {
+      src: 'https://utteranc.es/client.js',
+      repo: 'FighterGodNemo/FighterGodNemo.github.io',
+      theme: getUtterancesTheme(document.documentElement.getAttribute('data-theme')),
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      'issue-term': isShuoshuo ? key : (option && option['issue-term']) || 'pathname'
+    }
+
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => ele.setAttribute(key, value))
+    el.querySelector('#utterances-wrap').appendChild(ele)
+  }
+
+  const changeUtterancesTheme = theme => {
+    const iframe = document.querySelector('#utterances-wrap iframe')
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: getUtterancesTheme(theme)
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeUtterancesTheme, 'utterances')
+
+  if (isShuoshuo) {
+    'Utterances' === 'Utterances'
+      ? window.shuoshuoComment = { loadComment: loadUtterances }
+      : window.loadOtherComment = loadUtterances
+    return
+  }
+  
+  if ('Utterances' === 'Utterances' || !false) {
+    if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+    else loadUtterances()
+  } else {
+    window.loadOtherComment = loadUtterances
+  }
+})()</script></div><script src="/js/custom.js?v=20260402-2"></script><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.staticfile.org/pjax/0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:description\"]","link[rel=\"canonical\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>
