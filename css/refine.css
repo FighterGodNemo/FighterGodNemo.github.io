@@ -1,0 +1,428 @@
+/* ============================================================
+   琉璃幻彩博客 · 精修层 (refine.css)
+   设计方向：取证工作台 — 终端的冷青 + 证据标签的琥珀
+   只做三件事：阅读进度、工具反向索引、键盘快捷键
+   ============================================================ */
+
+/* ---------- 1. 设计令牌 ---------- */
+:root {
+  /* 冷青：终端/数据 */
+  --rf-teal: #2aa198;
+  --rf-teal-dim: #1d7a72;
+  --rf-teal-wash: rgba(42, 161, 152, 0.08);
+
+  /* 琥珀：证据标签 */
+  --rf-amber: #d29922;
+  --rf-amber-dim: #a67c1a;
+  --rf-amber-wash: rgba(210, 153, 34, 0.1);
+
+  /* 中性 */
+  --rf-ink: #1a1f24;
+  --rf-ink-soft: #57606a;
+  --rf-line: rgba(0, 0, 0, 0.09);
+  --rf-surface: rgba(255, 255, 255, 0.72);
+  --rf-surface-solid: #fbfcfd;
+
+  --rf-radius: 3px;      /* 接近直角，保持工具感 */
+  --rf-mono: 'JetBrains Mono', 'Cascadia Code', 'SFMono-Regular', Consolas,
+    'Liberation Mono', Menlo, monospace;
+  --rf-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+[data-theme='dark'] {
+  --rf-teal: #3fbfae;
+  --rf-teal-dim: #2a9d90;
+  --rf-teal-wash: rgba(63, 191, 174, 0.1);
+
+  --rf-amber: #e3b341;
+  --rf-amber-dim: #bb9018;
+  --rf-amber-wash: rgba(227, 179, 65, 0.1);
+
+  --rf-ink: #e6edf3;
+  --rf-ink-soft: #9198a1;
+  --rf-line: rgba(255, 255, 255, 0.11);
+  --rf-surface: rgba(22, 27, 34, 0.72);
+  --rf-surface-solid: #161b22;
+}
+
+/* ============================================================
+   2. 阅读进度条
+   贴在视口顶部 2px，不占布局、不遮挡内容
+   ============================================================ */
+#rf-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--rf-teal-dim), var(--rf-teal));
+  box-shadow: 0 0 6px rgba(42, 161, 152, 0.4);
+  z-index: 10000;
+  pointer-events: none;
+  transition: width 0.12s linear, opacity 0.3s ease;
+  opacity: 0;
+}
+
+#rf-progress.is-active {
+  opacity: 1;
+}
+
+#rf-progress::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 24px;
+  background: linear-gradient(90deg, transparent, var(--rf-amber));
+}
+
+/* 移动端略微加高，避免在高分屏上不可见 */
+@media (max-width: 768px) {
+  #rf-progress {
+    height: 3px;
+  }
+}
+
+/* ============================================================
+   3. 工具反向索引 — 本站的 signature 元素
+   读完全文，告诉他「哪些工具本站还写过」
+   ============================================================ */
+#rf-toolbox {
+  margin-top: 2.5rem;
+  padding: 1.25rem 1.4rem 1.1rem;
+  border: 1px solid var(--rf-line);
+  border-left: 3px solid var(--rf-amber);
+  border-radius: var(--rf-radius);
+  background: var(--rf-surface);
+  font-family: var(--rf-sans);
+}
+
+#rf-toolbox .rf-tb-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px dashed var(--rf-line);
+}
+
+/* 角标用等宽体，读起来像仪器标签 */
+#rf-toolbox .rf-tb-label {
+  font-family: var(--rf-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--rf-amber-dim);
+  border: 1px solid var(--rf-amber-wash);
+  background: var(--rf-amber-wash);
+  padding: 0.15rem 0.45rem;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+#rf-toolbox .rf-tb-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--rf-ink);
+}
+
+#rf-toolbox .rf-tb-sub {
+  font-size: 0.78rem;
+  color: var(--rf-ink-soft);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* 工具标签墙 */
+#rf-toolbox .rf-tb-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+#rf-toolbox .rf-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--rf-mono);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  padding: 0.28rem 0.6rem;
+  border-radius: var(--rf-radius);
+  border: 1px solid var(--rf-line);
+  background: transparent;
+  color: var(--rf-ink-soft);
+  text-decoration: none;
+  cursor: default;
+  transition: border-color 0.18s ease, color 0.18s ease,
+    background-color 0.18s ease;
+}
+
+/* 本文真正用到的工具：冷青实心，是视觉重点 */
+#rf-toolbox .rf-chip.is-here {
+  border-color: var(--rf-teal);
+  color: var(--rf-teal);
+  background: var(--rf-teal-wash);
+  font-weight: 600;
+}
+
+#rf-toolbox .rf-chip.is-here::before {
+  content: '●';
+  font-size: 0.6em;
+  line-height: 1;
+}
+
+/* 悬停：告诉你它在本站被多少篇文章提到过 */
+#rf-toolbox .rf-chip[data-count]:hover {
+  border-color: var(--rf-ink-soft);
+  color: var(--rf-ink);
+}
+
+/* 可点击的标签给出明确的可点击暗示 */
+#rf-toolbox a.rf-chip:hover {
+  border-color: var(--rf-teal);
+  color: var(--rf-teal);
+  background: var(--rf-teal-wash);
+}
+
+#rf-toolbox a.rf-chip.is-here:hover {
+  background: rgba(42, 161, 152, 0.16);
+}
+
+/* 去掉链接默认下划线，改由边框与底色表达状态 */
+#rf-toolbox a.rf-chip {
+  text-decoration: none;
+}
+
+#rf-toolbox .rf-chip .rf-cnt {
+  font-size: 0.68rem;
+  opacity: 0.62;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 本文的工具与全站工具分开，避免读者扫视时混淆 */
+#rf-toolbox .rf-tb-sep {
+  width: 100%;
+  height: 0;
+  margin: 0.15rem 0;
+  border-top: 1px dashed var(--rf-line);
+}
+
+#rf-toolbox .rf-tb-legend {
+  display: flex;
+  gap: 0.9rem;
+  margin-top: 0.85rem;
+  font-size: 0.72rem;
+  color: var(--rf-ink-soft);
+}
+
+#rf-toolbox .rf-tb-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+#rf-toolbox .rf-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex: none;
+}
+
+#rf-toolbox .rf-dot.here {
+  background: var(--rf-teal);
+}
+
+#rf-toolbox .rf-dot.site {
+  background: transparent;
+  border: 1px solid var(--rf-ink-soft);
+}
+
+/* 无结果时不留空壳 */
+#rf-toolbox[hidden] {
+  display: none;
+}
+
+/* ============================================================
+   4. 键盘快捷键
+   ============================================================ */
+#rf-keys {
+  position: fixed;
+  right: 1.1rem;
+  bottom: 1.1rem;
+  z-index: 10001;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: flex-end;
+}
+
+/* 快捷键提示条：默认低调，hover 才显形 */
+#rf-keys .rf-kbd {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--rf-mono);
+  font-size: 0.68rem;
+  color: var(--rf-ink-soft);
+  background: var(--rf-surface);
+  border: 1px solid var(--rf-line);
+  border-radius: var(--rf-radius);
+  padding: 0.3rem 0.55rem;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  white-space: nowrap;
+}
+
+#rf-keys.is-revealed .rf-kbd {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 帮助面板 */
+#rf-help {
+  position: fixed;
+  inset: 0;
+  z-index: 10002;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+#rf-help.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+#rf-help .rf-help-card {
+  width: min(420px, 100%);
+  background: var(--rf-surface-solid);
+  border: 1px solid var(--rf-line);
+  border-top: 3px solid var(--rf-teal);
+  border-radius: var(--rf-radius);
+  padding: 1.4rem 1.5rem 1.2rem;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+  transform: translateY(10px) scale(0.985);
+  transition: transform 0.22s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+#rf-help.is-open .rf-help-card {
+  transform: translateY(0) scale(1);
+}
+
+#rf-help .rf-help-title {
+  font-family: var(--rf-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rf-teal-dim);
+  margin-bottom: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#rf-help .rf-help-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+#rf-help .rf-help-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--rf-line);
+  font-size: 0.86rem;
+  color: var(--rf-ink);
+}
+
+#rf-help .rf-help-row:last-child {
+  border-bottom: 0;
+}
+
+#rf-help kbd {
+  font-family: var(--rf-mono);
+  font-size: 0.72rem;
+  color: var(--rf-ink-soft);
+  background: transparent;
+  border: 1px solid var(--rf-line);
+  border-bottom-width: 2px;
+  border-radius: 3px;
+  padding: 0.12rem 0.4rem;
+  min-width: 1.5rem;
+  text-align: center;
+}
+
+#rf-help .rf-help-foot {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--rf-line);
+  font-size: 0.72rem;
+  color: var(--rf-ink-soft);
+  line-height: 1.6;
+}
+
+/* ============================================================
+   5. 可达性 / 响应式
+   ============================================================ */
+@media (max-width: 768px) {
+  /* 手机上不显示悬浮快捷键条，避免与返回顶部按钮打架 */
+  #rf-keys {
+    display: none;
+  }
+
+  #rf-toolbox {
+    padding: 1rem 1.1rem 0.9rem;
+    margin-top: 1.75rem;
+  }
+
+  #rf-toolbox .rf-tb-head {
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  #rf-toolbox .rf-tb-sub {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  #rf-toolbox .rf-tb-legend {
+    flex-wrap: wrap;
+    gap: 0.5rem 0.9rem;
+  }
+}
+
+/* 尊重系统的减少动效设置 */
+@media (prefers-reduced-motion: reduce) {
+  #rf-progress,
+  #rf-keys .rf-kbd,
+  #rf-help,
+  #rf-help .rf-help-card,
+  #rf-toolbox .rf-chip {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* 键盘聚焦可见（仅在真键盘操作时出现） */
+.rf-keyboard :focus-visible {
+  outline: 2px solid var(--rf-teal);
+  outline-offset: 2px;
+}
