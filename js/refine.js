@@ -1,8 +1,13 @@
 /* ============================================================
    琉璃幻彩博客 · 精修层 (refine.js)
    1. 阅读进度条
-   2. 工具反向索引（本站 signature：告诉读者哪些工具本站还写过）
-   3. 键盘快捷键
+   2. 工具反向索引（告诉读者哪些工具本站还写过）
+
+   2026-10-10：键盘快捷键功能已彻底移除。
+   原因：提示条固定在右下角，与主题 #rightside 的按钮列
+   （设置/目录/评论/回到顶部/背景/音乐）重叠成一团糊色块。
+   教训：新增悬浮 UI 前必须先查主题已有的固定元素占位。
+
    独立于 custom.js，互不影响；全部走 pjax 生命周期。
    ============================================================ */
 (function () {
@@ -13,37 +18,6 @@
   function onReady(fn) {
     if (document.readyState !== 'loading') fn();
     else document.addEventListener('DOMContentLoaded', fn);
-  }
-
-  /**
-   * body 可能尚未就绪（pjax 替换节点、脚本在 head 提前执行等）。
-   * 所有需要往 body 挂节点的逻辑都先过这里，避免静默失败。
-   */
-  function withBody(fn) {
-    if (document.body) { fn(); return true; }
-    // 兜底：body 一出现就补做一次
-    var done = false;
-    var retry = function () {
-      if (done || !document.body) return;
-      done = true;
-      document.removeEventListener('DOMContentLoaded', retry);
-      try { fn(); } catch (e) { console.warn('[refine]', e); }
-    };
-    document.addEventListener('DOMContentLoaded', retry);
-    // 某些情况下 DOMContentLoaded 已过但 body 仍被替换，交给 load 再试
-    if (document.readyState === 'complete') setTimeout(retry, 0);
-    return false;
-  }
-
-  function isTypingContext(el) {
-    if (!el) return false;
-    var tag = (el.tagName || '').toLowerCase();
-    return (
-      tag === 'input' ||
-      tag === 'textarea' ||
-      tag === 'select' ||
-      el.isContentEditable === true
-    );
   }
 
   /* ============================================================
@@ -341,145 +315,6 @@
     });
   }
 
-  /* ============================================================
-     3. 键盘快捷键
-     ============================================================ */
-
-  var KEY_HINTS = [
-    { k: '/', label: '搜索' },
-    { k: 't', label: '回到顶部' },
-    { k: '?', label: '打开/关闭本帮助' }
-  ];
-
-  function ensureKeyUi() {
-    if (!document.body) return null;
-    var bar = document.getElementById('rf-keys');
-    if (!bar) {
-      bar = document.createElement('div');
-      bar.id = 'rf-keys';
-      KEY_HINTS.forEach(function (h) {
-        var b = document.createElement('span');
-        b.className = 'rf-kbd';
-        b.innerHTML = '<kbd>' + h.k + '</kbd><span>' + h.label + '</span>';
-        bar.appendChild(b);
-      });
-      document.body.appendChild(bar);
-    }
-
-    var help = document.getElementById('rf-help');
-    if (!help) {
-      help = document.createElement('div');
-      help.id = 'rf-help';
-      help.setAttribute('role', 'dialog');
-      help.setAttribute('aria-modal', 'true');
-      help.setAttribute('aria-label', '键盘快捷键');
-      help.innerHTML =
-        '<div class="rf-help-card">' +
-        '<div class="rf-help-title">keyboard shortcuts</div>' +
-        '<div class="rf-help-list">' +
-        KEY_HINTS.concat([
-          { k: 'Esc', label: '关闭搜索 / 关闭本页' }
-        ]).map(function (h) {
-          return '<div class="rf-help-row"><span>' + h.label +
-            '</span><kbd>' + h.k + '</kbd></div>';
-        }).join('') +
-        '</div>' +
-        '<div class="rf-help-foot">在输入框内打字时快捷键自动让位，不会打断你。</div>' +
-        '</div>';
-      document.body.appendChild(help);
-
-      // 点遮罩关闭
-      help.addEventListener('click', function (e) {
-        if (e.target === help) closeHelp();
-      });
-    }
-    return { bar: bar, help: help };
-  }
-
-  function closeHelp() {
-    var help = document.getElementById('rf-help');
-    if (help) help.classList.remove('is-open');
-  }
-
-  function toggleHelp() {
-    var help = document.getElementById('rf-help');
-    if (!help) return;
-    help.classList.toggle('is-open');
-  }
-
-  function focusSearch() {
-    var input =
-      document.querySelector('#search-input .search-input') ||
-      document.querySelector('input[name="s"], #search-input input, .search-input');
-    if (!input) return;
-    input.focus();
-    input.select();
-  }
-
-  function scrollTop() {
-    var behavior = matchMedia('(prefers-reduced-motion: reduce)').matches
-      ? 'auto'
-      : 'smooth';
-    window.scrollTo({ top: 0, behavior: behavior });
-  }
-
-  /** 鼠标移动时短暂显示快捷键提示，静止后淡出 */
-  function bindHintReveal(bar) {
-    var timer;
-    var reveal = function () {
-      bar.classList.add('is-revealed');
-      clearTimeout(timer);
-      timer = setTimeout(function () {
-        bar.classList.remove('is-revealed');
-      }, 2200);
-    };
-    window.addEventListener('mousemove', reveal, { passive: true });
-    // 触屏没有鼠标，键盘用户走 focus 提示
-    window.addEventListener('keydown', function () {
-      document.body.classList.add('rf-keyboard');
-      bar.classList.add('is-revealed');
-      clearTimeout(timer);
-      timer = setTimeout(function () {
-        bar.classList.remove('is-revealed');
-      }, 2200);
-    });
-  }
-
-  function bindKeys() {
-    // 整个文档生命周期只注册一次，避免 pjax 反复触发后
-    // 同一次按键被处理多遍（会导致搜索框被 focus 两次等怪现象）。
-    if (window.__rfKeysBound) return;
-    window.__rfKeysBound = true;
-
-    document.addEventListener('keydown', function (e) {
-      // 正在打字 → 完全让位
-      if (isTypingContext(e.target)) return;
-      if (e.ctrlKey || e.metaKey || e.altKey) return;
-
-      var help = document.getElementById('rf-help');
-      var helpOpen = help && help.classList.contains('is-open');
-
-      switch (e.key) {
-        case '/':
-          e.preventDefault();
-          focusSearch();
-          break;
-        case '?':
-          e.preventDefault();
-          toggleHelp();
-          break;
-        case 'Escape':
-          if (helpOpen) closeHelp();
-          break;
-        case 't':
-        case 'T':
-          if (helpOpen) return;
-          e.preventDefault();
-          scrollTop();
-          break;
-      }
-    });
-  }
 
   /* ============================================================
      生命周期
@@ -489,22 +324,6 @@
     ensureProgressBar();
     updateProgress();
     mountToolbox();
-
-    // pjax 会替换 body 子节点，挂上去的快捷键 UI 会随之消失，
-    // 因此每次刷新都重新确保存在，而不是只在首次创建时绑定一次。
-    withBody(function () {
-      try {
-        var ui = ensureKeyUi();
-        if (!ui) return;
-        bindKeys();
-        if (!ui.bar.dataset.rfBound) {
-          ui.bar.dataset.rfBound = '1';
-          bindHintReveal(ui.bar);
-        }
-      } catch (e) {
-        console.warn('[refine] 快捷键 UI 初始化失败:', e);
-      }
-    });
   }
 
   var ticking = false;

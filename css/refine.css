@@ -1,7 +1,11 @@
 /* ============================================================
    琉璃幻彩博客 · 精修层 (refine.css)
    设计方向：取证工作台 — 终端的冷青 + 证据标签的琥珀
-   只做三件事：阅读进度、工具反向索引、键盘快捷键
+   只做两件事：阅读进度、工具反向索引
+
+   2026-10-10：键盘快捷键与帮助面板样式已彻底移除。
+   原因：提示条固定在右下角，与主题 #rightside 的按钮列重叠。
+   教训：新增悬浮 UI 前必须先查主题已有的固定元素占位。
    ============================================================ */
 
 /* ---------- 1. 设计令牌 ---------- */
@@ -247,147 +251,9 @@
 }
 
 /* ============================================================
-   4. 键盘快捷键
-   ============================================================ */
-#rf-keys {
-  position: fixed;
-  right: 1.1rem;
-  bottom: 1.1rem;
-  z-index: 10001;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  align-items: flex-end;
-}
-
-/* 快捷键提示条：默认低调，hover 才显形 */
-#rf-keys .rf-kbd {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  font-family: var(--rf-mono);
-  font-size: 0.68rem;
-  color: var(--rf-ink-soft);
-  background: var(--rf-surface);
-  border: 1px solid var(--rf-line);
-  border-radius: var(--rf-radius);
-  padding: 0.3rem 0.55rem;
-  opacity: 0;
-  transform: translateY(4px);
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  pointer-events: none;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  white-space: nowrap;
-}
-
-#rf-keys.is-revealed .rf-kbd {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* 帮助面板 */
-#rf-help {
-  position: fixed;
-  inset: 0;
-  z-index: 10002;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.2s ease, visibility 0.2s ease;
-}
-
-#rf-help.is-open {
-  opacity: 1;
-  visibility: visible;
-}
-
-#rf-help .rf-help-card {
-  width: min(420px, 100%);
-  background: var(--rf-surface-solid);
-  border: 1px solid var(--rf-line);
-  border-top: 3px solid var(--rf-teal);
-  border-radius: var(--rf-radius);
-  padding: 1.4rem 1.5rem 1.2rem;
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
-  transform: translateY(10px) scale(0.985);
-  transition: transform 0.22s cubic-bezier(0.2, 0.9, 0.3, 1);
-}
-
-#rf-help.is-open .rf-help-card {
-  transform: translateY(0) scale(1);
-}
-
-#rf-help .rf-help-title {
-  font-family: var(--rf-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--rf-teal-dim);
-  margin-bottom: 0.95rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-#rf-help .rf-help-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-}
-
-#rf-help .rf-help-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid var(--rf-line);
-  font-size: 0.86rem;
-  color: var(--rf-ink);
-}
-
-#rf-help .rf-help-row:last-child {
-  border-bottom: 0;
-}
-
-#rf-help kbd {
-  font-family: var(--rf-mono);
-  font-size: 0.72rem;
-  color: var(--rf-ink-soft);
-  background: transparent;
-  border: 1px solid var(--rf-line);
-  border-bottom-width: 2px;
-  border-radius: 3px;
-  padding: 0.12rem 0.4rem;
-  min-width: 1.5rem;
-  text-align: center;
-}
-
-#rf-help .rf-help-foot {
-  margin-top: 1rem;
-  padding-top: 0.75rem;
-  border-top: 1px dashed var(--rf-line);
-  font-size: 0.72rem;
-  color: var(--rf-ink-soft);
-  line-height: 1.6;
-}
-
-/* ============================================================
    5. 可达性 / 响应式
    ============================================================ */
 @media (max-width: 768px) {
-  /* 手机上不显示悬浮快捷键条，避免与返回顶部按钮打架 */
-  #rf-keys {
-    display: none;
-  }
-
   #rf-toolbox {
     padding: 1rem 1.1rem 0.9rem;
     margin-top: 1.75rem;
@@ -412,17 +278,8 @@
 /* 尊重系统的减少动效设置 */
 @media (prefers-reduced-motion: reduce) {
   #rf-progress,
-  #rf-keys .rf-kbd,
-  #rf-help,
-  #rf-help .rf-help-card,
   #rf-toolbox .rf-chip {
     transition: none !important;
     animation: none !important;
   }
-}
-
-/* 键盘聚焦可见（仅在真键盘操作时出现） */
-.rf-keyboard :focus-visible {
-  outline: 2px solid var(--rf-teal);
-  outline-offset: 2px;
 }
