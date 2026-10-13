@@ -1,0 +1,574 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Node.js 与 npm 详解 | 琉璃幻彩的博客</title><meta name="author" content="琉璃幻彩"><meta name="copyright" content="琉璃幻彩"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="调研日期：2026-10-13核心依据：nodejs.org 官方文档、npm 官方文档及 2026 年第三方对比资料（见文末参考）   1. Node.js 是什么Node.js 是一个异步事件驱动的 JavaScript 运行时，用于构建可扩展的网络应用程序。  基于 V8 引擎（Chrome 的 JS 引擎）运行 JavaScript 让 JS 可以脱离浏览器，在服务端运行 官方定位：异步">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Node.js 与 npm 详解">
+<meta property="og:url" content="https://fightergodnemo.github.io/2026/10/13/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Node.js%E4%B8%8Enpm_%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="琉璃幻彩的博客">
+<meta property="og:description" content="调研日期：2026-10-13核心依据：nodejs.org 官方文档、npm 官方文档及 2026 年第三方对比资料（见文末参考）   1. Node.js 是什么Node.js 是一个异步事件驱动的 JavaScript 运行时，用于构建可扩展的网络应用程序。  基于 V8 引擎（Chrome 的 JS 引擎）运行 JavaScript 让 JS 可以脱离浏览器，在服务端运行 官方定位：异步">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fightergodnemo.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2026-10-13T08:45:56.895Z">
+<meta property="article:modified_time" content="2026-10-13T12:39:00.000Z">
+<meta property="article:author" content="琉璃幻彩">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fightergodnemo.github.io/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Node.js 与 npm 详解",
+  "url": "https://fightergodnemo.github.io/2026/10/13/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Node.js%E4%B8%8Enpm_%E8%AF%A6%E8%A7%A3/",
+  "image": "https://fightergodnemo.github.io/img/avatar.jpg",
+  "datePublished": "2026-10-13T08:45:56.895Z",
+  "dateModified": "2026-10-13T12:39:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "琉璃幻彩",
+      "url": "https://FighterGodNemo.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="https://fightergodnemo.github.io/2026/10/13/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Node.js%E4%B8%8Enpm_%E8%AF%A6%E8%A7%A3/index.html"><link rel="preconnect" href="https://cdn.staticfile.org"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.5.2/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.20261013084611296.json","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.staticfile.org/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Node.js 与 npm 详解',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script src="/js/bg-firstpaint.js?v=20260402-2"></script><link rel="stylesheet" href="/css/custom.css?v=20260402-2"><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="琉璃幻彩的博客" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">252</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">209</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">40</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" data-has-custom-post-top-img="0"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">琉璃幻彩的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">Node.js 与 npm 详解</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Node.js 与 npm 详解</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-10-13T08:45:56.895Z" title="发表于 2026-10-13 08:45:56">2026-10-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-10-13T12:39:00.000Z" title="更新于 2026-10-13 12:39:00">2026-10-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/">博览知识</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">2.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>8分钟</span></span></div></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
+<p>调研日期：2026-10-13<br>核心依据：nodejs.org 官方文档、npm 官方文档及 2026 年第三方对比资料（见文末参考）</p>
+</blockquote>
+<hr>
+<h2 id="1-Node-js-是什么"><a href="#1-Node-js-是什么" class="headerlink" title="1. Node.js 是什么"></a>1. Node.js 是什么</h2><p><strong>Node.js</strong> 是一个<strong>异步事件驱动的 JavaScript 运行时</strong>，用于构建可扩展的网络应用程序。</p>
+<ul>
+<li>基于 V8 引擎（Chrome 的 JS 引擎）运行 JavaScript</li>
+<li>让 JS 可以脱离浏览器，在服务端运行</li>
+<li>官方定位：异步、事件驱动、适合 I&#x2F;O 密集型应用</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 官方 Hello World 示例</span></span><br><span class="line"><span class="keyword">const</span> &#123; createServer &#125; = <span class="built_in">require</span>(<span class="string">&#x27;node:http&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> server = <span class="title function_">createServer</span>(<span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">  res.<span class="property">statusCode</span> = <span class="number">200</span>;</span><br><span class="line">  res.<span class="title function_">setHeader</span>(<span class="string">&#x27;Content-Type&#x27;</span>, <span class="string">&#x27;text/plain&#x27;</span>);</span><br><span class="line">  res.<span class="title function_">end</span>(<span class="string">&#x27;Hello World&#x27;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">server.<span class="title function_">listen</span>(<span class="number">3000</span>, <span class="string">&#x27;127.0.0.1&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Server running at http://127.0.0.1:3000/&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-核心原理：事件循环-非阻塞-I-O"><a href="#2-核心原理：事件循环-非阻塞-I-O" class="headerlink" title="2. 核心原理：事件循环 + 非阻塞 I&#x2F;O"></a>2. 核心原理：事件循环 + 非阻塞 I&#x2F;O</h2><h3 id="2-1-单线程事件模型"><a href="#2-1-单线程事件模型" class="headerlink" title="2.1 单线程事件模型"></a>2.1 单线程事件模型</h3><ul>
+<li>Node.js 使用<strong>单线程</strong> + <strong>事件循环（Event Loop）</strong> 处理并发，而非操作系统线程</li>
+<li>每次连接触发回调函数；没有工作时事件循环进入睡眠</li>
+<li>与”每连接一线程”的传统模型对比：线程模型低效且难用，Node 模型<strong>无锁、无死锁</strong></li>
+</ul>
+<h3 id="2-2-非阻塞-I-O"><a href="#2-2-非阻塞-I-O" class="headerlink" title="2.2 非阻塞 I&#x2F;O"></a>2.2 非阻塞 I&#x2F;O</h3><ul>
+<li>Node.js 几乎没有任何函数直接执行阻塞式 I&#x2F;O（除非显式使用标准库的同步方法）</li>
+<li>发起 I&#x2F;O 后立即返回，结果就绪后由回调处理</li>
+<li>因此进程不会被 I&#x2F;O 阻塞，可同时处理大量连接</li>
+</ul>
+<h3 id="2-3-事件循环作为运行时构造"><a href="#2-3-事件循环作为运行时构造" class="headerlink" title="2.3 事件循环作为运行时构造"></a>2.3 事件循环作为运行时构造</h3><ul>
+<li>借鉴了 Ruby EventMachine、Python Twisted 等设计，但把事件循环内置为运行时的一部分</li>
+<li>脚本执行完毕后自动进入事件循环，没有更多回调时退出</li>
+</ul>
+<h3 id="2-4-多核利用"><a href="#2-4-多核利用" class="headerlink" title="2.4 多核利用"></a>2.4 多核利用</h3><ul>
+<li>Node 本身单线程，但可通过 <code>child_process.fork()</code> 生成子进程</li>
+<li><code>cluster</code> 模块允许多进程<strong>共享套接字</strong>，在多核上实现负载均衡</li>
+</ul>
+<hr>
+<h2 id="3-Node-js-特性与适用场景"><a href="#3-Node-js-特性与适用场景" class="headerlink" title="3. Node.js 特性与适用场景"></a>3. Node.js 特性与适用场景</h2><h3 id="3-1-主要特性"><a href="#3-1-主要特性" class="headerlink" title="3.1 主要特性"></a>3.1 主要特性</h3><ul>
+<li><strong>异步非阻塞</strong>：高并发 I&#x2F;O 场景表现出色</li>
+<li><strong>HTTP 一等公民</strong>：内置 http 模块，设计考虑流式传输与低延迟，适合做 Web 框架基础</li>
+<li><strong>npm 生态</strong>：全球最大软件包生态（200 万+ 包）</li>
+<li><strong>跨平台</strong>：Windows &#x2F; macOS &#x2F; Linux</li>
+<li><strong>前后端同语言</strong>：全栈使用 JavaScript&#x2F;TypeScript</li>
+</ul>
+<h3 id="3-2-适用场景"><a href="#3-2-适用场景" class="headerlink" title="3.2 适用场景"></a>3.2 适用场景</h3><ul>
+<li>Web 服务端 &#x2F; API 后端（Express、Koa、NestJS）</li>
+<li>实时应用：WebSocket、聊天、协作工具</li>
+<li>命令行工具（CLI）</li>
+<li>前端构建工具链（Webpack、Vite 等）</li>
+<li>微服务、中间件、代理服务</li>
+</ul>
+<h3 id="3-3-不擅长场景"><a href="#3-3-不擅长场景" class="headerlink" title="3.3 不擅长场景"></a>3.3 不擅长场景</h3><ul>
+<li><strong>CPU 密集型任务</strong>（如图像处理、复杂计算）——单线程会阻塞事件循环，需 worker_threads 或多进程弥补</li>
+</ul>
+<hr>
+<h2 id="4-Node-js-版本情况（2026-年）"><a href="#4-Node-js-版本情况（2026-年）" class="headerlink" title="4. Node.js 版本情况（2026 年）"></a>4. Node.js 版本情况（2026 年）</h2><h3 id="4-1-版本线一览（截至-2026-10）"><a href="#4-1-版本线一览（截至-2026-10）" class="headerlink" title="4.1 版本线一览（截至 2026-10）"></a>4.1 版本线一览（截至 2026-10）</h3><table>
+<thead>
+<tr>
+<th>版本线</th>
+<th>状态</th>
+<th>最新版本（参考）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Node.js 24.x</td>
+<td><strong>LTS（当前主线）</strong></td>
+<td>24.21.0（2026-09-07，自带 npm 11.19.0）</td>
+</tr>
+<tr>
+<td>Node.js 22.x</td>
+<td>LTS</td>
+<td>22.22.1（2026-03）</td>
+</tr>
+<tr>
+<td>Node.js 20.x</td>
+<td>LTS</td>
+<td>20.20.1（2026-03）</td>
+</tr>
+<tr>
+<td>Node.js 25.x</td>
+<td>Current（非 LTS）</td>
+<td>25.8.0（2026-03）</td>
+</tr>
+</tbody></table>
+<h3 id="4-2-Node-js-24-新特性亮点"><a href="#4-2-Node-js-24-新特性亮点" class="headerlink" title="4.2 Node.js 24 新特性亮点"></a>4.2 Node.js 24 新特性亮点</h3><ul>
+<li><strong>显式资源管理</strong>：<code>Symbol.dispose</code> &#x2F; <code>using</code> 语法，块作用域退出时自动释放资源（含 <code>await using</code> 异步版）</li>
+<li><strong>内置 fetch 代理支持</strong>：<code>NODE_USE_ENV_PROXY=1</code> 让内置 fetch&#x2F;undici 自动读取 <code>HTTP_PROXY</code> &#x2F; <code>HTTPS_PROXY</code> 环境变量，无需第三方库即可穿透公司代理</li>
+</ul>
+<hr>
+<h2 id="5-npm-是什么"><a href="#5-npm-是什么" class="headerlink" title="5. npm 是什么"></a>5. npm 是什么</h2><p><strong>npm（Node Package Manager）</strong> 是随 Node.js 一起安装的<strong>包管理器</strong>，也是<strong>全球最大的软件注册表</strong>（registry.npmjs.org，托管 200 万+ 包）。</p>
+<p>npm 由三部分构成：</p>
+<ol>
+<li><strong>公共注册表</strong>：存放已发布包（registry.npmjs.org）</li>
+<li><strong>命令行客户端</strong>：与注册表和本地文件系统交互</li>
+<li><strong>package.json</strong>：描述项目名称、版本、依赖与行为</li>
+</ol>
+<p>它解决两个核心问题：</p>
+<ul>
+<li><strong>拉取可复用代码</strong>：安装 express、mongodb 等库，不用从零编写</li>
+<li><strong>描述项目环境</strong>：用 package.json 声明依赖与脚本，任何同事&#x2F;服务器&#x2F;CI 都能复现完全一致的环境</li>
+</ul>
+<blockquote>
+<p>npm 独立于 Node.js 版本发布（<code>npm -v</code> 与 <code>node -v</code> 是两套版本号）。</p>
+</blockquote>
+<hr>
+<h2 id="6-npm-工作原理"><a href="#6-npm-工作原理" class="headerlink" title="6. npm 工作原理"></a>6. npm 工作原理</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">npm install &lt;包名&gt;</span><br><span class="line">    ↓</span><br><span class="line">解析整个依赖树（你的依赖还依赖别人...）</span><br><span class="line">    ↓</span><br><span class="line">从 registry 下载匹配版本的 tarball</span><br><span class="line">    ↓</span><br><span class="line">解压到项目根目录 node_modules/</span><br><span class="line">    ↓</span><br><span class="line">将最终解析的精确版本 + 加密完整性哈希</span><br><span class="line">写入 package-lock.json</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>node_modules&#x2F;</strong>：依赖实际存放目录</li>
+<li><strong>package-lock.json</strong>：锁定精确版本（精确到补丁版本）+ SHA-512 完整性哈希，保证<strong>可复现安装</strong></li>
+<li><strong>package.json</strong>：声明直接依赖与版本范围（如 <code>^4.18.0</code>）</li>
+</ul>
+<hr>
+<h2 id="7-npm-常用命令"><a href="#7-npm-常用命令" class="headerlink" title="7. npm 常用命令"></a>7. npm 常用命令</h2><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>npm init</code></td>
+<td>初始化项目，生成 package.json</td>
+</tr>
+<tr>
+<td><code>npm install &lt;pkg&gt;</code></td>
+<td>安装依赖并写入 package.json</td>
+</tr>
+<tr>
+<td><code>npm install -D &lt;pkg&gt;</code></td>
+<td>安装开发依赖（devDependencies）</td>
+</tr>
+<tr>
+<td><code>npm ci</code></td>
+<td>按 lockfile 纯净安装（CI 推荐，速度快且确定）</td>
+</tr>
+<tr>
+<td><code>npm run &lt;script&gt;</code></td>
+<td>运行 package.json 中定义的脚本</td>
+</tr>
+<tr>
+<td><code>npm update</code></td>
+<td>更新依赖</td>
+</tr>
+<tr>
+<td><code>npm uninstall &lt;pkg&gt;</code></td>
+<td>卸载依赖</td>
+</tr>
+<tr>
+<td><code>npm audit</code></td>
+<td>安全审计，检查已知漏洞</td>
+</tr>
+<tr>
+<td><code>npm audit fix</code></td>
+<td>自动修复漏洞（兼容版本内）</td>
+</tr>
+<tr>
+<td><code>npm audit signatures</code></td>
+<td>校验包签名</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="8-npm-vs-Yarn-vs-pnpm（2026-对比）"><a href="#8-npm-vs-Yarn-vs-pnpm（2026-对比）" class="headerlink" title="8. npm vs Yarn vs pnpm（2026 对比）"></a>8. npm vs Yarn vs pnpm（2026 对比）</h2><h3 id="8-1-版本与-Node-支持快照（2026-05-检查）"><a href="#8-1-版本与-Node-支持快照（2026-05-检查）" class="headerlink" title="8.1 版本与 Node 支持快照（2026-05 检查）"></a>8.1 版本与 Node 支持快照（2026-05 检查）</h3><table>
+<thead>
+<tr>
+<th>管理器</th>
+<th>当前版本</th>
+<th>所需 Node 版本</th>
+<th>定位</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>npm</td>
+<td>11.16.0</td>
+<td>^20.17.0 或 &gt;&#x3D;22.9.0</td>
+<td>随 Node 自带，零配置</td>
+</tr>
+<tr>
+<td>pnpm 11</td>
+<td>11.5.0</td>
+<td>&gt;&#x3D;22.13</td>
+<td>monorepo、严格隔离、省磁盘</td>
+</tr>
+<tr>
+<td>pnpm 10（LTS）</td>
+<td>10.34.1</td>
+<td>&gt;&#x3D;18.12</td>
+<td>Node 18&#x2F;20 老项目</td>
+</tr>
+<tr>
+<td>Yarn Modern</td>
+<td>4.15.0</td>
+<td>&gt;&#x3D;18.12.0</td>
+<td>Plug’n’Play、workspace 策略</td>
+</tr>
+</tbody></table>
+<h3 id="8-2-架构差异：依赖布局"><a href="#8-2-架构差异：依赖布局" class="headerlink" title="8.2 架构差异：依赖布局"></a>8.2 架构差异：依赖布局</h3><p><strong>npm &#x2F; Yarn（扁平 node_modules + hoisting）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">node_modules/</span><br><span class="line">  express/          # 你的依赖</span><br><span class="line">  accepts/          # express 的依赖被提升到根目录！</span><br><span class="line">  mime-types/       # 传递依赖也被提升</span><br></pre></td></tr></table></figure>
+<p>问题：可以 <code>import &#39;accepts&#39;</code>（幽灵依赖）——依赖没写进 package.json 却能使用，靠”碰巧存在”。</p>
+<p><strong>pnpm（非扁平 + 内容寻址存储 + 符号链接）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">node_modules/</span><br><span class="line">  .pnpm/                    # 真实包存放处（内容寻址，全局共享）</span><br><span class="line">    express@4.19.2/node_modules/</span><br><span class="line">      express/</span><br><span class="line">      accepts/              # 只有 express 能看到</span><br><span class="line">  express -&gt; .pnpm/express@4.19.2/node_modules/express   # 符号链接</span><br></pre></td></tr></table></figure>
+<p>好处：你的代码<strong>只能 import package.json 里声明的依赖</strong>，严格隔离、防幽灵依赖、磁盘复用（硬链接）。</p>
+<h3 id="8-3-锁文件格式"><a href="#8-3-锁文件格式" class="headerlink" title="8.3 锁文件格式"></a>8.3 锁文件格式</h3><table>
+<thead>
+<tr>
+<th>管理器</th>
+<th>锁文件</th>
+<th>格式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>npm</td>
+<td>package-lock.json</td>
+<td>JSON</td>
+</tr>
+<tr>
+<td>Yarn</td>
+<td>yarn.lock</td>
+<td>自定义可读格式</td>
+</tr>
+<tr>
+<td>pnpm</td>
+<td>pnpm-lock.yaml</td>
+<td>YAML</td>
+</tr>
+</tbody></table>
+<p><strong>铁律</strong>：锁文件<strong>必须提交到版本控制</strong>，绝不能加入 .gitignore；一个项目只用一个包管理器，禁止混用锁文件。</p>
+<h3 id="8-4-功能对比速览"><a href="#8-4-功能对比速览" class="headerlink" title="8.4 功能对比速览"></a>8.4 功能对比速览</h3><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>npm</th>
+<th>Yarn</th>
+<th>pnpm</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>随 Node.js 自带</td>
+<td>✅</td>
+<td>需 corepack</td>
+<td>需 corepack</td>
+</tr>
+<tr>
+<td>安装速度</td>
+<td>良好基线</td>
+<td>配置后快</td>
+<td>缓存复用后常最快</td>
+</tr>
+<tr>
+<td>磁盘效率</td>
+<td>一般（重复）</td>
+<td>一般（重复）</td>
+<td>优秀（硬链接）</td>
+</tr>
+<tr>
+<td>严格依赖隔离</td>
+<td>❌（扁平）</td>
+<td>可选（PnP）</td>
+<td>✅（非扁平）</td>
+</tr>
+<tr>
+<td>Workspaces</td>
+<td>良好</td>
+<td>良好</td>
+<td><strong>优秀</strong></td>
+</tr>
+<tr>
+<td>Plug’n’Play</td>
+<td>❌</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+</tbody></table>
+<h3 id="8-5-选型建议"><a href="#8-5-选型建议" class="headerlink" title="8.5 选型建议"></a>8.5 选型建议</h3><ul>
+<li><strong>新项目无偏好</strong>：Node 版本支持则优先 <strong>pnpm</strong>（快、省磁盘、防幽灵依赖）</li>
+<li><strong>现有 npm 项目团队满意</strong>：留在 npm，CI 用 <code>npm ci</code></li>
+<li><strong>大型 monorepo</strong>：<strong>pnpm</strong>（workspace + –filter 最稳健）</li>
+<li><strong>团队已用 Yarn Berry</strong>：继续 Yarn（PnP 独特优势）</li>
+<li><strong>开源库</strong>：npm（贡献者熟悉度最高）或 pnpm（文档说明清楚）</li>
+</ul>
+<h3 id="8-6-安全对比"><a href="#8-6-安全对比" class="headerlink" title="8.6 安全对比"></a>8.6 安全对比</h3><ul>
+<li>npm：<code>npm audit</code> &#x2F; <code>npm audit fix</code> &#x2F; 包签名校验</li>
+<li>pnpm：<code>pnpm audit</code> + 非扁平结构天然防<strong>幽灵依赖攻击</strong>、<strong>依赖混淆攻击</strong></li>
+<li>所有管理器：lockfile 内置 integrity 哈希（SHA-512）检测包是否被篡改</li>
+<li>供应链攻击防护是 2026 年的重点趋势</li>
+</ul>
+<hr>
+<h2 id="9-常见概念补充"><a href="#9-常见概念补充" class="headerlink" title="9. 常见概念补充"></a>9. 常见概念补充</h2><h3 id="9-1-package-json-关键字段"><a href="#9-1-package-json-关键字段" class="headerlink" title="9.1 package.json 关键字段"></a>9.1 package.json 关键字段</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;my-app&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1.0.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span> <span class="attr">&quot;start&quot;</span><span class="punctuation">:</span> <span class="string">&quot;node index.js&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;build&quot;</span><span class="punctuation">:</span> <span class="string">&quot;tsc&quot;</span> <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;dependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span> <span class="attr">&quot;express&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^4.18.0&quot;</span> <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;devDependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span> <span class="attr">&quot;typescript&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^5.0.0&quot;</span> <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;workspaces&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;packages/*&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;packageManager&quot;</span><span class="punctuation">:</span> <span class="string">&quot;pnpm@11.5.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;overrides&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span> <span class="attr">&quot;lodash&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&gt;=4.17.21&quot;</span> <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="9-2-Corepack"><a href="#9-2-Corepack" class="headerlink" title="9.2 Corepack"></a>9.2 Corepack</h3><ul>
+<li>Node.js 内置的包管理器版本管理器，<code>corepack enable</code> 后可按 <code>packageManager</code> 字段自动使用指定版本（pnpm &#x2F; Yarn）</li>
+<li>保证所有开发者和 CI 使用<strong>同一个包管理器版本</strong></li>
+</ul>
+<h3 id="9-3-Workspaces（monorepo）"><a href="#9-3-Workspaces（monorepo）" class="headerlink" title="9.3 Workspaces（monorepo）"></a>9.3 Workspaces（monorepo）</h3><ul>
+<li>npm &#x2F; Yarn：package.json 中声明 <code>workspaces</code></li>
+<li>pnpm：pnpm-workspace.yaml + <code>--filter</code> 精确操作子包</li>
+</ul>
+<hr>
+<h2 id="10-一句话总结"><a href="#10-一句话总结" class="headerlink" title="10. 一句话总结"></a>10. 一句话总结</h2><blockquote>
+<p>Node.js 是<strong>事件驱动、非阻塞 I&#x2F;O 的 JavaScript 运行时</strong>，用单线程事件循环实现高并发，适合 I&#x2F;O 密集型服务；npm 是随 Node 附带的<strong>包管理器 + 全球最大软件注册表</strong>，通过 package.json + lockfile 实现依赖管理与可复现安装。2026 年新项目可考虑 pnpm 获得更严格隔离与更高磁盘效率。</p>
+</blockquote>
+<hr>
+<h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul>
+<li>nodejs.org 官方「关于 Node.js」与版本发布页</li>
+<li>VersionLog：Node.js 24 (LTS) - What’s New, Support Lifecycle &amp; EOL</li>
+<li>Programming Line：Node.js npm 原理</li>
+<li>BytePane：npm vs Yarn vs pnpm 2026: Which Should You Use?</li>
+<li>npm 官方文档（registry &#x2F; lockfile &#x2F; audit）<br><em>（内容由AI生成，仅供参考）</em></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://FighterGodNemo.github.io">琉璃幻彩</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://fightergodnemo.github.io/2026/10/13/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Node.js%E4%B8%8Enpm_%E8%AF%A6%E8%A7%A3/">https://fightergodnemo.github.io/2026/10/13/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Node.js%E4%B8%8Enpm_%E8%AF%A6%E8%A7%A3/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://FighterGodNemo.github.io" target="_blank">琉璃幻彩的博客</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/08/02/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/SDK%E6%98%AF%E4%BB%80%E4%B9%88/" title=""><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2"></div></div><div class="info-2"><div class="info-item-1">Software Development Kit，软件开发工具包就是微软官方给你的一箱子工具 + 说明书，让你写 Windows 程序不用从零造轮子。 </div></div></div></a><a class="pagination-related" href="/2026/10/13/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/JWT_JSON_Web_Token_%E8%AF%A6%E8%A7%A3/" title="JWT（JSON Web Token）详解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">JWT（JSON Web Token）详解</div></div><div class="info-2"><div class="info-item-1"> 调研日期：2026-10-13核心依据：RFC 7519、jwt.io、OWASP 指南及多篇权威资料（见文末参考）   1. 什么是 JWTJSON Web Token（JWT） 是一个开放标准（RFC 7519），定义了一种紧凑...</div></div></div></a></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">琉璃幻彩</div><div class="author-info-description">The Greatest Magician!</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">252</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">209</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">40</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FighterGodNemo"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/FighterGodNemo" title="Github" target="_blank"><i class="fab fa-github"></i></a><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="微信"><i class="fab fa-weixin"></i></a><div class="qr-code-popup"><img src="/img/qrcode/wechat-qr.png" alt="微信二维码"/ loading='lazy'></div></div><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="QQ"><i class="fab fa-qq"></i></a><div class="qr-code-popup"><img src="/img/qrcode/qq-qr.png" alt="QQ二维码"/ loading='lazy'></div></div><div class="copy-text-wrapper"><a class="social-icon" href="javascript:void(0)" title="Steam好友代码：1905706957" data-copy-text="1905706957"><i class="fab fa-steam"></i></a><div class="copy-text-popup"><h3>Steam好友代码</h3><p>1905706957</p><p class="copy-hint">点击图标复制</p></div></div><a class="social-icon" href="mailto:guliujia2233@outlook.com" title="Email" target="_blank"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">热爱 CTF 和 Forensic 的网安人一枚～
+欢迎各位大佬交流点评！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Node-js-%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">1.</span> <span class="toc-text">1. Node.js 是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%EF%BC%9A%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF-%E9%9D%9E%E9%98%BB%E5%A1%9E-I-O"><span class="toc-number">2.</span> <span class="toc-text">2. 核心原理：事件循环 + 非阻塞 I&#x2F;O</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%8D%95%E7%BA%BF%E7%A8%8B%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 单线程事件模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E9%9D%9E%E9%98%BB%E5%A1%9E-I-O"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 非阻塞 I&#x2F;O</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%E4%BD%9C%E4%B8%BA%E8%BF%90%E8%A1%8C%E6%97%B6%E6%9E%84%E9%80%A0"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 事件循环作为运行时构造</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E5%A4%9A%E6%A0%B8%E5%88%A9%E7%94%A8"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 多核利用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Node-js-%E7%89%B9%E6%80%A7%E4%B8%8E%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">3.</span> <span class="toc-text">3. Node.js 特性与适用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E4%B8%BB%E8%A6%81%E7%89%B9%E6%80%A7"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 主要特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 适用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E4%B8%8D%E6%93%85%E9%95%BF%E5%9C%BA%E6%99%AF"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 不擅长场景</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Node-js-%E7%89%88%E6%9C%AC%E6%83%85%E5%86%B5%EF%BC%882026-%E5%B9%B4%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">4. Node.js 版本情况（2026 年）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E7%89%88%E6%9C%AC%E7%BA%BF%E4%B8%80%E8%A7%88%EF%BC%88%E6%88%AA%E8%87%B3-2026-10%EF%BC%89"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 版本线一览（截至 2026-10）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-Node-js-24-%E6%96%B0%E7%89%B9%E6%80%A7%E4%BA%AE%E7%82%B9"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 Node.js 24 新特性亮点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-npm-%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">5.</span> <span class="toc-text">5. npm 是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-npm-%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">6.</span> <span class="toc-text">6. npm 工作原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-npm-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-number">7.</span> <span class="toc-text">7. npm 常用命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-npm-vs-Yarn-vs-pnpm%EF%BC%882026-%E5%AF%B9%E6%AF%94%EF%BC%89"><span class="toc-number">8.</span> <span class="toc-text">8. npm vs Yarn vs pnpm（2026 对比）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#8-1-%E7%89%88%E6%9C%AC%E4%B8%8E-Node-%E6%94%AF%E6%8C%81%E5%BF%AB%E7%85%A7%EF%BC%882026-05-%E6%A3%80%E6%9F%A5%EF%BC%89"><span class="toc-number">8.1.</span> <span class="toc-text">8.1 版本与 Node 支持快照（2026-05 检查）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-2-%E6%9E%B6%E6%9E%84%E5%B7%AE%E5%BC%82%EF%BC%9A%E4%BE%9D%E8%B5%96%E5%B8%83%E5%B1%80"><span class="toc-number">8.2.</span> <span class="toc-text">8.2 架构差异：依赖布局</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-3-%E9%94%81%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F"><span class="toc-number">8.3.</span> <span class="toc-text">8.3 锁文件格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-4-%E5%8A%9F%E8%83%BD%E5%AF%B9%E6%AF%94%E9%80%9F%E8%A7%88"><span class="toc-number">8.4.</span> <span class="toc-text">8.4 功能对比速览</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-5-%E9%80%89%E5%9E%8B%E5%BB%BA%E8%AE%AE"><span class="toc-number">8.5.</span> <span class="toc-text">8.5 选型建议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-6-%E5%AE%89%E5%85%A8%E5%AF%B9%E6%AF%94"><span class="toc-number">8.6.</span> <span class="toc-text">8.6 安全对比</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5%E8%A1%A5%E5%85%85"><span class="toc-number">9.</span> <span class="toc-text">9. 常见概念补充</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#9-1-package-json-%E5%85%B3%E9%94%AE%E5%AD%97%E6%AE%B5"><span class="toc-number">9.1.</span> <span class="toc-text">9.1 package.json 关键字段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-2-Corepack"><span class="toc-number">9.2.</span> <span class="toc-text">9.2 Corepack</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-3-Workspaces%EF%BC%88monorepo%EF%BC%89"><span class="toc-number">9.3.</span> <span class="toc-text">9.3 Workspaces（monorepo）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%80%BB%E7%BB%93"><span class="toc-number">10.</span> <span class="toc-text">10. 一句话总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90"><span class="toc-number">11.</span> <span class="toc-text">参考来源</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/13/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/BIOS%E7%B3%BB%E7%BB%9F%E7%A0%94%E7%A9%B6/" title="BIOS 系统研究">BIOS 系统研究</a><time datetime="2026-10-13T12:39:00.000Z" title="更新于 2026-10-13 12:39:00">2026-10-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/13/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Cookie%E8%AF%A6%E8%A7%A3/" title="Cookie 详解">Cookie 详解</a><time datetime="2026-10-13T12:39:00.000Z" title="更新于 2026-10-13 12:39:00">2026-10-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/13/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/DMA%E8%A3%85%E7%BD%AE%E7%A0%94%E7%A9%B6/" title="DMA 装置研究">DMA 装置研究</a><time datetime="2026-10-13T12:39:00.000Z" title="更新于 2026-10-13 12:39:00">2026-10-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/13/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/DNS%E6%B1%A1%E6%9F%93%E7%A0%94%E7%A9%B6/" title="DNS 污染研究">DNS 污染研究</a><time datetime="2026-10-13T12:39:00.000Z" title="更新于 2026-10-13 12:39:00">2026-10-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/13/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/JWT_JSON_Web_Token_%E8%AF%A6%E8%A7%A3/" title="JWT（JSON Web Token）详解">JWT（JSON Web Token）详解</a><time datetime="2026-10-13T12:39:00.000Z" title="更新于 2026-10-13 12:39:00">2026-10-13</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 琉璃幻彩</span><span class="framework-info"><span id="busuanzi_container_site_pv">本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span><span class="footer-separator">|</span><span id="busuanzi_container_site_uv">本站访客数 <span id="busuanzi_value_site_uv"></span> 人次</span></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+  const getUtterancesTheme = theme => theme === 'dark' ? 'photon-dark' : 'github-light'
+
+  const loadUtterances = (el = document, key) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyUtterances = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const config = {
+      src: 'https://utteranc.es/client.js',
+      repo: 'FighterGodNemo/FighterGodNemo.github.io',
+      theme: getUtterancesTheme(document.documentElement.getAttribute('data-theme')),
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      'issue-term': isShuoshuo ? key : (option && option['issue-term']) || 'pathname'
+    }
+
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => ele.setAttribute(key, value))
+    el.querySelector('#utterances-wrap').appendChild(ele)
+  }
+
+  const changeUtterancesTheme = theme => {
+    const iframe = document.querySelector('#utterances-wrap iframe')
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: getUtterancesTheme(theme)
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeUtterancesTheme, 'utterances')
+
+  if (isShuoshuo) {
+    'Utterances' === 'Utterances'
+      ? window.shuoshuoComment = { loadComment: loadUtterances }
+      : window.loadOtherComment = loadUtterances
+    return
+  }
+  
+  if ('Utterances' === 'Utterances' || !false) {
+    if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+    else loadUtterances()
+  } else {
+    window.loadOtherComment = loadUtterances
+  }
+})()</script></div><script src="/js/custom.js?v=20260402-2"></script><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.staticfile.org/pjax/0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:description\"]","link[rel=\"canonical\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>
