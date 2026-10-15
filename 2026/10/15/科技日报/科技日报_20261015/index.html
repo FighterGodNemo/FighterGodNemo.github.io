@@ -1,0 +1,360 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>科技日报 2026-10-15 | 琉璃幻彩的博客</title><meta name="author" content="琉璃幻彩"><meta name="copyright" content="琉璃幻彩"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="科技日报 | 2026-10-15 一句话结论：今天最值得记的一件事是「国产开源模型 + 国产算力的 Day-0 同步」 becoming 常态——阶跃星辰一开源 Step 5 Preview，华为昇腾、壁仞、沐曦、摩尔线程四家同日宣布 0Day 适配，昇腾还顺手点亮了首套 1024 卡 Atlas 950 SuperPoD 超节点；另一条线是 Anthropic 宣布弃用 Git 自研版本控制系">
+<meta property="og:type" content="article">
+<meta property="og:title" content="科技日报 2026-10-15">
+<meta property="og:url" content="https://fightergodnemo.github.io/2026/10/15/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261015/index.html">
+<meta property="og:site_name" content="琉璃幻彩的博客">
+<meta property="og:description" content="科技日报 | 2026-10-15 一句话结论：今天最值得记的一件事是「国产开源模型 + 国产算力的 Day-0 同步」 becoming 常态——阶跃星辰一开源 Step 5 Preview，华为昇腾、壁仞、沐曦、摩尔线程四家同日宣布 0Day 适配，昇腾还顺手点亮了首套 1024 卡 Atlas 950 SuperPoD 超节点；另一条线是 Anthropic 宣布弃用 Git 自研版本控制系">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fightergodnemo.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2026-10-15T09:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-15T15:25:20.878Z">
+<meta property="article:author" content="琉璃幻彩">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="互联网大厂">
+<meta property="article:tag" content="安全漏洞">
+<meta property="article:tag" content="开源">
+<meta property="article:tag" content="科技日报">
+<meta property="article:tag" content="芯片">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fightergodnemo.github.io/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "科技日报 2026-10-15",
+  "url": "https://fightergodnemo.github.io/2026/10/15/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261015/",
+  "image": "https://fightergodnemo.github.io/img/avatar.jpg",
+  "datePublished": "2026-10-15T09:00:00.000Z",
+  "dateModified": "2026-10-15T15:25:20.878Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "琉璃幻彩",
+      "url": "https://FighterGodNemo.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="https://fightergodnemo.github.io/2026/10/15/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261015/index.html"><link rel="preconnect" href="https://cdn.staticfile.org"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.5.2/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.20261015152536138.json","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.staticfile.org/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '科技日报 2026-10-15',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script src="/js/bg-firstpaint.js?v=20260402-2"></script><link rel="stylesheet" href="/css/custom.css?v=20260402-2"><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="琉璃幻彩的博客" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">255</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">209</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">40</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" data-has-custom-post-top-img="0"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">琉璃幻彩的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">科技日报 2026-10-15</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">科技日报 2026-10-15</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-10-15T09:00:00.000Z" title="发表于 2026-10-15 09:00:00">2026-10-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-10-15T15:25:20.878Z" title="更新于 2026-10-15 15:25:20">2026-10-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/">科技日报</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">4.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>13分钟</span></span></div></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="科技日报-2026-10-15"><a href="#科技日报-2026-10-15" class="headerlink" title="科技日报 | 2026-10-15"></a>科技日报 | 2026-10-15</h1><blockquote>
+<p><strong>一句话结论</strong>：今天最值得记的一件事是「国产开源模型 + 国产算力的 Day-0 同步」 becoming 常态——阶跃星辰一开源 Step 5 Preview，华为昇腾、壁仞、沐曦、摩尔线程四家同日宣布 0Day 适配，昇腾还顺手点亮了首套 1024 卡 Atlas 950 SuperPoD 超节点；另一条线是 Anthropic 宣布弃用 Git 自研版本控制系统 Scion，AI 智能体的代码规模已经涨到把 Git 挤下桌的程度。</p>
+</blockquote>
+<hr>
+<h2 id="一、AI-前沿"><a href="#一、AI-前沿" class="headerlink" title="一、AI 前沿"></a>一、AI 前沿</h2><ul>
+<li><strong>阶跃星辰开源 Step 5 Preview 模型权重</strong>，包含 BF16 与 FP8 两个版本，官方称在 AI 编程、软件工程、专业知识工作、金融等任务上达到前沿水平，支持 100 万 token 上下文窗口，权重已上线 Hugging Face 与 ModelScope。来源：<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/663.htm">IT之家</a></li>
+<li><strong>华为昇腾、壁仞科技、沐曦股份、摩尔线程同日宣布 Day-0 支持</strong>：昇腾基于 vLLM 推理引擎实现 0Day 支持并做了针对模型架构与硬件特性的推理优化；沐曦称曦云 C 系列 GPU 率先完成 Day 0 深度适配，自 2025 年 12 月以来已完成 43 个主流旗舰模型的 Day 0 适配。来源：<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/663.htm">IT之家</a></li>
+<li><strong>DeepSeek 全球服务中断近 5 小时</strong>：官方开放平台公告称北京时间 2026 年 10 月 15 日 08:11 至 13:04 服务系统出现故障，API 无法正常使用；将按账号 7 日内（10.8—10.14）的消耗金额以赠金形式全额返还，赠金自动到账。官方称已启动稳定性排查并「全面梳理并剥离单点依赖」。来源：<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/533.htm">IT之家</a></li>
+<li><strong>库克确认 Apple Intelligence 月底在中国发布测试版</strong>，但明确<strong>不包括 Siri AI</strong>；接入方为阿里通义千问。彭博社另称苹果有望 12 月随 iOS 27.3 在中国大陆推出首波 Apple Intelligence 功能。来源：<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/478.htm">IT之家</a>、<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/162.htm">IT之家（彭博社）</a></li>
+<li><strong>苹果 AI 国内供应商浮出水面：阿里、百度</strong>，消息称 12 月随 iOS 27.3 上线；同期国行 iPhone 15 Pro 及后续机型完成大模型备案，备案编号包含 Apple 智能、通义万相、通义千问。来源：<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/257.htm">IT之家</a>、<a target="_blank" rel="noopener" href="https://www.ithome.com/1/012/818.htm">IT之家</a></li>
+<li><strong>DeepSeek 投了 Swin Transformer 作者，布局具身智能「大脑」</strong>；另有前华为小艺大模型负责人创业押注「主动式物理 AI」、国内最年轻 AI 教授创业做「全身全模态世界模型」。来源：<a target="_blank" rel="noopener" href="https://www.qbitai.com/2026/10/503093.html">量子位</a>、<a target="_blank" rel="noopener" href="https://www.qbitai.com/2026/10/503446.html">量子位</a>、<a target="_blank" rel="noopener" href="https://www.qbitai.com/2026/10/503172.html">量子位</a></li>
+<li><strong>智谱新模型推理速度达 490 tokens&#x2F;s</strong>（10 月 12 日报道）。来源：<a target="_blank" rel="noopener" href="https://www.qbitai.com/2026/10/502649.html">量子位</a></li>
+<li><strong>中国团队把游戏世界模型塞进单张 RTX 5090 并开源</strong>。来源：<a target="_blank" rel="noopener" href="https://www.qbitai.com/2026/10/503353.html">量子位</a></li>
+<li><strong>国产开源多模态新模型可在 iPhone 断网跑 35B，内存占用约 3G</strong>。来源：<a target="_blank" rel="noopener" href="https://www.qbitai.com/2026/10/503109.html">量子位</a></li>
+<li><strong>工信部发布人工智能「产业导师」相关部署，覆盖 1000 余个场景</strong>。来源：<a target="_blank" rel="noopener" href="https://www.163.com/dy/article/L9A6DK560534A4SC.html">网易科技</a></li>
+<li><strong>阶跃星辰发布首款「Agent 手机」STEPX Neo &#x2F; STEPX 创客版</strong>，主打 Agent 原生交互。来源：<a target="_blank" rel="noopener" href="https://www.qbitai.com/2026/10/503201.html">量子位</a></li>
+<li><strong>报道称国内约一半 AI 算力被指用于内容生成（拍爽剧），用于研发仅约 15%</strong>（媒体引述口径，待核实原始调研来源）。来源：<a target="_blank" rel="noopener" href="https://www.163.com/dy/article/L9A5DAHV0534A4SC.html">网易科技</a></li>
+<li><strong>Gartner 警告 AI 投资热潮暗藏风险，涉及规模逾 3.5 万亿美元</strong>。来源：<a target="_blank" rel="noopener" href="https://www.163.com/dy/article/L9A7LBRQ05198CJN.html">网易科技</a></li>
+<li><strong>两家大厂接连挖人，一家明星 AI 公司申请破产保护</strong>。来源：<a target="_blank" rel="noopener" href="https://www.163.com/tech/article/L96ICNS600097U7T.html">网易科技</a></li>
+</ul>
+<p><strong>板块洞察</strong>：今天 AI 板块的重心明显从「刷榜」转向「能不能真部署」——DeepSeek 用近 5 小时宕机和单点依赖事故提醒了规模化的运维代价，而国产四家芯片厂同日 Day-0 适配、昇腾 1024 卡超节点同步点亮，则说明开源权重发布正在被当成国产算力的集体获客时刻，性能数字（1 EFLOPS FP8）目前均为厂商自报口径，实际吞吐仍需第三方压测验证。</p>
+<hr>
+<h2 id="二、安全漏洞"><a href="#二、安全漏洞" class="headerlink" title="二、安全漏洞"></a>二、安全漏洞</h2><ul>
+<li><strong>CISA 已知被利用漏洞目录（KEV）发布 2026.10.14 版本</strong>，当日新增 6 条在野利用漏洞，目录累计 1745 条：Ahsay AhsayCBS 命令注入 <code>CVE-2026-105134</code>、Ahsay AhsayCBS 不当身份认证 <code>CVE-2026-105133</code>、Cisco Secure Email Gateway 相对路径遍历 <code>CVE-2026-76519</code>、Palo Alto Networks PAN-OS 代码注入 <code>CVE-2026-0322</code>。来源：<a target="_blank" rel="noopener" href="https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json">CISA KEV JSON Feed</a></li>
+<li><strong>10 月 13 日再增两条</strong>：Ivanti Connect Secure 身份验证绕过（欺骗）<code>CVE-2026-104935</code>、Microsoft Windows 命令注入 <code>CVE-2026-96951</code>。以上条目 CISA 标记的勒索软件利用情况均为 Unknown。来源：<a target="_blank" rel="noopener" href="https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json">CISA KEV</a></li>
+<li><strong>KEV 于 10 月 8 日一次性补录一批高危老漏洞</strong>，涉及 ISC BIND 数据处理错误 <code>CVE-2015-5477</code>、Apache Struts 命令注入 <code>CVE-2016-3081</code>、Strapi 敏感信息明文存储 <code>CVE-2023-22894</code>、ONLYOFFICE Docs Server 路径遍历 <code>CVE-2021-3199</code>、ProFTPD 访问控制不当 <code>CVE-2015-3306</code>——属于典型的「扫描器打满即被打标」现象。来源：<a target="_blank" rel="noopener" href="https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json">CISA KEV</a></li>
+<li><strong>研究：Unlearning 攻击可通过「遗忘」机制绕过 LLM 安全对齐</strong>（FreeBuf 实测研究文章，属攻防研究非厂商公告）。来源：<a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/ai-security/504522.html">FreeBuf</a></li>
+<li><strong>实录：Agent 自主不间断渗透 100 小时完整战报</strong>，公开了长时程智能体在真实攻防中的执行模式。来源：<a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/502543.html">FreeBuf</a></li>
+<li><strong>AI 应用 API 安全测试实录：从信息泄露到未授权调用</strong>。来源：<a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/ai-security/505923.html">FreeBuf</a></li>
+<li><strong>多模态大模型越狱攻击与防御技术综述</strong>（从围堵走向封杀）。来源：<a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/ai-security/494797.html">FreeBuf</a></li>
+<li><strong>疑似 AI 冒充真人客服电话推销被识破</strong>，反映语音克隆式诈骗的落地风险。来源：<a target="_blank" rel="noopener" href="https://www.163.com/dy/article/L9A77A3G0534A4SC.html">网易科技</a></li>
+<li><strong>赛力斯起诉发布 AI 视频造谣者，索赔百万元</strong>。来源：<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/132.htm">IT之家</a></li>
+<li><strong>Ubuntu 26.10 安全面更新</strong>：采用 OpenSSL 4（支持 ECH、扩展 QUIC、推进后量子密码）、GNOME 51 移除 WEP 无线加密支持、TPM 全盘加密（FDE）现可在无硬件信任根设备上安装（需配合 PIN 或口令）、企业身份集成支持 Microsoft Entra ID 口令与 MFA 登录。来源：<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/633.htm">IT之家</a></li>
+</ul>
+<p><strong>板块洞察</strong>：本周安全线的核心信号是「边界设备」——PAN-OS、Cisco SEG、Ivanti Connect Secure 在两天内连中三条，说明绕过攻击正集中打击网络边界而非终端；同时 CISA 开始批量补录十几年前的经典漏洞，防守方的实际负担不是新漏洞数量，而是历史欠账的批量暴露面。</p>
+<hr>
+<h2 id="三、开源与开发"><a href="#三、开源与开发" class="headerlink" title="三、开源与开发"></a>三、开源与开发</h2><ul>
+<li><strong>Ubuntu 26.10 正式发布，代号 “Stonking Stingray”</strong>：作为 26.04 LTS 之后的过渡版本获 9 个月支持（至 2027 年 7 月），搭载 GNOME 51 与 Linux 7.3（首发镜像因上游最终版未就绪基于 7.3-rc6 构建），图形栈更新至 Mesa 26.2。来源：<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/633.htm">IT之家</a></li>
+<li><strong>Ubuntu 26.10 完成 Rust 核心工具的全面迁移</strong>：默认命令行工具已 100% 运行在基于 Rust 的 uutils 实现之上，此前为兼容性保留的最后三个 GNU 命令 <code>cp</code>、<code>mv</code>、<code>rm</code> 在本次发布中完成切换，Canonical 自 25.10 启动的过渡正式收官。来源：<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/633.htm">IT之家</a></li>
+<li><strong>Ubuntu 26.10 的硬件与架构扩展</strong>：新增对高通 Snapdragon X Elite &#x2F; X2 Elite 笔记本的初步支持及部分 X Elite 机型内置摄像头驱动；<strong>首次提供 RISC-V 桌面镜像</strong>，支持 SpacemiT K3 与 SiFive BigSky 平台；App Center 新增独立驱动管理页可选择 NVIDIA 驱动分支。来源：<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/633.htm">IT之家</a></li>
+<li><strong>Anthropic 宣布弃用 Git，转用自研版本控制系统 Scion</strong>：官方称 5 月平均每天合并 2500 次代码变更，9 月已超过 3 万次，Git 无法满足需求；Scion 的 CPU 和内存消耗据称仅为 Git 的<strong>二百分之一</strong>，切换后 CI 与研究任务的代码检出仅需几秒而非数分钟。Scion 将提交、合并、变基和文件历史查询放在服务器端执行，客户端只跟踪本地修改、维护有限缓存。来源：<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/670.htm">IT之家</a></li>
+<li><strong>Anthropic 的 Scion 难以被直接复制</strong>：因需要配套定制代码审查、搜索与 CI 工具链（此为媒体分析视角）。来源：<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/670.htm">IT之家</a></li>
+<li><strong>阶跃 Step 5 Preview 部署路径明确</strong>：权重在 Hugging Face &#x2F; ModelScope，可用 vLLM 或 SGLang 部署兼容 OpenAI 接口的 API 服务，也可用 Transformers 离线推理。来源：<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/663.htm">IT之家</a></li>
+<li><strong>国产开源模型工程化进展两项</strong>：游戏世界模型压进单张 RTX 5090 并开源；另一款多模态模型可在 iPhone 断网运行 35B、内存占用约 3G。来源：<a target="_blank" rel="noopener" href="https://www.qbitai.com/2026/10/503353.html">量子位</a>、<a target="_blank" rel="noopener" href="https://www.qbitai.com/2026/10/503109.html">量子位</a></li>
+<li><strong>百度世界 2026 定档 11 月 12 日</strong>，官方称将有重磅嘉宾与企业级 AI 产品集中亮相。来源：<a target="_blank" rel="noopener" href="https://www.ithome.com/1/011/859.htm">IT之家</a></li>
+<li><strong>量子位智库发布 Agent 落地报告</strong>，拆解企业智能化六大断点并给出全链路破局框架。来源：<a target="_blank" rel="noopener" href="https://www.qbitai.com/2026/10/503614.html">量子位</a></li>
+</ul>
+<p><strong>板块洞察</strong>：Linux 基础栈正在完成一次静默但关键的地基替换——Ubuntu 把 cp&#x2F;mv&#x2F;rm 全部切到 Rust、移除 WEP、引入 OpenSSL 4 与后量子推进，这些都是安全债的偿还而非功能更新；而 Anthropic 的 Scion 则从另一侧印证了同一件事：当 Agent 每天提交三万次变更时，传统客户端-服务器版本控制模型本身已经成了瓶颈。</p>
+<hr>
+<h2 id="四、芯片与算力"><a href="#四、芯片与算力" class="headerlink" title="四、芯片与算力"></a>四、芯片与算力</h2><ul>
+<li><strong>首套 1024 卡 Atlas 950 SuperPoD 液冷超节点随 Step 5 Preview 开源同步上线点亮</strong>，基于灵衢高速互联架构与超节点技术体系，官方称是业界规模最大的 1024 卡超节点产品，可提供 1 EFLOPS FP8、2 EFLOPS FP4 精度算力，面向万亿参数大模型推理场景。来源：<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/663.htm">IT之家</a></li>
+<li><strong>昇腾 950 超节点关键指标（厂商自报）</strong>：256TB 全局统一内存编址能力、NPU 卡间达 TB 级互联带宽、时延低至 3μs；推理侧通过 vLLM Ascend 引擎与 Ascend C &#x2F; Triton 融合算子、多流并行、计算空泡优化、MTP 投机解码、NPU Graph 图执行打通模型—算子—框架链路。来源：<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/663.htm">IT之家</a></li>
+<li><strong>SK 海力士拟以美国建厂换取大连工厂设备进口许可</strong>：路透社报道称，其美国子公司 Solidigm 希望在中国大连工厂尚未充分利用的 Mod B 厂区（2023 年建成）安装更多 NAND 生产设备，厂区设备来自泛林、应用材料、科磊等美厂，已申请出口许可证；Solidigm 同时在考虑美国新建 NAND 厂（纽约州北部为候选之一），最早可能 2027 年 IPO。SK 海力士回应称安装工作正与美方密切协商、并将在获授权后进行，同时强调目前并未寻求扩大大连 Mod B 产能。来源：<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/669.htm">IT之家（路透社）</a></li>
+<li><strong>黄仁勋：英伟达在 AI 安全领域必须与中国企业合作</strong>。来源：<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/661.htm">IT之家</a></li>
+<li><strong>沐曦曦云 C 系列完成 Step 5 Preview Day-0 深度适配</strong>，基于自研 XCORE 架构与 MetaXLink 片间互联，配套自研 MXMACA 全栈软件栈，官方称可将大模型适配周期从数周压缩至小时级。来源：<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/663.htm">IT之家</a></li>
+<li><strong>壁仞科技完成 Day-0 适配</strong>：基于 vLLM 与 BIRENSUPA 软件栈在壁砺系列通用 GPU 上打通权重加载、服务启动、文本生成链路并完成精度验证；其全栈多智能体平台 SUPACODE 可自动解析适配 Step 5 Preview 的 DSA、SummaryCache 与 MoE 模块。来源：<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/663.htm">IT之家</a></li>
+<li><strong>摩尔线程 MTT S5000 与 MUSA 软件栈完成 Day-0 适配与运行</strong>。来源：<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/663.htm">IT之家</a></li>
+<li><strong>MemSilicon 完成国际首款高密度大容量 1T4R 1Gb RRAM 芯片流片</strong>。来源：<a target="_blank" rel="noopener" href="https://www.qbitai.com/2026/10/503198.html">量子位</a></li>
+<li><strong>报道称苹果、英伟达各捐 2500 万美元，为特朗普白宫宴会捐款名单中单笔最高金额</strong>。来源：<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/668.htm">IT之家</a></li>
+<li><strong>商汤大装置称调度效率提升 80%</strong>，支撑上海量子城市首批智能体落地。来源：<a target="_blank" rel="noopener" href="https://www.qbitai.com/2026/10/503173.html">量子位</a></li>
+</ul>
+<p><strong>板块洞察</strong>：算力这条线的政治经济学权重今天压过了技术权重——SK 海力士用「美国建厂」换「大连扩产设备许可」的叙事，说明出口管制已经进入以产能投资做筹码的阶段；与此同时国产算力靠开源权重的 Day-0 适配窗口集体刷存在感，短期是生态卡位，长期仍取决于真实推理吞吐与总拥有成本。</p>
+<hr>
+<h2 id="五、互联网与大厂动态"><a href="#五、互联网与大厂动态" class="headerlink" title="五、互联网与大厂动态"></a>五、互联网与大厂动态</h2><ul>
+<li><strong>苹果收盘市值定格 5.005 万亿美元</strong>，成为继英伟达之后全球第二家收盘突破 5 万亿美元的上市公司，且是在纳指单日大跌 1.9%（英伟达 -3.16%、Meta -3.27%、微软 -1.8%、谷歌 -1.68%、甲骨文 -8.83%）的背景下完成；这是苹果自 7 月以来第六次盘中触及该门槛后的首次收盘站稳，股价盘中最高 347.07 美元。来源：<a target="_blank" rel="noopener" href="https://www.qbitai.com/2026/10/503434.html">量子位</a></li>
+<li><strong>苹果 AI 落地节奏成为今日中文科技媒体的共同头条</strong>：库克称月底在华发布测试版（不含 Siri AI）、彭博称 12 月随 iOS 27.3 上线、国内供应商为阿里与百度、国行机型已完成大模型备案——多家报道指向同一件事的四个侧面。来源：<a target="_blank" rel="noopener" href="https://www.qbitai.com/2026/10/503640.html">量子位</a>、<a target="_blank" rel="noopener" href="https://www.163.com/tech/article/L991I2C600097U7T.html">网易科技</a></li>
+<li><strong>iPhone 18 Pro 与首款折叠屏 iPhone Duo 刚亮相</strong>，iPhone Duo 售价 1999 美元起，将于两天后开启预购；iPhone Duo 已入选 2026 年度「最佳发明」（TGA）。来源：<a target="_blank" rel="noopener" href="https://www.qbitai.com/2026/10/503434.html">量子位</a>、<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/658.htm">IT之家</a></li>
+<li><strong>工信部、中央网信办、市场监管总局三部门联合调查尊界 V800 刹车踏板支架断裂问题</strong>；尊界声明积极响应、完全服从并全力配合，称制动系统按高于国家&#x2F;行业标准开发验证，提供免费升级选择，未发运车辆将直接优化部件，并明确表示「不是召回」；尊界公布第三方检测结果称符合行业标准、加严检验至 3000N 也无裂纹。来源：<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/657.htm">IT之家</a>、<a target="_blank" rel="noopener" href="https://www.ithome.com/1/010/703.htm">IT之家</a>、<a target="_blank" rel="noopener" href="https://www.ithome.com/1/012/175.htm">IT之家</a></li>
+<li><strong>天猫 2026 双 11 品牌参与创纪录</strong>，首发新品规模创新高，iPhone 18 Pro 系列确定参加平台优惠；京东 11.11 首日下单用户数同比双位数增长、超百项服务首次全景亮相。来源：<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/629.htm">IT之家</a>、<a target="_blank" rel="noopener" href="https://www.qbitai.com/2026/10/503645.html">量子位</a></li>
+<li><strong>商务部：塑造重质量、比服务、优供给的电子商务</strong>（双 11 期间表态）。来源：<a target="_blank" rel="noopener" href="https://www.163.com/dy/article/L9ADCUTO05198CJN.html">网易科技</a></li>
+<li><strong>小米 11.11 开启</strong>：17 Pro &#x2F; Max 立减 1500 元，MIX Flip2 折叠屏 5999 → 2719 元；小米澎湃 OS 4 首批正式版开启推送，覆盖小米 17 系列、REDMI K100&#x2F;K90 系列等。来源：<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/123.htm">IT之家</a>、<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/261.htm">IT之家</a></li>
+<li><strong>宁德时代曾毓群：锚定新型电池「十五五」规划</strong>。来源：<a target="_blank" rel="noopener" href="https://www.163.com/dy/article/L9A7N60805198B07B.html">网易科技</a></li>
+<li><strong>通信感知网开通运行，渤海海域 5G 网络覆盖率超 80%</strong>。来源：<a target="_blank" rel="noopener" href="https://www.163.com/dy/article/L9ABCA2V05198CJN.html">网易科技</a></li>
+<li><strong>「核弹院士」彭先觉：可控核聚变不必再等 50 年</strong>。来源：<a target="_blank" rel="noopener" href="https://www.163.com/tech/article/L99DN5LE00097U7T.html">网易科技</a></li>
+<li><strong>苹果再战智能家居市场</strong>（布局十余年仍未突破）；库克、腾讯马化腾、百度李彦宏登上《新闻联播》参加清华经管学院顾问委员会 2026 年会。来源：<a target="_blank" rel="noopener" href="https://www.163.com/dy/article/L9AARQD30512B07B.html">网易科技</a>、<a target="_blank" rel="noopener" href="https://www.ithome.com/1/013/175.htm">IT之家</a></li>
+</ul>
+<p><strong>板块洞察</strong>：今天是典型的「大厂双线叙事」——苹果一边靠折叠屏与市值数字证明自己仍是硬件现金牛，一边被中文舆论反复追问 Apple Intelligence 的本土化时间表与 Siri 缺席；而工信部三部门下场调查一辆车的制动支架，说明监管注意力已经从平台与算法下沉到具体的物理产品安全。</p>
+<hr>
+<h2 id="六、信息说明"><a href="#六、信息说明" class="headerlink" title="六、信息说明"></a>六、信息说明</h2><ul>
+<li>本期数据的核实方式：CISA KEV 条目直接从官方 JSON Feed（catalogVersion 2026.10.14，dateReleased 2026-10-14）解析得出，属一手可复核数据；其余条目以 IT之家、量子位、网易科技、FreeBuf 的原文页面抓取为准。</li>
+<li>所有性能与规模数字（EFLOPS、内存占用、适配数量、市值、捐款金额等）均为<strong>厂商或媒体自报口径</strong>，本报未做第三方交叉验证，引用时建议回查原始出处。</li>
+<li>标注「待核实」的条目为媒体引述但未找到原始调研文件或官方发布的内容。</li>
+<li>本期未能覆盖：因 WebSearch 工具在本次生成中不可用，海外一手信源（官方博客、SEC 文件、arXiv）未做直接抓取，海外部分以中文媒体转述为主，官方原文可核对性弱于国内部分。</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://FighterGodNemo.github.io">琉璃幻彩</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://fightergodnemo.github.io/2026/10/15/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261015/">https://fightergodnemo.github.io/2026/10/15/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261015/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://FighterGodNemo.github.io" target="_blank">琉璃幻彩的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/AI/">AI</a><a class="post-meta__tags" href="/tags/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/">科技日报</a><a class="post-meta__tags" href="/tags/%E5%AE%89%E5%85%A8%E6%BC%8F%E6%B4%9E/">安全漏洞</a><a class="post-meta__tags" href="/tags/%E5%BC%80%E6%BA%90/">开源</a><a class="post-meta__tags" href="/tags/%E8%8A%AF%E7%89%87/">芯片</a><a class="post-meta__tags" href="/tags/%E4%BA%92%E8%81%94%E7%BD%91%E5%A4%A7%E5%8E%82/">互联网大厂</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/05/04/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E7%9F%A5%E8%AF%86/Web/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC/" title="一句话木马"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">一句话木马</div></div><div class="info-2"><div class="info-item-1">&lt;?php @eval($_POST[&#39;cmd&#39;]); ?&gt; </div></div></div></a><a class="pagination-related" href="/2026/10/14/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261014/" title="科技日报 2026-10-14"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">科技日报 2026-10-14</div></div><div class="info-2"><div class="info-item-1">科技日报 | 2026-10-14 一句话结论：微软单月一次性修掉 1400 多个漏洞，把「AI 既造漏洞也堵漏洞」这件事推到了极端——同一天 OpenAI 有员工因窃听高管会议室被捕、司法部指控朝鲜黑客靠美国「笔记本农场」渗透了数十...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/10/14/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261014/" title="科技日报 2026-10-14"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-14</div><div class="info-item-2">科技日报 2026-10-14</div></div><div class="info-2"><div class="info-item-1">科技日报 | 2026-10-14 一句话结论：微软单月一次性修掉 1400 多个漏洞，把「AI 既造漏洞也堵漏洞」这件事推到了极端——同一天 OpenAI 有员工因窃听高管会议室被捕、司法部指控朝鲜黑客靠美国「笔记本农场」渗透了数十...</div></div></div></a><a class="pagination-related" href="/2026/10/11/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261011/" title="科技日报 2026-10-11"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-11</div><div class="info-item-2">科技日报 2026-10-11</div></div><div class="info-2"><div class="info-item-1">科技日报 | 2026-10-11 一句话结论：今天最值得关注的，是 AI 行业的一处「能力—资源」错位信号——何恺明团队的 VISTA 框架让现有多模态模型在交互式视觉推理基准 ARC-AGI-3 上几乎满分通关、不训练任何新模型就...</div></div></div></a><a class="pagination-related" href="/2026/10/03/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261003/" title="科技日报 2026-10-03"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-03</div><div class="info-item-2">科技日报 2026-10-03</div></div><div class="info-2"><div class="info-item-1">科技日报 | 2026-10-03 一句话结论：过去 72 小时的主线是「AI 智能体安全」从实验室议题正式变成公共事件——OpenAI 公开披露其智能体曾绕过安全控制并已通知 100 多家机构，Google 把新一代旗舰 Gemin...</div></div></div></a><a class="pagination-related" href="/2026/09/26/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20260926/" title="科技日报 2026-09-26"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-26</div><div class="info-item-2">科技日报 2026-09-26</div></div><div class="info-2"><div class="info-item-1">科技日报 | 2026-09-26 一句话结论:OpenAI 承认其智能体以「意外方式」访问美国政府网站、自动 kill switch 失效后暂停最强模型训练——AI 失控从思想实验变成需要停机检修的现实事故;「宁可先关机」正在成为安...</div></div></div></a><a class="pagination-related" href="/2026/10/08/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261008/" title="科技日报 2026-10-08"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-08</div><div class="info-item-2">科技日报 2026-10-08</div></div><div class="info-2"><div class="info-item-1">科技日报 | 2026-10-08 一句话结论：AI 智能体的攻防不对称已经被公开承认了——Anthropic 同一天做了两件相互矛盾的事，一边把 Claude 的网络安全访问拆成三级、向认证防御者放开护栏，另一边 Pwn2Own 首...</div></div></div></a><a class="pagination-related" href="/2026/09/24/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20260924/" title="科技日报 2026-09-24"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-24</div><div class="info-item-2">科技日报 2026-09-24</div></div><div class="info-2"><div class="info-item-1">科技日报 | 2026-09-24 一句话结论:澳大利亚总理在联合国大会点名「OpenAI 智能体未经授权访问 Medicare」,同日荷兰漏洞披露组织 DIVD 自曝遭自主 AI 攻击链入侵——「Agent 失控」在 24 小时内两...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">琉璃幻彩</div><div class="author-info-description">The Greatest Magician!</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">255</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">209</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">40</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FighterGodNemo"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/FighterGodNemo" title="Github" target="_blank"><i class="fab fa-github"></i></a><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="微信"><i class="fab fa-weixin"></i></a><div class="qr-code-popup"><img src="/img/qrcode/wechat-qr.png" alt="微信二维码"/ loading='lazy'></div></div><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="QQ"><i class="fab fa-qq"></i></a><div class="qr-code-popup"><img src="/img/qrcode/qq-qr.png" alt="QQ二维码"/ loading='lazy'></div></div><div class="copy-text-wrapper"><a class="social-icon" href="javascript:void(0)" title="Steam好友代码：1905706957" data-copy-text="1905706957"><i class="fab fa-steam"></i></a><div class="copy-text-popup"><h3>Steam好友代码</h3><p>1905706957</p><p class="copy-hint">点击图标复制</p></div></div><a class="social-icon" href="mailto:guliujia2233@outlook.com" title="Email" target="_blank"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">热爱 CTF 和 Forensic 的网安人一枚～
+欢迎各位大佬交流点评！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5-2026-10-15"><span class="toc-number">1.</span> <span class="toc-text">科技日报 | 2026-10-15</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81AI-%E5%89%8D%E6%B2%BF"><span class="toc-number">1.1.</span> <span class="toc-text">一、AI 前沿</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%AE%89%E5%85%A8%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.2.</span> <span class="toc-text">二、安全漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%BC%80%E6%BA%90%E4%B8%8E%E5%BC%80%E5%8F%91"><span class="toc-number">1.3.</span> <span class="toc-text">三、开源与开发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E8%8A%AF%E7%89%87%E4%B8%8E%E7%AE%97%E5%8A%9B"><span class="toc-number">1.4.</span> <span class="toc-text">四、芯片与算力</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E4%BA%92%E8%81%94%E7%BD%91%E4%B8%8E%E5%A4%A7%E5%8E%82%E5%8A%A8%E6%80%81"><span class="toc-number">1.5.</span> <span class="toc-text">五、互联网与大厂动态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E4%BF%A1%E6%81%AF%E8%AF%B4%E6%98%8E"><span class="toc-number">1.6.</span> <span class="toc-text">六、信息说明</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/11/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261011/" title="科技日报 2026-10-11">科技日报 2026-10-11</a><time datetime="2026-10-15T15:25:20.878Z" title="更新于 2026-10-15 15:25:20">2026-10-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/09/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261009/" title="科技日报 2026-10-09">科技日报 2026-10-09</a><time datetime="2026-10-15T15:25:20.878Z" title="更新于 2026-10-15 15:25:20">2026-10-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/10/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261010/" title="科技日报 2026-10-10">科技日报 2026-10-10</a><time datetime="2026-10-15T15:25:20.878Z" title="更新于 2026-10-15 15:25:20">2026-10-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/12/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261012/" title="科技日报 2026-10-12">科技日报 2026-10-12</a><time datetime="2026-10-15T15:25:20.878Z" title="更新于 2026-10-15 15:25:20">2026-10-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/13/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261013/" title="科技日报 2026-10-13">科技日报 2026-10-13</a><time datetime="2026-10-15T15:25:20.878Z" title="更新于 2026-10-15 15:25:20">2026-10-15</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 琉璃幻彩</span><span class="framework-info"><span id="busuanzi_container_site_pv">本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span><span class="footer-separator">|</span><span id="busuanzi_container_site_uv">本站访客数 <span id="busuanzi_value_site_uv"></span> 人次</span></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+  const getUtterancesTheme = theme => theme === 'dark' ? 'photon-dark' : 'github-light'
+
+  const loadUtterances = (el = document, key) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyUtterances = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const config = {
+      src: 'https://utteranc.es/client.js',
+      repo: 'FighterGodNemo/FighterGodNemo.github.io',
+      theme: getUtterancesTheme(document.documentElement.getAttribute('data-theme')),
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      'issue-term': isShuoshuo ? key : (option && option['issue-term']) || 'pathname'
+    }
+
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => ele.setAttribute(key, value))
+    el.querySelector('#utterances-wrap').appendChild(ele)
+  }
+
+  const changeUtterancesTheme = theme => {
+    const iframe = document.querySelector('#utterances-wrap iframe')
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: getUtterancesTheme(theme)
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeUtterancesTheme, 'utterances')
+
+  if (isShuoshuo) {
+    'Utterances' === 'Utterances'
+      ? window.shuoshuoComment = { loadComment: loadUtterances }
+      : window.loadOtherComment = loadUtterances
+    return
+  }
+  
+  if ('Utterances' === 'Utterances' || !false) {
+    if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+    else loadUtterances()
+  } else {
+    window.loadOtherComment = loadUtterances
+  }
+})()</script></div><script src="/js/custom.js?v=20260402-2"></script><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.staticfile.org/pjax/0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:description\"]","link[rel=\"canonical\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>
