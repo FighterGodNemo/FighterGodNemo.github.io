@@ -562,3 +562,8 @@ body,
 [data-theme='dark'] .copy-text-wrapper .copy-text-popup .copy-hint {
   color: #aaa;
 }
+
+/* Keep aspect ratio when width/height attributes reserve layout space */
+#article-container img {
+  height: auto;
+}

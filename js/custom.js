@@ -371,7 +371,7 @@
     // Enable this only after adding matching /img/bg/<name>.mp4 files.
     enabled: false,
     basePath: '/img/bg/',
-    poster: '/img/index-bg.jpg',
+    poster: '/img/index-bg.webp',
     fallback: ''
   };
 
