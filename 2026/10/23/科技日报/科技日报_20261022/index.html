@@ -1,0 +1,312 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>琉璃幻彩的博客 | 琉璃幻彩的博客</title><meta name="author" content="琉璃幻彩"><meta name="copyright" content="琉璃幻彩"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="科技日报 | 2026-10-22一句话结论：过去 72 小时最值得关注的是两件大事——英伟达 GTC 柏林大会上黄仁勋宣布从「卖 GPU」转向「卖 AI 工厂」、Vera Rubin 进入全面生产；同时 PHP 高危漏洞「PHP2Shell」（CVE-2026-109618 &#x2F; CVE-2026-109619）被披露，补丁发布数小时内即出现野外利用，全球超百万台 PHP 服务器面临风险">
+<meta property="og:type" content="article">
+<meta property="og:title" content="琉璃幻彩的博客">
+<meta property="og:url" content="https://fightergodnemo.github.io/2026/10/23/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261022/index.html">
+<meta property="og:site_name" content="琉璃幻彩的博客">
+<meta property="og:description" content="科技日报 | 2026-10-22一句话结论：过去 72 小时最值得关注的是两件大事——英伟达 GTC 柏林大会上黄仁勋宣布从「卖 GPU」转向「卖 AI 工厂」、Vera Rubin 进入全面生产；同时 PHP 高危漏洞「PHP2Shell」（CVE-2026-109618 &#x2F; CVE-2026-109619）被披露，补丁发布数小时内即出现野外利用，全球超百万台 PHP 服务器面临风险">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fightergodnemo.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2026-10-23T02:33:30.490Z">
+<meta property="article:modified_time" content="2026-10-23T02:33:39.850Z">
+<meta property="article:author" content="琉璃幻彩">
+<meta property="article:tag" content="CTF, 电子取证, 网络安全, 逆向工程, 密码学, 琉璃幻彩">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fightergodnemo.github.io/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "",
+  "url": "https://fightergodnemo.github.io/2026/10/23/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261022/",
+  "image": "https://fightergodnemo.github.io/img/avatar.jpg",
+  "datePublished": "2026-10-23T02:33:30.490Z",
+  "dateModified": "2026-10-23T02:33:39.850Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "琉璃幻彩",
+      "url": "https://FighterGodNemo.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="https://fightergodnemo.github.io/2026/10/23/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261022/index.html"><link rel="preconnect" href="https://cdn.staticfile.org"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.5.2/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.20261023023345635.json","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.staticfile.org/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '琉璃幻彩的博客',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script src="/js/bg-firstpaint.js?v=20260402-2"></script><link rel="stylesheet" href="/css/custom.css?v=20260402-2"><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="琉璃幻彩的博客" type="application/atom+xml">
+<meta name="keywords" content="CTF,电子取证,网络安全,逆向工程,密码学,琉璃幻彩"></head><body><div class="bg-animation" id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">264</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">209</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">40</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" data-has-custom-post-top-img="0"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">琉璃幻彩的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">琉璃幻彩的博客</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">无标题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-10-23T02:33:30.490Z" title="发表于 2026-10-23 02:33:30">2026-10-23</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-10-23T02:33:39.850Z" title="更新于 2026-10-23 02:33:39">2026-10-23</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">2.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span></div></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="科技日报-2026-10-22"><a href="#科技日报-2026-10-22" class="headerlink" title="科技日报 | 2026-10-22"></a>科技日报 | 2026-10-22</h1><p><strong>一句话结论</strong>：过去 72 小时最值得关注的是两件大事——英伟达 GTC 柏林大会上黄仁勋宣布从「卖 GPU」转向「卖 AI 工厂」、Vera Rubin 进入全面生产；同时 PHP 高危漏洞「PHP2Shell」（CVE-2026-109618 &#x2F; CVE-2026-109619）被披露，补丁发布数小时内即出现野外利用，全球超百万台 PHP 服务器面临风险。</p>
+<h2 id="AI-前沿"><a href="#AI-前沿" class="headerlink" title="AI 前沿"></a>AI 前沿</h2><ol>
+<li><strong>黄仁勋 GTC 柏林主题演讲：AI 不是软件，而是制造业</strong>——10 月 21 日，英伟达 CEO 黄仁勋在 GTC 柏林发表 90 分钟主题演讲，系统阐述从「卖 GPU」向「卖 AI 工厂」的战略转向，并推出 OpenShell 参考架构与 DSXPOD 设计，将模型推理、智能体工具调用与安全管控分配到不同硬件。<a target="_blank" rel="noopener" href="https://blogs.nvidia.cn/blog/gtc-berlin-2026-keynote">英伟达博客</a>｜<a target="_blank" rel="noopener" href="https://www.jiemian.com/article/15219989.html">界面新闻</a></li>
+<li><strong>Anthropic 发布 Haiku 5.5 并大幅降价</strong>——10 月 22 日消息，Anthropic 发布 Claude Haiku 5.5，并将 Sonnet 5.5 缓存读取价格减半至每百万 Token 0.10 美元，称多数智能体任务成本将降低约 20%；Max 与 Team 订阅同步获得每月 API 额度（厂商自报）。<a target="_blank" rel="noopener" href="https://news.qq.com/rain/a/20261022A07DE000">腾讯新闻</a></li>
+<li><strong>MiniMax 发布 M3.1 Flash</strong>——10 月 19 日晚，MiniMax 正式发布新一代 Flash 模型 M3.1 Flash，在复杂 Agent 任务、电脑操作、软件开发及网络安全方面大幅提升，线上推理速度提升近 3 倍、使用成本降低 70%（厂商自报）。<a target="_blank" rel="noopener" href="https://www.nfnews.com/content/96qKpeGkyM.html">南方日报</a></li>
+<li><strong>DeepSeek 更新 V4.1 Flash 并开放搜索 API</strong>——10 月 17 日，DeepSeek 更新 V4.1-Flash-1017，强化 Agent 与 Coding 能力、重点提升从零构建完整项目的能力，并同步开放自研 Search &#x2F; Fetch API（5 元&#x2F;千次）。<a target="_blank" rel="noopener" href="https://www.toutiao.com/a7698290603620123170">今日头条</a></li>
+<li><strong>谷歌 Gemini 4 Argon 全面开放商用</strong>——谷歌旗舰模型 Gemini 4 Argon 全面开放 API 调用，输入 100 万 token 定价 2 美元、输出 10 美元，缓存输入享 95% 折扣，被评价为「经济型旗舰」（厂商自报）。<a target="_blank" rel="noopener" href="https://m.thepaper.cn/newsDetail_forward_34287717">澎湃新闻</a></li>
+</ol>
+<p>板块洞察：本周模型层核心动向是「能力普惠」——旗舰模型价格被大幅拉低、开源权重跑上消费级硬件，模型竞争正从「谁最强」转向「谁最合适」。</p>
+<h2 id="安全漏洞"><a href="#安全漏洞" class="headerlink" title="安全漏洞"></a>安全漏洞</h2><ol>
+<li><strong>PHP 高危漏洞「PHP2Shell」披露，数小时即遭野外利用</strong>——10 月 21 日，PHP 官方修复并披露两个高危 RCE 漏洞（CVE-2026-109618、CVE-2026-109619），影响 WordPress、Drupal、Joomla、Laravel 等主流生态；补丁发布当天亚马逊即检测到 PoC 利用尝试，已确认暴露的受影响服务器超百万台，多国政府机构临时关站应对。<a target="_blank" rel="noopener" href="http://jjckb.xinhuanet.com/20261022/f27ab975d00641bb9077ad6ed5c339a4/c.html">经济参考报</a>｜<a target="_blank" rel="noopener" href="https://www.freebuf.com/news/508109.html">FreeBuf</a>｜<a target="_blank" rel="noopener" href="http://www.casx.gov.cn/content/2026-10/22/content_13703731.htm">山西网信网</a></li>
+<li><strong>微软 10 月 Patch Tuesday 修复 1413 个 CVE</strong>——10 月 13 日，微软发布本年度最大规模安全更新，修复 1413 个漏洞，其中 1 个已遭利用的 Mark-of-the-Web（MOTW）绕过零日漏洞，另有 Exchange 与 Active Directory 高风险修复。<a target="_blank" rel="noopener" href="https://itbusinessdigest.com/october-2026-patch-tuesday-priority">IT Business Digest</a>｜<a target="_blank" rel="noopener" href="https://www.splashtop.com/nl/tw/blog/patch-tuesday-october-2026">Splashtop</a></li>
+<li><strong>Thales SConnect 未认证 RCE 漏洞（CVE-2026-18397）</strong>——该漏洞利用加密弱点与内存管理问题组合，可在受害者机器上实现未认证远程代码执行。<a target="_blank" rel="noopener" href="https://www.cve.org/CVERecord?id=CVE-2026-18397">CVE Record</a></li>
+<li><strong>Oracle SOA Suite 与 Access Manager 曝 CVSS 10.0 漏洞</strong>——10 月 21 日安全简报显示，前一日披露的漏洞由 Oracle SOA Suite 与 Oracle Access Manager 的 CVSS 10.0 级漏洞领衔。<a target="_blank" rel="noopener" href="https://cvebrief.com/cve/cve-2026-57766">CVE Brief</a></li>
+</ol>
+<p>板块洞察：安全事件再次证明「协调披露」面临现实挑战——PHP2Shell 补丁发布数小时即遭利用、第三方提前放包加剧风险，修复速度已成为攻防关键变量；AI 也在同时加速漏洞的发现与利用。</p>
+<h2 id="开源与开发"><a href="#开源与开发" class="headerlink" title="开源与开发"></a>开源与开发</h2><ol>
+<li><strong>DeepSeek 将内部推理框架 DeepInfer 全面开源</strong>——10 月 21 日，DeepSeek 宣布将内部推理框架 DeepInfer 全面开源，目标实现大模型普惠。<a target="_blank" rel="noopener" href="https://www.woshipm.com/news/6481846.html">人人都是产品经理</a></li>
+<li><strong>英伟达开源机器人智能体框架 ASPIRE v1.0</strong>——10 月 16 日，英伟达 GEAR 实验室负责人 Jim Fan 宣布 ASPIRE v1.0 以 Apache 2.0 许可证开源，让大模型直接给机器人写控制代码，修好的技能以代码形式沉淀进可复用技能库。<a target="_blank" rel="noopener" href="https://toolnavs.com/zh/article/2648">AI 工具导航</a></li>
+<li><strong>MemT 1.0 发布：让记忆成为模型内生能力</strong>——机器之心报道，MemT 1.0 发布，将长期记忆作为大模型架构的一部分，迈向递归自我改进。<a target="_blank" rel="noopener" href="https://www.36kr.com/?p=58779">36氪</a></li>
+<li><strong>无问芯穹端侧推理引擎开源，提速 10.7 倍</strong>——据 36 氪报道，该端侧推理引擎开源后机器人本体跑大模型不再卡顿（性能为厂商自报）。<a target="_blank" rel="noopener" href="https://m.36kr.com/?to1=6a9Y">36氪</a></li>
+<li><strong>蚂蚁集团开源 Avernet V0.1</strong>——蚂蚁集团开源多智能体协作基础设施 Avernet V0.1，夯实多智能体协作底座。<a target="_blank" rel="noopener" href="https://syntho.net/">Syntho</a></li>
+</ol>
+<p>板块洞察：开源重心正从「模型权重」转向「智能体运行框架与推理引擎」——DeepSeek、英伟达、蚂蚁等接连开源底层基础设施，开源与闭源的能力差、算力差持续收窄。</p>
+<h2 id="芯片与算力"><a href="#芯片与算力" class="headerlink" title="芯片与算力"></a>芯片与算力</h2><ol>
+<li><strong>英伟达 Vera Rubin 进入全面生产</strong>——10 月 21 日 GTC 柏林，黄仁勋宣布 Vera Rubin 平台进入全面生产阶段，并推出 DSXPOD 参考设计用于建设基于 Vera Rubin 的完整 AI 工厂，同时发布 OpenShell 参考架构。<a target="_blank" rel="noopener" href="https://www.panews.io/articles/01a161d2-32e7-7043-a249-1fb42b0311c7">PANews</a>｜<a target="_blank" rel="noopener" href="https://finance.sina.com.cn/roll/2026-10-21/doc-inivyxhi6115520.shtml">新浪财经</a></li>
+<li><strong>三星将用台积电 3nm 产英伟达 HBM 基础裸片</strong>——据韩国《首尔经济日报》报道，三星电子将采用台积电 3 纳米工艺，生产英伟达下一代定制 HBM 的核心部件基础裸片（base die）。<a target="_blank" rel="noopener" href="https://www.stcn.com/article/detail/4225116.html">证券时报</a></li>
+<li><strong>Bolt Zeus GPU 测试芯片零缺陷，号称路径追踪超 RTX 5090 十倍</strong>——GPU 初创公司 Bolt Graphics 宣布完成 Zeus 架构测试芯片调试（台积电 12nm、6mm²、A0 步进零缺陷），商用 GPU 计划 2028 年量产；路径追踪与电磁仿真性能均为厂商自报，待第三方实测验证。<a target="_blank" rel="noopener" href="https://www.163.com/dy/article/L9FL8R920511CPVM.html">网易&#x2F;快科技</a></li>
+<li><strong>西门子携手英伟达 cuLitho 加速计算光刻</strong>——10 月 14 日，西门子宣布将英伟达 cuLitho 与 Calibre 制造软件集成，全芯片 OPC 最高提速 17 倍，助力下一代 AI 半导体具备可制造性。<a target="_blank" rel="noopener" href="https://www.nanoplatform.cn/new/17086/">微纳视界</a></li>
+<li><strong>进迭时空 V100 亮相 RISC-V 中国峰会</strong>——首颗完整符合 RISC-V 服务器规范的芯片亮相，推动 RISC-V 从芯片走向服务器整机。<a target="_blank" rel="noopener" href="https://www.36kr.com/?p=58779">36氪</a></li>
+</ol>
+<p>板块洞察：算力竞争正从单芯片性能转向「工厂级」交付——英伟达用 AI 工厂与参考架构重新定义基础设施，HBM 供应链协作与国产 RISC-V 服务器芯片的进展，则显示算力生态多线并进。</p>
+<h2 id="互联网与大厂动态"><a href="#互联网与大厂动态" class="headerlink" title="互联网与大厂动态"></a>互联网与大厂动态</h2><ol>
+<li><strong>腾讯元宝搜索正式对外开放</strong>——10 月 21 日，元宝搜索正式通过腾讯云对外开放，构建千亿级索引规模、日均调用量达数亿次。<a target="_blank" rel="noopener" href="https://www.woshipm.com/news/6481846.html">人人都是产品经理</a></li>
+<li><strong>千问 APP 上线「千问陪逛」功能</strong>——开启通话并授权屏幕共享，可实现网购「边逛边聊」。<a target="_blank" rel="noopener" href="https://www.woshipm.com/news/6481846.html">人人都是产品经理</a></li>
+<li><strong>高通拟 11 月起全球范围裁员</strong>——10 月 21 日消息，高通计划从 11 月起在全球范围内裁员。<a target="_blank" rel="noopener" href="https://www.woshipm.com/news/6481846.html">人人都是产品经理</a></li>
+<li><strong>Anthropic 投资者日估值预期回调</strong>——据澎湃报道，Anthropic 投资者日讨论估值约 1.5 万亿美元，低于此前 11 月 IPO 的约 2 万亿美元预期，主因收入增速放缓。<a target="_blank" rel="noopener" href="https://m.thepaper.cn/newsDetail_forward_34287717">澎湃新闻</a></li>
+<li><strong>宇树科技发布人形机器人「H2-X 功夫传奇」</strong>——10 月 21 日，宇树科技发布人形机器人 H2-X 功夫传奇，最长续航时间约 8 小时。<a target="_blank" rel="noopener" href="https://www.36kr.com/newsflashes/4035315260609415">36氪</a></li>
+<li><strong>快手推荐模型负责人被传离职</strong>——快手推荐模型负责人唐睿明被传离职（入职仅 15 个月），公司多位核心技术人员先后出走（网传，待核实）。<a target="_blank" rel="noopener" href="https://www.36kr.com/?p=58779">36氪</a></li>
+</ol>
+<p>板块洞察：大厂动作集中在「AI 落地商业化」与「组织调整」两端——搜索、陪逛等 AI 功能加速产品化，而 Anthropic 估值回调与高通裁员显示，AI 投资热潮开始面对商业化兑现的现实检验。<br><em>（内容由AI生成，仅供参考）</em></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://FighterGodNemo.github.io">琉璃幻彩</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://fightergodnemo.github.io/2026/10/23/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261022/">https://fightergodnemo.github.io/2026/10/23/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261022/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://FighterGodNemo.github.io" target="_blank">琉璃幻彩的博客</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/10/23/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261021/" title=""><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2"></div></div><div class="info-2"><div class="info-item-1">科技日报 | 2026-10-21一句话结论：DeepSeek 开源内部推理引擎 DeepInfer、Google 开源 TorchTPU，推理底座全面走向开放；印度 CA eMudhra 八枚中间密钥泄露引发浏览器紧急封禁，供应链安...</div></div></div></a><a class="pagination-related" href="/2026/10/23/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261020/" title=""><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2"></div></div><div class="info-2"><div class="info-item-1">科技日报 | 2026-10-20一句话结论：10 月 19 日晚 MiniMax 发布 M3.1 Flash，把智能体推理成本拉低约 70%；Google、Anthropic 同日释放 Gemini 4 Argon 与 Claude...</div></div></div></a></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">琉璃幻彩</div><div class="author-info-description">琉璃幻彩的个人博客，记录 CTF 夺旗赛、电子取证、网络安全工具与日常技术研究。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">264</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">209</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">40</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FighterGodNemo"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/FighterGodNemo" title="Github" target="_blank"><i class="fab fa-github"></i></a><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="微信"><i class="fab fa-weixin"></i></a><div class="qr-code-popup"><img src="/img/qrcode/wechat-qr.png" alt="微信二维码"/ loading='lazy'></div></div><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="QQ"><i class="fab fa-qq"></i></a><div class="qr-code-popup"><img src="/img/qrcode/qq-qr.png" alt="QQ二维码"/ loading='lazy'></div></div><div class="copy-text-wrapper"><a class="social-icon" href="javascript:void(0)" title="Steam好友代码：1905706957" data-copy-text="1905706957"><i class="fab fa-steam"></i></a><div class="copy-text-popup"><h3>Steam好友代码</h3><p>1905706957</p><p class="copy-hint">点击图标复制</p></div></div><a class="social-icon" href="mailto:guliujia2233@outlook.com" title="Email" target="_blank"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">热爱 CTF 和 Forensic 的网安人一枚～
+欢迎各位大佬交流点评！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5-2026-10-22"><span class="toc-number">1.</span> <span class="toc-text">科技日报 | 2026-10-22</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#AI-%E5%89%8D%E6%B2%BF"><span class="toc-number">1.1.</span> <span class="toc-text">AI 前沿</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.2.</span> <span class="toc-text">安全漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E6%BA%90%E4%B8%8E%E5%BC%80%E5%8F%91"><span class="toc-number">1.3.</span> <span class="toc-text">开源与开发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8A%AF%E7%89%87%E4%B8%8E%E7%AE%97%E5%8A%9B"><span class="toc-number">1.4.</span> <span class="toc-text">芯片与算力</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%92%E8%81%94%E7%BD%91%E4%B8%8E%E5%A4%A7%E5%8E%82%E5%8A%A8%E6%80%81"><span class="toc-number">1.5.</span> <span class="toc-text">互联网与大厂动态</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/23/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261022/" title="无标题">无标题</a><time datetime="2026-10-23T02:33:39.850Z" title="更新于 2026-10-23 02:33:39">2026-10-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/23/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261020/" title="无标题">无标题</a><time datetime="2026-10-23T02:33:39.849Z" title="更新于 2026-10-23 02:33:39">2026-10-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/23/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261021/" title="无标题">无标题</a><time datetime="2026-10-23T02:33:39.849Z" title="更新于 2026-10-23 02:33:39">2026-10-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/16/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261016/" title="科技日报 2026-10-16">科技日报 2026-10-16</a><time datetime="2026-10-23T02:33:30.490Z" title="更新于 2026-10-23 02:33:30">2026-10-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/17/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261017/" title="科技日报 2026-10-17">科技日报 2026-10-17</a><time datetime="2026-10-23T02:33:30.490Z" title="更新于 2026-10-23 02:33:30">2026-10-23</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 琉璃幻彩</span><span class="framework-info"><span id="busuanzi_container_site_pv">本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span><span class="footer-separator">|</span><span id="busuanzi_container_site_uv">本站访客数 <span id="busuanzi_value_site_uv"></span> 人次</span></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="https://cdn.staticfile.org/instant.page/5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+  const getUtterancesTheme = theme => theme === 'dark' ? 'photon-dark' : 'github-light'
+
+  const loadUtterances = (el = document, key) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyUtterances = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const config = {
+      src: 'https://utteranc.es/client.js',
+      repo: 'FighterGodNemo/FighterGodNemo.github.io',
+      theme: getUtterancesTheme(document.documentElement.getAttribute('data-theme')),
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      'issue-term': isShuoshuo ? key : (option && option['issue-term']) || 'pathname'
+    }
+
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => ele.setAttribute(key, value))
+    el.querySelector('#utterances-wrap').appendChild(ele)
+  }
+
+  const changeUtterancesTheme = theme => {
+    const iframe = document.querySelector('#utterances-wrap iframe')
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: getUtterancesTheme(theme)
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeUtterancesTheme, 'utterances')
+
+  if (isShuoshuo) {
+    'Utterances' === 'Utterances'
+      ? window.shuoshuoComment = { loadComment: loadUtterances }
+      : window.loadOtherComment = loadUtterances
+    return
+  }
+  
+  if ('Utterances' === 'Utterances' || !false) {
+    if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+    else loadUtterances()
+  } else {
+    window.loadOtherComment = loadUtterances
+  }
+})()</script></div><script src="/js/custom.js?v=20260402-2"></script><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.staticfile.org/pjax/0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:description\"]","link[rel=\"canonical\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      true
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>
