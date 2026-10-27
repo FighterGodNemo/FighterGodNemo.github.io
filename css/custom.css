@@ -567,3 +567,40 @@ body,
 #article-container img {
   height: auto;
 }
+
+/* Portfolio entry in the blog navigation */
+#nav .menus_items .menus_item > a.site-page[href="/portfolio/"] {
+  margin-left: 8px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: #1a1a18 !important;
+  color: #f4f1ec !important;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+#nav .menus_items .menus_item > a.site-page[href="/portfolio/"]:hover {
+  background: #74502f !important;
+  color: #fffaf2 !important;
+  transform: translateY(-1px);
+}
+
+[data-theme='dark'] #nav .menus_items .menus_item > a.site-page[href="/portfolio/"] {
+  background: #f4f1ec !important;
+  color: #1a1a18 !important;
+}
+
+[data-theme='dark'] #nav .menus_items .menus_item > a.site-page[href="/portfolio/"]:hover {
+  background: #d8c3a5 !important;
+  color: #1a1a18 !important;
+}
+
+#sidebar .menus_items .menus_item > a.site-page[href="/portfolio/"] {
+  color: #74502f;
+  font-weight: 700;
+}
+
+[data-theme='dark'] #sidebar .menus_items .menus_item > a.site-page[href="/portfolio/"] {
+  color: #d8c3a5;
+}
