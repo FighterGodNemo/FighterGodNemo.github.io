@@ -1,1 +1,1739 @@
-{"generated_at":"2026-10-28T06:53:47.799607Z","analysis":{"mode":"rules","ai_analyzed":0,"deadline_policy":"仅从原文提取，不由模型猜测"},"stats":{"whitelist":55,"projects":10,"events":0,"urgent":0,"wechat":0},"events":[],"watchlist":[{"id":"whitelist-1","title":"中国国际“互联网+”大学生创新创业大赛","category":"作品赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[1],"school_status":"已参加","department":"学员管理处","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":["法底捞针","反诈青春盾","AI 辅导员小严学长"],"match_score":63,"summary":"可衔接项目：法底捞针、反诈青春盾、AI 辅导员小严学长。须按当届赛题形成独立版本。","analysis_mode":"profile"},{"id":"whitelist-2","title":"全国大学生创新创业训练计划年会展示","category":"作品赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[2],"school_status":"已参加","department":"学员管理处","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":["反诈青春盾","青山哨兵 EcoSentinel"],"match_score":56,"summary":"可衔接项目：反诈青春盾、青山哨兵 EcoSentinel。须按当届赛题形成独立版本。","analysis_mode":"profile"},{"id":"whitelist-3","title":"全国公安院校学生科技应用创新大赛","category":"作品赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[3],"school_status":"已参加","department":"科研管理处","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":["法底捞针","反诈青春盾","溯脉","低空智感"],"match_score":77,"summary":"可衔接项目：法底捞针、反诈青春盾、溯脉。须按当届赛题形成独立版本。","analysis_mode":"profile"},{"id":"whitelist-4","title":"“蓝帽杯”全国大学生网络安全技能大赛","category":"CTF / 网安","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[4],"school_status":"已参加","department":"信安系","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":42,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-5","title":"“智警杯”大数据技能竞赛","category":"AI / 大数据","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[5],"school_status":"已参加","department":"信安系","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":["青山哨兵 EcoSentinel"],"match_score":49,"summary":"可衔接项目：青山哨兵 EcoSentinel。须按当届赛题形成独立版本。","analysis_mode":"profile"},{"id":"whitelist-6","title":"“盘古石杯”全国电子数据取证大赛","category":"电子取证","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[6],"school_status":"已参加","department":"信安系","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":42,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-7","title":"“美亚杯”全国电子数据取证竞赛","category":"电子取证","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[7],"school_status":"已参加","department":"信安系","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":42,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-8","title":"上海市大学生模拟法庭竞赛","category":"综合竞赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[8],"school_status":"已参加","department":"法律教研部","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":42,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-9","title":"中华经典诵写讲大赛","category":"综合竞赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[9],"school_status":"已参加","department":"基础部","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":42,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-10","title":"“外教社杯”全国高校学生跨文化能力大赛","category":"综合竞赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[10],"school_status":"已参加","department":"基础部","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":42,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-11","title":"“挑战杯”全国大学生课外学术科技作品竞赛","category":"作品赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[11],"school_status":"已参加","department":"团委","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":["法底捞针","反诈青春盾"],"match_score":56,"summary":"可衔接项目：法底捞针、反诈青春盾。须按当届赛题形成独立版本。","analysis_mode":"profile"},{"id":"whitelist-12","title":"“知行杯”上海市大学生社会实践大赛","category":"综合竞赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[12],"school_status":"已参加","department":"团委","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":42,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-13","title":"码蹄杯全国职业院校程序设计大赛","category":"程序设计","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[13],"school_status":"准备组织学生参赛","department":"信安系","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":48,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-14","title":"上海市大学生网络安全大赛","category":"综合竞赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[14],"school_status":"准备组织学生参赛","department":"信安系","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":48,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-15","title":"上海市大学生数学竞赛","category":"综合竞赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[15],"school_status":"准备组织学生参赛","department":"基础部","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":48,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-16","title":"外研社全国大学生英语系列赛：①英语演讲、②英语辩论、③英语写作、④英语阅读","category":"综合竞赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[16],"school_status":"准备组织学生参赛","department":"基础部","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":48,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-17","title":"“21世纪杯”全国英语演讲比赛","category":"综合竞赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[17],"school_status":"准备组织学生参赛","department":"基础部","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":48,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-18","title":"全国大学生数学建模竞赛","category":"AI / 大数据","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[18],"school_status":"准备组织学生参赛","department":"基础部","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":["青山哨兵 EcoSentinel"],"match_score":55,"summary":"可衔接项目：青山哨兵 EcoSentinel。须按当届赛题形成独立版本。","analysis_mode":"profile"},{"id":"whitelist-19","title":"ACM-ICPC 国际大学生程序设计竞赛","category":"程序设计","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[19],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":42,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-20","title":"全国大学生电子设计竞赛","category":"综合竞赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[20],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":["低空智感"],"match_score":49,"summary":"可衔接项目：低空智感。须按当届赛题形成独立版本。","analysis_mode":"profile"},{"id":"whitelist-21","title":"全国三维数字化创新设计大赛","category":"作品赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[21],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":["游戏融合工程","琉璃帝国 RTS"],"match_score":56,"summary":"可衔接项目：游戏融合工程、琉璃帝国 RTS。须按当届赛题形成独立版本。","analysis_mode":"profile"},{"id":"whitelist-22","title":"中国大学生计算机设计大赛","category":"作品赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[22],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":["法底捞针","反诈青春盾","VoxEMW","青山哨兵 EcoSentinel"],"match_score":91,"summary":"可衔接项目：法底捞针、反诈青春盾、VoxEMW。须按当届赛题形成独立版本。","analysis_mode":"profile"},{"id":"whitelist-23","title":"中国高校计算机大赛：①大数据挑战赛、②团体程序设计天梯赛、③移动应用创新赛、④网络技术挑战赛、⑤人工智能创意赛","category":"CTF / 网安","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[23],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":["反诈青春盾","溯脉","深鉴","VoxEMW"],"match_score":91,"summary":"可衔接项目：反诈青春盾、溯脉、深鉴。须按当届赛题形成独立版本。","analysis_mode":"profile"},{"id":"whitelist-24","title":"蓝桥杯全国软件和信息技术专业人才大赛","category":"程序设计","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[24],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":42,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-25","title":"全国大学生信息安全竞赛","category":"作品赛","url":"https://www.ciscn.cn/","source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[25],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":["法底捞针","溯脉","深鉴","低空智感"],"match_score":70,"summary":"可衔接项目：法底捞针、溯脉、深鉴。须按当届赛题形成独立版本。","analysis_mode":"profile"},{"id":"whitelist-26","title":"“中国软件杯”大学生软件设计大赛","category":"作品赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[26],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":["法底捞针","反诈青春盾","溯脉","VoxEMW"],"match_score":96,"summary":"可衔接项目：法底捞针、反诈青春盾、溯脉。须按当届赛题形成独立版本。","analysis_mode":"profile"},{"id":"whitelist-27","title":"中美青年创客大赛","category":"作品赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[27],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":["法底捞针","反诈青春盾","AI 辅导员小严学长"],"match_score":63,"summary":"可衔接项目：法底捞针、反诈青春盾、AI 辅导员小严学长。须按当届赛题形成独立版本。","analysis_mode":"profile"},{"id":"whitelist-28","title":"“大唐杯”全国大学生新一代信息通信技术大赛","category":"综合竞赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[28],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":42,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-29","title":"华为ICT大赛","category":"程序设计","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[29],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":42,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-30","title":"全国大学生物理实验竞赛","category":"综合竞赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[30],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":42,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-31","title":"中国机器人及人工智能大赛","category":"AI / 大数据","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[31],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":["深鉴","VoxEMW","低空智感","青山哨兵 EcoSentinel"],"match_score":70,"summary":"可衔接项目：深鉴、VoxEMW、低空智感。须按当届赛题形成独立版本。","analysis_mode":"profile"},{"id":"whitelist-32","title":"全国大学生节能减排社会实践与科技竞赛","category":"综合竞赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[32],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":42,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-33","title":"iCAN大学生创新创业大赛","category":"作品赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[33],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":["法底捞针","反诈青春盾"],"match_score":56,"summary":"可衔接项目：法底捞针、反诈青春盾。须按当届赛题形成独立版本。","analysis_mode":"profile"},{"id":"whitelist-34","title":"百度之星·程序设计大赛","category":"程序设计","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[34],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":42,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-35","title":"全国大学生化学实验创新设计大赛","category":"作品赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[35],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":42,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-36","title":"全国大学生计算机系统能力大赛","category":"程序设计","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[36],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":42,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-37","title":"全国大学生物联网设计竞赛","category":"AI / 大数据","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[37],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":["低空智感"],"match_score":49,"summary":"可衔接项目：低空智感。须按当届赛题形成独立版本。","analysis_mode":"profile"},{"id":"whitelist-38","title":"全国大学生信息安全与对抗技术竞赛","category":"CTF / 网安","url":"https://www.isclab.org.cn/","source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[38],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":["法底捞针","反诈青春盾","溯脉","深鉴"],"match_score":84,"summary":"可衔接项目：法底捞针、反诈青春盾、溯脉。须按当届赛题形成独立版本。","analysis_mode":"profile"},{"id":"whitelist-39","title":"全国大学生数字媒体科技作品及创意竞赛","category":"作品赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[39],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":["深鉴","VoxEMW","游戏融合工程","琉璃帝国 RTS"],"match_score":70,"summary":"可衔接项目：深鉴、VoxEMW、游戏融合工程。须按当届赛题形成独立版本。","analysis_mode":"profile"},{"id":"whitelist-40","title":"全球校园人工智能算法精英大赛","category":"AI / 大数据","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[40],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":["深鉴","VoxEMW","低空智感","青山哨兵 EcoSentinel"],"match_score":70,"summary":"可衔接项目：深鉴、VoxEMW、低空智感。须按当届赛题形成独立版本。","analysis_mode":"profile"},{"id":"whitelist-41","title":"全国职业院校技能大赛","category":"综合竞赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[41],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":42,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-42","title":"世界技能大赛（含中国选拔赛）","category":"综合竞赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[42],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":42,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-43","title":"一带一路暨金砖国家技能发展与技术创新大赛","category":"综合竞赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[43],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":42,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-44","title":"2022年金砖国家职业技能大赛","category":"综合竞赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[44],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":42,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-45","title":"“振兴杯”全国青年职业技能大赛","category":"综合竞赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[45],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":42,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-46","title":"“创青春”全国大学生创业大赛","category":"综合竞赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[46],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":42,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-47","title":"中国青少年科技创新奖","category":"作品赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[47],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":42,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-48","title":"上海市大学生“创造杯”大赛","category":"作品赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[48],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":["法底捞针"],"match_score":49,"summary":"可衔接项目：法底捞针。须按当届赛题形成独立版本。","analysis_mode":"profile"},{"id":"whitelist-49","title":"上海市大学生原创文学大赛","category":"综合竞赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[49],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":42,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-50","title":"上海市大学生电子设计竞赛（TI 杯）","category":"综合竞赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[50],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":42,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-51","title":"上海市大学生创客大赛暨长三角大学生邀请赛","category":"作品赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[51],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":["法底捞针","反诈青春盾","游戏融合工程","琉璃帝国 RTS"],"match_score":70,"summary":"可衔接项目：法底捞针、反诈青春盾、游戏融合工程。须按当届赛题形成独立版本。","analysis_mode":"profile"},{"id":"whitelist-52","title":"上海市大学生计算机应用能力大赛","category":"作品赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[52],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":["法底捞针","反诈青春盾","溯脉","VoxEMW"],"match_score":96,"summary":"可衔接项目：法底捞针、反诈青春盾、溯脉。须按当届赛题形成独立版本。","analysis_mode":"profile"},{"id":"whitelist-53","title":"上海大学生化学实验竞赛","category":"综合竞赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[53],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":42,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"},{"id":"whitelist-54","title":"上海市机器人与人工智能大赛","category":"AI / 大数据","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[54],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":["深鉴","VoxEMW","低空智感"],"match_score":63,"summary":"可衔接项目：深鉴、VoxEMW、低空智感。须按当届赛题形成独立版本。","analysis_mode":"profile"},{"id":"whitelist-55","title":"上海市大学生物理实验竞赛","category":"综合竞赛","url":null,"source":"学校竞赛白名单","whitelist":true,"whitelist_ids":[55],"school_status":"未标注","department":"","status":"monitoring","registration_deadline":null,"deadline_confidence":null,"event_start":null,"event_end":null,"published_at":null,"matched_projects":[],"match_score":42,"summary":"已纳入长期监测，等待新一届官方通知与公开报名线索。","analysis_mode":"profile"}],"projects":[{"id":"fadi-laozhen","name":"法底捞针","status":"已上线","summary":"AI 主持人驱动的海龟汤式互动反诈网站，以双线叙事和对话推理完成反诈教育。","tags":["反诈","AI应用","React","Node.js","通义千问"],"competition_ids":[1,3,11,22,25,26,27,33,38,48,51,52],"evidence":"已有完整比赛提交包与线上部署记录"},{"id":"anti-fraud-shield","name":"反诈青春盾","status":"核心功能完成","summary":"结合心理脆弱性画像、分支剧情和多模态识别的反诈模拟小程序。","tags":["反诈","小程序","NestJS","多模态","AIGC"],"competition_ids":[1,2,3,11,22,23,26,27,33,38,51,52],"evidence":"核心功能已完成，试用与结题材料仍在完善"},{"id":"suimai","name":"溯脉","status":"MVP 已验收","summary":"多源日志攻击链识别与取证平台，统一 Sysmon、DNS、Nginx/WAF 日志并输出可回溯证据。","tags":["电子取证","日志分析","攻击链","Python","安全检测"],"competition_ids":[3,23,25,26,38,52],"evidence":"第一阶段 MVP 与 11 项测试已验收"},{"id":"shenjian","name":"深鉴","status":"持续研发","summary":"深度伪造攻防双端系统，覆盖数字人生成、鉴伪和样本哈希溯源。","tags":["深度伪造","数字人","AIGC安全","ffmpeg","鉴伪"],"competition_ids":[23,25,31,38,39,40,54],"evidence":"守端全链路已跑通，攻端持续迭代"},{"id":"voxemw","name":"VoxEMW","status":"工程原型","summary":"融合实时语音识别、语音克隆、视觉感知和数字人口型同步的聊天助手。","tags":["数字人","智能语音","多模态","WebSocket","AI应用"],"competition_ids":[22,23,26,31,38,39,40,52,54],"evidence":"实时链路与工程文档完整，量化验收仍需补齐"},{"id":"low-altitude-uav","name":"低空智感","status":"训练已实测","summary":"面向低空防控的无人机目标智能感知与识别项目，强调数据分组和负类误检治理。","tags":["低空防控","YOLO11","计算机视觉","公安科技","数据集"],"competition_ids":[3,20,23,25,31,37,40,54],"evidence":"本机 v1 训练与指标记录已完成"},{"id":"eco-sentinel","name":"青山哨兵 EcoSentinel","status":"业务闭环完成","summary":"融合遥感变化检测、地图展示与核查工单的生态监测平台。","tags":["遥感","大数据","FastAPI","MapLibre","变化检测"],"competition_ids":[2,3,5,18,22,23,26,31,40,52],"evidence":"核心业务闭环已完成，赛题数据接入可继续深化"},{"id":"xiaoyan","name":"AI 辅导员小严学长","status":"校园原型","summary":"基于本地大模型、知识库和学生档案记忆的校园咨询网站。","tags":["本地大模型","智慧校园","知识库","Ollama","AI应用"],"competition_ids":[1,22,23,26,27,38,52],"evidence":"v1.6 原型及测试入口完整，需补量化结果"},{"id":"game-fusion","name":"游戏融合工程","status":"链路已实测","summary":"以语义事件桥连接不同游戏世界，包含节奏控制、存档校验和备份回滚。","tags":["软件工程","交互创意","Python","Java","游戏开发"],"competition_ids":[21,22,26,39,51,52],"evidence":"跨游戏核心链路和 83 项测试已有记录"},{"id":"liuli-rts","name":"琉璃帝国 RTS","status":"在线运行","summary":"具备联机同步、寻路、游戏 AI、回放和云存档的 HTML5 即时战略游戏。","tags":["游戏开发","WebSocket","帧同步","JavaScript","软件工程"],"competition_ids":[21,22,26,39,51,52],"evidence":"在线运行并持续迭代，工程成熟度较高"}],"sources":[{"name":"公开来源","status":"pending","count":0,"detail":"等待首次定时采集"}]}
+{
+  "generated_at": "2026-10-28T08:59:26.295651Z",
+  "analysis": {
+    "mode": "rules",
+    "ai_analyzed": 0,
+    "deadline_policy": "仅从原文提取，不由模型猜测"
+  },
+  "stats": {
+    "whitelist": 55,
+    "projects": 10,
+    "events": 0,
+    "urgent": 0,
+    "wechat": 0
+  },
+  "events": [],
+  "watchlist": [
+    {
+      "id": "whitelist-1",
+      "title": "中国国际“互联网+”大学生创新创业大赛",
+      "aliases": [
+        "互联网+",
+        "中国国际大学生创新大赛"
+      ],
+      "category": "作品赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        1
+      ],
+      "school_status": "已参加",
+      "department": "学员管理处",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [
+        "法底捞针",
+        "反诈青春盾",
+        "AI 辅导员小严学长"
+      ],
+      "match_score": 63,
+      "summary": "可衔接项目：法底捞针、反诈青春盾、AI 辅导员小严学长。须按当届赛题形成独立版本。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-2",
+      "title": "全国大学生创新创业训练计划年会展示",
+      "aliases": [],
+      "category": "作品赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        2
+      ],
+      "school_status": "已参加",
+      "department": "学员管理处",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [
+        "反诈青春盾",
+        "青山哨兵 EcoSentinel"
+      ],
+      "match_score": 56,
+      "summary": "可衔接项目：反诈青春盾、青山哨兵 EcoSentinel。须按当届赛题形成独立版本。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-3",
+      "title": "全国公安院校学生科技应用创新大赛",
+      "aliases": [],
+      "category": "作品赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        3
+      ],
+      "school_status": "已参加",
+      "department": "科研管理处",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [
+        "法底捞针",
+        "反诈青春盾",
+        "溯脉",
+        "低空智感"
+      ],
+      "match_score": 77,
+      "summary": "可衔接项目：法底捞针、反诈青春盾、溯脉。须按当届赛题形成独立版本。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-4",
+      "title": "“蓝帽杯”全国大学生网络安全技能大赛",
+      "aliases": [
+        "蓝帽杯"
+      ],
+      "category": "CTF / 网安",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        4
+      ],
+      "school_status": "已参加",
+      "department": "信安系",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 42,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-5",
+      "title": "“智警杯”大数据技能竞赛",
+      "aliases": [
+        "智警杯"
+      ],
+      "category": "AI / 大数据",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        5
+      ],
+      "school_status": "已参加",
+      "department": "信安系",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [
+        "青山哨兵 EcoSentinel"
+      ],
+      "match_score": 49,
+      "summary": "可衔接项目：青山哨兵 EcoSentinel。须按当届赛题形成独立版本。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-6",
+      "title": "“盘古石杯”全国电子数据取证大赛",
+      "aliases": [
+        "盘古石杯"
+      ],
+      "category": "电子取证",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        6
+      ],
+      "school_status": "已参加",
+      "department": "信安系",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 42,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-7",
+      "title": "“美亚杯”全国电子数据取证竞赛",
+      "aliases": [
+        "美亚杯"
+      ],
+      "category": "电子取证",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        7
+      ],
+      "school_status": "已参加",
+      "department": "信安系",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 42,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-8",
+      "title": "上海市大学生模拟法庭竞赛",
+      "aliases": [],
+      "category": "综合竞赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        8
+      ],
+      "school_status": "已参加",
+      "department": "法律教研部",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 42,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-9",
+      "title": "中华经典诵写讲大赛",
+      "aliases": [],
+      "category": "综合竞赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        9
+      ],
+      "school_status": "已参加",
+      "department": "基础部",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 42,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-10",
+      "title": "“外教社杯”全国高校学生跨文化能力大赛",
+      "aliases": [],
+      "category": "综合竞赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        10
+      ],
+      "school_status": "已参加",
+      "department": "基础部",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 42,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-11",
+      "title": "“挑战杯”全国大学生课外学术科技作品竞赛",
+      "aliases": [],
+      "category": "作品赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        11
+      ],
+      "school_status": "已参加",
+      "department": "团委",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [
+        "法底捞针",
+        "反诈青春盾"
+      ],
+      "match_score": 56,
+      "summary": "可衔接项目：法底捞针、反诈青春盾。须按当届赛题形成独立版本。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-12",
+      "title": "“知行杯”上海市大学生社会实践大赛",
+      "aliases": [],
+      "category": "综合竞赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        12
+      ],
+      "school_status": "已参加",
+      "department": "团委",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 42,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-13",
+      "title": "码蹄杯全国职业院校程序设计大赛",
+      "aliases": [
+        "码蹄杯"
+      ],
+      "category": "程序设计",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        13
+      ],
+      "school_status": "准备组织学生参赛",
+      "department": "信安系",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 48,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-14",
+      "title": "上海市大学生网络安全大赛",
+      "aliases": [
+        "上海市大学生网络安全大赛",
+        "磐石行动"
+      ],
+      "category": "综合竞赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        14
+      ],
+      "school_status": "准备组织学生参赛",
+      "department": "信安系",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 48,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-15",
+      "title": "上海市大学生数学竞赛",
+      "aliases": [],
+      "category": "综合竞赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        15
+      ],
+      "school_status": "准备组织学生参赛",
+      "department": "基础部",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 48,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-16",
+      "title": "外研社全国大学生英语系列赛：①英语演讲、②英语辩论、③英语写作、④英语阅读",
+      "aliases": [],
+      "category": "综合竞赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        16
+      ],
+      "school_status": "准备组织学生参赛",
+      "department": "基础部",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 48,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-17",
+      "title": "“21世纪杯”全国英语演讲比赛",
+      "aliases": [],
+      "category": "综合竞赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        17
+      ],
+      "school_status": "准备组织学生参赛",
+      "department": "基础部",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 48,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-18",
+      "title": "全国大学生数学建模竞赛",
+      "aliases": [],
+      "category": "AI / 大数据",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        18
+      ],
+      "school_status": "准备组织学生参赛",
+      "department": "基础部",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [
+        "青山哨兵 EcoSentinel"
+      ],
+      "match_score": 55,
+      "summary": "可衔接项目：青山哨兵 EcoSentinel。须按当届赛题形成独立版本。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-19",
+      "title": "ACM-ICPC 国际大学生程序设计竞赛",
+      "aliases": [],
+      "category": "程序设计",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        19
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 42,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-20",
+      "title": "全国大学生电子设计竞赛",
+      "aliases": [],
+      "category": "综合竞赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        20
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [
+        "低空智感"
+      ],
+      "match_score": 49,
+      "summary": "可衔接项目：低空智感。须按当届赛题形成独立版本。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-21",
+      "title": "全国三维数字化创新设计大赛",
+      "aliases": [],
+      "category": "作品赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        21
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [
+        "游戏融合工程",
+        "琉璃帝国 RTS"
+      ],
+      "match_score": 56,
+      "summary": "可衔接项目：游戏融合工程、琉璃帝国 RTS。须按当届赛题形成独立版本。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-22",
+      "title": "中国大学生计算机设计大赛",
+      "aliases": [
+        "中国大学生计算机设计大赛"
+      ],
+      "category": "作品赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        22
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [
+        "法底捞针",
+        "反诈青春盾",
+        "VoxEMW",
+        "青山哨兵 EcoSentinel"
+      ],
+      "match_score": 91,
+      "summary": "可衔接项目：法底捞针、反诈青春盾、VoxEMW。须按当届赛题形成独立版本。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-23",
+      "title": "中国高校计算机大赛：①大数据挑战赛、②团体程序设计天梯赛、③移动应用创新赛、④网络技术挑战赛、⑤人工智能创意赛",
+      "aliases": [
+        "中国高校计算机大赛",
+        "C4"
+      ],
+      "category": "CTF / 网安",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        23
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [
+        "反诈青春盾",
+        "溯脉",
+        "深鉴",
+        "VoxEMW"
+      ],
+      "match_score": 91,
+      "summary": "可衔接项目：反诈青春盾、溯脉、深鉴。须按当届赛题形成独立版本。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-24",
+      "title": "蓝桥杯全国软件和信息技术专业人才大赛",
+      "aliases": [
+        "蓝桥杯"
+      ],
+      "category": "程序设计",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        24
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 42,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-25",
+      "title": "全国大学生信息安全竞赛",
+      "aliases": [
+        "全国大学生信息安全竞赛",
+        "CISCN"
+      ],
+      "category": "作品赛",
+      "url": "https://www.ciscn.cn/",
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        25
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [
+        "法底捞针",
+        "溯脉",
+        "深鉴",
+        "低空智感"
+      ],
+      "match_score": 70,
+      "summary": "可衔接项目：法底捞针、溯脉、深鉴。须按当届赛题形成独立版本。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-26",
+      "title": "“中国软件杯”大学生软件设计大赛",
+      "aliases": [
+        "中国软件杯"
+      ],
+      "category": "作品赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        26
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [
+        "法底捞针",
+        "反诈青春盾",
+        "溯脉",
+        "VoxEMW"
+      ],
+      "match_score": 96,
+      "summary": "可衔接项目：法底捞针、反诈青春盾、溯脉。须按当届赛题形成独立版本。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-27",
+      "title": "中美青年创客大赛",
+      "aliases": [],
+      "category": "作品赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        27
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [
+        "法底捞针",
+        "反诈青春盾",
+        "AI 辅导员小严学长"
+      ],
+      "match_score": 63,
+      "summary": "可衔接项目：法底捞针、反诈青春盾、AI 辅导员小严学长。须按当届赛题形成独立版本。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-28",
+      "title": "“大唐杯”全国大学生新一代信息通信技术大赛",
+      "aliases": [],
+      "category": "综合竞赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        28
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 42,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-29",
+      "title": "华为ICT大赛",
+      "aliases": [],
+      "category": "程序设计",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        29
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 42,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-30",
+      "title": "全国大学生物理实验竞赛",
+      "aliases": [],
+      "category": "综合竞赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        30
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 42,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-31",
+      "title": "中国机器人及人工智能大赛",
+      "aliases": [
+        "中国机器人及人工智能大赛"
+      ],
+      "category": "AI / 大数据",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        31
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [
+        "深鉴",
+        "VoxEMW",
+        "低空智感",
+        "青山哨兵 EcoSentinel"
+      ],
+      "match_score": 70,
+      "summary": "可衔接项目：深鉴、VoxEMW、低空智感。须按当届赛题形成独立版本。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-32",
+      "title": "全国大学生节能减排社会实践与科技竞赛",
+      "aliases": [],
+      "category": "综合竞赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        32
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 42,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-33",
+      "title": "iCAN大学生创新创业大赛",
+      "aliases": [],
+      "category": "作品赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        33
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [
+        "法底捞针",
+        "反诈青春盾"
+      ],
+      "match_score": 56,
+      "summary": "可衔接项目：法底捞针、反诈青春盾。须按当届赛题形成独立版本。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-34",
+      "title": "百度之星·程序设计大赛",
+      "aliases": [],
+      "category": "程序设计",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        34
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 42,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-35",
+      "title": "全国大学生化学实验创新设计大赛",
+      "aliases": [],
+      "category": "作品赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        35
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 42,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-36",
+      "title": "全国大学生计算机系统能力大赛",
+      "aliases": [],
+      "category": "程序设计",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        36
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 42,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-37",
+      "title": "全国大学生物联网设计竞赛",
+      "aliases": [],
+      "category": "AI / 大数据",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        37
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [
+        "低空智感"
+      ],
+      "match_score": 49,
+      "summary": "可衔接项目：低空智感。须按当届赛题形成独立版本。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-38",
+      "title": "全国大学生信息安全与对抗技术竞赛",
+      "aliases": [
+        "信息安全与对抗技术竞赛",
+        "ISCC"
+      ],
+      "category": "CTF / 网安",
+      "url": "https://www.isclab.org.cn/",
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        38
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [
+        "法底捞针",
+        "反诈青春盾",
+        "溯脉",
+        "深鉴"
+      ],
+      "match_score": 84,
+      "summary": "可衔接项目：法底捞针、反诈青春盾、溯脉。须按当届赛题形成独立版本。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-39",
+      "title": "全国大学生数字媒体科技作品及创意竞赛",
+      "aliases": [],
+      "category": "作品赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        39
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [
+        "深鉴",
+        "VoxEMW",
+        "游戏融合工程",
+        "琉璃帝国 RTS"
+      ],
+      "match_score": 70,
+      "summary": "可衔接项目：深鉴、VoxEMW、游戏融合工程。须按当届赛题形成独立版本。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-40",
+      "title": "全球校园人工智能算法精英大赛",
+      "aliases": [],
+      "category": "AI / 大数据",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        40
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [
+        "深鉴",
+        "VoxEMW",
+        "低空智感",
+        "青山哨兵 EcoSentinel"
+      ],
+      "match_score": 70,
+      "summary": "可衔接项目：深鉴、VoxEMW、低空智感。须按当届赛题形成独立版本。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-41",
+      "title": "全国职业院校技能大赛",
+      "aliases": [],
+      "category": "综合竞赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        41
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 42,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-42",
+      "title": "世界技能大赛（含中国选拔赛）",
+      "aliases": [],
+      "category": "综合竞赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        42
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 42,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-43",
+      "title": "一带一路暨金砖国家技能发展与技术创新大赛",
+      "aliases": [],
+      "category": "综合竞赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        43
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 42,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-44",
+      "title": "2022年金砖国家职业技能大赛",
+      "aliases": [],
+      "category": "综合竞赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        44
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 42,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-45",
+      "title": "“振兴杯”全国青年职业技能大赛",
+      "aliases": [],
+      "category": "综合竞赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        45
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 42,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-46",
+      "title": "“创青春”全国大学生创业大赛",
+      "aliases": [],
+      "category": "综合竞赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        46
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 42,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-47",
+      "title": "中国青少年科技创新奖",
+      "aliases": [],
+      "category": "作品赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        47
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 42,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-48",
+      "title": "上海市大学生“创造杯”大赛",
+      "aliases": [],
+      "category": "作品赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        48
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [
+        "法底捞针"
+      ],
+      "match_score": 49,
+      "summary": "可衔接项目：法底捞针。须按当届赛题形成独立版本。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-49",
+      "title": "上海市大学生原创文学大赛",
+      "aliases": [],
+      "category": "综合竞赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        49
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 42,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-50",
+      "title": "上海市大学生电子设计竞赛（TI 杯）",
+      "aliases": [],
+      "category": "综合竞赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        50
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 42,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-51",
+      "title": "上海市大学生创客大赛暨长三角大学生邀请赛",
+      "aliases": [],
+      "category": "作品赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        51
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [
+        "法底捞针",
+        "反诈青春盾",
+        "游戏融合工程",
+        "琉璃帝国 RTS"
+      ],
+      "match_score": 70,
+      "summary": "可衔接项目：法底捞针、反诈青春盾、游戏融合工程。须按当届赛题形成独立版本。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-52",
+      "title": "上海市大学生计算机应用能力大赛",
+      "aliases": [
+        "上海市大学生计算机应用能力大赛"
+      ],
+      "category": "作品赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        52
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [
+        "法底捞针",
+        "反诈青春盾",
+        "溯脉",
+        "VoxEMW"
+      ],
+      "match_score": 96,
+      "summary": "可衔接项目：法底捞针、反诈青春盾、溯脉。须按当届赛题形成独立版本。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-53",
+      "title": "上海大学生化学实验竞赛",
+      "aliases": [],
+      "category": "综合竞赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        53
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 42,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-54",
+      "title": "上海市机器人与人工智能大赛",
+      "aliases": [],
+      "category": "AI / 大数据",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        54
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [
+        "深鉴",
+        "VoxEMW",
+        "低空智感"
+      ],
+      "match_score": 63,
+      "summary": "可衔接项目：深鉴、VoxEMW、低空智感。须按当届赛题形成独立版本。",
+      "analysis_mode": "profile"
+    },
+    {
+      "id": "whitelist-55",
+      "title": "上海市大学生物理实验竞赛",
+      "aliases": [],
+      "category": "综合竞赛",
+      "url": null,
+      "source": "学校竞赛白名单",
+      "whitelist": true,
+      "whitelist_ids": [
+        55
+      ],
+      "school_status": "未标注",
+      "department": "",
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": null,
+      "matched_projects": [],
+      "match_score": 42,
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
+      "analysis_mode": "profile"
+    }
+  ],
+  "projects": [
+    {
+      "id": "fadi-laozhen",
+      "name": "法底捞针",
+      "status": "已上线",
+      "summary": "AI 主持人驱动的海龟汤式互动反诈网站，以双线叙事和对话推理完成反诈教育。",
+      "tags": [
+        "反诈",
+        "AI应用",
+        "React",
+        "Node.js",
+        "通义千问"
+      ],
+      "competition_ids": [
+        1,
+        3,
+        11,
+        22,
+        25,
+        26,
+        27,
+        33,
+        38,
+        48,
+        51,
+        52
+      ],
+      "evidence": "已有完整比赛提交包与线上部署记录"
+    },
+    {
+      "id": "anti-fraud-shield",
+      "name": "反诈青春盾",
+      "status": "核心功能完成",
+      "summary": "结合心理脆弱性画像、分支剧情和多模态识别的反诈模拟小程序。",
+      "tags": [
+        "反诈",
+        "小程序",
+        "NestJS",
+        "多模态",
+        "AIGC"
+      ],
+      "competition_ids": [
+        1,
+        2,
+        3,
+        11,
+        22,
+        23,
+        26,
+        27,
+        33,
+        38,
+        51,
+        52
+      ],
+      "evidence": "核心功能已完成，试用与结题材料仍在完善"
+    },
+    {
+      "id": "suimai",
+      "name": "溯脉",
+      "status": "MVP 已验收",
+      "summary": "多源日志攻击链识别与取证平台，统一 Sysmon、DNS、Nginx/WAF 日志并输出可回溯证据。",
+      "tags": [
+        "电子取证",
+        "日志分析",
+        "攻击链",
+        "Python",
+        "安全检测"
+      ],
+      "competition_ids": [
+        3,
+        23,
+        25,
+        26,
+        38,
+        52
+      ],
+      "evidence": "第一阶段 MVP 与 11 项测试已验收"
+    },
+    {
+      "id": "shenjian",
+      "name": "深鉴",
+      "status": "持续研发",
+      "summary": "深度伪造攻防双端系统，覆盖数字人生成、鉴伪和样本哈希溯源。",
+      "tags": [
+        "深度伪造",
+        "数字人",
+        "AIGC安全",
+        "ffmpeg",
+        "鉴伪"
+      ],
+      "competition_ids": [
+        23,
+        25,
+        31,
+        38,
+        39,
+        40,
+        54
+      ],
+      "evidence": "守端全链路已跑通，攻端持续迭代"
+    },
+    {
+      "id": "voxemw",
+      "name": "VoxEMW",
+      "status": "工程原型",
+      "summary": "融合实时语音识别、语音克隆、视觉感知和数字人口型同步的聊天助手。",
+      "tags": [
+        "数字人",
+        "智能语音",
+        "多模态",
+        "WebSocket",
+        "AI应用"
+      ],
+      "competition_ids": [
+        22,
+        23,
+        26,
+        31,
+        38,
+        39,
+        40,
+        52,
+        54
+      ],
+      "evidence": "实时链路与工程文档完整，量化验收仍需补齐"
+    },
+    {
+      "id": "low-altitude-uav",
+      "name": "低空智感",
+      "status": "训练已实测",
+      "summary": "面向低空防控的无人机目标智能感知与识别项目，强调数据分组和负类误检治理。",
+      "tags": [
+        "低空防控",
+        "YOLO11",
+        "计算机视觉",
+        "公安科技",
+        "数据集"
+      ],
+      "competition_ids": [
+        3,
+        20,
+        23,
+        25,
+        31,
+        37,
+        40,
+        54
+      ],
+      "evidence": "本机 v1 训练与指标记录已完成"
+    },
+    {
+      "id": "eco-sentinel",
+      "name": "青山哨兵 EcoSentinel",
+      "status": "业务闭环完成",
+      "summary": "融合遥感变化检测、地图展示与核查工单的生态监测平台。",
+      "tags": [
+        "遥感",
+        "大数据",
+        "FastAPI",
+        "MapLibre",
+        "变化检测"
+      ],
+      "competition_ids": [
+        2,
+        3,
+        5,
+        18,
+        22,
+        23,
+        26,
+        31,
+        40,
+        52
+      ],
+      "evidence": "核心业务闭环已完成，赛题数据接入可继续深化"
+    },
+    {
+      "id": "xiaoyan",
+      "name": "AI 辅导员小严学长",
+      "status": "校园原型",
+      "summary": "基于本地大模型、知识库和学生档案记忆的校园咨询网站。",
+      "tags": [
+        "本地大模型",
+        "智慧校园",
+        "知识库",
+        "Ollama",
+        "AI应用"
+      ],
+      "competition_ids": [
+        1,
+        22,
+        23,
+        26,
+        27,
+        38,
+        52
+      ],
+      "evidence": "v1.6 原型及测试入口完整，需补量化结果"
+    },
+    {
+      "id": "game-fusion",
+      "name": "游戏融合工程",
+      "status": "链路已实测",
+      "summary": "以语义事件桥连接不同游戏世界，包含节奏控制、存档校验和备份回滚。",
+      "tags": [
+        "软件工程",
+        "交互创意",
+        "Python",
+        "Java",
+        "游戏开发"
+      ],
+      "competition_ids": [
+        21,
+        22,
+        26,
+        39,
+        51,
+        52
+      ],
+      "evidence": "跨游戏核心链路和 83 项测试已有记录"
+    },
+    {
+      "id": "liuli-rts",
+      "name": "琉璃帝国 RTS",
+      "status": "在线运行",
+      "summary": "具备联机同步、寻路、游戏 AI、回放和云存档的 HTML5 即时战略游戏。",
+      "tags": [
+        "游戏开发",
+        "WebSocket",
+        "帧同步",
+        "JavaScript",
+        "软件工程"
+      ],
+      "competition_ids": [
+        21,
+        22,
+        26,
+        39,
+        51,
+        52
+      ],
+      "evidence": "在线运行并持续迭代，工程成熟度较高"
+    }
+  ],
+  "sources": [
+    {
+      "name": "CTFtime",
+      "status": "pending",
+      "count": 0,
+      "detail": "等待赛事日历 API首次采集"
+    },
+    {
+      "name": "国内赛事报名",
+      "status": "pending",
+      "count": 0,
+      "detail": "等待公开搜索 RSS首次采集"
+    },
+    {
+      "name": "电子取证赛事",
+      "status": "pending",
+      "count": 0,
+      "detail": "等待公开搜索 RSS首次采集"
+    },
+    {
+      "name": "作品赛通知",
+      "status": "pending",
+      "count": 0,
+      "detail": "等待公开搜索 RSS首次采集"
+    },
+    {
+      "name": "微信公众号公开索引",
+      "status": "pending",
+      "count": 0,
+      "detail": "等待公开搜索 RSS首次采集"
+    }
+  ]
+}

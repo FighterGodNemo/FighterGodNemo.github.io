@@ -79,7 +79,7 @@
       if (state.hideParticipated && item.school_status === "已参加") return false;
       if (state.favoritesOnly && !state.favorites.has(item.id)) return false;
       if (query) {
-        const haystack = [item.title, item.summary, item.source, ...(item.matched_projects || [])].join(" ").toLowerCase();
+        const haystack = [item.title, item.summary, item.source, ...(item.aliases || []), ...(item.matched_projects || [])].join(" ").toLowerCase();
         if (!haystack.includes(query)) return false;
       }
       return true;
