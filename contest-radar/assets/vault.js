@@ -217,6 +217,7 @@
     $("#watchlist-list").replaceChildren();
     $("#vault-content").hidden = true;
     $("#gate").hidden = false;
+    $("#gate-submit").disabled = false;
     $("#gate-status").textContent = "已锁定，数据已从页面清除。";
     $("#gate-status").classList.remove("error");
     $("#gate-password").value = "";
