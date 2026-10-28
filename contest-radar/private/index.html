@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>私密分析 · 赛讯雷达</title>
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="赛讯雷达私密分析入口。">
+  <link rel="icon" href="/img/favicon.jpg" type="image/jpeg">
+  <link rel="stylesheet" href="../assets/radar.css?v=20261029-1">
+  <link rel="stylesheet" href="../assets/vault.css?v=20261029-1">
+  <script defer src="../assets/vault.js?v=20261029-1"></script>
+</head>
+<body class="vault-body">
+  <a class="skip-link" href="#vault-main">跳到主要内容</a>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="../" aria-label="返回赛讯雷达">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span><strong>赛讯雷达 · 私密分析</strong><small>PRIVATE ANALYSIS</small></span>
+      </a>
+      <nav class="site-nav" aria-label="页面导航">
+        <a href="../">公开雷达</a>
+        <a class="blog-link" href="/">返回博客</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="vault-main" class="wrap vault-main">
+    <section class="gate" id="gate" aria-labelledby="gate-title">
+      <p class="section-kicker">RESTRICTED / 仅本人可见</p>
+      <h1 id="gate-title">输入密码，解锁项目分析</h1>
+      <p class="gate-note">项目储备、赛事适配度与白名单联动只在这里展示。数据以加密形式存放，密码不正确则无法解密。</p>
+      <form id="gate-form" class="gate-form" autocomplete="off">
+        <label class="field">
+          <span>访问密码</span>
+          <input id="gate-password" type="password" name="password" inputmode="text" autocomplete="current-password" placeholder="请输入密码" required>
+        </label>
+        <button class="button primary" type="submit" id="gate-submit">进入分析</button>
+      </form>
+      <p class="gate-status" id="gate-status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="vault-content" id="vault-content" hidden>
+      <div class="vault-bar">
+        <div class="vault-meta">
+          <p class="section-kicker">PRIVATE BRIEFING</p>
+          <p id="vault-summary">正在解密…</p>
+        </div>
+        <button class="button secondary" type="button" id="lock-button">锁定并清除</button>
+      </div>
+
+      <section class="vault-section" id="section-projects">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">PROJECT PORTFOLIO</p>
+            <h2>项目画像</h2>
+          </div>
+          <p>本地项目储备与可衔接的白名单方向。仅供选题参考，不代表可以原作品重复多投。</p>
+        </div>
+        <div class="vault-grid" id="project-list"></div>
+      </section>
+
+      <section class="vault-section" id="section-events">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">FIT RANKING</p>
+            <h2>赛事项适配排行</h2>
+          </div>
+          <p>按项目匹配度排序；分数只反映关键词与白名单命中，报名日期仍以原文为准。</p>
+        </div>
+        <div class="vault-list" id="event-list"></div>
+      </section>
+
+      <section class="vault-section" id="section-watchlist">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">WHITELIST LINK</p>
+            <h2>白名单联动</h2>
+          </div>
+          <p>学校竞赛白名单和你已有的参赛状态，以及每项能衔接的项目。</p>
+        </div>
+        <div class="vault-list" id="watchlist-list"></div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap"><span>赛讯雷达 · 私密分析</span><span>数据加密存储 · 密码不落盘</span></div>
+  </footer>
+</body>
+</html>

@@ -4,12 +4,11 @@
   const $ = (selector) => document.querySelector(selector);
   const state = {
     data: null,
-    view: "recommended",
+    view: "latest",
     category: "all",
     search: "",
-    hideParticipated: false,
     favoritesOnly: false,
-    sort: "score",
+    sort: "newest",
     visible: 12,
     favorites: new Set(),
   };
@@ -67,19 +66,17 @@
 
   function currentItems() {
     if (!state.data) return [];
-    if (state.view === "latest") return [...state.data.events];
     if (state.view === "watchlist") return [...state.data.watchlist];
-    return [...state.data.events, ...state.data.watchlist];
+    return [...state.data.events];
   }
 
   function filteredItems() {
     const query = state.search.trim().toLowerCase();
     const items = currentItems().filter((item) => {
       if (state.category !== "all" && item.category !== state.category) return false;
-      if (state.hideParticipated && item.school_status === "已参加") return false;
       if (state.favoritesOnly && !state.favorites.has(item.id)) return false;
       if (query) {
-        const haystack = [item.title, item.summary, item.source, ...(item.aliases || []), ...(item.matched_projects || [])].join(" ").toLowerCase();
+        const haystack = [item.title, item.summary, item.source, ...(item.aliases || [])].join(" ").toLowerCase();
         if (!haystack.includes(query)) return false;
       }
       return true;
@@ -88,12 +85,9 @@
       if (state.sort === "deadline") {
         const aDate = a.registration_deadline || "9999-12-31";
         const bDate = b.registration_deadline || "9999-12-31";
-        return aDate.localeCompare(bDate) || (b.match_score || 0) - (a.match_score || 0);
+        return aDate.localeCompare(bDate);
       }
-      if (state.sort === "newest") {
-        return (b.published_at || b.discovered_at || "").localeCompare(a.published_at || a.discovered_at || "") || (b.match_score || 0) - (a.match_score || 0);
-      }
-      return (b.match_score || 0) - (a.match_score || 0) || (a.registration_deadline || "9999-12-31").localeCompare(b.registration_deadline || "9999-12-31");
+      return (b.published_at || b.discovered_at || "").localeCompare(a.published_at || a.discovered_at || "");
     });
   }
 
@@ -103,14 +97,11 @@
 
   function buildEventCard(item) {
     const card = element("article", "event-card");
-    const score = element("div", "event-score");
-    score.append(element("strong", "", item.match_score || 0), element("span", "", "MATCH SCORE"));
 
     const main = element("div", "event-main");
     const badges = element("div", "event-badges");
     badges.append(badge(item.category || "综合竞赛"));
     if (item.whitelist) badges.append(badge("学校白名单", "whitelist"));
-    if (item.school_status && item.school_status !== "未标注") badges.append(badge(item.school_status));
     if (item.analysis_mode === "ai") badges.append(badge("AI 辅助分析", "ai"));
     const remaining = dayDiff(item.registration_deadline);
     if (remaining !== null && remaining >= 0 && remaining <= 30) badges.append(badge(`报名剩 ${remaining} 天`, "urgent"));
@@ -130,12 +121,6 @@
     }
     main.append(title, element("p", "event-summary", item.summary || "暂无摘要，请核对原始来源。"));
 
-    if (item.matched_projects && item.matched_projects.length) {
-      const matches = element("div", "project-matches");
-      item.matched_projects.forEach((name) => matches.append(element("span", "", `适配：${name}`)));
-      main.append(matches);
-    }
-
     const side = element("div", "event-side");
     const dateBox = element("div", `event-date${remaining !== null && remaining >= 0 && remaining <= 30 ? " urgent" : ""}`);
     if (item.registration_deadline) {
@@ -151,7 +136,7 @@
     } else {
       dateBox.append(document.createTextNode("监测状态"), element("strong", "", "等待新通知"));
     }
-    const source = element("span", "event-source", `${item.source || "公开网页"} · ${item.analysis_mode === "ai" ? "AI 摘要" : item.analysis_mode === "rules" ? "规则初筛" : "项目画像"}`);
+    const source = element("span", "event-source", `${item.source || "公开网页"} · ${item.analysis_mode === "ai" ? "AI 摘要" : item.analysis_mode === "rules" ? "规则初筛" : "白名单监测"}`);
     const actions = element("div", "event-actions");
     const favorite = element("button", "favorite-button", state.favorites.has(item.id) ? "已收藏" : "收藏");
     favorite.type = "button";
@@ -172,7 +157,7 @@
       actions.append(sourceLink);
     }
     side.append(dateBox, source, actions);
-    card.append(score, main, side);
+    card.append(main, side);
     return card;
   }
 
@@ -213,50 +198,6 @@
     const exportButton = $("#export-calendar");
     exportButton.disabled = items.length === 0;
     exportButton.textContent = items.length ? `导出报名日历（${items.length}）` : "导出报名日历";
-  }
-
-  function showCompetition(name) {
-    state.view = "watchlist";
-    state.search = name;
-    state.category = "all";
-    state.hideParticipated = false;
-    state.favoritesOnly = false;
-    state.sort = "score";
-    state.visible = 12;
-    $("#search-input").value = name;
-    $("#category-filter").value = "all";
-    $("#hide-participated").checked = false;
-    $("#favorites-only").checked = false;
-    $("#sort-order").value = "score";
-    document.querySelectorAll("[data-view]").forEach((button) => button.setAttribute("aria-selected", String(button.dataset.view === "watchlist")));
-    renderEvents();
-    $("#radar").scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-
-  function renderProjects() {
-    const whitelistById = new Map(state.data.watchlist.map((item) => [item.whitelist_ids[0], item]));
-    const cards = state.data.projects.map((project) => {
-      const card = element("article", "project-card");
-      const top = element("div", "project-top");
-      top.append(element("h3", "", project.name), element("span", "project-status", project.status));
-      const tags = element("div", "project-tags");
-      project.tags.forEach((tag) => tags.append(element("span", "", tag)));
-      const fit = element("div", "project-fit");
-      fit.append(element("small", "", "可关注的白名单方向"));
-      const competitions = element("div");
-      project.competition_ids.slice(0, 4).forEach((id) => {
-        const competition = whitelistById.get(id);
-        if (!competition) return;
-        const button = element("button", "", competition.title);
-        button.type = "button";
-        button.addEventListener("click", () => showCompetition(competition.title));
-        competitions.append(button);
-      });
-      fit.append(competitions);
-      card.append(top, element("p", "", project.summary), tags, fit, element("small", "project-evidence", project.evidence));
-      return card;
-    });
-    $("#project-grid").replaceChildren(...cards);
   }
 
   function renderSources() {
@@ -306,7 +247,7 @@
       button.addEventListener("click", () => {
         state.view = button.dataset.view;
         state.visible = 12;
-        state.sort = state.view === "latest" ? "newest" : "score";
+        state.sort = "newest";
         $("#sort-order").value = state.sort;
         document.querySelectorAll("[data-view]").forEach((tab) => tab.setAttribute("aria-selected", String(tab === button)));
         renderEvents();
@@ -314,18 +255,15 @@
     });
     $("#search-input").addEventListener("input", (event) => { state.search = event.target.value; state.visible = 12; renderEvents(); });
     $("#category-filter").addEventListener("change", (event) => { state.category = event.target.value; state.visible = 12; renderEvents(); });
-    $("#hide-participated").addEventListener("change", (event) => { state.hideParticipated = event.target.checked; state.visible = 12; renderEvents(); });
     $("#favorites-only").addEventListener("change", (event) => { state.favoritesOnly = event.target.checked; state.visible = 12; renderEvents(); });
     $("#sort-order").addEventListener("change", (event) => { state.sort = event.target.value; renderEvents(); });
     $("#load-more").addEventListener("click", () => { state.visible += 12; renderEvents(); });
     $("#reset-filters").addEventListener("click", () => {
       state.search = "";
       state.category = "all";
-      state.hideParticipated = false;
       state.favoritesOnly = false;
       $("#search-input").value = "";
       $("#category-filter").value = "all";
-      $("#hide-participated").checked = false;
       $("#favorites-only").checked = false;
       renderEvents();
     });
@@ -335,10 +273,12 @@
   function hydrate(data) {
     state.data = data;
     const stats = data.stats || {};
-    ["whitelist", "projects", "events", "urgent"].forEach((key) => {
+    ["whitelist", "events", "urgent"].forEach((key) => {
       const metric = $(`#metric-${key}`);
       if (metric) metric.textContent = stats[key] ?? 0;
     });
+    const sourceMetric = $("#metric-sources");
+    if (sourceMetric) sourceMetric.textContent = (data.sources || []).length;
     $("#brief-events").textContent = stats.events ?? data.events.length;
     $("#brief-urgent").textContent = stats.urgent ?? 0;
     $("#brief-wechat").textContent = stats.wechat ?? 0;
@@ -349,7 +289,6 @@
     $("#analysis-mode").textContent = data.analysis?.mode === "ai+rules" ? "AI 辅助分析已启用 · 定时采集每 4 小时运行" : "规则初筛运行中 · 配置 API 后启用 AI 摘要";
     renderDeadlines();
     renderEvents();
-    renderProjects();
     renderSources();
   }
 
@@ -359,7 +298,7 @@
       const response = await fetch("data.json", { cache: "no-store" });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
-      if (!Array.isArray(data.events) || !Array.isArray(data.watchlist) || !Array.isArray(data.projects)) throw new Error("Invalid data schema");
+      if (!Array.isArray(data.events) || !Array.isArray(data.watchlist)) throw new Error("Invalid data schema");
       hydrate(data);
     } catch (error) {
       $("#run-status").textContent = "情报数据读取失败";

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-28T17:14:13.761771Z",
+  "generated_at": "2026-10-28T17:36:39.168147Z",
   "analysis": {
     "mode": "rules",
     "ai_analyzed": 0,
@@ -7,7 +7,6 @@
   },
   "stats": {
     "whitelist": 55,
-    "projects": 10,
     "events": 42,
     "urgent": 0,
     "wechat": 0
@@ -30,12 +29,9 @@
       "event_end": "2027-03-20T19:00:00Z",
       "published_at": "2027-03-20T11:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "A CTF created as a joint effort between Sweden's intelligence organizations: * Swedish Military Intelligence and Security Service (MUST) * Swedish Security Services (SÄPO) * National Defence Radio Establishment (FRA) The CTF will consist of 24 challenges and will be open for 8 hours, between 12:00 and 20:00 local time. The CTF is not a first-blood competition but uses weight based scoring. Categories: crypto, web, pwn, reverse, forensics, programming, misc CTF information, challenge descriptions, etc. will be presented mainly in Swedish.",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-254dbafac5c35d85",
@@ -54,12 +50,9 @@
       "event_end": "2027-03-14T16:00:00Z",
       "published_at": "2027-03-13T17:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "Locations: - Online if unable to attend in-person - In-Person @ NJIT Campus Center Ballroom, Newark, New Jersey JerseyCTF is a beginner-friendly Capture the Flag competition that aims to inspire interest in cybersecurity. This competition is hosted by the NJIT Information & Cybersecurity Club, the NJIT Chapter of ACM, and the NJIT SCI program. It is geared towards students, beginners, and professionals alike. JerseyCTF provides participants with jeopardy-style questions in categories including cryptography, forensics, binary exploitation/reversing, open-source intelligence, and web exploitation. This CTF is held hybrid - with attendance virtually or in-person on NJIT's campus in Newark, New ",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-8e06d2f589620a9a",
@@ -78,12 +71,9 @@
       "event_end": "2027-01-03T18:00:00Z",
       "published_at": "2027-01-02T18:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "GaianSpace CTF, hosted by GaianSpace! Challenges to secure ground and space systems through Web, Pwn, Forensics, Reverse, Network, Crypto and more. Varied difficulties ensure fun for all skill levels. Hack the cosmos with us! Location: Online Event format: Jeopardy Event start datetime: 2027.01.02 6:00pm (UTC) Event finish datetime: 2027.01.03 6:00pm (UTC) Duration: 24 hours Prizes: 1st Place, 2nd Place, 3rd Place, Write-up Prizes",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-f893f8fc23629756",
@@ -102,12 +92,9 @@
       "event_end": "2026-12-28T14:00:00Z",
       "published_at": "2026-12-27T14:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "ASIS CTF Finals 2026",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-4b021f6c3bf1eccc",
@@ -126,12 +113,9 @@
       "event_end": "2026-12-20T12:00:00Z",
       "published_at": "2026-12-19T12:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "BackdoorCTF is the flagship event of InfoSecIITR. Categories will include Pwn, Rev, Web, Crypto, Forensics, Misc Discord invite for the competition is https://discord.gg/chHtsSTQ2 Supported by our Sponsors: Infrastructure Sponsored by: - Google Cloud (https://goo.gle/ctfsponsorship) Other Sponsors for BackdoorCTF 2026 will be announced soon. Happy Hacking!",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-92e8ca0cc54c8642",
@@ -150,12 +134,9 @@
       "event_end": "2026-12-19T07:00:00Z",
       "published_at": "2026-12-17T19:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "BSides Algiers 2026 CTF, a jeopardy-style CTF featuring intermediate to extreme challenges on reverse-engineering, binary exploitation, cryptography, web security and more. Organized by Shellmates Club. Infra sponsored by https://goo.gle/ctfsponsorship Note: The CTF will be both onsite and online, but only Algerian teams can play onsite.",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-6a375ff6281e7021",
@@ -174,12 +155,9 @@
       "event_end": "2026-12-13T12:00:00Z",
       "published_at": "2026-12-11T12:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "niteCTF, hosted by Cryptonite, is designed to help students explore new & diverse areas of cybersecurity while providing a platform for experienced players to sharpen their skills. The CTF features a wide range of challenges spanning multiple domains including Hardware Security, Cryptography, Web Exploitation, Digital Forensics, Binary Exploitation, Reverse Engineering, and more! ~ hosted by Cryptonite Industry Sponsor: Hex-Rays Infra sponsored by goo.gle/ctfsponsorship",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-c28ba578e797069f",
@@ -198,12 +176,9 @@
       "event_end": "2026-12-06T17:00:00Z",
       "published_at": "2026-12-05T05:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "Team bi0s invites you to our prestigious bi0sCTF 2026, a premier hacking event designed for hackers of all generations. We are dedicated to crafting challenges that incorporate the latest vulnerabilities, responsibly pushing the boundaries of innovation to ensure a delightful and enriching experience for all participants. Stay tuned for official updates by following us on https://twitter.com/teambi0s.",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-0e727160c4c6dbe4",
@@ -222,12 +197,9 @@
       "event_end": "2026-12-06T18:00:00Z",
       "published_at": "2026-12-04T18:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "x3CTF is a cute little jeopardy-style CTF with web, pwn, rev, crypto, and misc challs! x3CTF 2026 will run from Dec 4th 18:00 UTC until Dec 6th 18:00 UTC (48h). Be on the website a few minutes early for a fun surprise ^_^.",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-52b464882c8d958c",
@@ -246,12 +218,9 @@
       "event_end": "2026-12-03T15:14:59Z",
       "published_at": "2026-12-01T15:14:59Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "Black Hat MEA Capture The Flag (CTF) 2026 ? The Black Hat MEA Capture The Flag (CTF) is the largest cybersecurity competition in the region and officially the largest Capture The Flag competition in the world, recognized with a Guinness World Record. Organized by the Saudi Federation for Cybersecurity, Programming and Drones (SAFCSP) in collaboration with Black Hat MEA, the competition brings together thousands of cybersecurity professionals, researchers, students, and enthusiasts from around the globe. Powered by the FlagYard platform, the competition follows a Jeopardy-style format, where teams of 3–5 players compete across a range of cybersecurity challenges, including Web Exploitation, P",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-356e11dcbfda5d04",
@@ -270,12 +239,9 @@
       "event_end": "2026-11-28T21:00:00Z",
       "published_at": "2026-11-28T09:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "CyberNSK 2027 is one of the largest cybersecurity competitions in Siberia, organized by Siberian Security League in collaboration with Novosibirsk State Technical University (NSTU NETI), Department of Information Security. The online qualification round is a 12-hour Jeopardy-style CTF. Teams of up to 5 participants (school and university students) compete by solving practical security challenges and submitting flags. ✦ Start — November 28 at 12:00 PM (MSK)✦ ✦ End — November 29 at 00:00 PM (MSK)✦ The competition uses a dynamic scoring system: the fewer teams solve a task, the more points it is worth. Categories include: Web Crypto Reverse Engineering Pwn Forensics AI Hardware and others",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-2e7dc5078a066472",
@@ -294,12 +260,9 @@
       "event_end": "2026-11-28T16:30:00Z",
       "published_at": "2026-11-28T04:30:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "L3m0n CTF is the annual flagship capture-the-flag competition of Amrita Vishwa Vidyapeetham, Coimbatore, hosted by TIFAC-CORE in Cyber Security. This is a team-based event: teams of 1 to 4 players. The online prelims is Jeopardy-style and run for 12 hours (10:00 to 22:00 IST, 04:30 to 16:30 UTC, on 28 November 2026). The top teams are invited to on-campus finals in Coimbatore. Challenges span web, pwn, reverse engineering, cryptography, forensics, OSINT and miscellaneous, with extra tracks in AI and LLM security, Web3 and hardware, IoT and RF. This edition is a broadcast themed on the cartoons we grew up with. Open to all, with a beginner category that teaches the basics. Registration opens ",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-4e83334064c6f0cc",
@@ -318,12 +281,9 @@
       "event_end": "2026-11-28T18:00:00Z",
       "published_at": "2026-11-27T18:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "Qualifications for fifth edition of LakeCTF",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-41f75f51703e68eb",
@@ -342,12 +302,9 @@
       "event_end": "2026-11-21T22:00:00Z",
       "published_at": "2026-11-21T15:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "CyberSci is Canada's national Cyber Security Challenge for university and college students. - Think you've got an elite team of students? Come and prove it. Our winners will go on to compete against the best in the world. - Just starting out? This is the best way to learn and rise to the top. - Annual in-person events since 2016. (Online during Covid.) Over 500 students so far. Format: - Modified jeopardy style. Realistic IT environment. - Regional qualifiers are held in Nov-Dec each year. - National finals are the following July. - Winning teams represent Canada at international events in the Fall. For Regionals (qualifiers): We do hacking in the morning, interviews in the afternoon, and jo",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-38781723c908773c",
@@ -366,12 +323,9 @@
       "event_end": "2026-11-21T21:00:00Z",
       "published_at": "2026-11-21T13:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "Crate-CTF is an annual Capture The Flag (CTF) competition organised by the Swedish Defence Research Agency in collaboration with the Swedish Armed Forces, designed to introduce high school and university students to the field of cybersecurity. This year we return for our seventh CTF, with challenges for all skill levels from beginners to seasoned CTF players. The challenges are categorised into web exploitation, reverse engineering, binary exploitation, cryptography, forensics, OSINT, networking and the all-encompassing \"other\". While the event will be conducted in Swedish, international participants are also welcome to join (using translation tools as needed). Communication with challenge a",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-75caa0b088a937d4",
@@ -390,12 +344,9 @@
       "event_end": "2026-11-22T09:00:00Z",
       "published_at": "2026-11-21T09:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "RÉSERVÉ UNIQUEMENT AUX LYCÉENS # Cyber Ninja CTF 2026 – BLACKOUT Gardez Paris allumé ! Le Cyber Ninja CTF revient pour sa 3e édition avec BLACKOUT, une compétition nationale de cybersécurité organisée par OTERIA Cyber School et destinée aux lycéens de toute la France. Cette année, un mystérieux hacker surnommé « Lights-Out » menace les infrastructures critiques de Paris : métro, électricité, réseaux de communication et distribution d'eau. Votre mission : résoudre des challenges de cybersécurité, récupérer des flags, découvrir des indices cachés et arrêter Lights-Out avant que Paris ne soit plongé dans le noir. ## Dates et déroulement Qualifications en ligne - Début : samedi 21 novembre 2026 ",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-578482b3622ff504",
@@ -414,12 +365,9 @@
       "event_end": "2026-11-22T02:30:00Z",
       "published_at": "2026-11-21T06:30:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "Seize Da Flaq is the flagship national-level Capture The Flag (CTF) competition organized by Cyberonites Club, GLA University. The event is designed to challenge and showcase cybersecurity talent through real-world, hands-on security challenges across domains such as Web Security, Cryptography, Reverse Engineering, Binary Exploitation, Digital Forensics, OSINT, and Miscellaneous.",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-814f1356567eb7e5",
@@ -438,12 +386,9 @@
       "event_end": "2026-11-21T23:00:00Z",
       "published_at": "2026-11-20T23:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "Outback Overflow is a free online jeopardy-style CTF built for high schoolers across Australia. Run by the High School Cybersecurity Community, it's designed to be a stepping stone for students getting into cyber security, whether you've never touched a terminal or you're already popping shells. Our goal is simple: grow the number of young people in cyber security and give Australian high schoolers a CTF they can call their own. Sponsors: BinaryLane (binarylane.com.au) UTS:CSEC (utscyber.org) XYZ (gen.xyz) (if you would like to sponsor please reach out to outreach@hscyber.org or join our discord!) Join our discord to talk to other players! https://discord.gg/xWPndqMCfA",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-81e50ac7c089ba95",
@@ -462,12 +407,9 @@
       "event_end": "2026-11-21T18:00:00Z",
       "published_at": "2026-11-20T18:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "We're excited to announce GlacierCTF 2026 for its fifth edition, a 24-hour jeopardy CTF organized by LosFuzzys. Join our discord at: https://discord.gg/DFYnRAME23 Infra sponsored by goo.gle/ctfsponsorship",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-9b502bea503b3b5e",
@@ -486,12 +428,9 @@
       "event_end": "2026-11-22T10:00:00Z",
       "published_at": "2026-11-20T10:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "EyesOpenCTF 2026 is a FREE CTF competition organized as part of the 7th edition of EOCON. This year, the competition goes far beyond a traditional CTF. You are not simply joining to solve isolated challenges. You are entering The Convergence, a live 48-hour cyber adventure in which reality itself is beginning to fracture. Across more than 40 challenges and 8 disciplines, teams will investigate corrupted systems, recover hidden Reality Fragments, unlock classified dossiers, expose compromised actors, and gradually reconstruct the truth behind a phenomenon threatening the entire world. Every flag matters. Each solved challenge can reveal new intelligence, unlock characters and locations, alter",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-d7bfe5acb555d899",
@@ -510,12 +449,9 @@
       "event_end": "2026-11-14T23:30:00Z",
       "published_at": "2026-11-14T15:30:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "InIt CTF is HII's (Hackers in India) beginner-focused Capture The Flag event, free and open to participants across India and internationally. 8 hours, Jeopardy-style, solo or teams of up to 4, across Web, Crypto, Forensics, OSINT, and Misc — mostly easy/medium with a couple of harder challenges for experienced players. This edition is sponsored by .xyz, who are providing free domain codes for participants, with additional sponsors being confirmed. Register at hackersinindia.com/init-ctf.",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-0917936bb154e51a",
@@ -534,12 +470,9 @@
       "event_end": "2026-11-15T23:00:00Z",
       "published_at": "2026-11-13T23:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "Our challenges range from beginner to hard in difficulty. Our esteemed members have worked tirelessly to bring new and stimulating CTF challenges to pose varying levels of difficulty and topic (RE, binary exploit, web exploit, cryptography, forensics, osint, misc.). There are two divisions, Open and University of Michigan students. No team limit sizes. Thank you to our sponsors! Binary Ninja: https://binary.ninja/ **Note: This event has been postponed to November 2026**",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-651de0e7f430aee0",
@@ -558,12 +491,9 @@
       "event_end": "2026-11-14T11:00:00Z",
       "published_at": "2026-11-13T17:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "The Platypwn 2026 is an online Jeopardy CTF which offers easy challenges for beginners, but also medium and difficult challenges for advanced players. See https://platypwnies.de/events/platypwn for further details.",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-fb563051413f1054",
@@ -582,12 +512,9 @@
       "event_end": "2026-11-13T20:00:00Z",
       "published_at": "2026-11-13T10:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "TVX CTF is a cybersecurity Capture The Flag competition organized by Tech Visions. Challenge categories include: • DFIR (Digital Forensics & Incident Response) • Cloud Security • Malware Analysis • Reverse Engineering • Pwn (Binary Exploitation) • Web Exploitation • Cryptography • OSINT (Open-Source Intelligence) Test your skills, solve real-world-inspired cybersecurity challenges, and compete with other security enthusiasts in a hands-on environment. Organized by Tech Visions.",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-d7d9d29793ad610b",
@@ -606,12 +533,9 @@
       "event_end": "2026-11-14T05:00:00Z",
       "published_at": "2026-11-12T17:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "CSAW CTF is one of the oldest and biggest CTFs. Designed as an entry-level, jeopardy-style CTF, this competition is for students who are trying to break into the field of security, as well as for advanced students and industry professionals who want to practice their skills.",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-ab5bb0d630ab9439",
@@ -630,12 +554,9 @@
       "event_end": "2026-11-08T12:00:00Z",
       "published_at": "2026-11-07T12:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "Mimic is an online Jeopardy-style CTF by Rare Byte Hub. Some challenges are exactly what they look like, and some aren't. Figure out which is which. There's something for everyone, from beginners to experienced players. Teams of 1-4 members.",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-043699831c066c24",
@@ -654,12 +575,9 @@
       "event_end": "2026-11-06T22:30:00Z",
       "published_at": "2026-11-06T18:15:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "The BlackAlps CTF will be held at the end of the BlackAlps conference in Yverdon-les-Bains in Switzerland. It's a CTF for all level including from beginner up to advanced team. The CTF will last 5 hours and be on site for about 300 people. There is no specific categories. Registration is mandatory. Welcome at 18:45. Start at 19:00. End at 23:30. Awards ceremony at 23:45.",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-0c1b8e08fb79719c",
@@ -678,12 +596,9 @@
       "event_end": "2026-11-07T17:00:00Z",
       "published_at": "2026-11-06T17:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "EVENT TIME HAS BEEN SHIFTED TO START AND END 4 HOURS AFTER TIME LISTED ABOVE REGISTRATION IS NOW AVAILABLE! BOO!! Welcome to SpookyCTF 2026! Organized by the New Jersey Institute of Technology's Cyber Security Network (formerly known as NICC), this is our annual Halloween CTF event, open to all! We've made this CTF beginner-friendly, with a mix of harder challenges. Our mission is to help beginners develop professionally in cybersecurity while still keeping things fun! You'll be pushed to stay curious and strengthen your reasoning skills across challenges of varying difficulty. Our challenge categories include Binary Exploitation/Reverse Engineering, Cryptography, Forensics, OSINT, Web, and ",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-14e598e37051b299",
@@ -702,12 +617,9 @@
       "event_end": "2026-11-08T13:00:00Z",
       "published_at": "2026-11-06T13:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "\"CSCTF 2026: Total Warfare\" is an international, online, free jeopardy-style CTF focused on realistic cybersecurity scenarios inspired by critical infrastructure, defense, and modern adversary tactics. Challenges cover web, pwn, crypto, reverse engineering, forensics, misc, Linux, Windows, and operational security, with scenarios connected to energy, telecom, healthcare, finance, and defense environments. The competition is somewhat beginner-friendly but realism-driven.",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-ce81074ae691335b",
@@ -726,12 +638,9 @@
       "event_end": "2026-11-09T12:00:00Z",
       "published_at": "2026-11-06T12:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "The first iteration of PINK+ CTF. Explore a variety of hand crafted challenges with a focus on steganography! Discord: https://discord.gg/VuPqnhFxH4",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-1187e751ed6fe9fa",
@@ -750,12 +659,9 @@
       "event_end": "2026-11-07T10:00:00Z",
       "published_at": "2026-11-06T10:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "HKCERT Capture The Flag 2026,” organised by the Hong Kong Computer Emergency Response Team Coordination Centre (HKCERT), the Hong Kong Productivity Council (HKPC) and the Digital Policy Office of HKSAR, is now in its sixth edition. It is one of the largest cybersecurity competitions in Hong Kong, featuring four categories: Secondary School, Tertiary, Open, and International. This year there will be an online Jeopardy CTF (qualifying round) and a physical CTF with offensive and defensive challenges (Final round). Please register at below HKCERT CTF website (Must register via the website) https://ctf.hkcert.org (Registration deadline: 4 Nov 2026 HKT 1200) Discord: https://discord.gg/2enm5Maedt",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-0f975cc4d555e862",
@@ -774,12 +680,9 @@
       "event_end": "2026-10-31T21:00:00Z",
       "published_at": "2026-10-31T13:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "StealthCup is an evasion focused CTF and a research project by AIT, held this year at Hackfest in Quebec City. Most CTFs reward speed. StealthCup rewards staying invisible. Teams attack a live IT and OT enterprise range while a real SOC stack watches. The team that reaches its objectives with the fewest severe detections wins. Up to 12 teams compete, each playing an IT part and an OT part, for the overall cup plus separate IT and OT cups. Detections are shown in real time so teams can adapt their evasion strategy. Resets of infrastructure and scores are possible but cost points. Ideal team size is 4 to 8 players, with 2 to 4 on each side. The event is designed for professionals with a pentes",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-a7292728b3693dff",
@@ -798,12 +701,9 @@
       "event_end": "2026-11-01T09:00:00Z",
       "published_at": "2026-10-31T09:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "Russian CTF Cup X, Qualifier. https://ctfcup.ru/registration 12:00 UTC+3 (Moscow) 31 October - 12:00 UTC+3 (Moscow) 01 November. Online. The top 10 teams from each category (academic, mixed, school, and secondary vocational) will be invited to the final in December.",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-9436aafeb257d50b",
@@ -822,12 +722,9 @@
       "event_end": "2026-10-31T07:30:00Z",
       "published_at": "2026-10-31T03:30:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "HAM-DEFCON is a cybersecurity competition organized by HAM-ARC club of National Institute Of Technology Warangal Telangana, India. Event Details: Format: Attack & Defense Categories: Web Exploitation, Binary Exploitation (Pwn), Reverse Engineering, Cryptography, and Infrastructure Hardening. Team Size: 1–4 Members Categories: Web Security, Binary Exploitation (Pwn), Reverse Engineering, Applied Cryptography, and Service Hardening Rules & Code of Conduct On-Site & Network Access: The competition is strictly offline at the NIT Warangal campus. All team traffic and service interactions must route exclusively through the official network access gateway. Multi-Tiered Flagstores: Each service host",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-a1b3a7c9470066ff",
@@ -846,12 +743,9 @@
       "event_end": "2026-11-01T02:00:00Z",
       "published_at": "2026-10-31T02:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "The 2026 Qiangwang Challenge on Cyber Mimic Defense Qualification is the online qualifying round of the 9th Qiangwang International Elite Challenge on Cyber Mimic Defense. This team-based Jeopardy CTF features standard CTF challenges and selected challenges on endogenous security. Teams can register through the official event website. Eligible teams will be selected for the on-site finals, which are planned to take place in Nanjing, China. Please refer to the official website for competition rules, qualification details and further announcements. Registration and event information: https://nest.pmlabs.com.cn/#/events/qiangwang-9/registration Discord: https://discord.gg/Jvn67Me9na QQ group: 5",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-397388b0e0bdaa73",
@@ -870,12 +764,9 @@
       "event_end": "2026-11-01T14:00:00Z",
       "published_at": "2026-10-30T14:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "HI Cyber Con 2026 CTF is an international 48-hour Jeopardy-style Capture The Flag competition organized by Hidden Investigations. The competition features 70+ challenges covering web, forensics, steganography, network, crypto, binary exploitation, reverse engineering, AI/LLM, hardware, blockchain, OSINT, and misc. The CTF is fully online and open to teams of up to 5 participants worldwide. Competition Divisions: HI Cyber Con 2026 features two divisions: Human-Led (AI permitted for reference only) and Agentic AI (AI-assisted and autonomous challenge solving permitted). Both divisions are eligible for the same overall USD 2,500 cash prize pool. Participation is free, with teams of 1–5 members.",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-1f2af9f6c9c25d9c",
@@ -894,12 +785,9 @@
       "event_end": "2026-11-01T10:00:00Z",
       "published_at": "2026-10-30T10:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "RO: CTF@AC este un concurs de tip Capture the Flag (CTF) organizat de echipa de securitate cibernetică a Universității Politehnica Timișoara. Prin acest eveniment ne propunem: ✅ Promovarea culturii securității cibernetice ✅ Atragerea elevilor și studenților pasionați de IT și securitate Premii: 3000 euros Discord: https://ctf.ac.upt.ro/discord EN: CTF@AC is a Capture the Flag (CTF) competition organized by the cybersecurity team of Politehnica University Timisoara. Through this event we aim to: ✅ Promote the culture of cybersecurity ✅ Attract students passionate about IT and security Prizes: 3000 euros Discord: https://ctf.ac.upt.ro/discord",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-3031e382da467079",
@@ -918,12 +806,9 @@
       "event_end": "2026-10-31T06:30:00Z",
       "published_at": "2026-10-30T06:30:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "The Grand Finale is the final stage of Hackers Gambit 2026, where the Top 15 teams selected from the Online Qualifier will compete for the championship title. This 24-hour, on-site Capture The Flag (CTF) competition is designed to simulate real-world cybersecurity scenarios and evaluate participants' ability to solve complex security challenges under pressure. Hosted at Jaihind College of Engineering, Kuran, the Grand Finale brings together the highest-performing teams for an intensive competition featuring advanced challenges across multiple cybersecurity domains. Participants will demonstrate their technical expertise, analytical thinking, teamwork, strategic decision-making, and adaptabil",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-4922623f0eba900a",
@@ -942,12 +827,9 @@
       "event_end": "2026-10-29T17:00:00Z",
       "published_at": "2026-10-29T09:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "The Sardinia Cyber Camp 2026 will bring the top 10 teams from the qualification round to compete live in Sardinia. Alongside the onsite CTF, the event will also host a cybersecurity fair and conference.",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-a4882f0d2e519cf8",
@@ -966,12 +848,9 @@
       "event_end": null,
       "published_at": "2026-10-28T17:14:13.761771Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 30,
       "summary": "Bugku CTF平台赛事中心，实时更新国内外CTF比赛信息，包括赛事日程、报名详情、奖项设置和历史回顾。 为安全爱好者、专业人士和学生提供全面的CTF赛事资讯，助力您在网络安全领域的成长。",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-ede86bf36cbae399",
@@ -990,12 +869,9 @@
       "event_end": null,
       "published_at": "2026-10-28T17:14:13.761771Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 30,
       "summary": "第十五届中国创新创业大赛 [青岛赛区]决赛圆满落幕 8月21日，第十五届中国创新创业大赛 [青岛赛区]决赛圆满落幕。 本次大赛以“因创而聚，向新同行”为主题，由工业和信息化部火炬中心指导，青岛市科技局、青岛高新区管委联合主办。",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     },
     {
       "id": "event-1f14c1474b4d6071",
@@ -1014,12 +890,9 @@
       "event_end": "2026-10-28T15:30:00Z",
       "published_at": "2026-10-27T03:30:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "matched_projects": [],
-      "match_score": 38,
       "summary": "The technology club of DPS RK Puram, Exun Clan is returning with its eagerly anticipated annual International Capture the Flag (CTF) x Cryptic Hunt event. Sudocrypt v16.0 is an event where individual cryptic enthusiasts come together to take on the ultimate challenge, showcasing their skills and passion for cyber and cryptic challenges. It's an event that promises excitement, learning, and the chance to test your abilities against participants from around the globe.",
       "analysis_mode": "rules",
-      "ai_confidence": null,
-      "recommendation_reason": "命中赛事关键词"
+      "ai_confidence": null
     }
   ],
   "watchlist": [
@@ -1037,21 +910,13 @@
       "whitelist_ids": [
         1
       ],
-      "school_status": "已参加",
-      "department": "学员管理处",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [
-        "法底捞针",
-        "反诈青春盾",
-        "AI 辅导员小严学长"
-      ],
-      "match_score": 63,
-      "summary": "可衔接项目：法底捞针、反诈青春盾、AI 辅导员小严学长。须按当届赛题形成独立版本。",
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
     {
@@ -1065,20 +930,13 @@
       "whitelist_ids": [
         2
       ],
-      "school_status": "已参加",
-      "department": "学员管理处",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [
-        "反诈青春盾",
-        "青山哨兵 EcoSentinel"
-      ],
-      "match_score": 56,
-      "summary": "可衔接项目：反诈青春盾、青山哨兵 EcoSentinel。须按当届赛题形成独立版本。",
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
     {
@@ -1092,22 +950,13 @@
       "whitelist_ids": [
         3
       ],
-      "school_status": "已参加",
-      "department": "科研管理处",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [
-        "法底捞针",
-        "反诈青春盾",
-        "溯脉",
-        "低空智感"
-      ],
-      "match_score": 77,
-      "summary": "可衔接项目：法底捞针、反诈青春盾、溯脉。须按当届赛题形成独立版本。",
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
     {
@@ -1123,16 +972,12 @@
       "whitelist_ids": [
         4
       ],
-      "school_status": "已参加",
-      "department": "信安系",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 42,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -1149,19 +994,13 @@
       "whitelist_ids": [
         5
       ],
-      "school_status": "已参加",
-      "department": "信安系",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [
-        "青山哨兵 EcoSentinel"
-      ],
-      "match_score": 49,
-      "summary": "可衔接项目：青山哨兵 EcoSentinel。须按当届赛题形成独立版本。",
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
     {
@@ -1177,16 +1016,12 @@
       "whitelist_ids": [
         6
       ],
-      "school_status": "已参加",
-      "department": "信安系",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 42,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -1203,16 +1038,12 @@
       "whitelist_ids": [
         7
       ],
-      "school_status": "已参加",
-      "department": "信安系",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 42,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -1227,16 +1058,12 @@
       "whitelist_ids": [
         8
       ],
-      "school_status": "已参加",
-      "department": "法律教研部",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 42,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -1251,16 +1078,12 @@
       "whitelist_ids": [
         9
       ],
-      "school_status": "已参加",
-      "department": "基础部",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 42,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -1275,16 +1098,12 @@
       "whitelist_ids": [
         10
       ],
-      "school_status": "已参加",
-      "department": "基础部",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 42,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -1299,20 +1118,13 @@
       "whitelist_ids": [
         11
       ],
-      "school_status": "已参加",
-      "department": "团委",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [
-        "法底捞针",
-        "反诈青春盾"
-      ],
-      "match_score": 56,
-      "summary": "可衔接项目：法底捞针、反诈青春盾。须按当届赛题形成独立版本。",
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
     {
@@ -1326,16 +1138,12 @@
       "whitelist_ids": [
         12
       ],
-      "school_status": "已参加",
-      "department": "团委",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 42,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -1352,16 +1160,12 @@
       "whitelist_ids": [
         13
       ],
-      "school_status": "准备组织学生参赛",
-      "department": "信安系",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 48,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -1379,16 +1183,12 @@
       "whitelist_ids": [
         14
       ],
-      "school_status": "准备组织学生参赛",
-      "department": "信安系",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 48,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -1403,16 +1203,12 @@
       "whitelist_ids": [
         15
       ],
-      "school_status": "准备组织学生参赛",
-      "department": "基础部",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 48,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -1427,16 +1223,12 @@
       "whitelist_ids": [
         16
       ],
-      "school_status": "准备组织学生参赛",
-      "department": "基础部",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 48,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -1451,16 +1243,12 @@
       "whitelist_ids": [
         17
       ],
-      "school_status": "准备组织学生参赛",
-      "department": "基础部",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 48,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -1475,19 +1263,13 @@
       "whitelist_ids": [
         18
       ],
-      "school_status": "准备组织学生参赛",
-      "department": "基础部",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [
-        "青山哨兵 EcoSentinel"
-      ],
-      "match_score": 55,
-      "summary": "可衔接项目：青山哨兵 EcoSentinel。须按当届赛题形成独立版本。",
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
     {
@@ -1501,16 +1283,12 @@
       "whitelist_ids": [
         19
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 42,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -1525,19 +1303,13 @@
       "whitelist_ids": [
         20
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [
-        "低空智感"
-      ],
-      "match_score": 49,
-      "summary": "可衔接项目：低空智感。须按当届赛题形成独立版本。",
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
     {
@@ -1551,20 +1323,13 @@
       "whitelist_ids": [
         21
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [
-        "游戏融合工程",
-        "琉璃帝国 RTS"
-      ],
-      "match_score": 56,
-      "summary": "可衔接项目：游戏融合工程、琉璃帝国 RTS。须按当届赛题形成独立版本。",
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
     {
@@ -1580,22 +1345,13 @@
       "whitelist_ids": [
         22
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [
-        "法底捞针",
-        "反诈青春盾",
-        "VoxEMW",
-        "青山哨兵 EcoSentinel"
-      ],
-      "match_score": 91,
-      "summary": "可衔接项目：法底捞针、反诈青春盾、VoxEMW。须按当届赛题形成独立版本。",
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
     {
@@ -1612,22 +1368,13 @@
       "whitelist_ids": [
         23
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [
-        "反诈青春盾",
-        "溯脉",
-        "深鉴",
-        "VoxEMW"
-      ],
-      "match_score": 91,
-      "summary": "可衔接项目：反诈青春盾、溯脉、深鉴。须按当届赛题形成独立版本。",
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
     {
@@ -1643,16 +1390,12 @@
       "whitelist_ids": [
         24
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 42,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -1670,22 +1413,13 @@
       "whitelist_ids": [
         25
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [
-        "法底捞针",
-        "溯脉",
-        "深鉴",
-        "低空智感"
-      ],
-      "match_score": 70,
-      "summary": "可衔接项目：法底捞针、溯脉、深鉴。须按当届赛题形成独立版本。",
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
     {
@@ -1701,22 +1435,13 @@
       "whitelist_ids": [
         26
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [
-        "法底捞针",
-        "反诈青春盾",
-        "溯脉",
-        "VoxEMW"
-      ],
-      "match_score": 96,
-      "summary": "可衔接项目：法底捞针、反诈青春盾、溯脉。须按当届赛题形成独立版本。",
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
     {
@@ -1730,21 +1455,13 @@
       "whitelist_ids": [
         27
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [
-        "法底捞针",
-        "反诈青春盾",
-        "AI 辅导员小严学长"
-      ],
-      "match_score": 63,
-      "summary": "可衔接项目：法底捞针、反诈青春盾、AI 辅导员小严学长。须按当届赛题形成独立版本。",
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
     {
@@ -1758,16 +1475,12 @@
       "whitelist_ids": [
         28
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 42,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -1782,16 +1495,12 @@
       "whitelist_ids": [
         29
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 42,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -1806,16 +1515,12 @@
       "whitelist_ids": [
         30
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 42,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -1832,22 +1537,13 @@
       "whitelist_ids": [
         31
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [
-        "深鉴",
-        "VoxEMW",
-        "低空智感",
-        "青山哨兵 EcoSentinel"
-      ],
-      "match_score": 70,
-      "summary": "可衔接项目：深鉴、VoxEMW、低空智感。须按当届赛题形成独立版本。",
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
     {
@@ -1861,16 +1557,12 @@
       "whitelist_ids": [
         32
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 42,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -1885,20 +1577,13 @@
       "whitelist_ids": [
         33
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [
-        "法底捞针",
-        "反诈青春盾"
-      ],
-      "match_score": 56,
-      "summary": "可衔接项目：法底捞针、反诈青春盾。须按当届赛题形成独立版本。",
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
     {
@@ -1912,16 +1597,12 @@
       "whitelist_ids": [
         34
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 42,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -1936,16 +1617,12 @@
       "whitelist_ids": [
         35
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 42,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -1960,16 +1637,12 @@
       "whitelist_ids": [
         36
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 42,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -1984,19 +1657,13 @@
       "whitelist_ids": [
         37
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [
-        "低空智感"
-      ],
-      "match_score": 49,
-      "summary": "可衔接项目：低空智感。须按当届赛题形成独立版本。",
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
     {
@@ -2013,22 +1680,13 @@
       "whitelist_ids": [
         38
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [
-        "法底捞针",
-        "反诈青春盾",
-        "溯脉",
-        "深鉴"
-      ],
-      "match_score": 84,
-      "summary": "可衔接项目：法底捞针、反诈青春盾、溯脉。须按当届赛题形成独立版本。",
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
     {
@@ -2042,22 +1700,13 @@
       "whitelist_ids": [
         39
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [
-        "深鉴",
-        "VoxEMW",
-        "游戏融合工程",
-        "琉璃帝国 RTS"
-      ],
-      "match_score": 70,
-      "summary": "可衔接项目：深鉴、VoxEMW、游戏融合工程。须按当届赛题形成独立版本。",
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
     {
@@ -2071,22 +1720,13 @@
       "whitelist_ids": [
         40
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [
-        "深鉴",
-        "VoxEMW",
-        "低空智感",
-        "青山哨兵 EcoSentinel"
-      ],
-      "match_score": 70,
-      "summary": "可衔接项目：深鉴、VoxEMW、低空智感。须按当届赛题形成独立版本。",
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
     {
@@ -2100,16 +1740,12 @@
       "whitelist_ids": [
         41
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 42,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -2124,16 +1760,12 @@
       "whitelist_ids": [
         42
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 42,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -2148,16 +1780,12 @@
       "whitelist_ids": [
         43
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 42,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -2172,16 +1800,12 @@
       "whitelist_ids": [
         44
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 42,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -2196,16 +1820,12 @@
       "whitelist_ids": [
         45
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 42,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -2220,16 +1840,12 @@
       "whitelist_ids": [
         46
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 42,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -2244,16 +1860,12 @@
       "whitelist_ids": [
         47
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 42,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -2268,19 +1880,13 @@
       "whitelist_ids": [
         48
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [
-        "法底捞针"
-      ],
-      "match_score": 49,
-      "summary": "可衔接项目：法底捞针。须按当届赛题形成独立版本。",
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
     {
@@ -2294,16 +1900,12 @@
       "whitelist_ids": [
         49
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 42,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -2318,16 +1920,12 @@
       "whitelist_ids": [
         50
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 42,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -2342,22 +1940,13 @@
       "whitelist_ids": [
         51
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [
-        "法底捞针",
-        "反诈青春盾",
-        "游戏融合工程",
-        "琉璃帝国 RTS"
-      ],
-      "match_score": 70,
-      "summary": "可衔接项目：法底捞针、反诈青春盾、游戏融合工程。须按当届赛题形成独立版本。",
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
     {
@@ -2373,22 +1962,13 @@
       "whitelist_ids": [
         52
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [
-        "法底捞针",
-        "反诈青春盾",
-        "溯脉",
-        "VoxEMW"
-      ],
-      "match_score": 96,
-      "summary": "可衔接项目：法底捞针、反诈青春盾、溯脉。须按当届赛题形成独立版本。",
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
     {
@@ -2402,16 +1982,12 @@
       "whitelist_ids": [
         53
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 42,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
@@ -2426,21 +2002,13 @@
       "whitelist_ids": [
         54
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [
-        "深鉴",
-        "VoxEMW",
-        "低空智感"
-      ],
-      "match_score": 63,
-      "summary": "可衔接项目：深鉴、VoxEMW、低空智感。须按当届赛题形成独立版本。",
+      "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
     },
     {
@@ -2454,263 +2022,14 @@
       "whitelist_ids": [
         55
       ],
-      "school_status": "未标注",
-      "department": "",
       "status": "monitoring",
       "registration_deadline": null,
       "deadline_confidence": null,
       "event_start": null,
       "event_end": null,
       "published_at": null,
-      "matched_projects": [],
-      "match_score": 42,
       "summary": "已纳入长期监测，等待新一届官方通知与公开报名线索。",
       "analysis_mode": "profile"
-    }
-  ],
-  "projects": [
-    {
-      "id": "fadi-laozhen",
-      "name": "法底捞针",
-      "status": "已上线",
-      "summary": "AI 主持人驱动的海龟汤式互动反诈网站，以双线叙事和对话推理完成反诈教育。",
-      "tags": [
-        "反诈",
-        "AI应用",
-        "React",
-        "Node.js",
-        "通义千问"
-      ],
-      "competition_ids": [
-        1,
-        3,
-        11,
-        22,
-        25,
-        26,
-        27,
-        33,
-        38,
-        48,
-        51,
-        52
-      ],
-      "evidence": "已有完整比赛提交包与线上部署记录"
-    },
-    {
-      "id": "anti-fraud-shield",
-      "name": "反诈青春盾",
-      "status": "核心功能完成",
-      "summary": "结合心理脆弱性画像、分支剧情和多模态识别的反诈模拟小程序。",
-      "tags": [
-        "反诈",
-        "小程序",
-        "NestJS",
-        "多模态",
-        "AIGC"
-      ],
-      "competition_ids": [
-        1,
-        2,
-        3,
-        11,
-        22,
-        23,
-        26,
-        27,
-        33,
-        38,
-        51,
-        52
-      ],
-      "evidence": "核心功能已完成，试用与结题材料仍在完善"
-    },
-    {
-      "id": "suimai",
-      "name": "溯脉",
-      "status": "MVP 已验收",
-      "summary": "多源日志攻击链识别与取证平台，统一 Sysmon、DNS、Nginx/WAF 日志并输出可回溯证据。",
-      "tags": [
-        "电子取证",
-        "日志分析",
-        "攻击链",
-        "Python",
-        "安全检测"
-      ],
-      "competition_ids": [
-        3,
-        23,
-        25,
-        26,
-        38,
-        52
-      ],
-      "evidence": "第一阶段 MVP 与 11 项测试已验收"
-    },
-    {
-      "id": "shenjian",
-      "name": "深鉴",
-      "status": "持续研发",
-      "summary": "深度伪造攻防双端系统，覆盖数字人生成、鉴伪和样本哈希溯源。",
-      "tags": [
-        "深度伪造",
-        "数字人",
-        "AIGC安全",
-        "ffmpeg",
-        "鉴伪"
-      ],
-      "competition_ids": [
-        23,
-        25,
-        31,
-        38,
-        39,
-        40,
-        54
-      ],
-      "evidence": "守端全链路已跑通，攻端持续迭代"
-    },
-    {
-      "id": "voxemw",
-      "name": "VoxEMW",
-      "status": "工程原型",
-      "summary": "融合实时语音识别、语音克隆、视觉感知和数字人口型同步的聊天助手。",
-      "tags": [
-        "数字人",
-        "智能语音",
-        "多模态",
-        "WebSocket",
-        "AI应用"
-      ],
-      "competition_ids": [
-        22,
-        23,
-        26,
-        31,
-        38,
-        39,
-        40,
-        52,
-        54
-      ],
-      "evidence": "实时链路与工程文档完整，量化验收仍需补齐"
-    },
-    {
-      "id": "low-altitude-uav",
-      "name": "低空智感",
-      "status": "训练已实测",
-      "summary": "面向低空防控的无人机目标智能感知与识别项目，强调数据分组和负类误检治理。",
-      "tags": [
-        "低空防控",
-        "YOLO11",
-        "计算机视觉",
-        "公安科技",
-        "数据集"
-      ],
-      "competition_ids": [
-        3,
-        20,
-        23,
-        25,
-        31,
-        37,
-        40,
-        54
-      ],
-      "evidence": "本机 v1 训练与指标记录已完成"
-    },
-    {
-      "id": "eco-sentinel",
-      "name": "青山哨兵 EcoSentinel",
-      "status": "业务闭环完成",
-      "summary": "融合遥感变化检测、地图展示与核查工单的生态监测平台。",
-      "tags": [
-        "遥感",
-        "大数据",
-        "FastAPI",
-        "MapLibre",
-        "变化检测"
-      ],
-      "competition_ids": [
-        2,
-        3,
-        5,
-        18,
-        22,
-        23,
-        26,
-        31,
-        40,
-        52
-      ],
-      "evidence": "核心业务闭环已完成，赛题数据接入可继续深化"
-    },
-    {
-      "id": "xiaoyan",
-      "name": "AI 辅导员小严学长",
-      "status": "校园原型",
-      "summary": "基于本地大模型、知识库和学生档案记忆的校园咨询网站。",
-      "tags": [
-        "本地大模型",
-        "智慧校园",
-        "知识库",
-        "Ollama",
-        "AI应用"
-      ],
-      "competition_ids": [
-        1,
-        22,
-        23,
-        26,
-        27,
-        38,
-        52
-      ],
-      "evidence": "v1.6 原型及测试入口完整，需补量化结果"
-    },
-    {
-      "id": "game-fusion",
-      "name": "游戏融合工程",
-      "status": "链路已实测",
-      "summary": "以语义事件桥连接不同游戏世界，包含节奏控制、存档校验和备份回滚。",
-      "tags": [
-        "软件工程",
-        "交互创意",
-        "Python",
-        "Java",
-        "游戏开发"
-      ],
-      "competition_ids": [
-        21,
-        22,
-        26,
-        39,
-        51,
-        52
-      ],
-      "evidence": "跨游戏核心链路和 83 项测试已有记录"
-    },
-    {
-      "id": "liuli-rts",
-      "name": "琉璃帝国 RTS",
-      "status": "在线运行",
-      "summary": "具备联机同步、寻路、游戏 AI、回放和云存档的 HTML5 即时战略游戏。",
-      "tags": [
-        "游戏开发",
-        "WebSocket",
-        "帧同步",
-        "JavaScript",
-        "软件工程"
-      ],
-      "competition_ids": [
-        21,
-        22,
-        26,
-        39,
-        51,
-        52
-      ],
-      "evidence": "在线运行并持续迭代，工程成熟度较高"
     }
   ],
   "sources": [

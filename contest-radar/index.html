@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
   <title>赛讯雷达 · 琉璃幻彩</title>
-  <meta name="description" content="面向 CTF、电子取证与作品赛的公开情报聚合、学校白名单监测和本地项目匹配。">
+  <meta name="description" content="面向 CTF、电子取证与作品赛的公开情报聚合与学校白名单监测。">
   <meta name="keywords" content="CTF,电子取证,作品赛,竞赛报名,赛事情报,赛讯雷达">
   <meta name="robots" content="index,follow">
   <meta name="theme-color" content="#f3f1eb">
   <link rel="canonical" href="https://fightergodnemo.github.io/contest-radar/">
   <link rel="icon" href="/img/favicon.jpg" type="image/jpeg">
-  <link rel="stylesheet" href="assets/radar.css?v=20261028-1">
-  <script defer src="assets/app.js?v=20261028-2"></script>
+  <link rel="stylesheet" href="assets/radar.css?v=20261029-1">
+  <script defer src="assets/app.js?v=20261029-1"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">跳到主要内容</a>
@@ -24,8 +24,8 @@
       </a>
       <nav class="site-nav" aria-label="页面导航">
         <a href="#radar">赛事雷达</a>
-        <a href="#projects">作品匹配</a>
         <a href="#sources">监测说明</a>
+        <a href="private/">私密分析</a>
         <a class="blog-link" href="/">返回博客</a>
       </nav>
     </div>
@@ -36,10 +36,10 @@
       <div class="hero-copy">
         <p class="eyebrow">EARLY SIGNAL / 让报名先于截止</p>
         <h1>先看见赛讯，<br><em>再决定出手。</em></h1>
-        <p class="hero-lead">聚合 CTF、电子取证与作品赛公开线索，围绕学校白名单和现有项目储备排序。每条情报保留原始来源，报名日期不由模型猜测。</p>
+        <p class="hero-lead">聚合 CTF、电子取证与作品赛的公开线索，按学校竞赛白名单持续监测。每条情报保留原始来源，报名日期不由模型猜测。</p>
         <div class="hero-actions">
           <a class="button primary" href="#radar">查看赛事情报</a>
-          <a class="button secondary" href="#projects">匹配我的作品</a>
+          <a class="button secondary" href="private/">私密分析入口</a>
         </div>
       </div>
       <aside class="briefing" aria-label="采集运行状态">
@@ -61,9 +61,9 @@
     <section class="metrics" aria-label="监测概览">
       <div class="wrap metrics-grid">
         <div><span>学校白名单</span><strong id="metric-whitelist">55</strong><small>项赛事持续监测</small></div>
-        <div><span>项目画像</span><strong id="metric-projects">10</strong><small>个本地作品参与匹配</small></div>
         <div><span>情报线索</span><strong id="metric-events">—</strong><small>去重后保留原文链接</small></div>
         <div><span>临近截止</span><strong id="metric-urgent">—</strong><small>仅统计明确报名日期</small></div>
+        <div><span>采集来源</span><strong id="metric-sources">—</strong><small>公开源每 4 小时巡检</small></div>
       </div>
     </section>
 
@@ -83,13 +83,12 @@
 
       <div class="radar-toolbar" aria-label="情报筛选">
         <div class="view-tabs" role="tablist" aria-label="数据视图">
-          <button type="button" role="tab" aria-selected="true" data-view="recommended">为你推荐</button>
-          <button type="button" role="tab" aria-selected="false" data-view="latest">最新情报</button>
+          <button type="button" role="tab" aria-selected="true" data-view="latest">最新情报</button>
           <button type="button" role="tab" aria-selected="false" data-view="watchlist">白名单监测</button>
         </div>
         <label class="search-box">
-          <span class="sr-only">搜索赛事、来源或项目</span>
-          <input id="search-input" type="search" placeholder="搜索赛事、来源或项目…" autocomplete="off">
+          <span class="sr-only">搜索赛事或来源</span>
+          <input id="search-input" type="search" placeholder="搜索赛事、来源…" autocomplete="off">
         </label>
         <label class="select-box">
           <span class="sr-only">赛事类别</span>
@@ -107,14 +106,12 @@
 
       <div class="filter-row">
         <div class="filter-options">
-          <label><input id="hide-participated" type="checkbox"> 隐藏已参加</label>
           <label><input id="favorites-only" type="checkbox"> 只看收藏</label>
         </div>
         <label class="sort-control">排序
           <select id="sort-order">
-            <option value="score">推荐优先</option>
-            <option value="deadline">截止日优先</option>
             <option value="newest">最近发现</option>
+            <option value="deadline">截止日优先</option>
           </select>
         </label>
       </div>
@@ -132,19 +129,6 @@
       <button type="button" class="load-more" id="load-more" hidden>查看更多</button>
     </section>
 
-    <section class="project-section" id="projects">
-      <div class="wrap">
-        <div class="section-heading project-heading">
-          <div>
-            <p class="section-kicker">PROJECT FIT / 不做无依据推荐</p>
-            <h2>你的作品，适合哪些赛场</h2>
-          </div>
-          <p>依据本地项目文档提取方向与成熟度。这里展示的是赛题适配线索，不代表可以原作品重复多投。</p>
-        </div>
-        <div id="project-grid" class="project-grid"></div>
-      </div>
-    </section>
-
     <section class="wrap sources-section" id="sources">
       <div class="section-heading">
         <div>
@@ -157,7 +141,7 @@
         <div class="method-notes">
           <article><span>01</span><div><h3>公开信息自动发现</h3><p>CTFtime、公开搜索 RSS 与可配置的额外 RSS 每 4 小时采集一次；微信公众号仅覆盖能被公开搜索索引的文章。</p></div></article>
           <article><span>02</span><div><h3>日期从原文提取</h3><p>只有出现明确报名截止语境才生成倒计时。没有日期就标为长期监测，不用发布日期冒充报名截止日。</p></div></article>
-          <article><span>03</span><div><h3>AI 只做辅助分析</h3><p>配置 API 后，模型协助归类、摘要和项目匹配；密钥只存在 GitHub Secrets，原链接与白名单匹配由程序保留。</p></div></article>
+          <article><span>03</span><div><h3>公开与私密分层</h3><p>本页只展示公开赛事情报；本地项目储备与适配分析在私密入口，数据加密存放，需密码解密后才能在浏览器中渲染。</p></div></article>
         </div>
       </div>
     </section>
