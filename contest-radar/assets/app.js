@@ -8,6 +8,7 @@
     category: "all",
     search: "",
     favoritesOnly: false,
+    urgentOnly: false,
     sort: "newest",
     visible: 12,
     favorites: new Set(),
@@ -75,8 +76,12 @@
     const items = currentItems().filter((item) => {
       if (state.category !== "all" && item.category !== state.category) return false;
       if (state.favoritesOnly && !state.favorites.has(item.id)) return false;
+      if (state.urgentOnly) {
+        const remaining = dayDiff(item.registration_deadline);
+        if (remaining === null || remaining < 0 || remaining > 30) return false;
+      }
       if (query) {
-        const haystack = [item.title, item.summary, item.source, ...(item.aliases || [])].join(" ").toLowerCase();
+        const haystack = [item.title, item.summary, item.source, item.category, ...(item.aliases || [])].join(" ").toLowerCase();
         if (!haystack.includes(query)) return false;
       }
       return true;
@@ -201,7 +206,7 @@
   }
 
   function renderSources() {
-    const rows = state.data.sources.map((source) => {
+    const rows = (state.data.sources || []).map((source) => {
       const row = element("div", "source-row");
       const stateDot = element("span", `source-state ${source.status}`);
       const main = element("div");
@@ -256,15 +261,18 @@
     $("#search-input").addEventListener("input", (event) => { state.search = event.target.value; state.visible = 12; renderEvents(); });
     $("#category-filter").addEventListener("change", (event) => { state.category = event.target.value; state.visible = 12; renderEvents(); });
     $("#favorites-only").addEventListener("change", (event) => { state.favoritesOnly = event.target.checked; state.visible = 12; renderEvents(); });
+    $("#urgent-only").addEventListener("change", (event) => { state.urgentOnly = event.target.checked; state.visible = 12; renderEvents(); });
     $("#sort-order").addEventListener("change", (event) => { state.sort = event.target.value; renderEvents(); });
     $("#load-more").addEventListener("click", () => { state.visible += 12; renderEvents(); });
     $("#reset-filters").addEventListener("click", () => {
       state.search = "";
       state.category = "all";
       state.favoritesOnly = false;
+      state.urgentOnly = false;
       $("#search-input").value = "";
       $("#category-filter").value = "all";
       $("#favorites-only").checked = false;
+      $("#urgent-only").checked = false;
       renderEvents();
     });
     $("#export-calendar").addEventListener("click", exportCalendar);
@@ -295,7 +303,7 @@
   async function init() {
     bindControls();
     try {
-      const response = await fetch("data.json", { cache: "no-store" });
+      const response = await fetch("data.json", { cache: "no-cache" });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
       if (!Array.isArray(data.events) || !Array.isArray(data.watchlist)) throw new Error("Invalid data schema");

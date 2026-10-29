@@ -6,7 +6,6 @@
   const VAULT_URL = "../private.enc.json";
 
   let publicData = null;
-  let vaultData = null;
 
   function element(tag, className, text) {
     const node = document.createElement(tag);
@@ -184,12 +183,12 @@
     status.textContent = "正在解密…";
     $("#gate-submit").disabled = true;
     try {
-      const envelopeResponse = await fetch(`${VAULT_URL}?t=${Date.now()}`, { cache: "no-store" });
+      const envelopeResponse = await fetch(`${VAULT_URL}?t=${Date.now()}`, { cache: "no-cache" });
       if (!envelopeResponse.ok) throw new Error(`加密数据读取失败 HTTP ${envelopeResponse.status}`);
       const envelope = await envelopeResponse.json();
       const payload = await decryptVault(envelope, password);
       if (!publicData) {
-        const dataResponse = await fetch(`${DATA_URL}?t=${Date.now()}`, { cache: "no-store" });
+        const dataResponse = await fetch(`${DATA_URL}?t=${Date.now()}`, { cache: "no-cache" });
         if (!dataResponse.ok) throw new Error(`公开数据读取失败 HTTP ${dataResponse.status}`);
         publicData = await dataResponse.json();
       }
@@ -210,7 +209,6 @@
   }
 
   function lock() {
-    vaultData = null;
     publicData = null;
     $("#project-list").replaceChildren();
     $("#event-list").replaceChildren();
