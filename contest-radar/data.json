@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-28T17:36:39.168147Z",
+  "generated_at": "2026-10-29T00:02:18.954397Z",
   "analysis": {
     "mode": "rules",
     "ai_analyzed": 0,
@@ -2042,7 +2042,7 @@
     {
       "name": "国内赛事报名",
       "status": "ok",
-      "count": 1,
+      "count": 0,
       "detail": "采集成功"
     },
     {
@@ -2060,7 +2060,7 @@
     {
       "name": "微信公众号公开索引",
       "status": "ok",
-      "count": 1,
+      "count": 0,
       "detail": "采集成功"
     }
   ]
