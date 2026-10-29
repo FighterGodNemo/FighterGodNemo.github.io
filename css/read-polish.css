@@ -1,0 +1,162 @@
+/* ============================================================
+   正文精修层 read-polish · v20261030-1
+   作用范围：文章正文排版 + 全局滚动条 + 文本选区。
+   不触碰导航、右下角按钮、音乐播放器等任何浮层元素；
+   纯 CSS 无 JS 依赖；摘除 = 删掉 inject 里这一行即可。
+   ============================================================ */
+:root {
+  --polish-accent: #b07a3f;                /* 暖铜主色 */
+  --polish-accent-soft: rgba(176, 122, 63, 0.14);
+  --polish-line: rgba(0, 0, 0, 0.09);
+  --polish-hairline: rgba(0, 0, 0, 0.14);
+}
+
+[data-theme='dark'] {
+  --polish-accent: #d4a26a;
+  --polish-accent-soft: rgba(212, 162, 106, 0.18);
+  --polish-line: rgba(255, 255, 255, 0.1);
+  --polish-hairline: rgba(255, 255, 255, 0.16);
+}
+
+/* ---------- 文本选区 ---------- */
+::selection {
+  background: var(--polish-accent-soft);
+  color: inherit;
+}
+
+/* ---------- 全局细滚动条 ---------- */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(127, 127, 127, 0.35) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background: rgba(127, 127, 127, 0.35);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(127, 127, 127, 0.55);
+}
+
+/* ---------- 标题层级 ---------- */
+#article-container h2 {
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--polish-hairline);
+}
+
+/* ---------- 链接：底部细线滑入 ---------- */
+#article-container p a,
+#article-container li a,
+#article-container td a {
+  text-decoration: none;
+  background-image: linear-gradient(var(--polish-accent), var(--polish-accent));
+  background-size: 0 1.5px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.25s ease;
+}
+
+#article-container p a:hover,
+#article-container li a:hover,
+#article-container td a:hover {
+  background-size: 100% 1.5px;
+}
+
+/* ---------- 表格 ---------- */
+#article-container table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--polish-line);
+  border-radius: 10px;
+  font-size: 0.92em;
+}
+
+#article-container thead {
+  background: var(--polish-accent-soft);
+}
+
+#article-container thead th {
+  border-bottom: 2px solid var(--polish-accent);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+#article-container th,
+#article-container td {
+  border-bottom: 1px solid var(--polish-line);
+}
+
+#article-container tbody tr:nth-child(2n) {
+  background: rgba(127, 127, 127, 0.05);
+}
+
+#article-container tbody tr {
+  transition: background 0.2s ease;
+}
+
+#article-container tbody tr:hover {
+  background: var(--polish-accent-soft);
+}
+
+#article-container thead tr th:first-child {
+  border-top-left-radius: 9px;
+}
+
+#article-container thead tr th:last-child {
+  border-top-right-radius: 9px;
+}
+
+#article-container tbody tr:last-child td {
+  border-bottom: none;
+}
+
+#article-container tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 9px;
+}
+
+#article-container tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 9px;
+}
+
+/* ---------- 引用块 ---------- */
+#article-container blockquote {
+  border-left: 4px solid var(--polish-accent);
+}
+
+/* ---------- 分割线：两端淡出 ---------- */
+#article-container hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--polish-hairline) 18%, var(--polish-hairline) 82%, transparent);
+}
+
+/* ---------- 文章图片 ---------- */
+#article-container img {
+  border-radius: 12px;
+  cursor: zoom-in;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#article-container a img {
+  cursor: pointer;
+}
+
+#article-container img:not(.medium-zoom-image--opened):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* ---------- 任务列表勾选框 ---------- */
+#article-container input[type='checkbox'] {
+  accent-color: var(--polish-accent);
+}
