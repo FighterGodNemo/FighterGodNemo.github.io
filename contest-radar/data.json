@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-29T00:02:18.954397Z",
+  "generated_at": "2026-10-30T05:56:43.790373Z",
   "analysis": {
     "mode": "rules",
     "ai_analyzed": 0,
@@ -2036,7 +2036,7 @@
     {
       "name": "CTFtime",
       "status": "ok",
-      "count": 40,
+      "count": 39,
       "detail": "采集成功"
     },
     {
