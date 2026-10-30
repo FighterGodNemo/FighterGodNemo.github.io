@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-30T05:56:43.790373Z",
+  "generated_at": "2026-10-30T15:05:48.779723Z",
   "analysis": {
     "mode": "rules",
     "ai_analyzed": 0,
@@ -748,6 +748,27 @@
       "ai_confidence": null
     },
     {
+      "id": "event-a4882f0d2e519cf8",
+      "title": "CTF赛事中心 - Bugku CTF平台",
+      "category": "CTF / 网安",
+      "url": "https://ctf.bugku.com/game/index.html",
+      "source": "国内赛事报名",
+      "source_kind": "公开搜索 RSS",
+      "whitelist": false,
+      "whitelist_ids": [],
+      "school_status": null,
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": "2026-10-30T15:05:48.779723Z",
+      "discovered_at": "2026-10-28T17:14:13.761771Z",
+      "summary": "Bugku CTF平台赛事中心，实时更新国内外CTF比赛信息，包括赛事日程、报名详情、奖项设置和历史回顾。 为安全爱好者、专业人士和学生提供全面的CTF赛事资讯，助力您在网络安全领域的成长。",
+      "analysis_mode": "rules",
+      "ai_confidence": null
+    },
+    {
       "id": "event-397388b0e0bdaa73",
       "title": "HI Cyber Con 2026 CTF",
       "category": "电子取证",
@@ -828,27 +849,6 @@
       "published_at": "2026-10-29T09:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
       "summary": "The Sardinia Cyber Camp 2026 will bring the top 10 teams from the qualification round to compete live in Sardinia. Alongside the onsite CTF, the event will also host a cybersecurity fair and conference.",
-      "analysis_mode": "rules",
-      "ai_confidence": null
-    },
-    {
-      "id": "event-a4882f0d2e519cf8",
-      "title": "CTF赛事中心 - Bugku CTF平台",
-      "category": "CTF / 网安",
-      "url": "https://ctf.bugku.com/game/index.html",
-      "source": "国内赛事报名",
-      "source_kind": "公开搜索 RSS",
-      "whitelist": false,
-      "whitelist_ids": [],
-      "school_status": null,
-      "status": "monitoring",
-      "registration_deadline": null,
-      "deadline_confidence": null,
-      "event_start": null,
-      "event_end": null,
-      "published_at": "2026-10-28T17:14:13.761771Z",
-      "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "summary": "Bugku CTF平台赛事中心，实时更新国内外CTF比赛信息，包括赛事日程、报名详情、奖项设置和历史回顾。 为安全爱好者、专业人士和学生提供全面的CTF赛事资讯，助力您在网络安全领域的成长。",
       "analysis_mode": "rules",
       "ai_confidence": null
     },
@@ -2036,13 +2036,13 @@
     {
       "name": "CTFtime",
       "status": "ok",
-      "count": 39,
+      "count": 38,
       "detail": "采集成功"
     },
     {
       "name": "国内赛事报名",
       "status": "ok",
-      "count": 0,
+      "count": 1,
       "detail": "采集成功"
     },
     {
