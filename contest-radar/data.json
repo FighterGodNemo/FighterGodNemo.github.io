@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-30T15:05:48.779723Z",
+  "generated_at": "2026-10-30T20:51:30.713289Z",
   "analysis": {
     "mode": "rules",
     "ai_analyzed": 0,
@@ -596,7 +596,7 @@
       "event_end": "2026-11-07T17:00:00Z",
       "published_at": "2026-11-06T17:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "summary": "EVENT TIME HAS BEEN SHIFTED TO START AND END 4 HOURS AFTER TIME LISTED ABOVE REGISTRATION IS NOW AVAILABLE! BOO!! Welcome to SpookyCTF 2026! Organized by the New Jersey Institute of Technology's Cyber Security Network (formerly known as NICC), this is our annual Halloween CTF event, open to all! We've made this CTF beginner-friendly, with a mix of harder challenges. Our mission is to help beginners develop professionally in cybersecurity while still keeping things fun! You'll be pushed to stay curious and strengthen your reasoning skills across challenges of varying difficulty. Our challenge categories include Binary Exploitation/Reverse Engineering, Cryptography, Forensics, OSINT, Web, and ",
+      "summary": "EVENT TIME HAS BEEN SHIFTED TO START AND END 2 HOURS AFTER TIME LISTED ABOVE REGISTRATION IS NOW AVAILABLE! BOO!! Welcome to SpookyCTF 2026! Organized by the New Jersey Institute of Technology's Cyber Security Network (formerly known as NICC), this is our annual Halloween CTF event, open to all! We've made this CTF beginner-friendly, with a mix of harder challenges. Our mission is to help beginners develop professionally in cybersecurity while still keeping things fun! You'll be pushed to stay curious and strengthen your reasoning skills across challenges of varying difficulty. Our challenge categories include Binary Exploitation/Reverse Engineering, Cryptography, Forensics, OSINT, Web, and ",
       "analysis_mode": "rules",
       "ai_confidence": null
     },
@@ -2042,7 +2042,7 @@
     {
       "name": "国内赛事报名",
       "status": "ok",
-      "count": 1,
+      "count": 0,
       "detail": "采集成功"
     },
     {
