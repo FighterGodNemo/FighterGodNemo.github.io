@@ -1,0 +1,560 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Windows 保留设备名 nul 深坑复盘 | 琉璃幻彩的博客</title><meta name="author" content="琉璃幻彩"><meta name="copyright" content="琉璃幻彩"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="一次删目录失败，最后牵出「AI agent 在 Windows 上用 CMD 语法写 bash 命令」这个系统性问题。真正值得注意的是：这个坑会让整棵目录树的备份与删除静默失效，而常规排查手段全都看不见它。   1. 一句话结论Windows 的保留设备名 nul，只在 cmd.exe &#x2F; PowerShell 里是空设备；在 Git Bash &#x2F; MSYS &#x2F; C">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows 保留设备名 nul 深坑复盘">
+<meta property="og:url" content="https://fightergodnemo.github.io/2026/10/31/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Windows%20%E4%BF%9D%E7%95%99%E8%AE%BE%E5%A4%87%E5%90%8D%20nul%20%E6%B7%B1%E5%9D%91%E5%A4%8D%E7%9B%98/index.html">
+<meta property="og:site_name" content="琉璃幻彩的博客">
+<meta property="og:description" content="一次删目录失败，最后牵出「AI agent 在 Windows 上用 CMD 语法写 bash 命令」这个系统性问题。真正值得注意的是：这个坑会让整棵目录树的备份与删除静默失效，而常规排查手段全都看不见它。   1. 一句话结论Windows 的保留设备名 nul，只在 cmd.exe &#x2F; PowerShell 里是空设备；在 Git Bash &#x2F; MSYS &#x2F; C">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fightergodnemo.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2026-10-31T01:54:19.106Z">
+<meta property="article:modified_time" content="2026-10-31T10:05:00.000Z">
+<meta property="article:author" content="琉璃幻彩">
+<meta property="article:tag" content="AI-agent">
+<meta property="article:tag" content="Git-Bash">
+<meta property="article:tag" content="Windows">
+<meta property="article:tag" content="排障">
+<meta property="article:tag" content="文件系统">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fightergodnemo.github.io/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Windows 保留设备名 nul 深坑复盘",
+  "url": "https://fightergodnemo.github.io/2026/10/31/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Windows%20%E4%BF%9D%E7%95%99%E8%AE%BE%E5%A4%87%E5%90%8D%20nul%20%E6%B7%B1%E5%9D%91%E5%A4%8D%E7%9B%98/",
+  "image": "https://fightergodnemo.github.io/img/avatar.jpg",
+  "datePublished": "2026-10-31T01:54:19.106Z",
+  "dateModified": "2026-10-31T10:05:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "琉璃幻彩",
+      "url": "https://FighterGodNemo.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="https://fightergodnemo.github.io/2026/10/31/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Windows%20%E4%BF%9D%E7%95%99%E8%AE%BE%E5%A4%87%E5%90%8D%20nul%20%E6%B7%B1%E5%9D%91%E5%A4%8D%E7%9B%98/index.html"><link rel="preconnect" href="https://cdn.staticfile.org"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.5.2/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.20261031015438211.json","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":150,"languages":{"author":"作者: 琉璃幻彩","link":"链接: ","source":"来源: 琉璃幻彩的博客","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'medium_zoom',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.staticfile.org/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Windows 保留设备名 nul 深坑复盘',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script src="/js/bg-firstpaint.js?v=20260402-2"></script><link rel="stylesheet" href="/css/custom.css?v=20261027-1"><link rel="stylesheet" href="/css/read-polish.css?v=20261030-1"><link rel="alternate" type="application/atom+xml" href="/atom.xml" title="琉璃幻彩的博客"><meta name="generator" content="Hexo 8.1.1"><meta name="keywords" content="Windows,排障,AI-agent,文件系统,Git-Bash"></head><body><div class="bg-animation" id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">266</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">213</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">40</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/contest-radar/"><i class="fa-fw fas fa-bullseye"></i><span> 竞赛情报</span></a></div><div class="menus_item"><a class="site-page" href="/report/"><i class="fa-fw fas fa-chart-column"></i><span> 数据报告</span></a></div><div class="menus_item"><a class="site-page" href="/portfolio/"><i class="fa-fw fas fa-layer-group"></i><span> 作品集</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" data-has-custom-post-top-img="0"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">琉璃幻彩的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">Windows 保留设备名 nul 深坑复盘</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/contest-radar/"><i class="fa-fw fas fa-bullseye"></i><span> 竞赛情报</span></a></div><div class="menus_item"><a class="site-page" href="/report/"><i class="fa-fw fas fa-chart-column"></i><span> 数据报告</span></a></div><div class="menus_item"><a class="site-page" href="/portfolio/"><i class="fa-fw fas fa-layer-group"></i><span> 作品集</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Windows 保留设备名 nul 深坑复盘</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-10-31T01:54:19.106Z" title="发表于 2026-10-31 01:54:19">2026-10-31</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-10-31T10:05:00.000Z" title="更新于 2026-10-31 10:05:00">2026-10-31</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/">博览知识</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">3.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>12分钟</span></span></div></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><div id="post-outdate-notice" data="{&quot;limitDay&quot;:365,&quot;messagePrev&quot;:&quot;本文最后更新于&quot;,&quot;messageNext&quot;:&quot;天前，内容可能已过时，请以最新官方资料为准。&quot;,&quot;postUpdate&quot;:&quot;2026-10-31 10:05:00&quot;}" hidden></div><blockquote>
+<p>一次删目录失败，最后牵出「AI agent 在 Windows 上用 CMD 语法写 bash 命令」这个系统性问题。<br>真正值得注意的是：这个坑会让<strong>整棵目录树的备份与删除静默失效</strong>，而常规排查手段全都看不见它。</p>
+</blockquote>
+<hr>
+<h2 id="1-一句话结论"><a href="#1-一句话结论" class="headerlink" title="1. 一句话结论"></a>1. 一句话结论</h2><p>Windows 的保留设备名 <code>nul</code>，只在 <code>cmd.exe</code> &#x2F; PowerShell 里是空设备；<br>在 <strong>Git Bash &#x2F; MSYS &#x2F; Cygwin 里它就是一个普通文件名</strong>。<br>于是 AI 习惯性写的 <code>2&gt;nul</code>、<code>&gt;nul</code> 会被 bash 当成重定向到文件，<strong>在当前目录真的建出一个名为 <code>nul</code> 的文件</strong>。<br>这个文件一旦落地，用正常手段删不掉，并且会让它所在目录的<strong>递归删除、复制、备份、重命名全部失败</strong>。</p>
+<hr>
+<h2 id="2-现象"><a href="#2-现象" class="headerlink" title="2. 现象"></a>2. 现象</h2><p>删除一个桌面工作目录时，资源管理器弹出：</p>
+<p><img height="318" width="675" src="/2026/10/31/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Windows%20%E4%BF%9D%E7%95%99%E8%AE%BE%E5%A4%87%E5%90%8D%20nul%20%E6%B7%B1%E5%9D%91%E5%A4%8D%E7%9B%98/msdos-error-dialog.png" alt="MS-DOS 功能无效 报错对话框" loading='lazy'></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1 个已中断的操作</span><br><span class="line">MS-DOS 功能无效。</span><br></pre></td></tr></table></figure>
+
+<p>换成 <code>Remove-Item</code> 也一样失败，报错信息指向了奇怪的地方：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Remove-Item : 函数不正确。 : &#x27;...\临时分析\历史题目\nul&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>而更迷惑的是：<code>Test-Path &#39;...\nul&#39;</code> 返回 <strong>False</strong>，看起来那个文件根本不存在。</p>
+<hr>
+<h2 id="3-走过两次弯路（这部分比结论更值钱）"><a href="#3-走过两次弯路（这部分比结论更值钱）" class="headerlink" title="3. 走过两次弯路（这部分比结论更值钱）"></a>3. 走过两次弯路（这部分比结论更值钱）</h2><p>排查初期，我给出过两个错误判断，后来都被推翻。记录下来是因为<strong>这两个方向都非常”合理”，也正是大多数人会走的弯路</strong>。</p>
+<table>
+<thead>
+<tr>
+<th>误判</th>
+<th>当时的”证据”</th>
+<th>为什么是错的</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>资源管理器句柄失效</strong></td>
+<td>刚用 <code>Remove-Item</code> 删掉了该目录下的一个子目录，时间点完全吻合；报错发生在删除操作卡住的瞬间</td>
+<td>关掉资源管理器窗口后重试，依旧失败。句柄失效只影响单个窗口，不会让 PowerShell 也报”函数不正确”</td>
+</tr>
+<tr>
+<td><strong>火绒 HIPS 驱动拦截</strong></td>
+<td>本机 <code>HipsDaemon</code> 正在运行；安全软件的过滤驱动确实会返回非标准错误码，Windows 就翻译成含糊的”MS-DOS 功能无效”</td>
+<td>换上 <code>\\?\</code> 长路径前缀后一次就删掉了。杀毒软件不会因为路径写法不同就放行</td>
+</tr>
+</tbody></table>
+<p>第三个方向才命中：<strong>报错信息里已经写了答案</strong>——<code>函数不正确</code> 指向的文件名是 <code>nul</code>。</p>
+<blockquote>
+<p>教训：Windows 报 <code>ERROR_INVALID_FUNCTION</code>（错误码 1）时，<strong>第一件事应该是查路径里的保留设备名</strong>，而不是怀疑句柄或杀软。这个错误码是”参数根本不被识别”的意思，天然指向命名层问题。</p>
+</blockquote>
+<hr>
+<h2 id="4-根因：两套命名语义的冲突"><a href="#4-根因：两套命名语义的冲突" class="headerlink" title="4. 根因：两套命名语义的冲突"></a>4. 根因：两套命名语义的冲突</h2><p>同一个字符串 <code>nul</code>，在不同层里有完全不同的含义：</p>
+<table>
+<thead>
+<tr>
+<th>层</th>
+<th><code>nul</code> 的语义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Win32 API &#x2F; <code>cmd.exe</code> &#x2F; PowerShell</td>
+<td><strong>空设备</strong>（null device），写入即丢弃</td>
+</tr>
+<tr>
+<td>POSIX &#x2F; Git Bash &#x2F; MSYS2 &#x2F; Cygwin</td>
+<td><strong>普通文件名</strong>，真正的空设备是 <code>/dev/null</code></td>
+</tr>
+</tbody></table>
+<p>所以下面这条命令在 cmd 里毫无问题，在 bash 里却会留下垃圾：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 你以为：丢弃错误输出</span></span><br><span class="line"><span class="comment"># 实际：在当前目录创建了一个名为 &quot;nul&quot; 的文件，把 stderr 写进去</span></span><br><span class="line">some_command 2&gt;nul</span><br></pre></td></tr></table></figure>
+
+<p>更反直觉的是它的<strong>生命周期</strong>：</p>
+<ol>
+<li><strong>创建成功</strong> —— MSYS 的 <code>open()</code> 走自己那套路径处理，绕过了 Win32 的保留名拦截</li>
+<li><strong>事后删不掉</strong> —— 之后任何 Win32 路径的删除&#x2F;重命名，都会把 <code>nul</code> 解析成空设备而不是文件，于是返回 <code>ERROR_INVALID_FUNCTION</code></li>
+</ol>
+<p>也就是说：<strong>用 POSIX 语义创建，用 Win32 语义访问 —— 结果是永久孤儿文件。</strong></p>
+<p>这甚至不是 Git Bash 的 bug，而是两套命名体系共存于同一文件系统的必然产物。最早可查的同类记录能追溯到 <strong>2008 年 Git 邮件列表</strong>：某次提交往 <code>t/t5100/nul</code> 放测试文件，直接导致 git tree 对 Cygwin&#x2F;Windows 不兼容，原文写着：</p>
+<blockquote>
+<p>On Windows, the file name “nul” is reserved, <strong>regardless of path</strong>, and cannot be created or deleted.</p>
+</blockquote>
+<hr>
+<h2 id="5-为什么说这是-AI-造出来的"><a href="#5-为什么说这是-AI-造出来的" class="headerlink" title="5. 为什么说这是 AI 造出来的"></a>5. 为什么说这是 AI 造出来的</h2><p>保留名问题有 18 年历史，但最近突然变密集。原因很直接：<strong>AI 模型习惯性输出 Windows CMD 语法</strong>。</p>
+<p>模型训练语料里，Windows 教程几乎全是 <code>2&gt;nul</code> 这种写法；模型照抄毫无恶意。但很多 agent 的 shell 工具在 Windows 上实际调用的是 <strong>Git Bash</strong>，于是每一次”我想屏蔽报错”的动作，都在给磁盘种一个雷。</p>
+<h3 id="5-1-文件内容就是铁证"><a href="#5-1-文件内容就是铁证" class="headerlink" title="5.1 文件内容就是铁证"></a>5.1 文件内容就是铁证</h3><p>我把全盘 11 个 <code>nul</code> 的内容全部读了出来。它们装的东西，正是<strong>本该被丢弃的 stderr</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>路径</th>
+<th>大小</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>...\琉璃帝国RTS即时战略\nul</code></td>
+<td>51 B</td>
+<td><code>dir: cannot access &#39;/b&#39;: No such file or directory</code></td>
+</tr>
+<tr>
+<td><code>...\AppData\Local\Temp\vprev\nul</code></td>
+<td>51 B</td>
+<td>同上（同一条命令的副本）</td>
+</tr>
+<tr>
+<td><code>...\反诈模拟小程序研发\nul</code></td>
+<td>43 B</td>
+<td><code>错误: &quot;path:pattern&quot; 的指定无效模式</code></td>
+</tr>
+<tr>
+<td><code>...\晚间活动项目制作\_server_review\backend\nul</code></td>
+<td>26 B</td>
+<td><code>信息: 找不到 &quot;python3&quot;</code></td>
+</tr>
+<tr>
+<td><code>...\角色扮演RolePlay\nul</code></td>
+<td>0 B</td>
+<td>空</td>
+</tr>
+<tr>
+<td><code>...\晚间活动项目制作\nul</code></td>
+<td>0 B</td>
+<td>空</td>
+</tr>
+<tr>
+<td><code>D:\VoxEMW\nul</code></td>
+<td>0 B</td>
+<td>空</td>
+</tr>
+<tr>
+<td><code>...\第三届大数据智能警务挑战赛\99_回收站_可清空\nul</code></td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>...\第三届大数据智能警务挑战赛\平台侦察\04_云实验环境\nul</code></td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>AppData\Local\Temp\exec_yi_nultest\sub\nul</code></td>
+<td>10 B</td>
+<td><code>0123456789</code>（某次专门测 nul 行为）</td>
+</tr>
+</tbody></table>
+<p>注意第一条：<code>dir: cannot access &#39;/b&#39;</code>。<strong><code>dir /b</code> 是 cmd 的参数</strong>，bash 的 <code>ls</code> 当然不认识；<br>第二条的 <code>where /R</code> 也是纯 cmd 命令。这直接证明：<strong>agent 把 cmd 语法丢给了 bash 执行。</strong></p>
+<p>而那句 <code>2&gt;nul</code> 的本意是”丢弃错误”，实际效果是<strong>把错误藏进了一个叫 <code>nul</code> 的文件</strong>。<br>所以 agent 以为错误被抑制了，其实报错信息一直躺在磁盘里，只是没人看见。</p>
+<h3 id="5-2-时间线也吻合"><a href="#5-2-时间线也吻合" class="headerlink" title="5.2 时间线也吻合"></a>5.2 时间线也吻合</h3><p>11 个文件的时间戳集中在 <code>2026-10-03 ~ 10-24</code>，全部落在各 AI 项目被 agent 施工的时期；<br>所在目录也清一色是 AI 参与的项目。会话库里能搜到 <strong>124 条</strong> <code>2&gt;nul</code> 型 bash 调用，例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">where</span> claude 2&gt;nul || <span class="literal">true</span></span><br><span class="line">chcp 65001 &gt;nul &amp; <span class="built_in">dir</span> <span class="string">&quot;...&quot;</span> /b 2&gt;nul</span><br><span class="line"><span class="built_in">dir</span> /s /b <span class="string">&quot;...&quot;</span> 2&gt;nul &amp; <span class="built_in">where</span> /r <span class="string">&quot;...&quot;</span> x.html 2&gt;nul</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="6-业界怎么看：已被定性为-AI-agent-特有故障"><a href="#6-业界怎么看：已被定性为-AI-agent-特有故障" class="headerlink" title="6. 业界怎么看：已被定性为 AI-agent 特有故障"></a>6. 业界怎么看：已被定性为 AI-agent 特有故障</h2><p>同一个坑，不同团队独立踩了三遍，而且都有正式记录：</p>
+<table>
+<thead>
+<tr>
+<th>来源</th>
+<th>时间</th>
+<th>要点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a target="_blank" rel="noopener" href="https://github.com/gsd-build/gsd-2/issues/157">gsd-build&#x2F;gsd-2 Issue #157</a></td>
+<td>2026-03</td>
+<td>标题直译：<strong>「Windows：LLM 生成的 NUL 重定向在 Git Bash 里造出删不掉的文件」</strong>。症状清单与本文完全一致：删不掉（Explorer &#x2F; <code>del</code> &#x2F; <code>rm</code> 全废）、<strong>让资源管理器行为异常</strong>、触发其他扫描目录的程序报错、只能用 <code>\\?\</code> 清除</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://github.com/NousResearch/hermes-agent/pull/69293">NousResearch&#x2F;hermes-agent PR #69293</a></td>
+<td>2026-07</td>
+<td>同一根因。额外指出一个危害：目录若在 OneDrive 等同步位置，会产生<strong>无法上传的保留名，造成永久同步失败</strong></td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://github.com/gastownhall/beads/commit/7d4bf5a0f01c103c4cb2413ed09aa8e9903c3006">gastownhall&#x2F;beads commit 7d4bf5a</a></td>
+<td>2025-10</td>
+<td><code>$(shell ...)</code> 在 Windows 走 MSYS bash，那里 <code>nul</code> 不是设备而是路径</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/answers/questions/3798066/undeletable-file-named-con-aux-etc-heres-some-help">Microsoft Q&amp;A：Undeletable File named Con, Aux</a></td>
+<td>2025-07</td>
+<td>官方社区确认保留名删不掉，给出 <code>del \?\C:...</code> 解法</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-nz/answers/questions/3259350/how-do-i-delete-this-off-my-computer">Microsoft 保留名清单</a></td>
+<td>—</td>
+<td><code>CON, PRN, AUX, NUL, COM1-9, LPT1-9</code> 禁用清单</td>
+</tr>
+</tbody></table>
+<h3 id="6-1-一个容易踩错的技术细节"><a href="#6-1-一个容易踩错的技术细节" class="headerlink" title="6.1 一个容易踩错的技术细节"></a>6.1 一个容易踩错的技术细节</h3><p>很自然的想法是”在工具层用正则把 <code>2&gt;nul</code> 全局替换成 <code>2&gt;/dev/null</code>“。<strong>这个方案在 hermes-agent 的评审里被明确打回了</strong>：</p>
+<blockquote>
+<p>新正则<strong>不是 quote-aware</strong>，会把引号里的字面量也改掉：<br><code>printf &#39;%s\n&#39; &#39;2&gt;NUL&#39;</code> 会被改成 <code>&#39;2&gt;/dev/null&#39;</code>，Python&#x2F;JSON 代码片段里的 <code>&gt;nul</code> 也会被篡改。</p>
+</blockquote>
+<p>要正确实现，必须做 <strong>token &#x2F; quote-aware 重写</strong>：只替换<strong>未加引号</strong>的重定向符，并保护<br>单引号、双引号、转义、注释、heredoc 和命令替换里的内容（最终落地在 <a target="_blank" rel="noopener" href="https://github.com/NousResearch/hermes-agent/pull/65363">PR #65363</a>）。</p>
+<blockquote>
+<p>这个细节说明：修这类问题<strong>不能在字符串层偷懒</strong>，必须理解 shell 的语法结构。</p>
+</blockquote>
+<hr>
+<h2 id="7-危害分级"><a href="#7-危害分级" class="headerlink" title="7. 危害分级"></a>7. 危害分级</h2><ol>
+<li><strong>目录级功能失效（最严重）</strong><br>该目录下任何递归删除、复制、备份、重命名都会失败。备份软件可能整棵树静默跳过，而你以为备份成功了。</li>
+<li><strong>误导排查方向</strong><br>报错信息含糊（”MS-DOS 功能无效”），资源管理器行为异常，极易被误判为句柄、权限或杀毒软件问题。</li>
+<li><strong>反向隐蔽</strong><br><code>2&gt;nul</code> 本想丢弃错误，实际把错误写进文件 —— agent 以为没有报错，实际报错被藏起来了。</li>
+<li><strong>云同步阻塞</strong><br>若目录在 OneDrive &#x2F; 同步盘里，该文件无法上传，会造成永久同步失败。</li>
+<li><strong>常规工具查不出来</strong><br><code>Test-Path</code> 返回 False（假阴性）、<code>Remove-Item</code> 报错、资源管理器卡住、<code>dir</code> 也不老实。</li>
+</ol>
+<hr>
+<h2 id="8-检测"><a href="#8-检测" class="headerlink" title="8. 检测"></a>8. 检测</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 全盘快速扫（Everything 索引，最可靠）</span></span><br><span class="line">&amp; <span class="string">&#x27;C:\Users\glj07\.codex\bin\es\es.exe&#x27;</span> <span class="literal">-w</span> nul <span class="literal">-n</span> <span class="number">50</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定目录递归扫</span></span><br><span class="line"><span class="built_in">Get-ChildItem</span> <span class="literal">-LiteralPath</span> <span class="string">&#x27;&lt;目录&gt;&#x27;</span> <span class="literal">-Recurse</span> <span class="operator">-File</span> <span class="literal">-Force</span> <span class="literal">-ErrorAction</span> SilentlyContinue |</span><br><span class="line">  <span class="built_in">Where-Object</span> &#123; <span class="variable">$_</span>.Name <span class="operator">-match</span> <span class="string">&#x27;^(nul|con|aux|prn|com[1-9]|lpt[1-9])(\..*)?$&#x27;</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>⚠️ 注意：<code>Test-Path &quot;...\nul&quot;</code> 会返回 <strong>False 假阴性</strong>。<br>必须加扩展长路径前缀才能正确 stat：<code>Test-Path -LiteralPath &#39;\\?\C:\...\nul&#39;</code></p>
+</blockquote>
+<p>本机整理了一个带 dry-run 的扫描&#x2F;清理脚本，见文末附录。</p>
+<hr>
+<h2 id="9-清理：唯一有效的手段"><a href="#9-清理：唯一有效的手段" class="headerlink" title="9. 清理：唯一有效的手段"></a>9. 清理：唯一有效的手段</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 单删：必须用 \\?\ 扩展长路径前缀</span></span><br><span class="line">[<span class="type">System.IO.File</span>]::Delete(<span class="string">&#x27;\\?\C:\path\to\nul&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 整个目录删（目录内含 nul 时）</span></span><br><span class="line">cmd /c <span class="built_in">rd</span> /s /q <span class="string">&quot;\\?\C:\path\to\dir&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>两个反直觉点，务必记住：</p>
+<ul>
+<li><code>Remove-Item -LiteralPath &#39;...\nul&#39;</code> <strong>无效</strong>，会报”函数不正确”</li>
+<li>中文路径<strong>不要手打</strong>，用 <code>Get-ChildItem</code> 拿到的 <code>$_.FullName</code> 去拼 <code>\\?\</code>，否则编码差异会导致找不到</li>
+</ul>
+<hr>
+<h2 id="10-避免：三层防御"><a href="#10-避免：三层防御" class="headerlink" title="10. 避免：三层防御"></a>10. 避免：三层防御</h2><h3 id="第-1-层：按执行器选空设备（治本）"><a href="#第-1-层：按执行器选空设备（治本）" class="headerlink" title="第 1 层：按执行器选空设备（治本）"></a>第 1 层：按执行器选空设备（治本）</h3><table>
+<thead>
+<tr>
+<th>执行器</th>
+<th>正确写法</th>
+<th>禁止</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Git Bash &#x2F; MSYS &#x2F; bash &#x2F; sh</td>
+<td><code>2&gt;/dev/null</code></td>
+<td>❌ <code>2&gt;nul</code>、<code>&gt;nul</code>、<code>&gt; NUL</code></td>
+</tr>
+<tr>
+<td>PowerShell</td>
+<td><code>2&gt;$null</code></td>
+<td>❌ <code>2&gt;nul</code></td>
+</tr>
+<tr>
+<td>cmd.exe &#x2F; <code>.bat</code> 文件内部</td>
+<td><code>2&gt;nul</code></td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="第-2-层：认出-cmd-语法，不要丢给-bash"><a href="#第-2-层：认出-cmd-语法，不要丢给-bash" class="headerlink" title="第 2 层：认出 cmd 语法，不要丢给 bash"></a>第 2 层：认出 cmd 语法，不要丢给 bash</h3><p>一条命令里出现这些特征，说明它是 <strong>cmd 语法</strong>：</p>
+<ul>
+<li><code>dir /s</code>、<code>dir /b</code>、<code>where /R</code> 这类<strong>斜杠参数</strong></li>
+<li><code>chcp ... &gt;nul</code></li>
+<li>用 <code>&amp;</code> 串联多个命令</li>
+<li><code>%VAR%</code> 形式的环境变量</li>
+</ul>
+<p>要执行就显式走 cmd（Git Bash 里必须用双斜杠 <code>//c</code>）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmd.exe //c <span class="string">&quot;你的 cmd 命令&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="第-3-层：工具层修复"><a href="#第-3-层：工具层修复" class="headerlink" title="第 3 层：工具层修复"></a>第 3 层：工具层修复</h3><p>若自己维护 agent 框架，在 shell 执行器里做 <strong>quote-aware 重写</strong>，<br>只替换未加引号的重定向符号，保护引号字面量、注释、heredoc、命令替换。</p>
+<hr>
+<h2 id="11-本机各端风险面"><a href="#11-本机各端风险面" class="headerlink" title="11. 本机各端风险面"></a>11. 本机各端风险面</h2><table>
+<thead>
+<tr>
+<th>端</th>
+<th>shell 工具</th>
+<th>风险</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DSH</td>
+<td><code>pwsh</code>（PowerShell），且 bash 工具在 win32 被平台门控禁用</td>
+<td>安全</td>
+</tr>
+<tr>
+<td>Claude Code</td>
+<td>Windows 上 Bash 工具即 Git Bash</td>
+<td><strong>高危</strong></td>
+</tr>
+<tr>
+<td>Codex &#x2F; ZCode CLI &#x2F; Cline 等</td>
+<td>走 Git Bash</td>
+<td><strong>高危</strong></td>
+</tr>
+<tr>
+<td>任何”写 <code>.bat</code> 再由 cmd 执行”的路径</td>
+<td>cmd</td>
+<td>安全</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="12-结语"><a href="#12-结语" class="headerlink" title="12. 结语"></a>12. 结语</h2><p>这个问题的严重性不在”制造了几个垃圾文件”，而在于它<strong>同时具备三个特性</strong>：</p>
+<ul>
+<li><strong>静默</strong>：不报错（因为错误被自己的重定向吞进了垃圾文件）</li>
+<li><strong>持久</strong>：删不掉，会一直留在目录里</li>
+<li><strong>连坐</strong>：让整个目录的备份与删除失效</li>
+</ul>
+<p>再加上报错信息极具误导性，排查成本极高。我这次前后花了十几个来回，两个判断方向都是错的，最后答案藏在一条 <code>Remove-Item</code> 报错里那个不起眼的 <code>nul</code> 上。</p>
+<p>如果只记一句话：<strong>Windows 上写 shell 命令，先想清楚这条命令由谁执行，再决定用 <code>nul</code> 还是 <code>/dev/null</code>。</strong></p>
+<hr>
+<h2 id="附录：扫描-清理脚本"><a href="#附录：扫描-清理脚本" class="headerlink" title="附录：扫描&#x2F;清理脚本"></a>附录：扫描&#x2F;清理脚本</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;#</span></span><br><span class="line"><span class="comment">    扫描（默认 dry-run）并可选删除 Windows 保留设备名文件。</span></span><br><span class="line"><span class="comment">    用法：</span></span><br><span class="line"><span class="comment">        .\remove-reserved-names.ps1                    # 扫默认目录，只报告</span></span><br><span class="line"><span class="comment">        .\remove-reserved-names.ps1 -Path &#x27;D:\xx&#x27; -Apply</span></span><br><span class="line"><span class="comment">        .\remove-reserved-names.ps1 -All -Apply        # 全盘</span></span><br><span class="line"><span class="comment">#&gt;</span></span><br><span class="line"><span class="function">[<span class="type">CmdletBinding</span>()]</span></span><br><span class="line"><span class="keyword">param</span>(</span><br><span class="line">    [<span class="built_in">string</span>[]] <span class="variable">$Path</span>,</span><br><span class="line">    [<span class="type">switch</span>]   <span class="variable">$Apply</span>,</span><br><span class="line">    [<span class="type">switch</span>]   <span class="variable">$All</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="variable">$ErrorActionPreference</span> = <span class="string">&#x27;Continue&#x27;</span></span><br><span class="line"><span class="variable">$ReservedPattern</span> = <span class="string">&#x27;^(nul|con|aux|prn|com[1-9]|lpt[1-9])(\..*)?$&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$All</span>) &#123;</span><br><span class="line">    <span class="variable">$Path</span> = <span class="selector-tag">@</span>(<span class="built_in">Get-PSDrive</span> <span class="literal">-PSProvider</span> FileSystem | <span class="built_in">Where-Object</span> &#123; <span class="variable">$_</span>.Used <span class="operator">-ne</span> <span class="variable">$null</span> &#125; | <span class="built_in">ForEach-Object</span> &#123; <span class="variable">$_</span>.Root &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (<span class="operator">-not</span> <span class="variable">$Path</span>) &#123;</span><br><span class="line">    <span class="variable">$Path</span> = <span class="selector-tag">@</span>(<span class="string">&quot;<span class="variable">$env:USERPROFILE</span>\Desktop&quot;</span>, <span class="string">&quot;<span class="variable">$env:USERPROFILE</span>\Downloads&quot;</span>) | <span class="built_in">Where-Object</span> &#123; <span class="built_in">Test-Path</span> <span class="literal">-LiteralPath</span> <span class="variable">$_</span> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$found</span> = <span class="keyword">foreach</span> (<span class="variable">$root</span> <span class="keyword">in</span> <span class="variable">$Path</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="operator">-not</span> (<span class="built_in">Test-Path</span> <span class="literal">-LiteralPath</span> <span class="variable">$root</span>)) &#123; <span class="keyword">continue</span> &#125;</span><br><span class="line">    <span class="built_in">Get-ChildItem</span> <span class="literal">-LiteralPath</span> <span class="variable">$root</span> <span class="literal">-Recurse</span> <span class="operator">-File</span> <span class="literal">-Force</span> <span class="literal">-ErrorAction</span> SilentlyContinue |</span><br><span class="line">        <span class="built_in">Where-Object</span> &#123; <span class="variable">$_</span>.Name <span class="operator">-match</span> <span class="variable">$ReservedPattern</span> &#125; |</span><br><span class="line">        <span class="built_in">ForEach-Object</span> &#123;</span><br><span class="line">            <span class="variable">$ext</span> = <span class="string">&#x27;\\?\&#x27;</span> + <span class="variable">$_</span>.FullName</span><br><span class="line">            <span class="variable">$preview</span> = <span class="string">&#x27;&#x27;</span></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="variable">$fi</span> = [<span class="type">System.IO.FileInfo</span>]::new(<span class="variable">$ext</span>)</span><br><span class="line">                <span class="keyword">if</span> (<span class="variable">$fi</span>.Length <span class="operator">-le</span> <span class="number">512</span>) &#123; <span class="variable">$preview</span> = ([<span class="type">System.IO.File</span>]::ReadAllText(<span class="variable">$ext</span>)) <span class="operator">-replace</span> <span class="string">&quot;`r?`n&quot;</span>, <span class="string">&#x27; / &#x27;</span> &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> &#123; &#125;</span><br><span class="line">            <span class="built_in">Write-Host</span> (<span class="string">&quot;FOUND  &#123;0&#125;  &#123;1&#125;&quot;</span> <span class="operator">-f</span> <span class="variable">$_</span>.FullName, <span class="variable">$preview</span>.Trim())</span><br><span class="line">            [<span class="type">pscustomobject</span>]<span class="selector-tag">@</span>&#123; Path = <span class="variable">$_</span>.FullName &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="operator">-not</span> <span class="variable">$found</span>) &#123; <span class="built_in">Write-Host</span> <span class="string">&#x27;clean&#x27;</span>; <span class="keyword">exit</span> <span class="number">0</span> &#125;</span><br><span class="line"><span class="keyword">if</span> (<span class="operator">-not</span> <span class="variable">$Apply</span>) &#123; <span class="built_in">Write-Host</span> <span class="string">&#x27;dry-run only, add -Apply to delete&#x27;</span>; <span class="keyword">exit</span> <span class="number">0</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span> (<span class="variable">$f</span> <span class="keyword">in</span> <span class="variable">$found</span>) &#123;</span><br><span class="line">    <span class="variable">$ext</span> = <span class="string">&#x27;\\?\&#x27;</span> + <span class="variable">$f</span>.Path</span><br><span class="line">    <span class="keyword">try</span> &#123; [<span class="type">System.IO.File</span>]::Delete(<span class="variable">$ext</span>); <span class="built_in">Write-Host</span> <span class="string">&quot;DELETED  <span class="variable">$</span>(<span class="variable">$f</span>.Path)&quot;</span> &#125;</span><br><span class="line">    <span class="keyword">catch</span> &#123; <span class="built_in">Write-Host</span> <span class="string">&quot;FAILED   <span class="variable">$</span>(<span class="variable">$f</span>.Path) : <span class="variable">$</span>(<span class="variable">$_</span>.Exception.Message)&quot;</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>一句话记忆法：<strong>bash 用 <code>/dev/null</code>，PowerShell 用 <code>$null</code>，只有 cmd&#x2F;.bat 里才用 <code>nul</code>。</strong></p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://FighterGodNemo.github.io">琉璃幻彩</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://fightergodnemo.github.io/2026/10/31/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Windows%20%E4%BF%9D%E7%95%99%E8%AE%BE%E5%A4%87%E5%90%8D%20nul%20%E6%B7%B1%E5%9D%91%E5%A4%8D%E7%9B%98/">https://fightergodnemo.github.io/2026/10/31/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Windows%20%E4%BF%9D%E7%95%99%E8%AE%BE%E5%A4%87%E5%90%8D%20nul%20%E6%B7%B1%E5%9D%91%E5%A4%8D%E7%9B%98/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://FighterGodNemo.github.io" target="_blank">琉璃幻彩的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Windows/">Windows</a><a class="post-meta__tags" href="/tags/%E6%8E%92%E9%9A%9C/">排障</a><a class="post-meta__tags" href="/tags/AI-agent/">AI-agent</a><a class="post-meta__tags" href="/tags/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">文件系统</a><a class="post-meta__tags" href="/tags/Git-Bash/">Git-Bash</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related  no-desc" href="/2026/09/29/%E3%80%8A%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%88C%E8%AF%AD%E8%A8%80%E7%89%88%C2%B7%E7%AC%AC2%E7%89%88%EF%BC%89%E3%80%8B/" title="《数据结构（C语言版·第2版）》"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">《数据结构（C语言版·第2版）》</div></div></div></a><a class="pagination-related" href="/2026/08/02/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/SDK%E6%98%AF%E4%BB%80%E4%B9%88/" title="SDK 是什么"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">SDK 是什么</div></div><div class="info-2"><div class="info-item-1">Software Development Kit，软件开发工具包就是微软官方给你的一箱子工具 + 说明书，让你写 Windows 程序不用从零造轮子。 </div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/09/29/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Windows%E5%BF%AB%E6%8D%B7%E9%94%AE%E2%80%94%E2%80%94%E5%8E%86%E5%8F%B2%E6%BC%94%E8%BF%9B%E3%80%81%E5%85%A8%E6%99%AF%E8%A7%A3%E6%9E%90%E4%B8%8E%E6%95%88%E7%8E%87%E5%AE%9E%E6%88%98/" title="Windows快捷键——历史演进、全景解析与效率实战"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-29</div><div class="info-item-2">Windows快捷键——历史演进、全景解析与效率实战</div></div><div class="info-2"><div class="info-item-1">Windows 快捷键——历史演进、全景解析与效率实战 从 1985 年 Windows 1.0 里的 Alt+Tab，到 1994 年诞生、曾被批为”多余按键”的 Windows 键，再到 2024 年三十年来第一个新按键”Copi...</div></div></div></a><a class="pagination-related" href="/posts/sogou-ime-security-and-burp-browser-exit/" title="搜狗输入法的两类问题：RCE漏洞与Burp内置浏览器闪退实录"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-20</div><div class="info-item-2">搜狗输入法的两类问题：RCE漏洞与Burp内置浏览器闪退实录</div></div><div class="info-2"><div class="info-item-1">Burp 能打开，内置浏览器却打不开。以前一直能用，这次点了按钮，窗口就是不出现。 起初我怀疑的是 Burp 自带的 Chromium：文件是不是被杀毒软件删了，缓存是不是坏了，或者显卡加速又出了问题。逐项检查后，线索却落到了平时几乎...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">琉璃幻彩</div><div class="author-info-description">琉璃幻彩的个人博客，记录 CTF 夺旗赛、电子取证、网络安全工具与日常技术研究。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">266</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">213</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">40</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FighterGodNemo"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/FighterGodNemo" title="Github" target="_blank"><i class="fab fa-github"></i></a><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="微信"><i class="fab fa-weixin"></i></a><div class="qr-code-popup"><img src="/img/qrcode/wechat-qr.png" alt="微信二维码"/ loading='lazy'></div></div><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="QQ"><i class="fab fa-qq"></i></a><div class="qr-code-popup"><img src="/img/qrcode/qq-qr.png" alt="QQ二维码"/ loading='lazy'></div></div><div class="copy-text-wrapper"><a class="social-icon" href="javascript:void(0)" title="Steam好友代码：1905706957" data-copy-text="1905706957"><i class="fab fa-steam"></i></a><div class="copy-text-popup"><h3>Steam好友代码</h3><p>1905706957</p><p class="copy-hint">点击图标复制</p></div></div><a class="social-icon" href="mailto:guliujia2233@outlook.com" title="Email" target="_blank"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">热爱 CTF 和 Forensic 的网安人一枚～
+欢迎各位大佬交流点评！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%B8%80%E5%8F%A5%E8%AF%9D%E7%BB%93%E8%AE%BA"><span class="toc-number">1.</span> <span class="toc-text">1. 一句话结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%8E%B0%E8%B1%A1"><span class="toc-number">2.</span> <span class="toc-text">2. 现象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%B5%B0%E8%BF%87%E4%B8%A4%E6%AC%A1%E5%BC%AF%E8%B7%AF%EF%BC%88%E8%BF%99%E9%83%A8%E5%88%86%E6%AF%94%E7%BB%93%E8%AE%BA%E6%9B%B4%E5%80%BC%E9%92%B1%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">3. 走过两次弯路（这部分比结论更值钱）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%A0%B9%E5%9B%A0%EF%BC%9A%E4%B8%A4%E5%A5%97%E5%91%BD%E5%90%8D%E8%AF%AD%E4%B9%89%E7%9A%84%E5%86%B2%E7%AA%81"><span class="toc-number">4.</span> <span class="toc-text">4. 根因：两套命名语义的冲突</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%B4%E8%BF%99%E6%98%AF-AI-%E9%80%A0%E5%87%BA%E6%9D%A5%E7%9A%84"><span class="toc-number">5.</span> <span class="toc-text">5. 为什么说这是 AI 造出来的</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9%E5%B0%B1%E6%98%AF%E9%93%81%E8%AF%81"><span class="toc-number">5.1.</span> <span class="toc-text">5.1 文件内容就是铁证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E6%97%B6%E9%97%B4%E7%BA%BF%E4%B9%9F%E5%90%BB%E5%90%88"><span class="toc-number">5.2.</span> <span class="toc-text">5.2 时间线也吻合</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E4%B8%9A%E7%95%8C%E6%80%8E%E4%B9%88%E7%9C%8B%EF%BC%9A%E5%B7%B2%E8%A2%AB%E5%AE%9A%E6%80%A7%E4%B8%BA-AI-agent-%E7%89%B9%E6%9C%89%E6%95%85%E9%9A%9C"><span class="toc-number">6.</span> <span class="toc-text">6. 业界怎么看：已被定性为 AI-agent 特有故障</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E4%B8%80%E4%B8%AA%E5%AE%B9%E6%98%93%E8%B8%A9%E9%94%99%E7%9A%84%E6%8A%80%E6%9C%AF%E7%BB%86%E8%8A%82"><span class="toc-number">6.1.</span> <span class="toc-text">6.1 一个容易踩错的技术细节</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E5%8D%B1%E5%AE%B3%E5%88%86%E7%BA%A7"><span class="toc-number">7.</span> <span class="toc-text">7. 危害分级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E6%A3%80%E6%B5%8B"><span class="toc-number">8.</span> <span class="toc-text">8. 检测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E6%B8%85%E7%90%86%EF%BC%9A%E5%94%AF%E4%B8%80%E6%9C%89%E6%95%88%E7%9A%84%E6%89%8B%E6%AE%B5"><span class="toc-number">9.</span> <span class="toc-text">9. 清理：唯一有效的手段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E9%81%BF%E5%85%8D%EF%BC%9A%E4%B8%89%E5%B1%82%E9%98%B2%E5%BE%A1"><span class="toc-number">10.</span> <span class="toc-text">10. 避免：三层防御</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC-1-%E5%B1%82%EF%BC%9A%E6%8C%89%E6%89%A7%E8%A1%8C%E5%99%A8%E9%80%89%E7%A9%BA%E8%AE%BE%E5%A4%87%EF%BC%88%E6%B2%BB%E6%9C%AC%EF%BC%89"><span class="toc-number">10.1.</span> <span class="toc-text">第 1 层：按执行器选空设备（治本）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC-2-%E5%B1%82%EF%BC%9A%E8%AE%A4%E5%87%BA-cmd-%E8%AF%AD%E6%B3%95%EF%BC%8C%E4%B8%8D%E8%A6%81%E4%B8%A2%E7%BB%99-bash"><span class="toc-number">10.2.</span> <span class="toc-text">第 2 层：认出 cmd 语法，不要丢给 bash</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC-3-%E5%B1%82%EF%BC%9A%E5%B7%A5%E5%85%B7%E5%B1%82%E4%BF%AE%E5%A4%8D"><span class="toc-number">10.3.</span> <span class="toc-text">第 3 层：工具层修复</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E6%9C%AC%E6%9C%BA%E5%90%84%E7%AB%AF%E9%A3%8E%E9%99%A9%E9%9D%A2"><span class="toc-number">11.</span> <span class="toc-text">11. 本机各端风险面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-%E7%BB%93%E8%AF%AD"><span class="toc-number">12.</span> <span class="toc-text">12. 结语</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%E5%BD%95%EF%BC%9A%E6%89%AB%E6%8F%8F-%E6%B8%85%E7%90%86%E8%84%9A%E6%9C%AC"><span class="toc-number">13.</span> <span class="toc-text">附录：扫描&#x2F;清理脚本</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/31/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Windows%20%E4%BF%9D%E7%95%99%E8%AE%BE%E5%A4%87%E5%90%8D%20nul%20%E6%B7%B1%E5%9D%91%E5%A4%8D%E7%9B%98/" title="Windows 保留设备名 nul 深坑复盘">Windows 保留设备名 nul 深坑复盘</a><time datetime="2026-10-31T10:05:00.000Z" title="更新于 2026-10-31 10:05:00">2026-10-31</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/27/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/CTF%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/%E6%9C%AC%E6%9C%BACTF%E5%B7%A5%E5%85%B7%E7%B4%A2%E5%BC%95/" title="本机CTF工具索引">本机CTF工具索引</a><time datetime="2026-10-31T09:51:00.000Z" title="更新于 2026-10-31 09:51:00">2026-10-31</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/27/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/Forensic%E8%A7%A3%E9%A2%98%E5%A6%99%E5%85%B7/%E6%9C%AC%E6%9C%BAForensic%E5%B7%A5%E5%85%B7%E7%B4%A2%E5%BC%95/" title="本机Forensic工具索引">本机Forensic工具索引</a><time datetime="2026-10-31T09:51:00.000Z" title="更新于 2026-10-31 09:51:00">2026-10-31</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/11/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261011/" title="科技日报 2026-10-11">科技日报 2026-10-11</a><time datetime="2026-10-31T01:54:19.164Z" title="更新于 2026-10-31 01:54:19">2026-10-31</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/12/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261012/" title="科技日报 2026-10-12">科技日报 2026-10-12</a><time datetime="2026-10-31T01:54:19.164Z" title="更新于 2026-10-31 01:54:19">2026-10-31</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 琉璃幻彩</span><span class="framework-info"><span id="busuanzi_container_site_pv">本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span><span class="footer-separator">|</span><span id="busuanzi_container_site_uv">本站访客数 <span id="busuanzi_value_site_uv"></span> 人次</span></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="https://cdn.staticfile.org/medium-zoom/1.1.0/medium-zoom.min.js"></script><script src="https://cdn.staticfile.org/instant.page/5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+  const getUtterancesTheme = theme => theme === 'dark' ? 'photon-dark' : 'github-light'
+
+  const loadUtterances = (el = document, key) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyUtterances = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const config = {
+      src: 'https://utteranc.es/client.js',
+      repo: 'FighterGodNemo/FighterGodNemo.github.io',
+      theme: getUtterancesTheme(document.documentElement.getAttribute('data-theme')),
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      'issue-term': isShuoshuo ? key : (option && option['issue-term']) || 'pathname'
+    }
+
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => ele.setAttribute(key, value))
+    el.querySelector('#utterances-wrap').appendChild(ele)
+  }
+
+  const changeUtterancesTheme = theme => {
+    const iframe = document.querySelector('#utterances-wrap iframe')
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: getUtterancesTheme(theme)
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeUtterancesTheme, 'utterances')
+
+  if (isShuoshuo) {
+    'Utterances' === 'Utterances'
+      ? window.shuoshuoComment = { loadComment: loadUtterances }
+      : window.loadOtherComment = loadUtterances
+    return
+  }
+  
+  if ('Utterances' === 'Utterances' || !false) {
+    if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+    else loadUtterances()
+  } else {
+    window.loadOtherComment = loadUtterances
+  }
+})()</script></div><script src="/js/custom.js?v=20260402-2"></script><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.staticfile.org/pjax/0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:description\"]","link[rel=\"canonical\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      true
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>
