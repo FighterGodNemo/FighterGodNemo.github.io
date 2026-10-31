@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-30T20:51:30.713289Z",
+  "generated_at": "2026-10-31T20:01:55.837068Z",
   "analysis": {
     "mode": "rules",
     "ai_analyzed": 0,
@@ -281,7 +281,7 @@
       "event_end": "2026-11-28T18:00:00Z",
       "published_at": "2026-11-27T18:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "summary": "Qualifications for fifth edition of LakeCTF",
+      "summary": "Qualifications for fifth edition of LakeCTF old discord server here for discussion: https://discord.gg/8FHmzT5aGM new discord server in your invite email",
       "analysis_mode": "rules",
       "ai_confidence": null
     },
