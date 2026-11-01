@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-01T15:15:43.565923Z",
+  "generated_at": "2026-11-01T20:33:59.591342Z",
   "analysis": {
     "mode": "rules",
     "ai_analyzed": 0,
@@ -407,7 +407,7 @@
       "event_end": "2026-11-21T18:00:00Z",
       "published_at": "2026-11-20T18:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "summary": "We're excited to announce GlacierCTF 2026 for its fifth edition, a 24-hour jeopardy CTF organized by LosFuzzys. Join our discord at: https://discord.gg/DFYnRAME23 Infra sponsored by goo.gle/ctfsponsorship",
+      "summary": "We're excited to announce GlacierCTF 2026 for its fifth edition, a 24-hour jeopardy CTF organized by LosFuzzys. Join our discord at: https://discord.gg/DFYnRAME23 - Hex-Rays (hex-rays.com) - ISEC @ Graz University of Technology (isec.tugraz.at) Infra sponsored by goo.gle/ctfsponsorship",
       "analysis_mode": "rules",
       "ai_confidence": null
     },
