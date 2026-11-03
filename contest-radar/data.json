@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-03T11:59:55.550462Z",
+  "generated_at": "2026-11-03T19:32:37.972521Z",
   "analysis": {
     "mode": "rules",
     "ai_analyzed": 0,
@@ -7,7 +7,7 @@
   },
   "stats": {
     "whitelist": 55,
-    "events": 43,
+    "events": 44,
     "urgent": 0,
     "wechat": 0
   },
@@ -454,6 +454,27 @@
       "ai_confidence": null
     },
     {
+      "id": "event-4ee06bc3cc30f7cd",
+      "title": "h4ckc0n 2026",
+      "category": "电子取证",
+      "url": "https://ctftime.org/event/3464/",
+      "source": "CTFtime",
+      "source_kind": "赛事日历 API",
+      "whitelist": false,
+      "whitelist_ids": [],
+      "school_status": null,
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": "2026-11-14T15:30:00Z",
+      "event_end": "2026-11-15T15:30:00Z",
+      "published_at": "2026-11-14T15:30:00Z",
+      "discovered_at": "2026-11-03T19:32:37.972521Z",
+      "summary": "h4ckc0n is a 24-hour international Jeopardy-style Capture The Flag competition. (URL will be live in a few days) Categories: Reverse Engineering, Web-exploitation, Forensics, AI/ML, Web3, OSINT, PWN, Cryptography, Miscellaneous The competition is designed to accommodate teams of varying skill levels, with a diverse challenge set covering multiple areas of cybersecurity. Duration: 24 hours Format: Jeopardy-style CTF Mode: Online Team-based: Yes Join the discord server: https://discord.gg/kw8J5r2ZWh",
+      "analysis_mode": "rules",
+      "ai_confidence": null
+    },
+    {
       "id": "event-d7bfe5acb555d899",
       "title": "InIt CTF",
       "category": "电子取证",
@@ -638,7 +659,7 @@
       "event_end": "2026-11-08T13:00:00Z",
       "published_at": "2026-11-06T13:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "summary": "\"CSCTF 2026: Total Warfare\" is an international, online, free jeopardy-style CTF focused on realistic cybersecurity scenarios inspired by critical infrastructure, defense, and modern adversary tactics. Challenges cover web, pwn, crypto, reverse engineering, forensics, misc, Linux, Windows, and operational security, with scenarios connected to energy, telecom, healthcare, finance, and defense environments. The competition is somewhat beginner-friendly but realism-driven.",
+      "summary": "CSCTF 2026: Total Warfare is a free, international, 48-hour online Jeopardy-style CTF. This is the second edition of CSCTF. Last year's competition brought together 600+ players from more than 10 countries. The event is built around realistic cybersecurity scenarios inspired by critical infrastructure, defence and modern adversary tactics. Expect 40+ challenges across web, pwn, crypto, reverse engineering, forensics, misc, Linux, Windows and operational security, with scenarios involving energy, telecom, finance, healthcare and defence. The competition is welcoming to newer players while still rewarding strong methodology and technical depth. Players compete in Junior, Senior and Fighters di",
       "analysis_mode": "rules",
       "ai_confidence": null
     },
