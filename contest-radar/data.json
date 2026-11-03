@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-03T02:24:32.928973Z",
+  "generated_at": "2026-11-03T11:59:55.550462Z",
   "analysis": {
     "mode": "rules",
     "ai_analyzed": 0,
@@ -7,7 +7,7 @@
   },
   "stats": {
     "whitelist": 55,
-    "events": 42,
+    "events": 43,
     "urgent": 0,
     "wechat": 0
   },
@@ -156,6 +156,27 @@
       "published_at": "2026-12-11T12:00:00Z",
       "discovered_at": "2026-10-28T17:14:13.761771Z",
       "summary": "niteCTF, hosted by Cryptonite, is designed to help students explore new & diverse areas of cybersecurity while providing a platform for experienced players to sharpen their skills. The CTF features a wide range of challenges spanning multiple domains including Hardware Security, Cryptography, Web Exploitation, Digital Forensics, Binary Exploitation, Reverse Engineering, and more! ~ hosted by Cryptonite Industry Sponsor: Hex-Rays Infra sponsored by goo.gle/ctfsponsorship",
+      "analysis_mode": "rules",
+      "ai_confidence": null
+    },
+    {
+      "id": "event-3cdc61096781998b",
+      "title": "OTERIA Cyber Cup #4",
+      "category": "CTF / 网安",
+      "url": "https://ctftime.org/event/3493/",
+      "source": "CTFtime",
+      "source_kind": "赛事日历 API",
+      "whitelist": false,
+      "whitelist_ids": [],
+      "school_status": null,
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": "2026-12-05T09:00:00Z",
+      "event_end": "2026-12-05T17:00:00Z",
+      "published_at": "2026-12-05T09:00:00Z",
+      "discovered_at": "2026-11-03T11:59:55.550462Z",
+      "summary": "# OTERIA Cyber ​​Cup #4 Rejoignez-nous le 5 décembre 2026 pour la quatrième édition de l'OTERIA Cyber ​​Cup, une compétition de type « Capture The Flag » (CTF) destinée aux étudiants, organisée par l'OTERIA Cyber ​​School à Gennevilliers, en France. Détails de l'événement - Date : 5 décembre 2026 - Lieu : OTERIA Cyber ​​School, 1 Rue du 19 Mars 1962, 92230 Gennevilliers, France - Format : CTF de type « Jeopardy » (à confirmer) - Durée : 6 heures - Participation : Gratuite - Éligibilité : Étudiants, du lycée jusqu'au niveau Master (Bac à Bac+5) - Taille des équipes : 4 étudiants par équipe - Défis : 5 catégories d'épreuves et 25 « flags » (drapeaux) à trouver La compétition est ouverte aussi ",
       "analysis_mode": "rules",
       "ai_confidence": null
     },
@@ -2036,7 +2057,7 @@
     {
       "name": "CTFtime",
       "status": "ok",
-      "count": 33,
+      "count": 32,
       "detail": "采集成功"
     },
     {
