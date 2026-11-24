@@ -1,0 +1,845 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Strata、PolyStrata 与 TensorFold 三路线架构对比 | 琉璃幻彩的博客</title><meta name="author" content="琉璃幻彩"><meta name="copyright" content="琉璃幻彩"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="把 Strata、PolyStrata、TensorFold 这三个名字放在一起，第一反应是”三个竞品，选一个”。真正拆开看会发现完全不是：它们都在解决同一个问题——在有限的消费级硬件上跑大模型——但各自选择了牺牲不同的维度。 Strata 牺牲速度换容量（125B 也能跑），PolyStrata 牺牲深度换广度（12 个模型一个端点），TensorFold 路线牺牲容量换速度（显存塞得下的模型跑">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Strata、PolyStrata 与 TensorFold 三路线架构对比">
+<meta property="og:url" content="https://fightergodnemo.github.io/2026/11/11/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Strata%20PolyStrata%20%E4%B8%8E%20TensorFold%20%E4%B8%89%E8%B7%AF%E7%BA%BF%E6%9E%B6%E6%9E%84%E5%AF%B9%E6%AF%94/index.html">
+<meta property="og:site_name" content="琉璃幻彩的博客">
+<meta property="og:description" content="把 Strata、PolyStrata、TensorFold 这三个名字放在一起，第一反应是”三个竞品，选一个”。真正拆开看会发现完全不是：它们都在解决同一个问题——在有限的消费级硬件上跑大模型——但各自选择了牺牲不同的维度。 Strata 牺牲速度换容量（125B 也能跑），PolyStrata 牺牲深度换广度（12 个模型一个端点），TensorFold 路线牺牲容量换速度（显存塞得下的模型跑">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fightergodnemo.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2026-11-24T03:17:56.538Z">
+<meta property="article:modified_time" content="2026-11-11T19:05:00.000Z">
+<meta property="article:author" content="琉璃幻彩">
+<meta property="article:tag" content="MoE">
+<meta property="article:tag" content="PolyStrata">
+<meta property="article:tag" content="Strata">
+<meta property="article:tag" content="TensorFold">
+<meta property="article:tag" content="本地大模型">
+<meta property="article:tag" content="架构对比">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fightergodnemo.github.io/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Strata、PolyStrata 与 TensorFold 三路线架构对比",
+  "url": "https://fightergodnemo.github.io/2026/11/11/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Strata%20PolyStrata%20%E4%B8%8E%20TensorFold%20%E4%B8%89%E8%B7%AF%E7%BA%BF%E6%9E%B6%E6%9E%84%E5%AF%B9%E6%AF%94/",
+  "image": "https://fightergodnemo.github.io/img/avatar.jpg",
+  "datePublished": "2026-11-24T03:17:56.538Z",
+  "dateModified": "2026-11-11T19:05:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "琉璃幻彩",
+      "url": "https://FighterGodNemo.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="https://fightergodnemo.github.io/2026/11/11/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Strata%20PolyStrata%20%E4%B8%8E%20TensorFold%20%E4%B8%89%E8%B7%AF%E7%BA%BF%E6%9E%B6%E6%9E%84%E5%AF%B9%E6%AF%94/index.html"><link rel="preconnect" href="https://cdn.staticfile.org"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.5.2/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.20261124031810997.json","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":150,"languages":{"author":"作者: 琉璃幻彩","link":"链接: ","source":"来源: 琉璃幻彩的博客","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'medium_zoom',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.staticfile.org/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Strata、PolyStrata 与 TensorFold 三路线架构对比',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script src="/js/bg-firstpaint.js?v=20260402-2"></script><link rel="stylesheet" href="/css/custom.css?v=20261027-1"><link rel="stylesheet" href="/css/read-polish.css?v=20261030-1"><link rel="alternate" type="application/atom+xml" href="/atom.xml" title="琉璃幻彩的博客"><meta name="generator" content="Hexo 8.1.1"><meta name="keywords" content="本地大模型,Strata,PolyStrata,TensorFold,MoE,架构对比"></head><body><div class="bg-animation" id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">276</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">225</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">40</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/contest-radar/"><i class="fa-fw fas fa-bullseye"></i><span> 竞赛情报</span></a></div><div class="menus_item"><a class="site-page" href="/report/"><i class="fa-fw fas fa-chart-column"></i><span> 数据报告</span></a></div><div class="menus_item"><a class="site-page" href="/portfolio/"><i class="fa-fw fas fa-layer-group"></i><span> 作品集</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" data-has-custom-post-top-img="0"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">琉璃幻彩的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">Strata、PolyStrata 与 TensorFold 三路线架构对比</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/contest-radar/"><i class="fa-fw fas fa-bullseye"></i><span> 竞赛情报</span></a></div><div class="menus_item"><a class="site-page" href="/report/"><i class="fa-fw fas fa-chart-column"></i><span> 数据报告</span></a></div><div class="menus_item"><a class="site-page" href="/portfolio/"><i class="fa-fw fas fa-layer-group"></i><span> 作品集</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Strata、PolyStrata 与 TensorFold 三路线架构对比</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-11-24T03:17:56.538Z" title="发表于 2026-11-24 03:17:56">2026-11-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-11-11T19:05:00.000Z" title="更新于 2026-11-11 19:05:00">2026-11-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/">博览知识</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">6.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>20分钟</span></span></div></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><div id="post-outdate-notice" data="{&quot;limitDay&quot;:365,&quot;messagePrev&quot;:&quot;本文最后更新于&quot;,&quot;messageNext&quot;:&quot;天前，内容可能已过时，请以最新官方资料为准。&quot;,&quot;postUpdate&quot;:&quot;2026-11-11 19:05:00&quot;}" hidden></div><p>把 Strata、PolyStrata、TensorFold 这三个名字放在一起，第一反应是”三个竞品，选一个”。真正拆开看会发现完全不是：它们都在解决同一个问题——<strong>在有限的消费级硬件上跑大模型</strong>——但各自选择了牺牲不同的维度。</p>
+<p>Strata 牺牲速度换容量（125B 也能跑），PolyStrata 牺牲深度换广度（12 个模型一个端点），TensorFold 路线牺牲容量换速度（显存塞得下的模型跑到极致）。所以本文的”对比”实际是一次<strong>取舍坐标系的比较</strong>：同样受显存限制，三条路线各自的极限在哪、崩点在哪、适用边界在哪。</p>
+<hr>
+<h2 id="一、三条路线的研究对象"><a href="#一、三条路线的研究对象" class="headerlink" title="一、三条路线的研究对象"></a>一、三条路线的研究对象</h2><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>本报告所指</th>
+<th>一句话定位</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Strata</strong></td>
+<td><code>Niko1221/Strata</code>（MIT，C&#x2F;C++）</td>
+<td>单模型、深度优化的本地 MoE <strong>分层推理引擎</strong></td>
+</tr>
+<tr>
+<td><strong>PolyStrata</strong></td>
+<td><code>VecSzn/PolyStrata</code>（基于 Strata，MIT）</td>
+<td>多模型、双引擎的<strong>服务层</strong>：一个端点管 12 个模型</td>
+</tr>
+<tr>
+<td><strong>TensorFold 路线</strong></td>
+<td>MLX 生态的 affine 低比特推理引擎（含社区 1.x 版本线）</td>
+<td><strong>全驻留 + 低比特</strong>，只追单请求极速的引擎</td>
+</tr>
+</tbody></table>
+<p>一句话区分三者的技术信仰：</p>
+<ul>
+<li><strong>Strata</strong>：显存不够没关系，把冷数据摊到内存和 SSD，用调度把时间换回来；</li>
+<li><strong>PolyStrata</strong>：单个模型喂不饱所有场景，那就把”多模型”当成一等公民来做；</li>
+<li><strong>TensorFold</strong>：分层本身有代价，不如把模型压到能全塞进显存，之后彻底不做调度。</li>
+</ul>
+<p>这三种信仰互相排斥，所以三条路线的性能特征、失败模式、适用硬件都不一样。</p>
+<hr>
+<h2 id="二、一句话结论"><a href="#二、一句话结论" class="headerlink" title="二、一句话结论"></a>二、一句话结论</h2><blockquote>
+<p><strong>同一个”本地跑大模型”的问题，三条路线给出三个方向相反的答案：Strata 用分层换容量，PolyStrata 用广度换覆盖，TensorFold 用全驻留换速度。要比较的不是”谁更强”，而是”你愿意牺牲哪一维”。</strong></p>
+</blockquote>
+<ul>
+<li><strong>Strata</strong>：能跑 125B 级 MoE，代价是输出速度落到个位到几十 token&#x2F;s——<strong>牺牲速度换容量</strong>；</li>
+<li><strong>PolyStrata</strong>：一个端点装 12 个模型、双协议兼容，代价是单模型不做到极致——<strong>牺牲深度换广度</strong>；</li>
+<li><strong>TensorFold 路线</strong>：显存放得下的模型能跑到极高吞吐，代价是模型档位被显存死锁——<strong>牺牲容量换速度</strong>。</li>
+</ul>
+<p>三种取舍互不重叠，所以它们不是竞品，而是同一张选择题上的三个选项。</p>
+<hr>
+<h2 id="三、Strata：把”放不下”变成”不需要同时放下”"><a href="#三、Strata：把”放不下”变成”不需要同时放下”" class="headerlink" title="三、Strata：把”放不下”变成”不需要同时放下”"></a>三、Strata：把”放不下”变成”不需要同时放下”</h2><h3 id="3-1-问题定义"><a href="#3-1-问题定义" class="headerlink" title="3.1 问题定义"></a>3.1 问题定义</h3><p>Qwen3.8-Flash-Next 是 125B 总参数、约 6B 激活参数、<strong>24,576 个专家</strong>的 MoE 模型。4bit 量化后权重仍有 60GB 量级，而主流消费级显卡显存停在 12–24GB。”全量驻留显存”的传统推理方式下，这堵墙绕不过去。</p>
+<p>Strata 的核心动作只有一个：<strong>把”必须大显存”的需求，降级成”必须大内存”</strong>——容量交给内存条，速度交给显存。</p>
+<h3 id="3-2-三级存储分层"><a href="#3-2-三级存储分层" class="headerlink" title="3.2 三级存储分层"></a>3.2 三级存储分层</h3><table>
+<thead>
+<tr>
+<th>层级</th>
+<th>放什么</th>
+<th>为什么放这里</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>显存（VRAM）</strong></td>
+<td>attention 与 DeltaNet mixer、gated-residual 权重、router、shared experts、output head、MTP 草稿层、KV cache，以及剩余显存全部灌入的<strong>专家缓存</strong></td>
+<td>每 token 都要用、延迟敏感的热路径</td>
+</tr>
+<tr>
+<td><strong>内存（RAM）</strong></td>
+<td><strong>全部 24,576 个专家，全部 pinned</strong></td>
+<td>MoE 稀疏性：每 token 只要约 10 个专家，但”哪 10 个”随时变，所以必须全部可寻址</td>
+</tr>
+<tr>
+<td><strong>SSD</strong></td>
+<td>28.8GB 的 <strong>n-gram 查表</strong>（PLE 表），每 token 只读几行，<code>O_DIRECT</code> 绕过页缓存直读</td>
+<td>体量大但访问极稀疏，容许高延迟</td>
+</tr>
+</tbody></table>
+<p>这里藏着一个决定成败的判断：<strong>Strata 没有把”专家权重”放到 SSD，它把”查表”放到了 SSD。</strong> 同样是”用 SSD 扩容量”，两件事的性质完全不同——查表允许毫秒级延迟，专家权重不允许。</p>
+<h3 id="3-3-CPU-不是配角：真并行而非降级回退"><a href="#3-3-CPU-不是配角：真并行而非降级回退" class="headerlink" title="3.3 CPU 不是配角：真并行而非降级回退"></a>3.3 CPU 不是配角：真并行而非降级回退</h3><p>业界对”CPU 参与推理”的固有印象是降级：GPU 忙不过来才甩给 CPU，两边抢同一份数据。Strata 的做法相反：</p>
+<ul>
+<li><strong>专家全员 pinned 在内存里</strong>，CPU 直接<strong>原地计算</strong>未上卡的那部分专家（AVX-512 &#x2F; AVX2 kernel），不需要先拷到别处；</li>
+<li>CPU 与 GPU <strong>同时工作</strong>：GPU 算缓存中的专家，CPU 算没命中的，二者谁都不等谁；</li>
+<li>最终只把计算结果搬回显存参与合并。</li>
+</ul>
+<p>配合两条投机解码：<strong>MTP 层起草最多 3 个 token、一次前向验证 48 层</strong>；<strong>prompt lookup 起草最多 5 个 token</strong>（在代码编辑类负载下带来 6–11% 的额外提速）。</p>
+<h3 id="3-4-三个不那么显眼但很实用的机制"><a href="#3-4-三个不那么显眼但很实用的机制" class="headerlink" title="3.4 三个不那么显眼但很实用的机制"></a>3.4 三个不那么显眼但很实用的机制</h3><ol>
+<li><strong>显存容量经济学</strong>：每多 1GB 显存约多放 <strong>700 个专家</strong>——这条经验值可直接用来做硬件规划。</li>
+<li><strong>专家缓存自适应</strong>：高频专家常驻显存、冷门回内存，且会随对话主题<strong>在线学习</strong>（聊代码时命中的专家集和聊历史时不同）。</li>
+<li><strong>chunked prefill</strong>：分块 8,192 token（可配到 32K），专家经 PCIe <strong>流式上卡</strong>，结果常驻显存、不重复搬运；ring buffer 按字节而非按块计量。</li>
+</ol>
+<h3 id="3-5-覆盖面（成熟度远超”玩具”）"><a href="#3-5-覆盖面（成熟度远超”玩具”）" class="headerlink" title="3.5 覆盖面（成熟度远超”玩具”）"></a>3.5 覆盖面（成熟度远超”玩具”）</h3><p>NVIDIA RTX 20–50 系、AMD RX 7000&#x2F;9000（RX 6000 实验性）、Intel Arc（Linux）、Apple Silicon、Strix Halo、DGX Spark 全在支持列表；桌面 App、终端 <code>strata launch</code>、Docker、源码构建四条安装路径齐备。除 Qwen3.8-Flash-Next 外，也支持 DeepSeek V4.1-Flash-1017 这类 <strong>191–274GB</strong> 的巨无霸——那种规模就必须走”权重溢出到 SSD”的路径了，代价是输出掉到个位数 token&#x2F;s。</p>
+<hr>
+<h2 id="四、PolyStrata：从”一个引擎”到”一个引擎矩阵”"><a href="#四、PolyStrata：从”一个引擎”到”一个引擎矩阵”" class="headerlink" title="四、PolyStrata：从”一个引擎”到”一个引擎矩阵”"></a>四、PolyStrata：从”一个引擎”到”一个引擎矩阵”</h2><h3 id="4-1-架构上的真实变化"><a href="#4-1-架构上的真实变化" class="headerlink" title="4.1 架构上的真实变化"></a>4.1 架构上的真实变化</h3><p>PolyStrata 常被误当成”Strata 的另一个下载地址”。它的 README 说得很清楚：<strong>12 个模型，两套引擎</strong>。</p>
+<table>
+<thead>
+<tr>
+<th>引擎</th>
+<th>负责的模型</th>
+<th>来源</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Strata 原引擎</strong>（未改动）</td>
+<td>Qwen3.8-Flash-Next</td>
+<td>直接来自 <code>Niko1221/Strata</code></td>
+<td>24,576 专家、三级分层、AVX-512 CPU 并行那套完整机制</td>
+</tr>
+<tr>
+<td><strong>PolyStrata 自研引擎</strong>（<code>strata-poly</code>）</td>
+<td>其余 11 个模型</td>
+<td>VecSzn 自写，复用 llama.cpp&#x2F;ggml 部分代码</td>
+<td>需要单张 NVIDIA 卡、可双卡；GLM 5.3 Flash 与 DeepSeek V4 Flash 仅 Linux</td>
+</tr>
+</tbody></table>
+<p>这是典型的<strong>分叉经济学</strong>，而且是清醒的那种：把最难的（125B &#x2F; 24,576 专家）继续交给上游原引擎，不碰、不改、随上游升级；把”模型覆盖面”这件上游不打算做的事自己做。代价是维护两条代码路径，收益是广度。</p>
+<h3 id="4-2-覆盖面矩阵（这才是它的架构主张）"><a href="#4-2-覆盖面矩阵（这才是它的架构主张）" class="headerlink" title="4.2 覆盖面矩阵（这才是它的架构主张）"></a>4.2 覆盖面矩阵（这才是它的架构主张）</h3><table>
+<thead>
+<tr>
+<th>模型</th>
+<th>文件体积</th>
+<th align="right">8GB 笔记本（写&#x2F;读）</th>
+<th align="right">RTX 5090（写&#x2F;读）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LFM2.5-24B-A2B</td>
+<td>11–25 GB</td>
+<td align="right">70–73 &#x2F; 3,590–3,620</td>
+<td align="right">480–485 &#x2F; 23,390–23,460</td>
+</tr>
+<tr>
+<td>Flint 40B-A2.5B</td>
+<td>18–42 GB</td>
+<td align="right">61–63 &#x2F; 2,000–2,010</td>
+<td align="right">251–252 &#x2F; 12,900</td>
+</tr>
+<tr>
+<td>Qwen3.6-35B-A3B</td>
+<td>13–23 GB</td>
+<td align="right">94–100 &#x2F; 1,690</td>
+<td align="right">394–395 &#x2F; 7,800–7,810</td>
+</tr>
+<tr>
+<td>Gemma 4 26B-A4B</td>
+<td>11–17 GB</td>
+<td align="right">92–93 &#x2F; 2,240</td>
+<td align="right">353–356 &#x2F; 8,420–8,480</td>
+</tr>
+<tr>
+<td>Tiel Coder 35B-A3B</td>
+<td>14–23 GB</td>
+<td align="right">83 &#x2F; 1,700</td>
+<td align="right">337–345 &#x2F; 8,080–8,110</td>
+</tr>
+<tr>
+<td>MiniCPM-V 4.7 35B-A3B</td>
+<td>16–29 GB</td>
+<td align="right">64 &#x2F; 1,150</td>
+<td align="right">308–311 &#x2F; 7,910–7,950</td>
+</tr>
+<tr>
+<td>Kolibri 1</td>
+<td>29–48 GB</td>
+<td align="right">未测</td>
+<td align="right">189–192 &#x2F; 4,980–5,070</td>
+</tr>
+<tr>
+<td>GLM 5.3 Flash</td>
+<td>79–114 GB</td>
+<td align="right">跑不了（需 32GB 显存）</td>
+<td align="right">59–66 &#x2F; 820</td>
+</tr>
+<tr>
+<td>DeepSeek V4 Flash</td>
+<td>91 GB</td>
+<td align="right">跑不了</td>
+<td align="right">未测</td>
+</tr>
+</tbody></table>
+<p>表里有两件事值得记住：<strong>8GB 笔记本能跑 35B MoE</strong>（94–100 token&#x2F;s）；而 <strong>GLM 5.3 Flash 在 8GB 上不是”慢”，是”跑不了”</strong>——它的门槛是阶跃的，不是靠调参能绕过的。</p>
+<h3 id="4-3-服务层才是它的真身份"><a href="#4-3-服务层才是它的真身份" class="headerlink" title="4.3 服务层才是它的真身份"></a>4.3 服务层才是它的真身份</h3><ul>
+<li><strong>一个端点</strong>：<code>http://127.0.0.1:8080/v1</code>，<strong>同时</strong>兼容 OpenAI 与 Anthropic 两套协议——Claude Code、Cursor、ChatGPT 类客户端都能直连；</li>
+<li><strong>生命周期显式化</strong>：<code>/v1/load</code>、<code>/v1/unload</code>，<code>switch_on_request</code> 允许”请求里点名另一个模型就自动切换”（等当前请求结束后执行，最多 120 秒，超时返回 409）；</li>
+<li><strong>契约写进 HTTP 状态码</strong>：有请求在跑或排队返回 <strong>409</strong>，未知模型返回 <strong>404</strong>——这种”把资源竞争状态显式暴露”的设计，比静默排队诚实得多；</li>
+<li><strong>内置 UI</strong>：Chat、实时 <strong>Monitor</strong>（GPU&#x2F;CPU&#x2F;内存）、About，模型热切换不用碰命令行。</li>
+</ul>
+<h3 id="4-4-工程细节：为”弱硬件”做的适配"><a href="#4-4-工程细节：为”弱硬件”做的适配" class="headerlink" title="4.4 工程细节：为”弱硬件”做的适配"></a>4.4 工程细节：为”弱硬件”做的适配</h3><ul>
+<li><strong>chunked GDN prefill</strong>：把长提示的 prefill 切块，避免一次性吃满显存；</li>
+<li><strong>streaming CPU copies for expert staging</strong>：专家上卡走流式拷贝，不与计算争带宽；</li>
+<li><strong>size-class MMQ launches</strong>：按专家尺寸分档发射 kernel，减少小批次浪费；</li>
+<li><strong>RTX 20（Turing, sm_75）专属 kernel 系列</strong> + 一批 CUDA opt-in 开关，默认全关，按需打开。</li>
+</ul>
+<p>这些细节说明一件事：PolyStrata 的”广度”不是堆模型列表堆出来的，而是靠一层层硬件适配换来的。</p>
+<hr>
+<h2 id="五、第三条路线：全驻留-低比特量化"><a href="#五、第三条路线：全驻留-低比特量化" class="headerlink" title="五、第三条路线：全驻留 + 低比特量化"></a>五、第三条路线：全驻留 + 低比特量化</h2><h3 id="5-1-它和前两条路线的位置关系"><a href="#5-1-它和前两条路线的位置关系" class="headerlink" title="5.1 它和前两条路线的位置关系"></a>5.1 它和前两条路线的位置关系</h3><p>前两条路线都在”显存不够”这个前提下做文章：Strata 把冷数据搬出显存，PolyStrata 把多个模型轮流搬进显存。第三条路线反其道而行——<strong>承认显存就是天花板，然后想办法把天花板压到模型能装下</strong>。</p>
+<p>它的核心逻辑只有一句：<strong>只要模型能被压到显存装得下，就完全不需要调度。</strong></p>
+<p>这条路线属于 MLX 生态的量化与运行时（TensorFold 及其衍生版本），和 llama.cpp &#x2F; ggml 是同一层级的两种实现选择，不是上下游关系。</p>
+<h3 id="5-2-三个技术手段"><a href="#5-2-三个技术手段" class="headerlink" title="5.2 三个技术手段"></a>5.2 三个技术手段</h3><table>
+<thead>
+<tr>
+<th>手段</th>
+<th>做法</th>
+<th>解决了什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>affine 分组量化</strong></td>
+<td>权重按 group（常见 64）分组做仿射量化，典型 4bit</td>
+<td>把 27B 级模型的权重压到 20GB 内，单卡可容纳</td>
+</tr>
+<tr>
+<td><strong>低比特 KV 缓存</strong></td>
+<td>KV cache 用 FP8 等格式存，而非 FP16</td>
+<td>长上下文时显存占用大幅下降，支持 256K 级上下文</td>
+</tr>
+<tr>
+<td><strong>草稿模型投机解码</strong></td>
+<td>用一个小草稿模型先起草多个 token，主模型一次前向批量验证</td>
+<td>把 decode 阶段从”逐 token”变成”批验证”，吞吐成倍提升</td>
+</tr>
+</tbody></table>
+<p>这三个手段是配套的：量化压低权重占用 → 省下的显存用来放更长上下文 → 投机解码把每次前向的收益放大。三者叠加才形成这条路线”吞吐极高”的特征。</p>
+<h3 id="5-3-与-llama-cpp-GGUF-路线的架构差异"><a href="#5-3-与-llama-cpp-GGUF-路线的架构差异" class="headerlink" title="5.3 与 llama.cpp &#x2F; GGUF 路线的架构差异"></a>5.3 与 llama.cpp &#x2F; GGUF 路线的架构差异</h3><p>两条路线跑同一个模型、同一张卡，性能可以差很多倍。差异不在”谁更聪明”，而在四个可解释的架构选择：</p>
+<ol>
+<li><strong>量化族的自由度不同</strong>：GGUF 的 K-quant 是”整块&#x2F;整行”的非线性量化，位宽档位较粗；MLX 的 affine 分组量化以 group 为单位，粒度更细，同等位宽下的精度分布不同。</li>
+<li><strong>KV 缓存格式不同</strong>：GGUF 路线常用 q8_0 &#x2F; q4_0 存 KV，MLX 路线可走 FP8——影响的是长上下文下的显存占用与带宽。</li>
+<li><strong>kernel 实现不同</strong>：ggml 的 kernel 面向”跨平台一致性”设计，MLX 的 kernel 更贴近特定后端（Metal &#x2F; CUDA）做特化。</li>
+<li><strong>调度哲学不同</strong>：llama.cpp 追求”一个二进制跑遍所有平台”，MLX 路线追求”在目标硬件上榨到极限”。</li>
+</ol>
+<p><strong>这就是为什么同模型同卡会出现数倍差距——它不是玄学，是量化粒度、KV 格式、kernel 特化、调度哲学四个变量叠加的结果。</strong> 反过来说，任何”哪个引擎更快”的结论都必须绑定具体模型、位宽、上下文长度与硬件，脱离这些条件的对比没有意义。</p>
+<h3 id="5-4-代价与硬约束"><a href="#5-4-代价与硬约束" class="headerlink" title="5.4 代价与硬约束"></a>5.4 代价与硬约束</h3><table>
+<thead>
+<tr>
+<th>约束</th>
+<th>具体表现</th>
+<th>影响</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>显存墙</strong></td>
+<td>模型压不进显存就直接跑不了，没有”降速运行”的中间态</td>
+<td>容量天花板由卡决定，不做妥协</td>
+</tr>
+<tr>
+<td><strong>量化质量损失</strong></td>
+<td>4bit affine 对长尾知识、精确计算类任务有可感损失</td>
+<td>适合对话&#x2F;生成，不适合高精度场景</td>
+</tr>
+<tr>
+<td><strong>并发能力弱</strong></td>
+<td>单卡单模型，多请求只能排队</td>
+<td>不适合多人共用</td>
+</tr>
+<tr>
+<td><strong>迭代速度快</strong></td>
+<td>引擎版本频繁更新，同权重不同版本性能差异明显</td>
+<td>“当前最优”结论有保质期</td>
+</tr>
+</tbody></table>
+<p><strong>最关键的差异在这里</strong>：Strata 的显存不足是<strong>连续的</strong>（显存少一点，慢一点），TensorFold 路线的显存不足是<strong>阶跃的</strong>（装不下就别跑）。这个性质决定了选型逻辑——前者可以”凑合”，后者不能。</p>
+<hr>
+<h2 id="六、横向对比总表"><a href="#六、横向对比总表" class="headerlink" title="六、横向对比总表"></a>六、横向对比总表</h2><table>
+<thead>
+<tr>
+<th>维度</th>
+<th><strong>Strata</strong></th>
+<th><strong>PolyStrata</strong></th>
+<th><strong>TensorFold 路线</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>路线</strong></td>
+<td>分层卸载</td>
+<td>多模型聚合</td>
+<td><strong>全驻留 + 低比特</strong></td>
+</tr>
+<tr>
+<td><strong>核心解决</strong></td>
+<td>权重放不下</td>
+<td>模型类型&#x2F;版本太多</td>
+<td>单请求吞吐不够</td>
+</tr>
+<tr>
+<td><strong>抽象单位</strong></td>
+<td>专家（expert）</td>
+<td>模型（model）</td>
+<td>层与 KV（kernel 级）</td>
+</tr>
+<tr>
+<td><strong>权重驻留</strong></td>
+<td>VRAM + RAM（全专家 pinned）+ SSD（仅查表）</td>
+<td>两套引擎各自策略，模型可热切换</td>
+<td><strong>100% VRAM，无分层</strong></td>
+</tr>
+<tr>
+<td><strong>调度粒度</strong></td>
+<td>每 token 的专家级调度 + CPU&#x2F;GPU 并行</td>
+<td>请求级 + 模型级（load&#x2F;unload）</td>
+<td><strong>几乎无调度</strong></td>
+</tr>
+<tr>
+<td><strong>关键机制</strong></td>
+<td>自适应专家缓存、MTP 投机解码、chunked prefill、PLE 直读</td>
+<td>双引擎并存、双协议兼容、模型热切换、成组 kernel 适配</td>
+<td>affine 分组量化、FP8 KV、草稿投机解码</td>
+</tr>
+<tr>
+<td><strong>容量弹性</strong></td>
+<td><strong>连续</strong>（显存少则变慢）</td>
+<td>中（模型可换，单个模型仍受显存限）</td>
+<td><strong>阶跃</strong>（装不下即不可用）</td>
+</tr>
+<tr>
+<td><strong>扩展方向</strong></td>
+<td><strong>深</strong>：单模型榨到极致</td>
+<td><strong>广</strong>：模型覆盖面最大化</td>
+<td><strong>快</strong>：单请求延迟最小化</td>
+</tr>
+<tr>
+<td><strong>主要失败模式</strong></td>
+<td>PCIe&#x2F;内存带宽、缓存命中率、量化损失</td>
+<td>上游分叉维护、后端适配矩阵</td>
+<td>显存墙、量化精度、并发能力</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="七、四个关键切面的深入对比"><a href="#七、四个关键切面的深入对比" class="headerlink" title="七、四个关键切面的深入对比"></a>七、四个关键切面的深入对比</h2><h3 id="7-1-容量经济学：三种不同的”货币”"><a href="#7-1-容量经济学：三种不同的”货币”" class="headerlink" title="7.1 容量经济学：三种不同的”货币”"></a>7.1 容量经济学：三种不同的”货币”</h3><ul>
+<li><strong>Strata 用显存换专家</strong>：官方给过一条罕见的经验值——<strong>每 1GB 显存约多缓存 700 个专家</strong>。24,576 个专家的模型里，12GB→16GB 的升级约等于多缓存 11% 的专家池。这是一条可以直接用于硬件规划的曲线。</li>
+<li><strong>PolyStrata 用显存换模型覆盖</strong>：它的容量单位是”整个模型”。8GB 显存能跑 13–23GB 的 35B-A3B，靠的是层与专家混合调度；但 79–114GB 的 GLM 5.3 Flash 在 8GB 上毫无办法——<strong>它的门槛在某些模型上是硬的</strong>。</li>
+<li><strong>TensorFold 路线用显存换位宽与上下文</strong>：省下的显存不给”更多模型”，而是给”更低比特 + 更长上下文”。</li>
+</ul>
+<p>三种货币不能互换，这解释了为什么三条路线不存在”谁替代谁”。</p>
+<h3 id="7-2-调度粒度：token-级-请求级-无调度"><a href="#7-2-调度粒度：token-级-请求级-无调度" class="headerlink" title="7.2 调度粒度：token 级 &#x2F; 请求级 &#x2F; 无调度"></a>7.2 调度粒度：token 级 &#x2F; 请求级 &#x2F; 无调度</h3><ul>
+<li><strong>Strata：token 级</strong>。每生成一个 token 都要决策”哪些专家在显存、哪些走 CPU、哪些经 PCIe 换入”。决策频率最高，优化空间最大，但每次决策都可能出错（缓存不命中）。</li>
+<li><strong>PolyStrata：请求级 + 模型级</strong>。它调度的是”哪个模型服务这个请求””什么时候 load&#x2F;unload”，并把资源竞争状态写进 HTTP 契约（有请求在跑返回 409、未知模型返回 404）——<strong>把并发冲突显式暴露，比静默排队诚实</strong>。</li>
+<li><strong>TensorFold 路线：几乎无调度</strong>。权重全在显存，每次前向只是纯计算；复杂度被推到编译期和量化期，运行期极简。</li>
+</ul>
+<p>一个反直觉的观察：<strong>调度粒度越细，运行期优化空间越大，但工程风险也越高</strong>。三条路线的成熟度与它们的调度复杂度大致呈反比——这不是巧合，而是”运行期智能”必然要用可靠性来换。</p>
+<h3 id="7-3-I-O-语义：三种完全不同的数据路径"><a href="#7-3-I-O-语义：三种完全不同的数据路径" class="headerlink" title="7.3 I&#x2F;O 语义：三种完全不同的数据路径"></a>7.3 I&#x2F;O 语义：三种完全不同的数据路径</h3><table>
+<thead>
+<tr>
+<th>路线</th>
+<th>热路径上的数据流</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Strata</td>
+<td>VRAM ↔ RAM 经 PCIe 换专家；SSD 只走<strong>查表</strong>（n-gram 表 <code>O_DIRECT</code> 直读，绕过页缓存）</td>
+</tr>
+<tr>
+<td>PolyStrata</td>
+<td>VRAM ↔ RAM 换层与专家，模型切换时整模型重新加载</td>
+</tr>
+<tr>
+<td>TensorFold 路线</td>
+<td><strong>无热路径 I&#x2F;O</strong>：加载完成后权重不动，只有计算</td>
+</tr>
+</tbody></table>
+<p>Strata 在 I&#x2F;O 上有个值得记一笔的细节：它的 PLE 表默认走 <code>O_DIRECT</code> 直读，因为这张表每 token 只读几行，走页缓存纯属污染缓存；同时它<strong>只告警不自动切换</strong>（SATA SSD 的直读速度只有 NVMe 的零头，同一阈值会误判）——<strong>用探针提示而不是替用户做决定，这个工程取舍很克制</strong>。</p>
+<h3 id="7-4-抽象断点：为什么三条路线都挂在一个-v1-上"><a href="#7-4-抽象断点：为什么三条路线都挂在一个-v1-上" class="headerlink" title="7.4 抽象断点：为什么三条路线都挂在一个 /v1 上"></a>7.4 抽象断点：为什么三条路线都挂在一个 <code>/v1</code> 上</h3><p>Strata 的桌面 App、PolyStrata 的服务、TensorFold 路线的运行时，对外暴露的都是 <strong>OpenAI 兼容 API</strong>（PolyStrata 还额外兼容 Anthropic 协议）。</p>
+<p>这意味着上层应用——Claude Code、Cursor、各类 Agent 框架——<strong>完全不需要知道底层用的是哪条路线</strong>。它只看到一个 <code>/v1/chat/completions</code>。</p>
+<p>这才是本地推理生态真正的分水岭：<strong>引擎之间打生打死，但接口统一在 <code>/v1</code> 上，所以上层应用可以毫无代价地换引擎</strong>。谁的实现更好，用户换一行 base URL 就能验证。</p>
+<hr>
+<h2 id="八、性能与代价：公开数据能说明什么"><a href="#八、性能与代价：公开数据能说明什么" class="headerlink" title="八、性能与代价：公开数据能说明什么"></a>八、性能与代价：公开数据能说明什么</h2><p>三条路线的公开数据（各项目 README 自测，注意<strong>不可直接横向比较</strong>——模型不同、硬件不同）：</p>
+<table>
+<thead>
+<tr>
+<th>路线</th>
+<th>典型配置</th>
+<th>输出速度</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Strata</td>
+<td>Qwen3.8-Flash-Next（IQ2_XS），12GB 显存 + 64GB 内存</td>
+<td>79 token&#x2F;s（32K 提示读取 2,090 token&#x2F;s）</td>
+<td>唯一能用这点显存跑 125B 的路线</td>
+</tr>
+<tr>
+<td>Strata（巨模型）</td>
+<td>DeepSeek V4.1-Flash 级模型，显存不足需溢到 SSD</td>
+<td>个位数 token&#x2F;s</td>
+<td>溢出到 SSD 的代价</td>
+</tr>
+<tr>
+<td>PolyStrata</td>
+<td>Qwen3.6-35B-A3B，8GB 显存笔记本</td>
+<td>94–100 token&#x2F;s</td>
+<td>弱硬件也能跑</td>
+</tr>
+<tr>
+<td>PolyStrata</td>
+<td>同一模型，RTX 5090 32GB</td>
+<td>394–395 token&#x2F;s</td>
+<td>桌面卡上限</td>
+</tr>
+<tr>
+<td>PolyStrata</td>
+<td>GLM 5.3 Flash（80GB+ 级）</td>
+<td>59–66 token&#x2F;s（需 32GB 显存）</td>
+<td>8GB 卡上<strong>跑不了</strong>，不是慢</td>
+</tr>
+<tr>
+<td>TensorFold 路线</td>
+<td>27B 级模型 4bit，单张高端卡全驻留</td>
+<td>数百 token&#x2F;s 量级</td>
+<td>全驻留的红利，但模型档位受限</td>
+</tr>
+</tbody></table>
+<p><strong>从这张表能读出三个非直觉结论：</strong></p>
+<ol>
+<li><strong>“能不能跑”和”跑多快”是两个不同的问题</strong>。Strata 在 12GB 上跑 125B 靠的是”慢一点也要跑起来”；PolyStrata 的 GLM 在 8GB 上是”根本跑不了”。前者是连续降级，后者是阶跃拒绝——<strong>选型时先判断自己面对的是哪一种约束</strong>。</li>
+<li><strong>显存的价值不在容量，而在”让多少数据不必落到慢介质上”</strong>。同一路线下从 12GB 换到 32GB，收益不是线性的，而是取决于命中率曲线的陡峭段在哪。</li>
+<li><strong>同模型跨引擎的差距可以远大于同引擎跨硬件的差距</strong>。这意味着”加钱换卡”和”换个引擎”是同一预算下的两个竞争选项，而后者往往被忽略。</li>
+</ol>
+<hr>
+<h2 id="九、风险与坑：三条路线各自的失败模式"><a href="#九、风险与坑：三条路线各自的失败模式" class="headerlink" title="九、风险与坑：三条路线各自的失败模式"></a>九、风险与坑：三条路线各自的失败模式</h2><h3 id="Strata-的失败模式"><a href="#Strata-的失败模式" class="headerlink" title="Strata 的失败模式"></a>Strata 的失败模式</h3><table>
+<thead>
+<tr>
+<th>风险</th>
+<th>实情</th>
+<th>应对</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>SSD 寿命</strong></td>
+<td>常被高估。主线设计里 SSD 只承担查表，读放大远大于写放大</td>
+<td>不必当主要顾虑，但也别在低速 SATA 盘上跑</td>
+</tr>
+<tr>
+<td><strong>PCIe &#x2F; 内存带宽</strong></td>
+<td>才是真正的热路径瓶颈：专家换入换出全靠总线</td>
+<td>双通道高频内存、直连 PCIe 通道</td>
+</tr>
+<tr>
+<td><strong>缓存命中率</strong></td>
+<td>话题越分散，命中率越低，速度掉得越快</td>
+<td>固定用途（如只写代码）收益最大</td>
+</tr>
+<tr>
+<td><strong>量化质量</strong></td>
+<td>2bit 级的激进量化的确伤精度</td>
+<td>精度敏感场景别省那点显存</td>
+</tr>
+</tbody></table>
+<h3 id="PolyStrata-的失败模式"><a href="#PolyStrata-的失败模式" class="headerlink" title="PolyStrata 的失败模式"></a>PolyStrata 的失败模式</h3><table>
+<thead>
+<tr>
+<th>风险</th>
+<th>实情</th>
+<th>应对</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>上游分叉维护</strong></td>
+<td>双引擎意味着两条代码路径，上游更新要跟两次</td>
+<td>关注它的上游同步节奏</td>
+</tr>
+<tr>
+<td><strong>后端适配矩阵</strong></td>
+<td>模型 × 显卡 × 操作系统 的组合爆炸，总有些组合是实验性的</td>
+<td>用官方标注”已验证”的组合</td>
+</tr>
+<tr>
+<td><strong>大模型硬门槛</strong></td>
+<td>80GB 级模型在 8GB 卡上不是慢，是不可用</td>
+<td>先确认目标模型的实际门槛</td>
+</tr>
+</tbody></table>
+<h3 id="TensorFold-路线的失败模式"><a href="#TensorFold-路线的失败模式" class="headerlink" title="TensorFold 路线的失败模式"></a>TensorFold 路线的失败模式</h3><table>
+<thead>
+<tr>
+<th>风险</th>
+<th>实情</th>
+<th>应对</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>显存墙是阶跃的</strong></td>
+<td>模型压不进显存就直接不可用，没有降速选项</td>
+<td>按最坏情况（最长上下文）算显存</td>
+</tr>
+<tr>
+<td><strong>量化精度</strong></td>
+<td>4bit affine 对长尾知识与精确推理有可感损失</td>
+<td>高精度任务上更高位宽或换路线</td>
+</tr>
+<tr>
+<td><strong>版本敏感</strong></td>
+<td>引擎迭代快，同权重不同版本性能差异明显</td>
+<td>锁定版本，别在生产环境追新</td>
+</tr>
+<tr>
+<td><strong>并发弱</strong></td>
+<td>单卡单模型，多请求只能排队</td>
+<td>多人场景应选服务层方案</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="十、取证与安全视角"><a href="#十、取证与安全视角" class="headerlink" title="十、取证与安全视角"></a>十、取证与安全视角</h2><p>本地推理在取证与安全场景里有独特价值，也有独特的坑：</p>
+<ol>
+<li><strong>数据不出机</strong>——这是本地化最硬的价值。模型权重、提示词、对话记录全在本地，没有第三方日志。但反过来，<strong>本机日志就是唯一证据来源</strong>，必须确保保留。</li>
+<li><strong>模型来源可验证</strong>——权重文件应当能追溯（哈希或版本锁定）。一把”来历不明的 GGUF”在取证语境里是不可信的：量化过程本身可能被篡改。</li>
+<li><strong>推理结果不完全可复现</strong>——同一模型在不同引擎、不同量化、不同硬件上输出可能有细微差异。<strong>取证报告里必须写清硬件、引擎版本、量化位宽与 KV 格式</strong>，否则对方一句”换台机器就不一样”就能质疑。</li>
+<li><strong>本地服务默认无鉴权</strong>——几乎所有本地推理服务默认监听回环地址、不带鉴权。一旦为了”让同事也能用”改成对外监听，就是一个任何人都能读你对话历史的服务。这在实验室和内网都是常见事故。</li>
+<li><strong>智能体层的越权风险</strong>——如果上层接了编程智能体，它能读文件、跑命令。在取证机上部署智能体，必须假设它可能动到检材：<strong>检材只读挂载，工作副本另放，工具调用单独落日志</strong>。</li>
+</ol>
+<hr>
+<h2 id="十一、选型建议（按场景）"><a href="#十一、选型建议（按场景）" class="headerlink" title="十一、选型建议（按场景）"></a>十一、选型建议（按场景）</h2><table>
+<thead>
+<tr>
+<th>你的场景</th>
+<th>选哪条路线</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>显存 12–16GB，想跑 100B+ 级 MoE</td>
+<td>Strata</td>
+<td>唯一能在这一档显存上跑起来的方案</td>
+</tr>
+<tr>
+<td>显存 32GB 以上，只要单模型极速</td>
+<td>TensorFold 路线</td>
+<td>全驻留无调度开销</td>
+</tr>
+<tr>
+<td>需要同时提供多个模型&#x2F;多个协议</td>
+<td>PolyStrata</td>
+<td>一个端点、双协议、热切换</td>
+</tr>
+<tr>
+<td>8GB 笔记本想跑 30B 级</td>
+<td>PolyStrata</td>
+<td>硬件适配做得最细</td>
+</tr>
+<tr>
+<td>需要长上下文（200K+）</td>
+<td>看 KV 量化与缓存策略，首选全驻留路线</td>
+<td>长上下文的瓶颈在 KV，不在权重</td>
+</tr>
+<tr>
+<td>精度敏感（审计、取证、法律）</td>
+<td>更高位宽 + 可复现环境</td>
+<td>别为了速度牺牲可复现性</td>
+</tr>
+<tr>
+<td>多人共用</td>
+<td>PolyStrata 或云端</td>
+<td>单卡单模型路线做不到</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="十二、口径声明"><a href="#十二、口径声明" class="headerlink" title="十二、口径声明"></a>十二、口径声明</h2><ul>
+<li>本文只讨论<strong>公开项目的架构原理</strong>，不包含任何具体部署参数、内网地址或环境配置。</li>
+<li>文中所有速度数字均来自各项目公开 README 的自测，<strong>不同模型、不同硬件之间不可直接横向比较</strong>。</li>
+</ul>
+<hr>
+<h2 id="十三、参考资料"><a href="#十三、参考资料" class="headerlink" title="十三、参考资料"></a>十三、参考资料</h2><p><strong>开源项目</strong></p>
+<ul>
+<li><code>Niko1221/Strata</code>（MIT）：README 与 <code>docs/HOW_IT_WORKS.md</code>（专家缓存、分层、投机解码）</li>
+<li><code>VecSzn/PolyStrata</code>（MIT，基于 Strata）：中英文 README、<code>docs/DETAILS.md</code>、<code>docs/HOW_IT_WORKS.md</code></li>
+<li><code>ggml-org/llama.cpp</code>：GGUF 量化与 K-quant 体系</li>
+</ul>
+<p><strong>背景论文</strong></p>
+<ul>
+<li>Kwon et al., <em>Strata: A Cross Media File System</em>, SOSP 2017 —— <strong>同名不同物</strong>，存储领域的跨介质文件系统，与推理引擎 Strata 无关，检索时注意区分</li>
+</ul>
+<hr>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>把三条路线摆在同一张表上之后，最值得记住的不是”哪个最好”，而是它们各自证明了什么：</p>
+<p><strong>Strata 证明了容量问题可以用分层 + 并行缓解，但前提是——你必须清楚哪部分数据能容忍慢介质。把查表放 SSD 是妙笔，把专家权重放 SSD 是灾难。</strong></p>
+<p><strong>PolyStrata 证明了”广度”本身就是一种架构能力，而”礼貌分叉”（难的部分不动上游）是 fork 生态能长期活下去的关键。</strong></p>
+<p><strong>TensorFold 路线证明了延迟是可以被买回来的——只要你放弃容量。而且它提醒了一件事：引擎选择对性能的影响，常常比同价位换硬件更大。</strong></p>
+<p>三条合起来是一句话：<strong>没有最优架构，只有你选择牺牲哪一维，以及这个牺牲是否被清楚地写进文档。</strong></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://FighterGodNemo.github.io">琉璃幻彩</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://fightergodnemo.github.io/2026/11/11/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Strata%20PolyStrata%20%E4%B8%8E%20TensorFold%20%E4%B8%89%E8%B7%AF%E7%BA%BF%E6%9E%B6%E6%9E%84%E5%AF%B9%E6%AF%94/">https://fightergodnemo.github.io/2026/11/11/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Strata%20PolyStrata%20%E4%B8%8E%20TensorFold%20%E4%B8%89%E8%B7%AF%E7%BA%BF%E6%9E%B6%E6%9E%84%E5%AF%B9%E6%AF%94/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://FighterGodNemo.github.io" target="_blank">琉璃幻彩的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%9C%AC%E5%9C%B0%E5%A4%A7%E6%A8%A1%E5%9E%8B/">本地大模型</a><a class="post-meta__tags" href="/tags/Strata/">Strata</a><a class="post-meta__tags" href="/tags/PolyStrata/">PolyStrata</a><a class="post-meta__tags" href="/tags/TensorFold/">TensorFold</a><a class="post-meta__tags" href="/tags/MoE/">MoE</a><a class="post-meta__tags" href="/tags/%E6%9E%B6%E6%9E%84%E5%AF%B9%E6%AF%94/">架构对比</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/10/31/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Windows%20%E4%BF%9D%E7%95%99%E8%AE%BE%E5%A4%87%E5%90%8D%20nul%20%E6%B7%B1%E5%9D%91%E5%A4%8D%E7%9B%98/" title="Windows 保留设备名 nul 深坑复盘"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Windows 保留设备名 nul 深坑复盘</div></div><div class="info-2"><div class="info-item-1"> 一次删目录失败，最后牵出「AI agent 在 Windows 上用 CMD 语法写 bash 命令」这个系统性问题。真正值得注意的是：这个坑会让整棵目录树的备份与删除静默失效，而常规排查手段全都看不见它。   1. 一句话结论Wi...</div></div></div></a><a class="pagination-related" href="/2026/08/02/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/SDK%E6%98%AF%E4%BB%80%E4%B9%88/" title="SDK 是什么"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">SDK 是什么</div></div><div class="info-2"><div class="info-item-1">Software Development Kit，软件开发工具包就是微软官方给你的一箱子工具 + 说明书，让你写 Windows 程序不用从零造轮子。 </div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/11/07/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Strata%E5%88%86%E5%B1%82%E6%8E%A8%E7%90%86%E5%BC%95%E6%93%8E%2012GB%E6%98%BE%E5%AD%98%E8%B7%91%E9%80%9A125B%E5%A4%A7%E6%A8%A1%E5%9E%8B/" title="Strata 分层推理引擎研究：12GB 显存如何跑通 125B 大模型"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-11-24</div><div class="info-item-2">Strata 分层推理引擎研究：12GB 显存如何跑通 125B 大模型</div></div><div class="info-2"><div class="info-item-1">大模型本地部署的第一道墙从来不是算力，是显存。125B 参数的模型即使压到 4bit 量化，权重体积也有 60GB 上下，而主流游戏卡的显存停留在 12–24GB——传统「全量驻留显存」的推理方式下，这条墙没有绕法。最近开源社区火起来...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">琉璃幻彩</div><div class="author-info-description">琉璃幻彩的个人博客，记录 CTF 夺旗赛、电子取证、网络安全工具与日常技术研究。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">276</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">225</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">40</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FighterGodNemo"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/FighterGodNemo" title="Github" target="_blank"><i class="fab fa-github"></i></a><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="微信"><i class="fab fa-weixin"></i></a><div class="qr-code-popup"><img src="/img/qrcode/wechat-qr.png" alt="微信二维码"/ loading='lazy'></div></div><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="QQ"><i class="fab fa-qq"></i></a><div class="qr-code-popup"><img src="/img/qrcode/qq-qr.png" alt="QQ二维码"/ loading='lazy'></div></div><div class="copy-text-wrapper"><a class="social-icon" href="javascript:void(0)" title="Steam好友代码：1905706957" data-copy-text="1905706957"><i class="fab fa-steam"></i></a><div class="copy-text-popup"><h3>Steam好友代码</h3><p>1905706957</p><p class="copy-hint">点击图标复制</p></div></div><a class="social-icon" href="mailto:guliujia2233@outlook.com" title="Email" target="_blank"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">热爱 CTF 和 Forensic 的网安人一枚～
+欢迎各位大佬交流点评！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E4%B8%89%E6%9D%A1%E8%B7%AF%E7%BA%BF%E7%9A%84%E7%A0%94%E7%A9%B6%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.</span> <span class="toc-text">一、三条路线的研究对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%B8%80%E5%8F%A5%E8%AF%9D%E7%BB%93%E8%AE%BA"><span class="toc-number">2.</span> <span class="toc-text">二、一句话结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81Strata%EF%BC%9A%E6%8A%8A%E2%80%9D%E6%94%BE%E4%B8%8D%E4%B8%8B%E2%80%9D%E5%8F%98%E6%88%90%E2%80%9D%E4%B8%8D%E9%9C%80%E8%A6%81%E5%90%8C%E6%97%B6%E6%94%BE%E4%B8%8B%E2%80%9D"><span class="toc-number">3.</span> <span class="toc-text">三、Strata：把”放不下”变成”不需要同时放下”</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E9%97%AE%E9%A2%98%E5%AE%9A%E4%B9%89"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 问题定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E4%B8%89%E7%BA%A7%E5%AD%98%E5%82%A8%E5%88%86%E5%B1%82"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 三级存储分层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-CPU-%E4%B8%8D%E6%98%AF%E9%85%8D%E8%A7%92%EF%BC%9A%E7%9C%9F%E5%B9%B6%E8%A1%8C%E8%80%8C%E9%9D%9E%E9%99%8D%E7%BA%A7%E5%9B%9E%E9%80%80"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 CPU 不是配角：真并行而非降级回退</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E4%B8%89%E4%B8%AA%E4%B8%8D%E9%82%A3%E4%B9%88%E6%98%BE%E7%9C%BC%E4%BD%86%E5%BE%88%E5%AE%9E%E7%94%A8%E7%9A%84%E6%9C%BA%E5%88%B6"><span class="toc-number">3.4.</span> <span class="toc-text">3.4 三个不那么显眼但很实用的机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-%E8%A6%86%E7%9B%96%E9%9D%A2%EF%BC%88%E6%88%90%E7%86%9F%E5%BA%A6%E8%BF%9C%E8%B6%85%E2%80%9D%E7%8E%A9%E5%85%B7%E2%80%9D%EF%BC%89"><span class="toc-number">3.5.</span> <span class="toc-text">3.5 覆盖面（成熟度远超”玩具”）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81PolyStrata%EF%BC%9A%E4%BB%8E%E2%80%9D%E4%B8%80%E4%B8%AA%E5%BC%95%E6%93%8E%E2%80%9D%E5%88%B0%E2%80%9D%E4%B8%80%E4%B8%AA%E5%BC%95%E6%93%8E%E7%9F%A9%E9%98%B5%E2%80%9D"><span class="toc-number">4.</span> <span class="toc-text">四、PolyStrata：从”一个引擎”到”一个引擎矩阵”</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E6%9E%B6%E6%9E%84%E4%B8%8A%E7%9A%84%E7%9C%9F%E5%AE%9E%E5%8F%98%E5%8C%96"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 架构上的真实变化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E8%A6%86%E7%9B%96%E9%9D%A2%E7%9F%A9%E9%98%B5%EF%BC%88%E8%BF%99%E6%89%8D%E6%98%AF%E5%AE%83%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%BB%E5%BC%A0%EF%BC%89"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 覆盖面矩阵（这才是它的架构主张）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E6%9C%8D%E5%8A%A1%E5%B1%82%E6%89%8D%E6%98%AF%E5%AE%83%E7%9A%84%E7%9C%9F%E8%BA%AB%E4%BB%BD"><span class="toc-number">4.3.</span> <span class="toc-text">4.3 服务层才是它的真身份</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-%E5%B7%A5%E7%A8%8B%E7%BB%86%E8%8A%82%EF%BC%9A%E4%B8%BA%E2%80%9D%E5%BC%B1%E7%A1%AC%E4%BB%B6%E2%80%9D%E5%81%9A%E7%9A%84%E9%80%82%E9%85%8D"><span class="toc-number">4.4.</span> <span class="toc-text">4.4 工程细节：为”弱硬件”做的适配</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E7%AC%AC%E4%B8%89%E6%9D%A1%E8%B7%AF%E7%BA%BF%EF%BC%9A%E5%85%A8%E9%A9%BB%E7%95%99-%E4%BD%8E%E6%AF%94%E7%89%B9%E9%87%8F%E5%8C%96"><span class="toc-number">5.</span> <span class="toc-text">五、第三条路线：全驻留 + 低比特量化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E5%AE%83%E5%92%8C%E5%89%8D%E4%B8%A4%E6%9D%A1%E8%B7%AF%E7%BA%BF%E7%9A%84%E4%BD%8D%E7%BD%AE%E5%85%B3%E7%B3%BB"><span class="toc-number">5.1.</span> <span class="toc-text">5.1 它和前两条路线的位置关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E4%B8%89%E4%B8%AA%E6%8A%80%E6%9C%AF%E6%89%8B%E6%AE%B5"><span class="toc-number">5.2.</span> <span class="toc-text">5.2 三个技术手段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E4%B8%8E-llama-cpp-GGUF-%E8%B7%AF%E7%BA%BF%E7%9A%84%E6%9E%B6%E6%9E%84%E5%B7%AE%E5%BC%82"><span class="toc-number">5.3.</span> <span class="toc-text">5.3 与 llama.cpp &#x2F; GGUF 路线的架构差异</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-%E4%BB%A3%E4%BB%B7%E4%B8%8E%E7%A1%AC%E7%BA%A6%E6%9D%9F"><span class="toc-number">5.4.</span> <span class="toc-text">5.4 代价与硬约束</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%A8%AA%E5%90%91%E5%AF%B9%E6%AF%94%E6%80%BB%E8%A1%A8"><span class="toc-number">6.</span> <span class="toc-text">六、横向对比总表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E5%9B%9B%E4%B8%AA%E5%85%B3%E9%94%AE%E5%88%87%E9%9D%A2%E7%9A%84%E6%B7%B1%E5%85%A5%E5%AF%B9%E6%AF%94"><span class="toc-number">7.</span> <span class="toc-text">七、四个关键切面的深入对比</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-%E5%AE%B9%E9%87%8F%E7%BB%8F%E6%B5%8E%E5%AD%A6%EF%BC%9A%E4%B8%89%E7%A7%8D%E4%B8%8D%E5%90%8C%E7%9A%84%E2%80%9D%E8%B4%A7%E5%B8%81%E2%80%9D"><span class="toc-number">7.1.</span> <span class="toc-text">7.1 容量经济学：三种不同的”货币”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-%E8%B0%83%E5%BA%A6%E7%B2%92%E5%BA%A6%EF%BC%9Atoken-%E7%BA%A7-%E8%AF%B7%E6%B1%82%E7%BA%A7-%E6%97%A0%E8%B0%83%E5%BA%A6"><span class="toc-number">7.2.</span> <span class="toc-text">7.2 调度粒度：token 级 &#x2F; 请求级 &#x2F; 无调度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-3-I-O-%E8%AF%AD%E4%B9%89%EF%BC%9A%E4%B8%89%E7%A7%8D%E5%AE%8C%E5%85%A8%E4%B8%8D%E5%90%8C%E7%9A%84%E6%95%B0%E6%8D%AE%E8%B7%AF%E5%BE%84"><span class="toc-number">7.3.</span> <span class="toc-text">7.3 I&#x2F;O 语义：三种完全不同的数据路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-4-%E6%8A%BD%E8%B1%A1%E6%96%AD%E7%82%B9%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%89%E6%9D%A1%E8%B7%AF%E7%BA%BF%E9%83%BD%E6%8C%82%E5%9C%A8%E4%B8%80%E4%B8%AA-v1-%E4%B8%8A"><span class="toc-number">7.4.</span> <span class="toc-text">7.4 抽象断点：为什么三条路线都挂在一个 &#x2F;v1 上</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E6%80%A7%E8%83%BD%E4%B8%8E%E4%BB%A3%E4%BB%B7%EF%BC%9A%E5%85%AC%E5%BC%80%E6%95%B0%E6%8D%AE%E8%83%BD%E8%AF%B4%E6%98%8E%E4%BB%80%E4%B9%88"><span class="toc-number">8.</span> <span class="toc-text">八、性能与代价：公开数据能说明什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E9%A3%8E%E9%99%A9%E4%B8%8E%E5%9D%91%EF%BC%9A%E4%B8%89%E6%9D%A1%E8%B7%AF%E7%BA%BF%E5%90%84%E8%87%AA%E7%9A%84%E5%A4%B1%E8%B4%A5%E6%A8%A1%E5%BC%8F"><span class="toc-number">9.</span> <span class="toc-text">九、风险与坑：三条路线各自的失败模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Strata-%E7%9A%84%E5%A4%B1%E8%B4%A5%E6%A8%A1%E5%BC%8F"><span class="toc-number">9.1.</span> <span class="toc-text">Strata 的失败模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PolyStrata-%E7%9A%84%E5%A4%B1%E8%B4%A5%E6%A8%A1%E5%BC%8F"><span class="toc-number">9.2.</span> <span class="toc-text">PolyStrata 的失败模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TensorFold-%E8%B7%AF%E7%BA%BF%E7%9A%84%E5%A4%B1%E8%B4%A5%E6%A8%A1%E5%BC%8F"><span class="toc-number">9.3.</span> <span class="toc-text">TensorFold 路线的失败模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E3%80%81%E5%8F%96%E8%AF%81%E4%B8%8E%E5%AE%89%E5%85%A8%E8%A7%86%E8%A7%92"><span class="toc-number">10.</span> <span class="toc-text">十、取证与安全视角</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E4%B8%80%E3%80%81%E9%80%89%E5%9E%8B%E5%BB%BA%E8%AE%AE%EF%BC%88%E6%8C%89%E5%9C%BA%E6%99%AF%EF%BC%89"><span class="toc-number">11.</span> <span class="toc-text">十一、选型建议（按场景）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E4%BA%8C%E3%80%81%E5%8F%A3%E5%BE%84%E5%A3%B0%E6%98%8E"><span class="toc-number">12.</span> <span class="toc-text">十二、口径声明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E4%B8%89%E3%80%81%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">13.</span> <span class="toc-text">十三、参考资料</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">14.</span> <span class="toc-text">结语</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/25/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/FIC/2026FIC/" title="2026 FIC初赛">2026 FIC初赛</a><time datetime="2026-11-24T11:16:00.000Z" title="更新于 2026-11-24 11:16:00">2026-11-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/11/23/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/CTFshow/Misc/" title="无标题">无标题</a><time datetime="2026-11-24T11:01:00.000Z" title="更新于 2026-11-24 11:01:00">2026-11-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/12/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261012/" title="科技日报 2026-10-12">科技日报 2026-10-12</a><time datetime="2026-11-24T03:17:56.594Z" title="更新于 2026-11-24 03:17:56">2026-11-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/11/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261011/" title="科技日报 2026-10-11">科技日报 2026-10-11</a><time datetime="2026-11-24T03:17:56.594Z" title="更新于 2026-11-24 03:17:56">2026-11-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/13/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261013/" title="科技日报 2026-10-13">科技日报 2026-10-13</a><time datetime="2026-11-24T03:17:56.594Z" title="更新于 2026-11-24 03:17:56">2026-11-24</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 琉璃幻彩</span><span class="framework-info"><span id="busuanzi_container_site_pv">本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span><span class="footer-separator">|</span><span id="busuanzi_container_site_uv">本站访客数 <span id="busuanzi_value_site_uv"></span> 人次</span></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="https://cdn.staticfile.org/medium-zoom/1.1.0/medium-zoom.min.js"></script><script src="https://cdn.staticfile.org/instant.page/5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+  const getUtterancesTheme = theme => theme === 'dark' ? 'photon-dark' : 'github-light'
+
+  const loadUtterances = (el = document, key) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyUtterances = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const config = {
+      src: 'https://utteranc.es/client.js',
+      repo: 'FighterGodNemo/FighterGodNemo.github.io',
+      theme: getUtterancesTheme(document.documentElement.getAttribute('data-theme')),
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      'issue-term': isShuoshuo ? key : (option && option['issue-term']) || 'pathname'
+    }
+
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => ele.setAttribute(key, value))
+    el.querySelector('#utterances-wrap').appendChild(ele)
+  }
+
+  const changeUtterancesTheme = theme => {
+    const iframe = document.querySelector('#utterances-wrap iframe')
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: getUtterancesTheme(theme)
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeUtterancesTheme, 'utterances')
+
+  if (isShuoshuo) {
+    'Utterances' === 'Utterances'
+      ? window.shuoshuoComment = { loadComment: loadUtterances }
+      : window.loadOtherComment = loadUtterances
+    return
+  }
+  
+  if ('Utterances' === 'Utterances' || !false) {
+    if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+    else loadUtterances()
+  } else {
+    window.loadOtherComment = loadUtterances
+  }
+})()</script></div><script src="/js/custom.js?v=20260402-2"></script><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.staticfile.org/pjax/0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:description\"]","link[rel=\"canonical\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      true
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

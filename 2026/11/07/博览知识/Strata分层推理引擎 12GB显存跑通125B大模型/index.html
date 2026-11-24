@@ -1,0 +1,388 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Strata 分层推理引擎研究：12GB 显存如何跑通 125B 大模型 | 琉璃幻彩的博客</title><meta name="author" content="琉璃幻彩"><meta name="copyright" content="琉璃幻彩"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="大模型本地部署的第一道墙从来不是算力，是显存。125B 参数的模型即使压到 4bit 量化，权重体积也有 60GB 上下，而主流游戏卡的显存停留在 12–24GB——传统「全量驻留显存」的推理方式下，这条墙没有绕法。最近开源社区火起来的推理引擎 Strata 用一套「三级分层调度」把这堵墙拆了：12GB 显存 + 大容量内存就能跑通 1250 亿参数的 MoE 模型。本文整理它的原理、成本账，并用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Strata 分层推理引擎研究：12GB 显存如何跑通 125B 大模型">
+<meta property="og:url" content="https://fightergodnemo.github.io/2026/11/07/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Strata%E5%88%86%E5%B1%82%E6%8E%A8%E7%90%86%E5%BC%95%E6%93%8E%2012GB%E6%98%BE%E5%AD%98%E8%B7%91%E9%80%9A125B%E5%A4%A7%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:site_name" content="琉璃幻彩的博客">
+<meta property="og:description" content="大模型本地部署的第一道墙从来不是算力，是显存。125B 参数的模型即使压到 4bit 量化，权重体积也有 60GB 上下，而主流游戏卡的显存停留在 12–24GB——传统「全量驻留显存」的推理方式下，这条墙没有绕法。最近开源社区火起来的推理引擎 Strata 用一套「三级分层调度」把这堵墙拆了：12GB 显存 + 大容量内存就能跑通 1250 亿参数的 MoE 模型。本文整理它的原理、成本账，并用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fightergodnemo.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2026-11-24T03:17:56.538Z">
+<meta property="article:modified_time" content="2026-11-07T20:35:00.000Z">
+<meta property="article:author" content="琉璃幻彩">
+<meta property="article:tag" content="MoE">
+<meta property="article:tag" content="Strata">
+<meta property="article:tag" content="本地大模型">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fightergodnemo.github.io/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Strata 分层推理引擎研究：12GB 显存如何跑通 125B 大模型",
+  "url": "https://fightergodnemo.github.io/2026/11/07/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Strata%E5%88%86%E5%B1%82%E6%8E%A8%E7%90%86%E5%BC%95%E6%93%8E%2012GB%E6%98%BE%E5%AD%98%E8%B7%91%E9%80%9A125B%E5%A4%A7%E6%A8%A1%E5%9E%8B/",
+  "image": "https://fightergodnemo.github.io/img/avatar.jpg",
+  "datePublished": "2026-11-24T03:17:56.538Z",
+  "dateModified": "2026-11-07T20:35:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "琉璃幻彩",
+      "url": "https://FighterGodNemo.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="https://fightergodnemo.github.io/2026/11/07/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Strata%E5%88%86%E5%B1%82%E6%8E%A8%E7%90%86%E5%BC%95%E6%93%8E%2012GB%E6%98%BE%E5%AD%98%E8%B7%91%E9%80%9A125B%E5%A4%A7%E6%A8%A1%E5%9E%8B/index.html"><link rel="preconnect" href="https://cdn.staticfile.org"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.5.2/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.20261124031810997.json","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":150,"languages":{"author":"作者: 琉璃幻彩","link":"链接: ","source":"来源: 琉璃幻彩的博客","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'medium_zoom',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.staticfile.org/egjs-infinitegrid/4.13.0/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Strata 分层推理引擎研究：12GB 显存如何跑通 125B 大模型',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script src="/js/bg-firstpaint.js?v=20260402-2"></script><link rel="stylesheet" href="/css/custom.css?v=20261027-1"><link rel="stylesheet" href="/css/read-polish.css?v=20261030-1"><link rel="alternate" type="application/atom+xml" href="/atom.xml" title="琉璃幻彩的博客"><meta name="generator" content="Hexo 8.1.1"><meta name="keywords" content="本地大模型,Strata,MoE"></head><body><div class="bg-animation" id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">276</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">225</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">40</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/contest-radar/"><i class="fa-fw fas fa-bullseye"></i><span> 竞赛情报</span></a></div><div class="menus_item"><a class="site-page" href="/report/"><i class="fa-fw fas fa-chart-column"></i><span> 数据报告</span></a></div><div class="menus_item"><a class="site-page" href="/portfolio/"><i class="fa-fw fas fa-layer-group"></i><span> 作品集</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" data-has-custom-post-top-img="0"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">琉璃幻彩的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">Strata 分层推理引擎研究：12GB 显存如何跑通 125B 大模型</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/contest-radar/"><i class="fa-fw fas fa-bullseye"></i><span> 竞赛情报</span></a></div><div class="menus_item"><a class="site-page" href="/report/"><i class="fa-fw fas fa-chart-column"></i><span> 数据报告</span></a></div><div class="menus_item"><a class="site-page" href="/portfolio/"><i class="fa-fw fas fa-layer-group"></i><span> 作品集</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Strata 分层推理引擎研究：12GB 显存如何跑通 125B 大模型</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-11-24T03:17:56.538Z" title="发表于 2026-11-24 03:17:56">2026-11-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-11-07T20:35:00.000Z" title="更新于 2026-11-07 20:35:00">2026-11-07</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/">博览知识</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">2.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span></div></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><div id="post-outdate-notice" data="{&quot;limitDay&quot;:365,&quot;messagePrev&quot;:&quot;本文最后更新于&quot;,&quot;messageNext&quot;:&quot;天前，内容可能已过时，请以最新官方资料为准。&quot;,&quot;postUpdate&quot;:&quot;2026-11-07 20:35:00&quot;}" hidden></div><p>大模型本地部署的第一道墙从来不是算力，是显存。125B 参数的模型即使压到 4bit 量化，权重体积也有 60GB 上下，而主流游戏卡的显存停留在 12–24GB——传统「全量驻留显存」的推理方式下，这条墙没有绕法。最近开源社区火起来的推理引擎 <strong>Strata</strong> 用一套「三级分层调度」把这堵墙拆了：12GB 显存 + 大容量内存就能跑通 1250 亿参数的 MoE 模型。本文整理它的原理、成本账，并用我本机的 PolyStrata 运行快照做一次实证对照。</p>
+<h2 id="一句话结论"><a href="#一句话结论" class="headerlink" title="一句话结论"></a>一句话结论</h2><p>Strata 不是新模型，是「模型运行器」（MIT 协议，Windows&#x2F;Linux，N 卡 A 卡，兼容 OpenAI 格式 API）。它的核心动作只有一个：<strong>把「天价大显存」的需求，降级成「相对便宜的大内存」</strong>——容量交给内存，速度交给显存。代价是 64GB 内存起步，以及更激进的量化位宽。</p>
+<h2 id="一、问题：显存天堑"><a href="#一、问题：显存天堑" class="headerlink" title="一、问题：显存天堑"></a>一、问题：显存天堑</h2><p>传统纯显存推理要求全部权重驻留显存。模型越大显存需求越高，而显存的边际成本是指数级的：同核心下显存翻倍，价格往往翻几倍。前两年 12GB 显存只能摸 14B 模型，70B 要 24–32GB 旗舰卡，100B 以上基本是专业计算卡或双三卡并联的领域。</p>
+<h2 id="二、Strata-是什么"><a href="#二、Strata-是什么" class="headerlink" title="二、Strata 是什么"></a>二、Strata 是什么</h2><ul>
+<li>定位：模型运行器&#x2F;推理引擎，本身不产出内容，负责把训练好的模型装进你的电脑并调度硬件推理；</li>
+<li>协议与平台：MIT 开源，Windows 与 Linux，NVIDIA&#x2F;AMD 双支持；</li>
+<li>接口：自带 OpenAI 格式 API，常规 AI 插件、知识库、Coding Agent 可无缝对接；</li>
+<li>模型覆盖：对 <strong>Qwen3.8-Flash-Next（125B MoE）</strong> 优化最成熟，支持 DeepSeek V4.1 Flash 等主流 MoE，兼容常规全参数模型。</li>
+</ul>
+<h2 id="三、核心原理：MoE-稀疏激活-三级分层调度"><a href="#三、核心原理：MoE-稀疏激活-三级分层调度" class="headerlink" title="三、核心原理：MoE 稀疏激活 + 三级分层调度"></a>三、核心原理：MoE 稀疏激活 + 三级分层调度</h2><h3 id="MoE：总参数-125B，每次当班只有-6B"><a href="#MoE：总参数-125B，每次当班只有-6B" class="headerlink" title="MoE：总参数 125B，每次当班只有 ~6B"></a>MoE：总参数 125B，每次当班只有 ~6B</h3><p>MoE（混合专家）模型的特点是「人多但不一起上」：125B 是总参数量，相当于公司总人数；每生成一个 token，真正前向计算的只有约 6B 激活参数——只叫当班专家出来干活。这个稀疏性是 everything 的前提：<strong>不需要把所有专家都放进显存，只需要把正在当班的放进显存</strong>。</p>
+<h3 id="三级仓库"><a href="#三级仓库" class="headerlink" title="三级仓库"></a>三级仓库</h3><p>Strata 把推理拆成三级分层调度，像三级仓库：</p>
+<table>
+<thead>
+<tr>
+<th>层级</th>
+<th>角色</th>
+<th>放什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>显存</td>
+<td>前台工作台</td>
+<td>当前当班专家的权重 + 对话上下文（KV 缓存）</td>
+</tr>
+<tr>
+<td>系统内存</td>
+<td>中间大仓库</td>
+<td>全部模型权重，所有专家待命，随叫随到</td>
+</tr>
+<tr>
+<td>SSD</td>
+<td>后方库房</td>
+<td>模型安装包；开机时把模型搬进内存，内存吃紧时兜底</td>
+</tr>
+</tbody></table>
+<p>再配一套<strong>专家动态缓存</strong>：高频被调用的专家常驻显存，冷门的放回内存，需要时经 PCIe 总线换页调回。加上 NVFP4 等低比特量化进一步压缩权重体积，最终实现「小显存跑大模型」。</p>
+<h2 id="四、成本经济学：换一种东西贵"><a href="#四、成本经济学：换一种东西贵" class="headerlink" title="四、成本经济学：换一种东西贵"></a>四、成本经济学：换一种东西贵</h2><p>这才是 Strata 真正的杀伤点——它改写了「跑大模型」的成本结构。原文按 2026 年 11 月消费级行情（RTX 4090 24GB 约 25000 元&#x2F;张、RTX 5070 12GB 约 9000 元&#x2F;张、128GB DDR5 约 12000 元）算了三档账：</p>
+<ul>
+<li><strong>70B 级</strong>：Strata 方案约为传统纯显存方案的 <strong>1&#x2F;3</strong> 成本；</li>
+<li><strong>125B 级</strong>：从「两三张旗舰卡」降到「一张主流卡 + 大内存」；</li>
+<li><strong>500B+ 级（DeepSeek V4.1 Flash）</strong>：从几十万的专业算力集群降到单张消费卡 + 大内存，<strong>差出一个数量级</strong>——普通玩家第一次够得到超大模型。</li>
+</ul>
+<p>客观的门槛依然在：64GB 内存是起步线，且当前内存行情不便宜。但对比「必须买大显存旗舰卡」，百亿级模型的入场券已从奢侈品降到「已有 12GB 卡的玩家花几千升级内存即可」。</p>
+<h2 id="五、速度对照：离线追上云端"><a href="#五、速度对照：离线追上云端" class="headerlink" title="五、速度对照：离线追上云端"></a>五、速度对照：离线追上云端</h2><p>以 Qwen3.8-Flash-Next 125B 为基准（数据来自 Strata 官方与社区公开实测，2026-10），原文给出四档常见配置的生成速度，覆盖 N&#x2F;A 双平台。作为参照，云端通用大模型 API 的输出速度大多在 <strong>30–60 tokens&#x2F;s</strong>——也就是说一张 RTX 5070 或 RX 7900 GRE 级别的卡，本地就能跑出接近云端的体验，且完全离线、无按字计费。</p>
+<p>本机相关的旁证：Strata 的 README 里，<strong>RTX 5090 跑 Qwen3.6-35B-A3B 实测 394–395 tokens&#x2F;s</strong>，8GB 笔记本卡也有 94–100 tokens&#x2F;s。</p>
+<h2 id="六、本机实证：PolyStrata-运行快照"><a href="#六、本机实证：PolyStrata-运行快照" class="headerlink" title="六、本机实证：PolyStrata 运行快照"></a>六、本机实证：PolyStrata 运行快照</h2><p>我本机通过 <strong>PolyStrata</strong>（<code>D:\PolyStrata</code>）跑同一家族模型。PolyStrata 是 Strata 的发行版：其 Qwen3.8-Flash-Next 引擎即 Strata 原版（README 原话 “Its engine is the Strata project’s, unchanged”），MIT 协议（Niko1221 and the Strata contributors）。硬件为 RTX 5090 Laptop 24GB + 64GB 内存——正好压着原文说的「64GB 起步线」。</p>
+<p>运行 <code>Qwen3.8-Flash-Next GSQ-RCO IQ2_XS</code>（64GB，双分片 GGUF）时，引擎的运行时元数据（<code>met.json</code>）是一份三级分层的活体样本：</p>
+<table>
+<thead>
+<tr>
+<th>运行时参数</th>
+<th>值</th>
+<th>解读</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>max_context</code></td>
+<td>131072</td>
+<td>128K 上下文</td>
+</tr>
+<tr>
+<td><code>kv</code></td>
+<td>int8</td>
+<td>KV 缓存 8bit 压缩</td>
+</tr>
+<tr>
+<td><code>expert_cache_mib</code></td>
+<td><strong>17104（≈16.7GB）</strong></td>
+<td>显存中常驻的专家缓存</td>
+</tr>
+<tr>
+<td><code>expert_slots</code></td>
+<td>12432</td>
+<td>专家槽位总数</td>
+</tr>
+<tr>
+<td><code>vram_free_mib</code></td>
+<td><strong>787</strong></td>
+<td>24GB 显存几乎吃满</td>
+</tr>
+<tr>
+<td><code>arena_mib</code></td>
+<td>33812</td>
+<td>内存侧工作区 ≈33GB</td>
+</tr>
+<tr>
+<td><code>spec</code> &#x2F; <code>mtp_max</code> &#x2F; <code>lookup</code></td>
+<td>6 &#x2F; 4 &#x2F; 3</td>
+<td>投机解码（MTP 多 token 预测）配置</td>
+</tr>
+<tr>
+<td><code>pool_workers</code></td>
+<td>15</td>
+<td>换页&#x2F;预取工作线程</td>
+</tr>
+</tbody></table>
+<p>对照原理就很好懂了：24GB 显存 &#x3D; ~16.7GB 常驻专家缓存 + KV 缓存与计算缓冲（几乎无余量）；125B 的全部权重中放不下的部分，靠 64GB 内存分页供应——这正是「显存只管快、内存只管装」的落地形态。值得一记的是：<strong>本机 125B 用的是 IQ2_XS（2bit 级）量化，不是原文暗示的「主流 4bit」</strong>——64GB 内存 + 24GB 显存的组合跑 4bit 的 125B（约 60GB 权重 + KV + 系统）是贴着极限的，2bit 是这台机器的现实解，质量折损要自己掂量。</p>
+<h2 id="七、批判性阅读：把技术事实和商单话术分开"><a href="#七、批判性阅读：把技术事实和商单话术分开" class="headerlink" title="七、批判性阅读：把技术事实和商单话术分开"></a>七、批判性阅读：把技术事实和商单话术分开</h2><p>原文（《本地AI进入玩家级时代》，见文末链接）前八章技术密度不错，但<strong>第九章起是华硕四大系列主板导购</strong>，整体是一篇厂商软文。吸收时建议：</p>
+<ol>
+<li><strong>三级分层、专家缓存、带宽公式</strong>这些技术描述可信（与我本机 <code>met.json</code> 的实际运行参数吻合）；</li>
+<li><strong>成本表里的价格</strong>是 2026-11 参考行情，随渠道波动，且只算了显卡&#x2F;内存，没算主板 CPU SSD——好在那几样的升级成本远低于换大显存卡，结论方向不变；</li>
+<li><strong>「速度追上云端」只对吞吐成立</strong>：本地平均 tokens&#x2F;s 可以很高，但专家换页会带来首 token 延迟与偶发抖动，长上下文下的体验差距要实测才知道；</li>
+<li><strong>量化位宽要诚实</strong>：宣传话术里的「125B 在 12GB 卡上跑通」和我实际的「IQ2_XS 2bit 级」是两回事，同等显存预算下模型越小、量化越高、质量越好，这是自己选型时要做的取舍。</li>
+</ol>
+<h2 id="八、硬件选购原则（中性提炼）"><a href="#八、硬件选购原则（中性提炼）" class="headerlink" title="八、硬件选购原则（中性提炼）"></a>八、硬件选购原则（中性提炼）</h2><ul>
+<li><strong>显存</strong>：容量决定能不能跑，带宽决定跑多快。推理是带宽密集型负载（每出一个字都要完整读一遍当班权重），显存带宽 &#x3D; 等效频率 × 位宽 ÷ 8；同容量下优先高带宽（GDDR6X 比 GDDR6 高 20–30%），同预算下优先更大显存（AMD 在同价位常给更多显存，能驻留更多专家、提高缓存命中）。</li>
+<li><strong>内存</strong>：模型真正的「家」。125B 起步 64GB，想全常驻建议 128GB；频率和双通道直接影响专家换页延迟，主板内存槽位&#x2F;单条容量&#x2F;超频能力决定上限。</li>
+<li><strong>SSD &#x2F; CPU &#x2F; PCIe</strong>：单个 125B 量化包 70–128GB，2TB 起步 4TB 从容；选 PCIe 4.0 以上 NVMe；CPU 不必旗舰，但内存控制器与 PCIe 通道数不能弱（它是仓库管理员）；PCIe 5.0 带宽翻倍，分层调度延迟更低。</li>
+<li><strong>双卡</strong>：Strata 用 Layer Split 分层接力，不吃 NVLink，普通 PCIe 即可。收益不是速度翻倍，是<strong>凑容量</strong>：更多专家缓存、更大 KV、更长上下文、更多并发。前提是主板支持 PCIe x8+x8 拆分。</li>
+</ul>
+<h2 id="九、参考"><a href="#九、参考" class="headerlink" title="九、参考"></a>九、参考</h2><ul>
+<li>原文：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/Tm3lVZKyP9xVISWzR65Nmw">本地AI进入玩家级时代！利用Strata让12GB显存跑通125B大模型（微信公众号）</a>——注意第九章起为华硕主板商业推广内容</li>
+<li>Strata 项目：<a target="_blank" rel="noopener" href="https://github.com/Niko1221/Strata">github.com&#x2F;Niko1221&#x2F;Strata</a>（MIT）</li>
+<li>本机发行版：PolyStrata（<code>D:\PolyStrata</code>，Qwen3.8-Flash-Next 引擎为 Strata 原版；模型与运行时数据在 <code>D:\PolyStrata-data</code>）</li>
+<li>本机运行时快照来源：<code>D:\PolyStrata-data\met.json</code>（文中表格所有数值的出处）</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://FighterGodNemo.github.io">琉璃幻彩</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://fightergodnemo.github.io/2026/11/07/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Strata%E5%88%86%E5%B1%82%E6%8E%A8%E7%90%86%E5%BC%95%E6%93%8E%2012GB%E6%98%BE%E5%AD%98%E8%B7%91%E9%80%9A125B%E5%A4%A7%E6%A8%A1%E5%9E%8B/">https://fightergodnemo.github.io/2026/11/07/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Strata%E5%88%86%E5%B1%82%E6%8E%A8%E7%90%86%E5%BC%95%E6%93%8E%2012GB%E6%98%BE%E5%AD%98%E8%B7%91%E9%80%9A125B%E5%A4%A7%E6%A8%A1%E5%9E%8B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://FighterGodNemo.github.io" target="_blank">琉璃幻彩的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%9C%AC%E5%9C%B0%E5%A4%A7%E6%A8%A1%E5%9E%8B/">本地大模型</a><a class="post-meta__tags" href="/tags/Strata/">Strata</a><a class="post-meta__tags" href="/tags/MoE/">MoE</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/09/17/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/%E3%80%8APython%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%9F%BA%E7%A1%80%E3%80%8B/" title="《Python程序设计基础》"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">《Python程序设计基础》</div></div><div class="info-2"><div class="info-item-1">Python规范：（1）严格缩进，用于体现代码逻辑从属关系。一般4个空格作为缩进单位。（2）每个import语句只导入一个模块。最好按标准库、扩展库、自定义库的顺序依次导入。（3）提升代码可读性： 十进制里 1&#x2F;3 是无限小...</div></div></div></a><a class="pagination-related" href="/2026/10/31/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Windows%20%E4%BF%9D%E7%95%99%E8%AE%BE%E5%A4%87%E5%90%8D%20nul%20%E6%B7%B1%E5%9D%91%E5%A4%8D%E7%9B%98/" title="Windows 保留设备名 nul 深坑复盘"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Windows 保留设备名 nul 深坑复盘</div></div><div class="info-2"><div class="info-item-1"> 一次删目录失败，最后牵出「AI agent 在 Windows 上用 CMD 语法写 bash 命令」这个系统性问题。真正值得注意的是：这个坑会让整棵目录树的备份与删除静默失效，而常规排查手段全都看不见它。   1. 一句话结论Wi...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/11/11/%E5%8D%9A%E8%A7%88%E7%9F%A5%E8%AF%86/Strata%20PolyStrata%20%E4%B8%8E%20TensorFold%20%E4%B8%89%E8%B7%AF%E7%BA%BF%E6%9E%B6%E6%9E%84%E5%AF%B9%E6%AF%94/" title="Strata、PolyStrata 与 TensorFold 三路线架构对比"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-11-24</div><div class="info-item-2">Strata、PolyStrata 与 TensorFold 三路线架构对比</div></div><div class="info-2"><div class="info-item-1">把 Strata、PolyStrata、TensorFold 这三个名字放在一起，第一反应是”三个竞品，选一个”。真正拆开看会发现完全不是：它们都在解决同一个问题——在有限的消费级硬件上跑大模型——但各自选择了牺牲不同的维度。 Str...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="utterances-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">琉璃幻彩</div><div class="author-info-description">琉璃幻彩的个人博客，记录 CTF 夺旗赛、电子取证、网络安全工具与日常技术研究。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">276</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">225</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">40</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FighterGodNemo"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/FighterGodNemo" title="Github" target="_blank"><i class="fab fa-github"></i></a><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="微信"><i class="fab fa-weixin"></i></a><div class="qr-code-popup"><img src="/img/qrcode/wechat-qr.png" alt="微信二维码"/ loading='lazy'></div></div><div class="qr-code-wrapper"><a class="social-icon" href="javascript:void(0)" title="QQ"><i class="fab fa-qq"></i></a><div class="qr-code-popup"><img src="/img/qrcode/qq-qr.png" alt="QQ二维码"/ loading='lazy'></div></div><div class="copy-text-wrapper"><a class="social-icon" href="javascript:void(0)" title="Steam好友代码：1905706957" data-copy-text="1905706957"><i class="fab fa-steam"></i></a><div class="copy-text-popup"><h3>Steam好友代码</h3><p>1905706957</p><p class="copy-hint">点击图标复制</p></div></div><a class="social-icon" href="mailto:guliujia2233@outlook.com" title="Email" target="_blank"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">热爱 CTF 和 Forensic 的网安人一枚～
+欢迎各位大佬交流点评！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E5%8F%A5%E8%AF%9D%E7%BB%93%E8%AE%BA"><span class="toc-number">1.</span> <span class="toc-text">一句话结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E9%97%AE%E9%A2%98%EF%BC%9A%E6%98%BE%E5%AD%98%E5%A4%A9%E5%A0%91"><span class="toc-number">2.</span> <span class="toc-text">一、问题：显存天堑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81Strata-%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">3.</span> <span class="toc-text">二、Strata 是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%EF%BC%9AMoE-%E7%A8%80%E7%96%8F%E6%BF%80%E6%B4%BB-%E4%B8%89%E7%BA%A7%E5%88%86%E5%B1%82%E8%B0%83%E5%BA%A6"><span class="toc-number">4.</span> <span class="toc-text">三、核心原理：MoE 稀疏激活 + 三级分层调度</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MoE%EF%BC%9A%E6%80%BB%E5%8F%82%E6%95%B0-125B%EF%BC%8C%E6%AF%8F%E6%AC%A1%E5%BD%93%E7%8F%AD%E5%8F%AA%E6%9C%89-6B"><span class="toc-number">4.1.</span> <span class="toc-text">MoE：总参数 125B，每次当班只有 ~6B</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E7%BA%A7%E4%BB%93%E5%BA%93"><span class="toc-number">4.2.</span> <span class="toc-text">三级仓库</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%88%90%E6%9C%AC%E7%BB%8F%E6%B5%8E%E5%AD%A6%EF%BC%9A%E6%8D%A2%E4%B8%80%E7%A7%8D%E4%B8%9C%E8%A5%BF%E8%B4%B5"><span class="toc-number">5.</span> <span class="toc-text">四、成本经济学：换一种东西贵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E9%80%9F%E5%BA%A6%E5%AF%B9%E7%85%A7%EF%BC%9A%E7%A6%BB%E7%BA%BF%E8%BF%BD%E4%B8%8A%E4%BA%91%E7%AB%AF"><span class="toc-number">6.</span> <span class="toc-text">五、速度对照：离线追上云端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%9C%AC%E6%9C%BA%E5%AE%9E%E8%AF%81%EF%BC%9APolyStrata-%E8%BF%90%E8%A1%8C%E5%BF%AB%E7%85%A7"><span class="toc-number">7.</span> <span class="toc-text">六、本机实证：PolyStrata 运行快照</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E6%89%B9%E5%88%A4%E6%80%A7%E9%98%85%E8%AF%BB%EF%BC%9A%E6%8A%8A%E6%8A%80%E6%9C%AF%E4%BA%8B%E5%AE%9E%E5%92%8C%E5%95%86%E5%8D%95%E8%AF%9D%E6%9C%AF%E5%88%86%E5%BC%80"><span class="toc-number">8.</span> <span class="toc-text">七、批判性阅读：把技术事实和商单话术分开</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E7%A1%AC%E4%BB%B6%E9%80%89%E8%B4%AD%E5%8E%9F%E5%88%99%EF%BC%88%E4%B8%AD%E6%80%A7%E6%8F%90%E7%82%BC%EF%BC%89"><span class="toc-number">9.</span> <span class="toc-text">八、硬件选购原则（中性提炼）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E5%8F%82%E8%80%83"><span class="toc-number">10.</span> <span class="toc-text">九、参考</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/25/Forensic_%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81/%E5%8F%96%E8%AF%81write-up/FIC/2026FIC/" title="2026 FIC初赛">2026 FIC初赛</a><time datetime="2026-11-24T11:16:00.000Z" title="更新于 2026-11-24 11:16:00">2026-11-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/11/23/Capture_The_Flag_%E5%A4%BA%E6%97%97%E8%B5%9B/%E5%A4%BA%E6%97%97%E8%B5%9BWrite-up/CTFshow/Misc/" title="无标题">无标题</a><time datetime="2026-11-24T11:01:00.000Z" title="更新于 2026-11-24 11:01:00">2026-11-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/12/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261012/" title="科技日报 2026-10-12">科技日报 2026-10-12</a><time datetime="2026-11-24T03:17:56.594Z" title="更新于 2026-11-24 03:17:56">2026-11-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/11/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261011/" title="科技日报 2026-10-11">科技日报 2026-10-11</a><time datetime="2026-11-24T03:17:56.594Z" title="更新于 2026-11-24 03:17:56">2026-11-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/13/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5/%E7%A7%91%E6%8A%80%E6%97%A5%E6%8A%A5_20261013/" title="科技日报 2026-10-13">科技日报 2026-10-13</a><time datetime="2026-11-24T03:17:56.594Z" title="更新于 2026-11-24 03:17:56">2026-11-24</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 琉璃幻彩</span><span class="framework-info"><span id="busuanzi_container_site_pv">本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span><span class="footer-separator">|</span><span id="busuanzi_container_site_uv">本站访客数 <span id="busuanzi_value_site_uv"></span> 人次</span></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="https://cdn.staticfile.org/medium-zoom/1.1.0/medium-zoom.min.js"></script><script src="https://cdn.staticfile.org/instant.page/5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+  const getUtterancesTheme = theme => theme === 'dark' ? 'photon-dark' : 'github-light'
+
+  const loadUtterances = (el = document, key) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyUtterances = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const config = {
+      src: 'https://utteranc.es/client.js',
+      repo: 'FighterGodNemo/FighterGodNemo.github.io',
+      theme: getUtterancesTheme(document.documentElement.getAttribute('data-theme')),
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      'issue-term': isShuoshuo ? key : (option && option['issue-term']) || 'pathname'
+    }
+
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => ele.setAttribute(key, value))
+    el.querySelector('#utterances-wrap').appendChild(ele)
+  }
+
+  const changeUtterancesTheme = theme => {
+    const iframe = document.querySelector('#utterances-wrap iframe')
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: getUtterancesTheme(theme)
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeUtterancesTheme, 'utterances')
+
+  if (isShuoshuo) {
+    'Utterances' === 'Utterances'
+      ? window.shuoshuoComment = { loadComment: loadUtterances }
+      : window.loadOtherComment = loadUtterances
+    return
+  }
+  
+  if ('Utterances' === 'Utterances' || !false) {
+    if (false) btf.loadComment(document.getElementById('utterances-wrap'), loadUtterances)
+    else loadUtterances()
+  } else {
+    window.loadOtherComment = loadUtterances
+  }
+})()</script></div><script src="/js/custom.js?v=20260402-2"></script><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.bootcdn.net/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn.staticfile.org/butterfly-extsrc/1.1.6/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.staticfile.org/pjax/0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:description\"]","link[rel=\"canonical\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      true
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>
