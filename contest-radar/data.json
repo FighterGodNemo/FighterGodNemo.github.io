@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-25T00:49:53.520604Z",
+  "generated_at": "2026-11-27T13:56:40.322164Z",
   "analysis": {
     "mode": "rules",
     "ai_analyzed": 0,
@@ -559,6 +559,27 @@
       "ai_confidence": null
     },
     {
+      "id": "event-a4882f0d2e519cf8",
+      "title": "CTF赛事中心 - Bugku CTF平台",
+      "category": "CTF / 网安",
+      "url": "https://ctf.bugku.com/game/index.html",
+      "source": "国内赛事报名",
+      "source_kind": "公开搜索 RSS",
+      "whitelist": false,
+      "whitelist_ids": [],
+      "school_status": null,
+      "status": "monitoring",
+      "registration_deadline": null,
+      "deadline_confidence": null,
+      "event_start": null,
+      "event_end": null,
+      "published_at": "2026-11-27T13:56:40.322164Z",
+      "discovered_at": "2026-10-28T17:14:13.761771Z",
+      "summary": "Bugku CTF平台赛事中心，实时更新国内外CTF比赛信息，包括赛事日程、报名详情、奖项设置和历史回顾。 为安全爱好者、专业人士和学生提供全面的CTF赛事资讯，助力您在网络安全领域的成长。",
+      "analysis_mode": "rules",
+      "ai_confidence": null
+    },
+    {
       "id": "event-7339ddd5d213d9a8",
       "title": "RedReaper CTF",
       "category": "电子取证",
@@ -933,27 +954,6 @@
       "published_at": "2026-11-08T15:19:25.633365Z",
       "discovered_at": "2026-11-08T06:11:33.861905Z",
       "summary": "51大赛是面向高校学生与青年创作者的综合性赛事服务平台，聚合计算机、数字素养、创意挑战等多赛道赛事信息，提供报名通道、组队大厅、备赛资源、作品提交与证书查询等一站式服务，帮助参赛者高效发现并参与适合的竞赛。",
-      "analysis_mode": "rules",
-      "ai_confidence": null
-    },
-    {
-      "id": "event-a4882f0d2e519cf8",
-      "title": "CTF赛事中心 - Bugku CTF平台",
-      "category": "CTF / 网安",
-      "url": "https://ctf.bugku.com/game/index.html",
-      "source": "国内赛事报名",
-      "source_kind": "公开搜索 RSS",
-      "whitelist": false,
-      "whitelist_ids": [],
-      "school_status": null,
-      "status": "monitoring",
-      "registration_deadline": null,
-      "deadline_confidence": null,
-      "event_start": null,
-      "event_end": null,
-      "published_at": "2026-11-07T20:16:31.824443Z",
-      "discovered_at": "2026-10-28T17:14:13.761771Z",
-      "summary": "Bugku CTF平台赛事中心，实时更新国内外CTF比赛信息，包括赛事日程、报名详情、奖项设置和历史回顾。 为安全爱好者、专业人士和学生提供全面的CTF赛事资讯，助力您在网络安全领域的成长。",
       "analysis_mode": "rules",
       "ai_confidence": null
     },
@@ -2441,7 +2441,7 @@
     {
       "name": "国内赛事报名",
       "status": "ok",
-      "count": 0,
+      "count": 1,
       "detail": "采集成功"
     },
     {
