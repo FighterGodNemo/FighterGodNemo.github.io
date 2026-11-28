@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-27T13:56:40.322164Z",
+  "generated_at": "2026-11-28T00:05:30.739762Z",
   "analysis": {
     "mode": "rules",
     "ai_analyzed": 0,
@@ -2441,7 +2441,7 @@
     {
       "name": "国内赛事报名",
       "status": "ok",
-      "count": 1,
+      "count": 0,
       "detail": "采集成功"
     },
     {
